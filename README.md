@@ -1,6 +1,6 @@
 # DDNG
 A personal project begins July 2020 and based on MSA(Micro Service Architecture).
-
+![Project Architecture](https://user-images.githubusercontent.com/32320659/87249065-e89e0f80-c497-11ea-9c10-5a60f1d59c6f.png)
 
 ## Technics
 1. Spring Boot
