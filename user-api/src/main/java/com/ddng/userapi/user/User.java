@@ -1,10 +1,9 @@
 package com.ddng.userapi.user;
 
 import com.ddng.userapi.types.Address;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <h1>사용자 엔티티</h1>
@@ -17,6 +16,12 @@ import java.util.List;
  * @see com.ddng.userapi.types.Address
  */
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User
 {
     /**
@@ -47,16 +52,14 @@ public class User
     private String email;
 
     /**
-     * 사용자 권한목록
+     * 사용자 권한
      */
     @Enumerated(value = EnumType.STRING)
-    private List<UserRole> userRoleList = new ArrayList();
+    private UserRole userRole;
 
     /**
      * 사용자 주소
      */
     @Embedded
     private Address address;
-
-
 }
