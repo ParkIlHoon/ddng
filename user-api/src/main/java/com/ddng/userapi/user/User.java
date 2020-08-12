@@ -1,9 +1,13 @@
 package com.ddng.userapi.user;
 
-import com.ddng.userapi.types.Address;
+import com.ddng.userapi.grant.Grant;
+import com.ddng.userapi.team.Team;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>사용자 엔티티</h1>
@@ -12,8 +16,6 @@ import javax.persistence.*;
  *
  * @author ParkIlHoon
  * @version 1.0
- * @see com.ddng.userapi.user.UserRole
- * @see com.ddng.userapi.types.Address
  */
 @Entity
 @Getter
@@ -22,13 +24,13 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"team", "grants"})
 public class User
 {
     /**
      * 사용자 고유 아이디
      */
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     /**
@@ -52,14 +54,42 @@ public class User
     private String email;
 
     /**
-     * 사용자 권한
+     * 전화번호
      */
-    @Enumerated(value = EnumType.STRING)
-    private UserRole userRole;
+    private String telNo;
 
     /**
-     * 사용자 주소
+     * 가입일
      */
-    @Embedded
-    private Address address;
+    private LocalDateTime joinDate;
+
+    /**
+     * 이미지 경로
+     */
+    private String imagePath;
+
+    /**
+     * 팀
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+    /**
+     * 소유 권한
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Grant> grants = new ArrayList<>();
+
+
+    /******************************************************************************************************************
+     * 연관관계 편의 메서드
+     *****************************************************************************************************************/
+    public void changeTeam(Team team)
+    {
+        this.team = team;
+        team.getUsers().add(this);
+    }
+
+
 }
