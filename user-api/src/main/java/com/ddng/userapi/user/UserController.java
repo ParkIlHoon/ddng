@@ -1,31 +1,56 @@
 package com.ddng.userapi.user;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.Optional;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @RestController
+@RequestMapping(value = "/users/", produces = MediaTypes.HAL_JSON_VALUE)
 public class UserController
 {
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/{id}")
-	public ResponseEntity findUser(@PathVariable Long id)
-	{
-		Optional<User> findById = userService.findById(id);
+	@Autowired
+	ModelMapper modelMapper;
 
-		if(findById.isEmpty())
+	@PostMapping
+	public ResponseEntity createUser(@RequestBody @Valid UserDto dto, Errors errors)
+	{
+		// Validation 결과 체크
+		if (errors.hasErrors())
 		{
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.badRequest().build();
 		}
 
-		User user = findById.get();
+		// DTO -> Entity 변환
+		User mapped = modelMapper.map(dto, User.class);
 
-		return ResponseEntity.ok(user);
+		// 사용자 저장
+		User newUser = userService.save(mapped);
+
+		// uri 생성
+		WebMvcLinkBuilder builder = linkTo(UserController.class).slash(newUser.getId());
+		URI uri = builder.toUri();
+
+		// HATEOAS 처리
+		UserResource resource = new UserResource(newUser);
+		resource.add(linkTo(UserController.class).withRel("query-users"));
+		resource.add(builder.withRel("update-user"));
+		resource.add(builder.withRel("delete-user"));
+		resource.add(new Link("/docs/index.html#resources-users-create").withRel("profile"));
+
+		return ResponseEntity.created(uri).body(resource);
 	}
 }

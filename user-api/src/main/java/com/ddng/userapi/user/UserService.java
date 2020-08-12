@@ -21,4 +21,8 @@ public class UserService
         return userRepository.findById(id);
     }
 
+    public User save(User user)
+    {
+        return userRepository.save(user);
+    }
 }
