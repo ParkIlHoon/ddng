@@ -1,5 +1,6 @@
 package com.ddng.userapi.user;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
@@ -87,7 +88,6 @@ public class UserDto
      */
     @Builder
     @NoArgsConstructor
-    @AllArgsConstructor
     @Data
     public static class Read
     {
@@ -101,5 +101,34 @@ public class UserDto
         private String imagePath;
         private Long teamId;
         private List<Long> grants;
+
+        @QueryProjection
+        public Read(Long id, String username, String password, String name, String email, String telNo, LocalDateTime joinDate, String imagePath, Long teamId, List<Long> grants)
+        {
+            this.id = id;
+            this.username = username;
+            this.password = password;
+            this.name = name;
+            this.email = email;
+            this.telNo = telNo;
+            this.joinDate = joinDate;
+            this.imagePath = imagePath;
+            this.teamId = teamId;
+            this.grants = grants;
+        }
+
+        @QueryProjection
+        public Read(Long id, String username, String password, String name, String email, String telNo, LocalDateTime joinDate, String imagePath, Long teamId)
+        {
+            this.id = id;
+            this.username = username;
+            this.password = password;
+            this.name = name;
+            this.email = email;
+            this.telNo = telNo;
+            this.joinDate = joinDate;
+            this.imagePath = imagePath;
+            this.teamId = teamId;
+        }
     }
 }

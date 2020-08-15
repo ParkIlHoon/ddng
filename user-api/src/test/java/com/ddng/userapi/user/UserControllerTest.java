@@ -2,9 +2,14 @@ package com.ddng.userapi.user;
 
 import com.ddng.userapi.common.BaseControllerTest;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -17,8 +22,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@SpringBootTest
 class UserControllerTest extends BaseControllerTest
 {
+    @Autowired
+    UserService userService;
 
     @Test
     void 사용자_생성() throws Exception
@@ -89,5 +97,35 @@ class UserControllerTest extends BaseControllerTest
                         )
                 )
         ;
+    }
+
+    @Test
+    void 사용자_조회() throws Exception
+    {
+        // given
+        for (int idx = 0; idx < 10; idx++)
+        {
+            createUser(idx);
+        }
+
+        mockMvc.perform(
+                        get("/users/")
+                            .param("password", "1234")
+                        )
+                .andDo(print())
+                .andExpect(status().isOk())
+        ;
+    }
+
+    private void createUser(int idx)
+    {
+        User user = User.builder()
+                            .username("username_" + idx)
+                            .password("1234")
+                            .name("name_" + idx)
+                            .joinDate(LocalDateTime.now())
+                        .build();
+
+        userService.save(user);
     }
 }

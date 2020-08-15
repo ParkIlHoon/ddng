@@ -9,7 +9,10 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
- * <h1>HATEOAS 처리를 위한 클래스</h1>
+ * <h1>사용자 HATEOAS 처리를 위한 클래스</h1>
+ *
+ * @author ParkIlHoon
+ * @version 1.0
  */
 @Getter
 public class UserResource extends RepresentationModel
@@ -36,5 +39,12 @@ public class UserResource extends RepresentationModel
                             .build();
         // 자신에 대한 self 링크를 자동으로 생성하도록 처리
         this.add(linkTo(UserController.class).slash(u.getId()).withSelfRel());
+    }
+
+    public UserResource(UserDto.Read dto)
+    {
+        this.user = dto;
+        // 자신에 대한 self 링크를 자동으로 생성하도록 처리
+        this.add(linkTo(UserController.class).slash(dto.getId()).withSelfRel());
     }
 }
