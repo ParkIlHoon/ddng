@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 @Data
 public class UserDto
 {
+    private Long id;
+
     private String username;
 
     private String password;
@@ -26,4 +29,8 @@ public class UserDto
     private LocalDateTime joinDate;
 
     private String imagePath;
+
+    private Long teamId;
+
+    private List<Long> grants;
 }

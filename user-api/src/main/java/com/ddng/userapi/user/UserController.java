@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -36,6 +37,7 @@ public class UserController
 
 		// DTO -> Entity 변환
 		User mapped = modelMapper.map(dto, User.class);
+		mapped.setJoinDate(LocalDateTime.now());
 
 		// 사용자 저장
 		User newUser = userService.save(mapped);
