@@ -15,11 +15,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class UserResource extends RepresentationModel
 {
     @JsonUnwrapped
-    private UserDto user;
+    private UserDto.Read user;
 
     public UserResource(User u)
     {
-        this.user = UserDto.builder()
+        this.user = UserDto.Read.builder()
                                 .id(u.getId())
                                 .username(u.getUsername())
                                 .password(u.getPassword())

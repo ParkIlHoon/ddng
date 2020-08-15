@@ -27,7 +27,7 @@ public class UserController
 	ModelMapper modelMapper;
 
 	@PostMapping
-	public ResponseEntity createUser(@RequestBody @Valid UserDto dto, Errors errors)
+	public ResponseEntity createUser(@RequestBody @Valid UserDto.Create dto, Errors errors)
 	{
 		// Validation 결과 체크
 		if (errors.hasErrors())

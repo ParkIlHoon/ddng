@@ -23,12 +23,13 @@ class UserControllerTest extends BaseControllerTest
     @Test
     void 사용자_생성() throws Exception
     {
-        UserDto dto = UserDto.builder()
-                                .username("1hoon")
-                                .password("1234")
-                                .email("chiwoo2074@gmail.com")
-                                .telNo("010-1234-5678")
-                            .build();
+        UserDto.Create dto = UserDto.Create.builder()
+                                                .username("1hoon")
+                                                .password("1234")
+                                                .name("박일훈")
+                                                .email("chiwoo2074@gmail.com")
+                                                .telNo("010-1234-5678")
+                                            .build();
 
         mockMvc.perform(
                         post("/users/")
@@ -62,16 +63,11 @@ class UserControllerTest extends BaseControllerTest
                                         headerWithName(HttpHeaders.CONTENT_TYPE).description("헤더 CONTENT 타입")
                                 ),
                                 requestFields(
-                                        fieldWithPath("id").description("사용자 고유 아이디"),
                                         fieldWithPath("username").description("생성할 사용자의 로그인 아이디"),
                                         fieldWithPath("password").description("생성할 사용자의 로그인 패스워드"),
                                         fieldWithPath("name").description("생성할 사용자의 이름"),
                                         fieldWithPath("email").description("생성할 사용자의 이메일 주소"),
-                                        fieldWithPath("telNo").description("생성할 사용자의 전화번호"),
-                                        fieldWithPath("joinDate").description("생성할 사용자의 가입일"),
-                                        fieldWithPath("imagePath").description("생성할 사용자의 프로필 이미지 경로"),
-                                        fieldWithPath("teamId").description("생성할 사용자의 소속 팀 고유 아이디"),
-                                        fieldWithPath("grants").description("생성할 사용자의 권한부여 목록")
+                                        fieldWithPath("telNo").description("생성할 사용자의 전화번호")
                                 ),
                                 responseFields(
                                         fieldWithPath("id").description("생성된 사용자의 고유 아이디"),
