@@ -90,4 +90,34 @@ public class UserController
 
 		return ResponseEntity.ok(users);
 	}
+
+	/**
+	 * 사용자 한 명을 조회한다.
+	 * @param id 조회할 사용자의 아이디
+	 * @return 아이디에 해당하는 사용자 DTO 객체
+	 */
+	@GetMapping("/{id}")
+	public ResponseEntity getUser(@PathVariable Long id)
+	{
+		// 사용자 조회
+		Optional<User> optional = userService.findById(id);
+
+		if (optional.isEmpty())
+		{
+			return ResponseEntity.badRequest().build();
+		}
+
+		// uri 생성
+		WebMvcLinkBuilder builder = linkTo(UserController.class).slash(optional.get().getId());
+		URI uri = builder.toUri();
+
+		// HATEOAS 처리
+		UserResource resource = new UserResource(optional.get());
+		resource.add(linkTo(UserController.class).withRel("query-users"));
+		resource.add(builder.withRel("update-user"));
+		resource.add(builder.withRel("delete-user"));
+		resource.add(new Link("/docs/index.html#resources-get-user").withRel("profile"));
+
+		return ResponseEntity.ok(resource);
+	}
 }

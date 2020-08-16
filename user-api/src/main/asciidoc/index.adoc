@@ -111,14 +111,14 @@ operation::query-users[snippets='response-fields,curl-request,http-response,link
 
 `POST` 요청을 사용해서 새 사용자를 만들 수 있다.
 
-operation::create-user[snippets='request-fields,curl-request,http-response,links']
+operation::create-user[snippets='request-fields,curl-request,http-response,response-fields,links']
 
 [[resources-users-get]]
 === 사용자 조회
 
 `Get` 요청을 사용해서 기존 사용자 한 명을 조회할 수 있다.
 
-operation::get-user[snippets='request-fields,curl-request,http-response,links']
+operation::get-user[snippets='path-parameters,curl-request,http-response,response-fields,links']
 
 [[resources-users-update]]
 === 사용자 수정
