@@ -18,9 +18,9 @@ public class HomeController
         for(int idx = 1; idx < 7; idx++)
         {
             Card card = Card.builder()
-                                .title("타이틀" + idx)
-                                .content("컨텐츠" + idx)
-                                .thumbnailPath("/images/work-" + idx + ".jpg")
+                                .title("미용 이름" + idx)
+                                .content("미용 설명" + idx)
+                                .thumbnailPath("/images/beauty/work-" + idx + ".jpg")
                             .build();
             cardList.add(card);
         }
