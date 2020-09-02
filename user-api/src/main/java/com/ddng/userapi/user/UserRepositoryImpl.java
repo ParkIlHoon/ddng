@@ -3,6 +3,7 @@ package com.ddng.userapi.user;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import static org.springframework.util.StringUtils.hasText;
  * @version 1.0
  * @see com.ddng.userapi.user.UserRepositoryCustom
  */
+@Transactional(readOnly = true)
 public class UserRepositoryImpl implements UserRepositoryCustom
 {
     private final JPAQueryFactory queryFactory;

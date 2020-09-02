@@ -1,6 +1,7 @@
 package com.ddng.userapi.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @version 1.0
  * @see com.ddng.userapi.user.UserRepositoryCustom
  */
+@Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom
 {
 }

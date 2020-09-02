@@ -1,7 +1,9 @@
 package com.ddng.userapi.user;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +15,11 @@ import java.util.Optional;
  * @version 1.0
  */
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserService
 {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     /**
      * 사용자 한 명을 조회한다
@@ -39,7 +42,7 @@ public class UserService
     }
 
     /**
-     * 사용자를 검색한다.
+     * 사용자를 검색한다.(eq조건)
      * @param dto 조회 조건
      * @return 조회 조건에 해당하는 사용자 DTO 목록
      */

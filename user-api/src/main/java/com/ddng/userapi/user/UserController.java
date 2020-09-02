@@ -1,5 +1,6 @@
 package com.ddng.userapi.user;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,20 +27,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  * @version 1.0
  */
 @RestController
-@RequestMapping(value = "/users/", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/users", produces = MediaTypes.HAL_JSON_VALUE)
+@RequiredArgsConstructor
 public class UserController
 {
-	@Autowired
-	UserService userService;
-
-	@Autowired
-	ModelMapper modelMapper;
+	private final UserService userService;
+	private final ModelMapper modelMapper;
 
 	/**
 	 * 사용자를 생성한다.
 	 * @param dto 생성할 사용자 정보
 	 * @param errors Validation 결과
-	 * @return 생성된 사용자 정보 + HATEOAS
 	 */
 	@PostMapping
 	public ResponseEntity createUser(@RequestBody @Valid UserDto.Create dto, Errors errors)
@@ -74,10 +72,9 @@ public class UserController
 	/**
 	 * 사용자 목록을 검색한다.
 	 * @param dto 검색할 정보
-	 * @return 검색 조건에 해당하는 사용자 목록
 	 */
 	@GetMapping
-	public ResponseEntity queryUser(UserDto.Read dto)
+	public ResponseEntity queryUser(@ModelAttribute UserDto.Read dto)
 	{
 		// 사용자 조회
 		List<UserDto.Read> users = userService.search(dto);
@@ -94,7 +91,6 @@ public class UserController
 	/**
 	 * 사용자 한 명을 조회한다.
 	 * @param id 조회할 사용자의 아이디
-	 * @return 아이디에 해당하는 사용자 DTO 객체
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity getUser(@PathVariable Long id)
@@ -119,5 +115,49 @@ public class UserController
 		resource.add(new Link("/docs/index.html#resources-get-user").withRel("profile"));
 
 		return ResponseEntity.ok(resource);
+	}
+
+	/**
+	 * 사용자 정보를 수정한다.
+	 * @param id 수정할 사용자의 아이디
+ 	 * @param dto 수정할 정보 DTO
+	 * @param errors
+	 * @return
+	 */
+	@PutMapping("/{id}")
+	public ResponseEntity updateUser(@PathVariable Long id,
+									 @Valid @RequestBody UserDto.Update dto,
+									 Errors errors)
+	{
+		// Validation 결과 체크
+		if (errors.hasErrors())
+		{
+			return ResponseEntity.badRequest().build();
+		}
+
+		// 사용자 조회
+		Optional<User> byId = userService.findById(id);
+		if(byId.isEmpty())
+		{
+			return ResponseEntity.notFound().build();
+		}
+		else
+		{
+			User user = byId.get();
+			modelMapper.map(dto, user);
+
+			// 사용자 정보 수정
+			User save = userService.save(user);
+
+			// HATEOAS 처리
+			WebMvcLinkBuilder builder = linkTo(UserController.class).slash(save.getId());
+			UserResource resource = new UserResource(save);
+			resource.add(linkTo(UserController.class).withRel("query-users"));
+			resource.add(builder.withRel("update-user"));
+			resource.add(builder.withRel("delete-user"));
+			resource.add(new Link("/docs/index.html#resources-update-user").withRel("profile"));
+
+			return ResponseEntity.ok(resource);
+		}
 	}
 }

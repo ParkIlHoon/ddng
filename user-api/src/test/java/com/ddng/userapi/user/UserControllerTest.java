@@ -19,8 +19,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -119,10 +118,12 @@ class UserControllerTest extends BaseControllerTest
                         )
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").exists())
+                .andExpect(jsonPath("$[0].password").value("1234"))
         ;
     }
 
-    private void createUser(int idx)
+    private User createUser(int idx)
     {
         User user = User.builder()
                             .username("username_" + idx)
@@ -131,7 +132,7 @@ class UserControllerTest extends BaseControllerTest
                             .joinDate(LocalDateTime.now())
                         .build();
 
-        userService.save(user);
+        return userService.save(user);
     }
 
     @Test
@@ -187,6 +188,81 @@ class UserControllerTest extends BaseControllerTest
                                 )
                         )
                 )
+        ;
+    }
+
+    @Test
+    void 사용자_수정() throws Exception
+    {
+        User createdUser = createUser(1);
+
+        UserDto.Update dto = UserDto.Update.builder()
+                                                .username("1hoon")
+                                                .password("5678")
+                                                .email("chiwoo2074@gmail.com")
+                                                .name("박일훈")
+                                            .build();
+
+        mockMvc.perform(
+                        put("/users/" + createdUser.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaTypes.HAL_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonPath("username").value(dto.getUsername()))
+                .andExpect(jsonPath("password").value(dto.getPassword()))
+                .andExpect(jsonPath("email").value(dto.getEmail()))
+                .andExpect(jsonPath("name").value(dto.getName()))
+                // HATEOAS 처리
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-users").exists())
+                .andExpect(jsonPath("_links.update-user").exists())
+                .andExpect(jsonPath("_links.delete-user").exists())
+                // API Docs
+//                .andDo(
+//                        document("update-user",
+//                                links(
+//                                        halLinks(),
+//                                        linkWithRel("self").description("Link to Self"),
+//                                        linkWithRel("query-users").description("사용자 목록을 조회하는 링크"),
+//                                        linkWithRel("update-user").description("사용자를 수정하는 링크"),
+//                                        linkWithRel("delete-user").description("사용자를 삭제하는 링크"),
+//                                        linkWithRel("profile").description("Link to Profile")
+//                                ),
+//                                requestHeaders(
+//                                        headerWithName(HttpHeaders.ACCEPT).description("헤더 ACCEPT 타입"),
+//                                        headerWithName(HttpHeaders.CONTENT_TYPE).description("헤더 CONTENT 타입")
+//                                ),
+//                                requestFields(
+//                                        fieldWithPath("username").description("생성할 사용자의 로그인 아이디"),
+//                                        fieldWithPath("password").description("생성할 사용자의 로그인 패스워드"),
+//                                        fieldWithPath("name").description("생성할 사용자의 이름"),
+//                                        fieldWithPath("email").description("생성할 사용자의 이메일 주소"),
+//                                        fieldWithPath("telNo").description("생성할 사용자의 전화번호")
+//                                ),
+//                                responseFields(
+//                                        fieldWithPath("id").description("생성된 사용자의 고유 아이디"),
+//                                        fieldWithPath("username").description("생성된 사용자의 로그인 아이디"),
+//                                        fieldWithPath("password").description("생성된 사용자의 로그인 패스워드"),
+//                                        fieldWithPath("name").description("생성된 사용자의 이름"),
+//                                        fieldWithPath("email").description("생성된 사용자의 이메일 주소"),
+//                                        fieldWithPath("telNo").description("생성된 사용자의 전화번호"),
+//                                        fieldWithPath("joinDate").description("생성된 사용자의 가입일"),
+//                                        fieldWithPath("imagePath").description("생성된 사용자의 프로필 이미지 경로"),
+//                                        fieldWithPath("teamId").description("생성된 사용자의 소속 팀 고유 아이디"),
+//                                        fieldWithPath("grants").description("생성된 사용자의 권한부여 목록"),
+//                                        fieldWithPath("_links.self.href").description("생성된 사용자의 self link"),
+//                                        fieldWithPath("_links.query-users.href").description("query-users link"),
+//                                        fieldWithPath("_links.update-user.href").description("update-user link"),
+//                                        fieldWithPath("_links.delete-user.href").description("update-user link"),
+//                                        fieldWithPath("_links.profile.href").description("profile link")
+//                                )
+//                        )
+//                )
         ;
     }
 }

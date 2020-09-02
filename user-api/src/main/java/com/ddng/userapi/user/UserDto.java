@@ -64,8 +64,6 @@ public class UserDto
     public static class Update
     {
         @NotEmpty
-        private Long id;
-        @NotEmpty
         private String username;
         @NotEmpty
         private String password;
@@ -74,7 +72,6 @@ public class UserDto
         private String email;
         private String telNo;
         private String imagePath;
-        private Long teamId;
     }
 
     /**
