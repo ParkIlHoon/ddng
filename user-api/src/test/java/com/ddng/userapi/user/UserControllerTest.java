@@ -104,7 +104,7 @@ class UserControllerTest extends BaseControllerTest
                                         fieldWithPath("_links.self.href").description("생성된 사용자의 self link"),
                                         fieldWithPath("_links.query-users.href").description("query-users link"),
                                         fieldWithPath("_links.update-user.href").description("update-user link"),
-                                        fieldWithPath("_links.delete-user.href").description("update-user link"),
+                                        fieldWithPath("_links.delete-user.href").description("delete-user link"),
                                         fieldWithPath("_links.profile.href").description("profile link")
                                 )
                         )

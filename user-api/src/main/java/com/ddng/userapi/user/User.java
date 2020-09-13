@@ -69,27 +69,8 @@ public class User
     private String imagePath;
 
     /**
-     * 팀
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
-
-    /**
      * 소유 권한
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Grant> grants = new ArrayList<>();
-
-
-    /******************************************************************************************************************
-     * 연관관계 편의 메서드
-     *****************************************************************************************************************/
-    public void changeTeam(Team team)
-    {
-        this.team = team;
-        team.getUsers().add(this);
-    }
-
-
 }

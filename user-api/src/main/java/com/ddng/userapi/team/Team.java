@@ -4,6 +4,7 @@ import com.ddng.userapi.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"users"})
 public class Team
 {
     /**
@@ -37,9 +37,25 @@ public class Team
     private String name;
 
     /**
+     * 팀 경로
+     */
+    private String path;
+
+    /**
+     * 생성 일자
+     */
+    private LocalDateTime createdDateTime;
+
+    /**
+     * 관리자 사용자
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<User> managers = new ArrayList<>();
+
+    /**
      * 소속 사용자
      */
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<User> members = new ArrayList<>();
 
 }

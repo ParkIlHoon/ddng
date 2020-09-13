@@ -31,7 +31,6 @@ public class UserResource extends RepresentationModel
                                 .joinDate(u.getJoinDate())
                                 .telNo(u.getTelNo())
                                 .imagePath(u.getImagePath())
-                                .teamId((u.getTeam() != null)? u.getTeam().getId() : null)
                                 .grants((u.getGrants() != null && u.getGrants().size() > 0)?
                                         u.getGrants().stream().map(grant -> grant.getId()).collect(Collectors.toList())
                                         : null

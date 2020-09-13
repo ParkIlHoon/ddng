@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
+/**
+ * <h1>User 테스트를 위한 사용자 생성 팩토리 클래스</h1>
+ */
 @Component
 @RequiredArgsConstructor
 public class UserFactory
