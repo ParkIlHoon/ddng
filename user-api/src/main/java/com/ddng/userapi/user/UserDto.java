@@ -96,11 +96,10 @@ public class UserDto
         private String telNo;
         private LocalDateTime joinDate;
         private String imagePath;
-        private Long teamId;
         private List<Long> grants;
 
         @QueryProjection
-        public Read(Long id, String username, String password, String name, String email, String telNo, LocalDateTime joinDate, String imagePath, Long teamId, List<Long> grants)
+        public Read(Long id, String username, String password, String name, String email, String telNo, LocalDateTime joinDate, String imagePath, List<Long> grants)
         {
             this.id = id;
             this.username = username;
@@ -110,12 +109,11 @@ public class UserDto
             this.telNo = telNo;
             this.joinDate = joinDate;
             this.imagePath = imagePath;
-            this.teamId = teamId;
             this.grants = grants;
         }
 
         @QueryProjection
-        public Read(Long id, String username, String password, String name, String email, String telNo, LocalDateTime joinDate, String imagePath, Long teamId)
+        public Read(Long id, String username, String password, String name, String email, String telNo, LocalDateTime joinDate, String imagePath)
         {
             this.id = id;
             this.username = username;
@@ -125,7 +123,6 @@ public class UserDto
             this.telNo = telNo;
             this.joinDate = joinDate;
             this.imagePath = imagePath;
-            this.teamId = teamId;
         }
     }
 }

@@ -36,9 +36,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom
     public List<UserDto.Read> search(UserDto.Read dto)
     {
         return queryFactory.select(new QUserDto_Read(user.id, user.username, user.password, user.name,
-                                                    user.email, user.telNo, user.joinDate, user.imagePath, team.id))
+                                                    user.email, user.telNo, user.joinDate, user.imagePath))
                             .from(user)
-                            .leftJoin(user.team, team)
                             .where(
                                     userIdEq(dto.getId()),
                                     userNameEq(dto.getUsername()),
@@ -47,15 +46,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom
                                     emailEq(dto.getEmail()),
                                     telNoEq(dto.getTelNo()),
                                     joinDateEq(dto.getJoinDate()),
-                                    imagePathEq(dto.getImagePath()),
-                                    teamIdEq(dto.getTeamId())
+                                    imagePathEq(dto.getImagePath())
                                     )
                             .fetch();
-    }
-
-    private BooleanExpression teamIdEq(Long teamId)
-    {
-        return teamId != null? user.team.id.eq(teamId) : null;
     }
 
     private BooleanExpression imagePathEq(String imagePath)

@@ -51,18 +51,7 @@ public class UserController
 		// 사용자 신규 생성
 		User newUser = userService.createUser(dto);
 
-		// uri 생성
-		WebMvcLinkBuilder builder = linkTo(UserController.class).slash(newUser.getId());
-		URI uri = builder.toUri();
-
-		// HATEOAS 처리
-		UserResource resource = new UserResource(newUser);
-		resource.add(linkTo(UserController.class).withRel("query-users"));
-		resource.add(builder.withRel("update-user"));
-		resource.add(builder.withRel("delete-user"));
-		resource.add(new Link("/docs/index.html#resources-users-create").withRel("profile"));
-
-		return ResponseEntity.created(uri).body(resource);
+		return createUserResponseEntity(newUser, "resources-users-create", true);
 	}
 
 	/**
@@ -99,18 +88,7 @@ public class UserController
 			return ResponseEntity.badRequest().build();
 		}
 
-		// uri 생성
-		WebMvcLinkBuilder builder = linkTo(UserController.class).slash(optional.get().getId());
-		URI uri = builder.toUri();
-
-		// HATEOAS 처리
-		UserResource resource = new UserResource(optional.get());
-		resource.add(linkTo(UserController.class).withRel("query-users"));
-		resource.add(builder.withRel("update-user"));
-		resource.add(builder.withRel("delete-user"));
-		resource.add(new Link("/docs/index.html#resources-get-user").withRel("profile"));
-
-		return ResponseEntity.ok(resource);
+		return createUserResponseEntity(optional.get(), "resources-get-user", false);
 	}
 
 	/**
@@ -137,21 +115,10 @@ public class UserController
 		{
 			return ResponseEntity.notFound().build();
 		}
-		else
-		{
-			// 사용자 정보 수정
-			User save = userService.updateUser(byId.get(), dto);
 
-			// HATEOAS 처리
-			WebMvcLinkBuilder builder = linkTo(UserController.class).slash(save.getId());
-			UserResource resource = new UserResource(save);
-			resource.add(linkTo(UserController.class).withRel("query-users"));
-			resource.add(builder.withRel("update-user"));
-			resource.add(builder.withRel("delete-user"));
-			resource.add(new Link("/docs/index.html#resources-update-user").withRel("profile"));
-
-			return ResponseEntity.ok(resource);
-		}
+		// 사용자 정보 수정
+		User save = userService.updateUser(byId.get(), dto);
+		return createUserResponseEntity(save, "resources-update-user", false);
 	}
 
 	/**
@@ -173,5 +140,33 @@ public class UserController
 		userService.deleteUser(byId.get());
 
 		return ResponseEntity.ok().build();
+	}
+
+	/**
+	 * 응답 반환체 생성 메서드
+	 * @param user 사용자 객체
+	 * @param docLinkName asciidoc 링크명
+	 * @param created 신규 생성 여부
+	 * @return
+	 */
+	private ResponseEntity createUserResponseEntity(User user, String docLinkName, boolean created)
+	{
+		WebMvcLinkBuilder builder = linkTo(UserController.class).slash(user.getId());
+		URI uri = builder.toUri();
+
+		UserResource resource = new UserResource(user);
+		resource.add(linkTo(UserController.class).withRel("query-users"));
+		resource.add(builder.withRel("update-user"));
+		resource.add(builder.withRel("delete-user"));
+		resource.add(new Link("/docs/index.html#" + docLinkName).withRel("profile"));
+
+		if (created)
+		{
+			return ResponseEntity.created(uri).body(resource);
+		}
+		else
+		{
+			return ResponseEntity.ok(resource);
+		}
 	}
 }
