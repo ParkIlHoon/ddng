@@ -48,12 +48,8 @@ public class UserController
 			return ResponseEntity.badRequest().build();
 		}
 
-		// DTO -> Entity 변환
-		User mapped = modelMapper.map(dto, User.class);
-		mapped.setJoinDate(LocalDateTime.now());
-
-		// 사용자 저장
-		User newUser = userService.save(mapped);
+		// 사용자 신규 생성
+		User newUser = userService.createUser(dto);
 
 		// uri 생성
 		WebMvcLinkBuilder builder = linkTo(UserController.class).slash(newUser.getId());
@@ -77,7 +73,7 @@ public class UserController
 	public ResponseEntity queryUser(@ModelAttribute UserDto.Read dto)
 	{
 		// 사용자 조회
-		List<UserDto.Read> users = userService.search(dto);
+		List<UserDto.Read> users = userService.searchEq(dto);
 
 		// URI 생성
 		WebMvcLinkBuilder builder = linkTo(UserController.class);
@@ -143,11 +139,8 @@ public class UserController
 		}
 		else
 		{
-			User user = byId.get();
-			modelMapper.map(dto, user);
-
 			// 사용자 정보 수정
-			User save = userService.save(user);
+			User save = userService.updateUser(byId.get(), dto);
 
 			// HATEOAS 처리
 			WebMvcLinkBuilder builder = linkTo(UserController.class).slash(save.getId());
@@ -159,5 +152,26 @@ public class UserController
 
 			return ResponseEntity.ok(resource);
 		}
+	}
+
+	/**
+	 * 사용자를 제거한다.
+	 * @param id 제거할 사용자 아이디
+	 * @return
+	 */
+	@DeleteMapping("/{id}")
+	public ResponseEntity deleteUser(@PathVariable Long id)
+	{
+		// 사용자 조회
+		Optional<User> byId = userService.findById(id);
+		if(byId.isEmpty())
+		{
+			return ResponseEntity.notFound().build();
+		}
+
+		// 사용자 삭제
+		userService.deleteUser(byId.get());
+
+		return ResponseEntity.ok().build();
 	}
 }

@@ -126,3 +126,9 @@ operation::get-user[snippets='path-parameters,curl-request,http-response,respons
 `PUT` 요청을 사용해서 기존 사용자를 수정할 수 있다.
 
 operation::update-user[snippets='request-fields,curl-request,http-response,links']
+
+[[resources-users-delete]]
+=== 사용자 제거
+
+`DELETE` 요청을 사용해서 기존 사용자를 제거할 수 있다.
+operation::delete-user[snippets='request-fields,curl-request,http-response,links']
