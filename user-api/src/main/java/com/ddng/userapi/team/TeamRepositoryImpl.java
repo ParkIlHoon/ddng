@@ -1,6 +1,5 @@
 package com.ddng.userapi.team;
 
-import com.ddng.userapi.user.QUser;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -22,19 +21,12 @@ public class TeamRepositoryImpl extends QuerydslRepositorySupport implements Tea
     @Override
     public List<Team> searchEq(TeamDto.Read dto)
     {
-        //FIXME
-        QUser manager = QUser.user;
-        QUser member = QUser.user;
-
         JPQLQuery<Team> query = from(team)
                                 .where(
                                         idEq(dto.getId()),
                                         pathEq(dto.getPath()),
                                         nameEq(dto.getName())
-                                )
-                                .leftJoin(team.managers, manager).fetchJoin()
-                                .leftJoin(team.members, member).fetchJoin()
-                                .distinct();
+                                );
 
         return query.fetch();
     }
