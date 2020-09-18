@@ -4,6 +4,7 @@ import com.ddng.userapi.common.BaseControllerTest;
 import com.ddng.userapi.user.User;
 import com.ddng.userapi.user.UserFactory;
 import com.ddng.userapi.user.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -20,6 +22,9 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,6 +41,8 @@ class TeamControllerTest extends BaseControllerTest
     private TeamFactory teamFactory;
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private User manager;
 
@@ -113,5 +120,70 @@ class TeamControllerTest extends BaseControllerTest
                         )
                 )
         ;
+    }
+
+    @Test
+    void 팀_단일_조회() throws Exception
+    {
+        Team teamA = teamFactory.createTeam("TeamA");
+
+        mockMvc.perform(
+                        RestDocumentationRequestBuilders.get("/teams/{id}", teamA.getId())
+                        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").value(teamA.getName()))
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                // HATEOAS 처리
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-teams").exists())
+                .andExpect(jsonPath("_links.update-team").exists())
+                .andExpect(jsonPath("_links.delete-team").exists())
+                // API Docs
+                .andDo(
+                        document("get-team",
+                                links(
+                                        halLinks(),
+                                        linkWithRel("self").description("Link to Self"),
+                                        linkWithRel("query-teams").description("팀 목록을 조회하는 링크"),
+                                        linkWithRel("update-team").description("팀을 수정하는 링크"),
+                                        linkWithRel("delete-team").description("팀을 삭제하는 링크"),
+                                        linkWithRel("profile").description("Link to Profile")
+                                ),
+                                pathParameters(
+                                        parameterWithName("id").description("조회할 팀의 고유 아이디")
+                                ),
+                                responseFields(
+                                        fieldWithPath("id").description("조회된 팀의 고유 아이디"),
+                                        fieldWithPath("name").description("조회된 팀의 이름"),
+                                        fieldWithPath("path").description("조회된 팀의 URI 경로"),
+                                        fieldWithPath("managers").description("조회된 팀의 매니저 사용자 아이디 목록"),
+                                        fieldWithPath("members").description("조회된 팀의 멤버 사용자 아이디 목록"),
+                                        fieldWithPath("_links.self.href").description("조회된 팀의 self link"),
+                                        fieldWithPath("_links.query-teams.href").description("query-teams link"),
+                                        fieldWithPath("_links.update-team.href").description("update-team link"),
+                                        fieldWithPath("_links.delete-team.href").description("delete-team link"),
+                                        fieldWithPath("_links.profile.href").description("profile link")
+                                )
+                        )
+                )
+        ;
+    }
+
+    @Test
+    void 팀_조회() throws Exception
+    {
+        for (int idx = 0; idx < 10; idx++)
+        {
+            teamFactory.createTeam("team" + idx);
+        }
+
+        mockMvc.perform(
+                        get("/teams")
+                            .param("name", "team5")
+                        )
+                .andDo(print())
+                .andExpect(jsonPath("$[0].name").value("team5"));
     }
 }

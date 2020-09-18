@@ -1,12 +1,15 @@
 package com.ddng.userapi.team;
 
 
+import com.ddng.userapi.user.User;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>팀 DTO 클래스</h1>
@@ -71,7 +74,6 @@ public class TeamDto
      * @see com.ddng.userapi.team.TeamResource
      */
     @Data
-    @Builder
     public static class Read
     {
         private Long id;
@@ -79,5 +81,17 @@ public class TeamDto
         private String name;
         private List<Long> managers;
         private List<Long> members;
+
+        public Read() {
+        }
+
+        @QueryProjection
+        public Read(Long id, String path, String name, List<User> managers, List<User> members) {
+            this.id = id;
+            this.path = path;
+            this.name = name;
+            this.managers = managers.stream().map(m -> m.getId()).collect(Collectors.toList());
+            this.members = members.stream().map(m -> m.getId()).collect(Collectors.toList());
+        }
     }
 }

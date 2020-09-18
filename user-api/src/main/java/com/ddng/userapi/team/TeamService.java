@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <h1>Team 서비스</h1>
@@ -48,4 +51,26 @@ public class TeamService
         return newTeam;
     }
 
+    /**
+     * id 로 팀을 조회한다.
+     * @param id 조회할 팀의 아이디
+     * @return 아이디에 해당하는 Team Optional
+     */
+    public Optional<Team> findTeam(Long id)
+    {
+        return teamRepository.findById(id);
+    }
+
+    public List<TeamDto.Read> searchEq(TeamDto.Read dto)
+    {
+        List<TeamDto.Read> resultList = new ArrayList<>();
+        List<Team> teams = teamRepository.searchEq(dto);
+
+        teams.forEach(team -> {
+            TeamDto.Read map = modelMapper.map(team, TeamDto.Read.class);
+            resultList.add(map);
+        });
+
+        return resultList;
+    }
 }

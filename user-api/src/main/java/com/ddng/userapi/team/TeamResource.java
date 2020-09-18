@@ -22,14 +22,12 @@ public class TeamResource extends RepresentationModel
 
     public TeamResource (Team team)
     {
-        this.dto = TeamDto.Read.builder()
-                                    .id(team.getId())
-                                    .name(team.getName())
-                                    .path(team.getPath())
-                                    .managers(team.getManagers().stream().map(manager -> manager.getId()).collect(Collectors.toList()))
-                                    .members(team.getMembers().stream().map(member -> member.getId()).collect(Collectors.toList()))
-                                .build();
-
+        this.dto = new TeamDto.Read();
+        this.dto.setId(team.getId());
+        this.dto.setName(team.getName());
+        this.dto.setPath(team.getPath());
+        this.dto.setManagers(team.getManagers().stream().map(manager -> manager.getId()).collect(Collectors.toList()));
+        this.dto.setMembers(team.getMembers().stream().map(member -> member.getId()).collect(Collectors.toList()));
         this.add(linkTo(TeamController.class).slash(team.getId()).withSelfRel());
     }
 }
