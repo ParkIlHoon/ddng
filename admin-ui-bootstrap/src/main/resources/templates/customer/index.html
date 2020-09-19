@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="c-app">
+    <div th:replace="fragments.html::leftMenu"></div>
+    <div class="c-wrapper c-fixed-components">
+        <header th:replace="fragments.html::header ('고객 관리', '고객 조회')"></header>
+        <div class="c-body">
+            <main class="c-main">
+                <div class="container-fluid">
+                    <div class="fade-in">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="card">
+                                    <div class="card-header">고객 목록</div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="appendedInputButton">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
+                                            <div class="controls">
+                                                <div class="input-group">
+                                                    <input class="form-control" id="appendedInputButton" size="16" type="text">
+                                                    <span class="input-group-append">
+                                                        <button class="btn btn-secondary" type="button">검색</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="grid"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-center">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">«</span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Next">
+                                                            <span aria-hidden="true">»</span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-8">
+                                <div class="card">
+                                    <div class="card-header">상세 정보</div>
+                                    <div class="card-body">고객 목록에서 선택한 고객의 상세 정보가 표시됩니다.</div>
+                                    <div class="card-body">
+                                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <!-- Avatar -->
+                                                    <img class="img-fluid float-left rounded img-thumbnail" width="200" height="200"
+                                                        src="http://1hoon.iptime.org/images/beauty/work-1.jpg"/>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">고객 번호</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-static">1</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label" for="name-input">고객 명</label>
+                                                        <div class="col-md-9">
+                                                            <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="type-input">종류</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="type-input" type="text" name="type" placeholder="종류를 입력하세요(필수)">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="telNo-input">전화번호</label>
+                                                <div class="col-md-9 input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <svg class="c-icon">
+                                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
+                                                            </svg>
+                                                        </span>
+                                                    </span>
+                                                    <input class="form-control" id="telNo-input" name="telNo" type="tel" placeholder="전화번호를 입력하세요(필수)">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="date-input">가입일</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="date-input" type="date" name="date-input" placeholder="date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="tags-input">태그</label>
+                                                <div class="col-md-9">
+                                                    <div id="whitelist" hidden>[{"value":"cat"}, {"value":"dog"}]</div>
+                                                    <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="bigo-input">비고</label>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입려하세요"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="history-grid">구매 이력</label>
+                                                <div class="col-md-9">
+                                                    <div id="history-grid"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer th:replace="fragments.html::footer"></footer>
+        </div>
+    </div>
+    <link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <style>
+        .tagify__input{
+            margin: 0;
+        }
+        .tagify{
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript">
+        $(function(){
+            var sampleData = [
+                {"name" : "치우", "type" : "말티즈", "telNo" : "010-9929-8366"},
+                {"name" : "비니", "type" : "요크셔테리어", "telNo" : "010-4066-8366"},
+                {"name" : "볼트", "type" : "말티즈", "telNo" : "010-4066-8366"},
+                {"name" : "라니", "type" : "시츄", "telNo" : "010-9929-8366"}
+            ];
+
+            tui.Grid.applyTheme('clean');
+
+            const grid = new tui.Grid({
+                el: document.getElementById('grid'),
+                data : sampleData,
+                scrollX: false,
+                scrollY: false,
+                selectionUnit : "row",
+                columns: [
+                    {
+                        header: '고객명',
+                        name: 'name'
+                    },
+                    {
+                        header: '종류',
+                        name: 'type'
+                    },
+                    {
+                        header: '전화번호',
+                        name: 'telNo'
+                    }
+                ]
+            });
+
+            function tagRequest(url, tagTitle)
+            {
+                // $.ajax({
+                //     dataType : "json",
+                //     autocomplete : {
+                //         enable : true,
+                //         rightKey : true
+                //     },
+                //     contentType : "application/json; charset=utf-8",
+                //     method : "POST",
+                //     url : "/settings/tags" + url,
+                //     data : JSON.stringify({"tagTitle" : tagTitle})
+                // }).done(function(data, status){
+                //     console.log("${data} and status is ${status}");
+                // });
+            }
+
+            function onAdd(e)
+            {
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e)
+            {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var tagInput = document.querySelector("#tags-input");
+            var tagify = new Tagify(tagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                dropdown : {
+                    enabled: 1, // suggest tags after a single character input
+                } // map tags
+            });
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+            tagify.DOM.input.classList.add('form-control');
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+
+            const historyGrid = new tui.Grid({
+                el: document.getElementById('history-grid'),
+                data : [
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-07-11", "type" : "호텔", "amount" : "70,000"}
+                ],
+                scrollX: false,
+                scrollY: true,
+                selectionUnit : "row",
+                bodyHeight: 300,
+                columns: [
+                    {
+                        header: '날짜',
+                        name: 'date'
+                    },
+                    {
+                        header: '구분',
+                        name: 'type'
+                    },
+                    {
+                        header: '금액',
+                        name: 'amount'
+                    }
+                ]
+            });
+        });
+    </script>
+</body>
+</html>
