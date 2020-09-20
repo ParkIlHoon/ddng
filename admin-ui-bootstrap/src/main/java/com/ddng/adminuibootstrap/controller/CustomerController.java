@@ -10,8 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CustomerController
 {
     @GetMapping("/search")
-    public String getCustomers (Model model)
+    public String searchCustomerForm (Model model)
     {
         return "customer/index";
+    }
+
+    @GetMapping("/new")
+    public String newCustomerForm (Model model)
+    {
+        return "customer/new-customer";
+    }
+
+    @GetMapping("/coupon")
+    public String couponForm (Model model)
+    {
+        return "customer/coupon";
     }
 }

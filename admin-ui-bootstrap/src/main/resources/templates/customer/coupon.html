@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="c-app">
+<div th:replace="fragments.html::leftMenu"></div>
+<div class="c-wrapper c-fixed-components">
+    <header th:replace="fragments.html::header ('고객 관리', '쿠폰북')"></header>
+    <div class="c-body">
+        <main class="c-main">
+            <div class="container-fluid">
+                <div class="fade-in">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">고객 선택</div>
+                                <div class="card-body">쿠폰북을 조회할 고객을 선택합니다.</div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="appendedInputButton">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
+                                        <div class="controls">
+                                            <div class="input-group">
+                                                <input class="form-control" id="appendedInputButton" size="16" type="text">
+                                                <span class="input-group-append">
+                                                        <button class="btn btn-secondary" type="button">검색</button>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div id="grid"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" aria-label="Previous">
+                                                        <span aria-hidden="true">«</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" aria-label="Next">
+                                                        <span aria-hidden="true">»</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">쿠폰북</div>
+                                <div class="card-body">선택한 고객의 쿠폰북이 조회됩니다.</div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="text-muted small text-uppercase font-weight-bold">2018-02-14</div>
+                                                            <div class="text-value-xl py-3">11회 미용 감사 서비스</div>
+                                                            <div>
+                                                                <small class="text-muted">사용 완료(2018-03-31)</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="text-muted small text-uppercase font-weight-bold">2019-07-01</div>
+                                                            <div class="text-value-xl py-3">11회 미용 감사 서비스</div>
+                                                            <div>
+                                                                <small class="text-muted">유효기간 만료(2020-07-02)</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="card text-white bg-gradient-info">
+                                                        <div class="card-body text-center">
+                                                            <div class="text-muted small text-uppercase font-weight-bold">2020-08-12</div>
+                                                            <div class="text-value-xl py-3">11회 미용 감사 서비스</div>
+                                                            <div>
+                                                                <small class="text-muted">유효기간 : 2021-08-12</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments.html::footer"></footer>
+    </div>
+</div>
+<link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
+<script th:replace="fragments.html::script"></script>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
+<script type="application/javascript">
+    $(function(){
+        var sampleData = [
+            {"name" : "치우", "type" : "말티즈", "telNo" : "010-9929-8366"},
+            {"name" : "비니", "type" : "요크셔테리어", "telNo" : "010-4066-8366"},
+            {"name" : "볼트", "type" : "말티즈", "telNo" : "010-4066-8366"},
+            {"name" : "라니", "type" : "시츄", "telNo" : "010-9929-8366"}
+        ];
+
+        tui.Grid.applyTheme('clean');
+
+        const grid = new tui.Grid({
+            el: document.getElementById('grid'),
+            data : sampleData,
+            scrollX: false,
+            scrollY: false,
+            selectionUnit : "row",
+            columns: [
+                {
+                    header: '고객명',
+                    name: 'name'
+                },
+                {
+                    header: '종류',
+                    name: 'type'
+                },
+                {
+                    header: '전화번호',
+                    name: 'telNo'
+                }
+            ]
+        });
+    });
+</script>
+</body>
+</html>
