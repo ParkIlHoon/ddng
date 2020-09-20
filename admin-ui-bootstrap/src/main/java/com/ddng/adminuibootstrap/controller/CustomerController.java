@@ -21,9 +21,9 @@ public class CustomerController
         return "customer/new-customer";
     }
 
-    @GetMapping("/coupon")
-    public String couponForm (Model model)
+    @GetMapping("/family")
+    public String familyForm (Model model)
     {
-        return "customer/coupon";
+        return "customer/family";
     }
 }
