@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="c-app">
+<div th:replace="fragments.html::leftMenu"></div>
+<div class="c-wrapper c-fixed-components">
+    <header th:replace="fragments.html::header ('예약 관리', '스케쥴 관리')"></header>
+    <div class="c-body">
+        <main class="c-main">
+            <div class="container-fluid">
+                <div class="fade-in">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">스케쥴 관리</div>
+                                <div class="card-body">
+                                    <div id="lnb">
+                                        <div class="lnb-new-schedule">
+                                            <button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
+                                                New schedule</button>
+                                        </div>
+                                        <div id="lnb-calendars" class="lnb-calendars">
+                                            <div>
+                                                <div class="lnb-calendars-item">
+                                                    <label>
+                                                        <input class="tui-full-calendar-checkbox-square" type="checkbox" value="all" checked>
+                                                        <span></span>
+                                                        <strong>View all</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div id="calendarList" class="lnb-calendars-d1">
+                                            </div>
+                                        </div>
+                                        <div class="lnb-footer">
+                                            © NHN Corp.
+                                        </div>
+                                    </div>
+                                    <div id="right">
+                                        <div id="menu">
+            <span class="dropdown">
+                <button id="dropdownMenu-calendarType" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="true">
+                    <i id="calendarTypeIcon" class="calendar-icon ic_view_month" style="margin-right: 4px;"></i>
+                    <span id="calendarTypeName">Dropdown</span>&nbsp;
+                    <i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu-calendarType">
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-daily">
+                            <i class="calendar-icon ic_view_day"></i>Daily
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weekly">
+                            <i class="calendar-icon ic_view_week"></i>Weekly
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-monthly">
+                            <i class="calendar-icon ic_view_month"></i>Month
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weeks2">
+                            <i class="calendar-icon ic_view_week"></i>2 weeks
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weeks3">
+                            <i class="calendar-icon ic_view_week"></i>3 weeks
+                        </a>
+                    </li>
+                    <li role="presentation" class="dropdown-divider"></li>
+                    <li role="presentation">
+                        <a role="menuitem" data-action="toggle-workweek">
+                            <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-workweek" checked>
+                            <span class="checkbox-title"></span>Show weekends
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" data-action="toggle-start-day-1">
+                            <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-start-day-1">
+                            <span class="checkbox-title"></span>Start Week on Monday
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" data-action="toggle-narrow-weekend">
+                            <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-narrow-weekend">
+                            <span class="checkbox-title"></span>Narrower than weekdays
+                        </a>
+                    </li>
+                </ul>
+            </span>
+                                            <span id="menu-navi">
+                <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
+                <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
+                    <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
+                    <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+                </button>
+            </span>
+                                            <span id="renderRange" class="render-range"></span>
+                                        </div>
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments.html::footer"></footer>
+    </div>
+</div>
+<link href="/node_modules/tui-calendar/dist/tui-calendar.css" rel="stylesheet">
+<link href="/node_modules/tui-date-picker/dist/tui-date-picker.css" rel="stylesheet">
+<link href="/node_modules/tui-time-picker/dist/tui-time-picker.css" rel="stylesheet">
+<script th:replace="fragments.html::script"></script>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script src="/node_modules/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/node_modules/tui-time-picker/dist/tui-time-picker.js"></script>
+<script src="/node_modules/tui-date-picker/dist/tui-date-picker.js"></script>
+<script src="/node_modules/tui-calendar/dist/tui-calendar.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
+<script src="/schedule/schedules.js"></script>
+<script src="/schedule/calendars.js"></script>
+<script src="/schedule/main.js"></script>
+</body>
+</html>
