@@ -1,6 +1,4 @@
-package com.ddng.customerapi.coupon;
-
-import com.ddng.customerapi.customer.Customer;
+package com.ddng.saleapi.coupon;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,9 +11,8 @@ public class Coupon
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
+    @Column(name = "CUSTOMER_ID")
+    private Long customerId;
 
     @Column(name = "NAME")
     private String name;
