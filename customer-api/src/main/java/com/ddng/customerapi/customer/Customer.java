@@ -1,10 +1,18 @@
 package com.ddng.customerapi.customer;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CUSTOMER")
+@Builder @Getter
+@EqualsAndHashCode(of = {"id"})
+@AllArgsConstructor
 public class Customer
 {
     @Id @GeneratedValue

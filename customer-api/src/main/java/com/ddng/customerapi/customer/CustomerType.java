@@ -2,6 +2,9 @@ package com.ddng.customerapi.customer;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <h1>고객 품종 Enum 클래스</h1>
  *
@@ -106,5 +109,30 @@ public enum CustomerType
     CustomerType(String korName)
     {
         this.korName = korName;
+    }
+
+    public static CustomerType findEnumByKorNameEq(String korName)
+    {
+        for(CustomerType type : CustomerType.values())
+        {
+            if(type.getKorName().equals(korName))
+            {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public static List<CustomerType> findEnumByKorNameLike(String korName)
+    {
+        List<CustomerType> result = new ArrayList<>();
+        for(CustomerType type : CustomerType.values())
+        {
+            if(type.getKorName().trim().indexOf(korName) > -1)
+            {
+                result.add(type);
+            }
+        }
+        return result;
     }
 }
