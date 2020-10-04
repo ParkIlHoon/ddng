@@ -1,4 +1,4 @@
-package com.ddng.customerapi.modules.family;
+package com.ddng.customerapi.modules.family.domain;
 
 import javax.persistence.*;
 

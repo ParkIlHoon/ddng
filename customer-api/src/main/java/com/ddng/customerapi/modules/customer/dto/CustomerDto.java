@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 
 public class CustomerDto
 {
+    /**
+     * <h1>응답용 고객 DTO</h1>
+     */
     @Data @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -22,6 +25,9 @@ public class CustomerDto
         private String sexGb;
     }
 
+    /**
+     * <h1>POST 요청 처리용 고객 DTO</h1>
+     */
     @Data @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -35,6 +41,9 @@ public class CustomerDto
         private String sexGb;
     }
 
+    /**
+     * <h1>PUT 요청 처리용 고객 DTO</h1>
+     */
     @Data @Builder
     @AllArgsConstructor
     @NoArgsConstructor

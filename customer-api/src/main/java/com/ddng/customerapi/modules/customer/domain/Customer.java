@@ -5,6 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * <h1>고객 엔티티 클래스</h1>
+ *
+ * @version 1.0
+ */
 @Entity
 @Table(name = "CUSTOMER")
 @Builder @Getter @Setter

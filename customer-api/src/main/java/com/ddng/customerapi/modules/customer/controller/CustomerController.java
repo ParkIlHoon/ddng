@@ -47,10 +47,10 @@ public class CustomerController
     }
 
     /**
-     * 
-     * @param dto
+     * 고객을 신규 생성한다.
+     * @param dto 신규 생성할 고객 정보
      * @param errors
-     * @return
+     * @return 신규 생성된 고객 정보를 조회하는 URL 정보
      */
     @PostMapping
     public ResponseEntity postCustomer(@RequestBody @Valid CustomerDto.Post dto, Errors errors)
@@ -65,6 +65,11 @@ public class CustomerController
         return ResponseEntity.created(builder.toUri()).build();
     }
 
+    /**
+     * 특정 고객을 조회한다.
+     * @param id 조회할 고객의 아이디
+     * @return 아이디에 해당하는 고객
+     */
     @GetMapping("/{id}")
     public ResponseEntity getCustomer(@PathVariable("id") Long id)
     {
@@ -78,6 +83,13 @@ public class CustomerController
         return ResponseEntity.ok(customer.get());
     }
 
+    /**
+     * 고객 정보를 수정한다.
+     * @param id 수정할 고객의 아이디
+     * @param customerDto 수정할 고객 정보
+     * @param errors
+     * @return 수정된 고객 정보
+     */
     @PutMapping("/{id}")
     public ResponseEntity putCustomer(@PathVariable("id") Long id,
                                       @RequestBody @Valid CustomerDto.Put customerDto,
@@ -93,6 +105,11 @@ public class CustomerController
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 특정 고객을 제거한다.
+     * @param id 제거할 고객의 아이디
+     * @return 제거 성공 여부
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCustomer(@PathVariable("id") Long id)
     {
