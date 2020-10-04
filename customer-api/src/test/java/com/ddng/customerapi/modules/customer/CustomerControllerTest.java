@@ -4,7 +4,9 @@ import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.repository.CustomerRepository;
+import com.ddng.customerapi.modules.tag.domain.Tag;
 import com.ddng.customerapi.modules.tag.dto.TagDto;
+import com.ddng.customerapi.modules.tag.repository.TagRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,6 +36,7 @@ class CustomerControllerTest
 {
     @Autowired private WebApplicationContext ctx;
     @Autowired private CustomerRepository customerRepository;
+    @Autowired private TagRepository tagRepository;
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
@@ -252,6 +252,7 @@ class CustomerControllerTest
     }
 
     @Test
+    @DisplayName("고객 태그-추가")
     void addCustomerTag() throws Exception
     {
         // given
@@ -279,5 +280,38 @@ class CustomerControllerTest
         Optional<Customer> byId = customerRepository.findById(save.getId());
         assertThat(byId.get().getTags()).isNotEmpty();
         assertThat(byId.get().getTags().stream().filter(tag -> tag.getTitle().equals("입질 심함")).count()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("고객 태그-제거")
+    void removeCustomTag() throws Exception
+    {
+        // given
+        Tag tag = tagRepository.save(Tag.builder().title("곱슬").build());
+
+        Customer customer3 = Customer.builder()
+                                    .name("customer3")
+                                    .type(CustomerType.YORKSHIRE_TERRIER)
+                                    .telNo("01040668366")
+                                    .tags(new HashSet<>())
+                                    .build();
+        customer3.getTags().add(tag);
+        Customer save = customerRepository.save(customer3);
+
+        TagDto tagDto = new TagDto();
+        tagDto.setTitle("곱슬");
+
+        // when
+        mockMvc.perform(
+                        delete("/customer/{id}/tag", save.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(tagDto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        Optional<Customer> byId = customerRepository.findById(save.getId());
+        assertThat(byId.get().getTags()).isEmpty();
     }
 }
