@@ -3,6 +3,9 @@ package com.ddng.customerapi.modules.customer.controller;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.service.CustomerService;
 import com.ddng.customerapi.modules.customer.domain.Customer;
+import com.ddng.customerapi.modules.tag.domain.Tag;
+import com.ddng.customerapi.modules.tag.dto.TagDto;
+import com.ddng.customerapi.modules.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -30,6 +33,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class CustomerController
 {
     private final CustomerService customerService;
+    private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
     /**
@@ -114,13 +118,70 @@ public class CustomerController
     public ResponseEntity deleteCustomer(@PathVariable("id") Long id)
     {
         Optional<Customer> optional = customerService.findById(id);
-
         if(optional.isEmpty())
         {
             return ResponseEntity.notFound().build();
         }
 
         customerService.deleteCustomer(id);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 특정 고객에 태그를 추가한다.
+     * @param customerId 태그를 추가할 고객의 아이디
+     * @param dto 추가할 태그 정보
+     * @return
+     */
+    @PostMapping("/{id}/tag")
+    public ResponseEntity postCustomerTag (@PathVariable("id") Long customerId,
+                                           @RequestBody TagDto dto)
+    {
+        Optional<Customer> optionalCustomer = customerService.findById(customerId);
+        if(optionalCustomer.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Tag> optionalTag = tagRepository.findByTitle(dto.getTitle());
+        Tag tag;
+        if(optionalTag.isEmpty())
+        {
+            tag = tagRepository.save(Tag.builder().title(dto.getTitle()).build());
+        }
+        else
+        {
+            tag = optionalTag.get();
+        }
+
+        customerService.addTag(optionalCustomer.get(), tag);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 특정 고객의 태그를 제거한다.
+     * @param customerId 태그를 제거할 고객의 아이디
+     * @param dto 제거할 태그 정보
+     * @return
+     */
+    @DeleteMapping("{id}/tag")
+    public ResponseEntity deleteCustomerTag (@PathVariable("id") Long customerId,
+                                             @RequestBody TagDto dto)
+
+    {
+        Optional<Customer> optionalCustomer = customerService.findById(customerId);
+        if(optionalCustomer.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Tag> optionalTag = tagRepository.findByTitle(dto.getTitle());
+        if(optionalTag.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        customerService.removeTag(optionalCustomer.get(), optionalTag.get());
         return ResponseEntity.ok().build();
     }
 }

@@ -1,9 +1,11 @@
 package com.ddng.customerapi.modules.customer.dto;
 
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
+import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class CustomerDto
 {
@@ -23,6 +25,7 @@ public class CustomerDto
         private String bigo;
         private String profileImg;
         private String sexGb;
+        private Set<Tag> tags;
     }
 
     /**

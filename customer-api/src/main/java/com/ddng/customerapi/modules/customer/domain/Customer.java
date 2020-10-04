@@ -1,9 +1,12 @@
 package com.ddng.customerapi.modules.customer.domain;
 
+import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <h1>고객 엔티티 클래스</h1>
@@ -44,6 +47,9 @@ public class Customer
 
     @Column(name = "SEX_GB")
     private String sexGb;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Tag> tags = new HashSet<>();
 
     protected Customer() { }
 }

@@ -3,6 +3,7 @@ package com.ddng.customerapi.modules.customer.service;
 import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.repository.CustomerRepository;
+import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -82,5 +83,25 @@ public class CustomerService
     {
         Customer customer = this.findById(id).orElseThrow();
         customerRepository.delete(customer);
+    }
+
+    /**
+     * 고객 정보에 태그를 추가한다.
+     * @param customer 태그를 추가할 고객
+     * @param tag 추가할 태그
+     */
+    public void addTag(Customer customer, Tag tag)
+    {
+        customer.getTags().add(tag);
+    }
+
+    /**
+     * 고객 정보의 태그를 제거한다.
+     * @param customer 태그를 제거할 고객
+     * @param tag 제거할 태그
+     */
+    public void removeTag(Customer customer, Tag tag)
+    {
+        customer.getTags().remove(tag);
     }
 }

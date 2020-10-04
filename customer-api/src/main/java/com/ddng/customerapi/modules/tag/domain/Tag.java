@@ -1,23 +1,22 @@
 package com.ddng.customerapi.modules.tag.domain;
 
-import com.ddng.customerapi.modules.customer.domain.Customer;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CUSTOMER_TAG")
+@Table(name = "TAG")
+@Builder @Getter @Setter
+@EqualsAndHashCode(of = {"id"})
+@AllArgsConstructor
 public class Tag
 {
     @Id @GeneratedValue
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
-
-    @Column(name = "TAG_ID")
-    private Long tagId;
+    @Column(unique = true, nullable = false)
+    private String title;
 
     protected Tag() { }
 }

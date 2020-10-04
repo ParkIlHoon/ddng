@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import static com.ddng.customerapi.modules.customer.QCustomer.customer;
+import static com.ddng.customerapi.modules.customer.domain.QCustomer.customer;
+import static com.ddng.customerapi.modules.tag.domain.QTag.tag;
+
 
 public class CustomerRepositoryImpl extends QuerydslRepositorySupport implements CustomerCustomRepository
 {
@@ -27,8 +29,9 @@ public class CustomerRepositoryImpl extends QuerydslRepositorySupport implements
                                             customer.name.containsIgnoreCase(keyword)
                                                     .or(customer.type.in(CustomerType.findEnumByKorNameLike(keyword)))
                                                     .or(customer.telNo.containsIgnoreCase(keyword))
-                                            //TODO 태그 연동
+                                                    .or(customer.tags.any().title.containsIgnoreCase(keyword))
                                             )
+                                    .leftJoin(customer.tags, tag).fetchJoin()
                                     .distinct();
 
         JPQLQuery<Customer> pagination = getQuerydsl().applyPagination(pageable, query);

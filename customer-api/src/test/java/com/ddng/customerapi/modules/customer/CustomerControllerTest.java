@@ -4,6 +4,7 @@ import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.repository.CustomerRepository;
+import com.ddng.customerapi.modules.tag.dto.TagDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -202,6 +205,7 @@ class CustomerControllerTest
     }
 
     @Test
+    @DisplayName("고객 생성")
     void createCustomer() throws Exception
     {
         CustomerDto.Post dto = CustomerDto.Post.builder()
@@ -222,16 +226,58 @@ class CustomerControllerTest
     }
 
     @Test
+    @DisplayName("고객 삭제")
     void deleteCustomer() throws Exception
     {
+        // given
+        Customer customer3 = Customer.builder()
+                                        .name("customer3")
+                                        .type(CustomerType.YORKSHIRE_TERRIER)
+                                        .telNo("01040668366")
+                                    .build();
+
+        Customer save = customerRepository.save(customer3);
+
+        // when
         mockMvc.perform(
-                        delete("/customer/{id}", 1L)
+                        delete("/customer/{id}", save.getId())
                         )
                 .andDo(print())
                 .andExpect(status().isOk());
 
+        // then
         List<Customer> all = customerRepository.findAll();
-        assertThat(all.size()).isEqualTo(1);
-        assertThat(all.stream().filter(customer -> customer.getId().equals(1L)).count()).isEqualTo(0);
+        assertThat(all.size()).isEqualTo(2);
+        assertThat(all.stream().filter(customer -> customer.getId().equals(save.getId())).count()).isEqualTo(0);
+    }
+
+    @Test
+    void addCustomerTag() throws Exception
+    {
+        // given
+        Customer customer3 = Customer.builder()
+                                        .name("customer3")
+                                        .type(CustomerType.YORKSHIRE_TERRIER)
+                                        .telNo("01040668366")
+                                        .tags(new HashSet<>())
+                                    .build();
+        Customer save = customerRepository.save(customer3);
+
+        TagDto tagDto = new TagDto();
+        tagDto.setTitle("입질 심함");
+
+        // when
+        mockMvc.perform(
+                        post("/customer/{id}/tag", save.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(tagDto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        Optional<Customer> byId = customerRepository.findById(save.getId());
+        assertThat(byId.get().getTags()).isNotEmpty();
+        assertThat(byId.get().getTags().stream().filter(tag -> tag.getTitle().equals("입질 심함")).count()).isEqualTo(1);
     }
 }
