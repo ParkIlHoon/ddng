@@ -1,16 +1,13 @@
-package com.ddng.customerapi.customer;
+package com.ddng.customerapi.modules.customer.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CUSTOMER")
-@Builder @Getter
+@Builder @Getter @Setter
 @EqualsAndHashCode(of = {"id"})
 @AllArgsConstructor
 public class Customer

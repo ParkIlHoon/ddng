@@ -1,7 +1,7 @@
-package com.ddng.customerapi.adopt;
+package com.ddng.customerapi.modules.adopt;
 
-import com.ddng.customerapi.customer.Customer;
-import com.ddng.customerapi.family.Family;
+import com.ddng.customerapi.modules.customer.domain.Customer;
+import com.ddng.customerapi.modules.family.Family;
 
 import javax.persistence.*;
 

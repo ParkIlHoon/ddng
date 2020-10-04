@@ -1,4 +1,4 @@
-package com.ddng.customerapi.customer;
+package com.ddng.customerapi.modules.customer.domain;
 
 import lombok.Getter;
 

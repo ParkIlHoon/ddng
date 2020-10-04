@@ -1,6 +1,8 @@
-package com.ddng.customerapi.customer;
+package com.ddng.customerapi.modules.customer.repository;
 
 
+import com.ddng.customerapi.modules.customer.domain.CustomerType;
+import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
@@ -8,7 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import static com.ddng.customerapi.customer.QCustomer.customer;
+import static com.ddng.customerapi.modules.customer.QCustomer.customer;
 
 public class CustomerRepositoryImpl extends QuerydslRepositorySupport implements CustomerCustomRepository
 {

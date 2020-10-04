@@ -1,6 +1,6 @@
-package com.ddng.customerapi.tag;
+package com.ddng.customerapi.modules.tag;
 
-import com.ddng.customerapi.customer.Customer;
+import com.ddng.customerapi.modules.customer.domain.Customer;
 
 import javax.persistence.*;
 
