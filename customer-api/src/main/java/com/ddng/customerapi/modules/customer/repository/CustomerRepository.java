@@ -10,6 +10,6 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface CustomerRepository extends JpaRepository<Customer, Long>, CustomerCustomRepository
 {
-    @EntityGraph(attributePaths = {"tags"})
+    @EntityGraph(attributePaths = {"tags", "family"})
     Optional<Customer> findById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.ddng.customerapi.modules.customer.domain;
 
+import com.ddng.customerapi.modules.family.domain.Family;
 import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.*;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @Table(name = "CUSTOMER")
 @Builder @Getter @Setter
 @EqualsAndHashCode(of = {"id"})
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class Customer
 {
     @Id @GeneratedValue
@@ -51,5 +52,7 @@ public class Customer
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Tag> tags = new HashSet<>();
 
-    protected Customer() { }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FAMILY_ID")
+    private Family family;
 }

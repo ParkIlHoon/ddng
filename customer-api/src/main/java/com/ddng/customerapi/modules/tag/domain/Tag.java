@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "TAG")
 @Builder @Getter @Setter
 @EqualsAndHashCode(of = {"id"})
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class Tag
 {
     @Id @GeneratedValue
@@ -17,6 +17,4 @@ public class Tag
 
     @Column(unique = true, nullable = false)
     private String title;
-
-    protected Tag() { }
 }

@@ -1,4 +1,4 @@
-package com.ddng.customerapi.modules.customer;
+package com.ddng.customerapi.modules.customer.controller;
 
 import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
