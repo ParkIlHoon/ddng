@@ -48,7 +48,7 @@
     <link href="/node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css" rel="stylesheet">
 </head>
 
-<div th:fragment="leftMenu" class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+<div th:fragment="leftMenu" class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show c-sidebar-minimized" id="sidebar">
     <div class="c-sidebar-brand d-lg-down-none">
         <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo" color="#ffffff" fill="currentColor">
             <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-paw"></use>
@@ -64,20 +64,12 @@
                 <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-speedometer"></use>
             </svg> 대시보드<span class="badge badge-info">NEW</span></a>
         </li>
-        <li class="c-sidebar-nav-title">설정</li>
-        <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="/settings">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-user"></use>
-                </svg> 계정 설정
+                    <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>
+                </svg> 설정
             </a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link" href="base/breadcrumb.html">
-                        <span class="c-sidebar-nav-icon"></span> 알림 설정
-                    </a>
-                </li>
-            </ul>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="/sale">
@@ -215,9 +207,9 @@
         </svg>
     </button>
     <ul class="c-header-nav d-md-down-none">
-        <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="#">Dashboard</a></li>
-        <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="#">Users</a></li>
-        <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="#">Settings</a></li>
+        <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="/">홈</a></li>
+<!--        <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="#">Users</a></li>-->
+<!--        <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="#">Settings</a></li>-->
     </ul>
     <ul class="c-header-nav ml-auto mr-4">
         <li class="c-header-nav-item d-md-down-none mx-2"><a class="c-header-nav-link" href="#">
@@ -285,9 +277,9 @@
 
 <footer th:fragment="footer" class="c-footer">
     <div>
-        <a href="https://coreui.io">CoreUI</a> &copy; 2020 creativeLabs.
+        <a href="http://1hoon.iptime.org">똥강아지</a> &copy; 2020 똥강아지
     </div>
-    <div class="ml-auto">Powered by&nbsp;<a href="https://coreui.io/">CoreUI</a></div>
+    <div class="ml-auto">Created by&nbsp;<a href="https://github.com/ParkIlHoon">박일훈</a></div>
 </footer>
 
 <div th:fragment="script">
@@ -298,8 +290,8 @@
     <!--<![endif]-->
     <!-- Plugins and scripts required by this view-->
 <!--    <script src="/node_modules/@coreui/chartjs/dist/js/coreui-chartjs.bundle.js"></script>-->
-<!--    <script src="/node_modules/@coreui/utils/dist/coreui-utils.js"></script>-->
-<!--    <script src="/node_modules/jquery/dist/jquery.js"></script>-->
+    <script src="/node_modules/@coreui/utils/dist/coreui-utils.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
 <!--    <script src="/js/main.js"></script>-->
 </div>
 

@@ -5,7 +5,7 @@
 <body class="c-app">
 <div th:replace="fragments.html::leftMenu"></div>
 <div class="c-wrapper c-fixed-components">
-    <header th:replace="fragments.html::header ('결제 화면', '결제 화면')"></header>
+    <header th:replace="fragments.html::header ('설정', '설정')"></header>
     <div class="c-body">
         <main class="c-main">
             <div class="container-fluid">
@@ -98,111 +98,6 @@
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
-<link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
 <script th:replace="fragments.html::script"></script>
-<script src="/node_modules/jquery/dist/jquery.js"></script>
-<script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
-<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-<script type="application/javascript">
-    $(function(){
-        var sampleData = [
-            {"no" : "1", "name" : "개껌", "count" : "3", "amount" : "4,500"},
-            {"no" : "2", "name" : "귀 청소제", "count" : "1", "amount" : "2,800"},
-            {"no" : "3", "name" : "옷", "count" : "1", "amount" : "3,000"},
-            {"no" : "4", "name" : "미용", "count" : "1", "amount" : "50,000"}
-        ];
-
-        tui.Grid.applyTheme('clean');
-
-        const grid = new tui.Grid({
-            el: document.getElementById('grid'),
-            data : sampleData,
-            scrollX: false,
-            scrollY: false,
-            selectionUnit : "row",
-            columns: [
-                {
-                    header: '번호',
-                    name: 'no'
-                },
-                {
-                    header: '상품명',
-                    name: 'name'
-                },
-                {
-                    header: '개수',
-                    name: 'count'
-                },
-                {
-                    header: '금액',
-                    name: 'amount'
-                }
-            ]
-        });
-
-        const hotelGrid = new tui.Grid({
-            el: document.getElementById('hotel-grid'),
-            data : [
-                {"name" : "아가", "type" : "말티즈", "telNo" : "010-1234-5678"},
-                {"name" : "꿀멍이", "type" : "푸들", "telNo" : "010-1234-5678"},
-                {"name" : "곰순이", "type" : "말티즈", "telNo" : "010-1234-5678"}
-            ],
-            scrollX: false,
-            scrollY: false,
-            selectionUnit : "row",
-            columns: [
-                {
-                    header: '고객명',
-                    name: 'name'
-                },
-                {
-                    header: '품종',
-                    name: 'type'
-                },
-                {
-                    header: '전화번호',
-                    name: 'telNo'
-                }
-            ]
-        });
-
-        const historyGrid = new tui.Grid({
-            el: document.getElementById('history-grid'),
-            data : [
-                {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
-                {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
-                {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
-                {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
-                {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
-                {"date" : "2020-07-11", "type" : "호텔", "amount" : "70,000"}
-            ],
-            scrollX: false,
-            scrollY: true,
-            selectionUnit : "row",
-            bodyHeight: 300,
-            columns: [
-                {
-                    header: '날짜',
-                    name: 'date'
-                },
-                {
-                    header: '구분',
-                    name: 'type'
-                },
-                {
-                    header: '금액',
-                    name: 'amount'
-                }
-            ]
-        });
-    });
-</script>
 </body>
 </html>

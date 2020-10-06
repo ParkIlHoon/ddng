@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * <h1>가족 관련 요청 처리 API 컨트롤러</h1>
+ *
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/family")
 @RequiredArgsConstructor
@@ -19,12 +24,17 @@ public class FamilyController
 {
     private final FamilyService familyService;
 
+    /**
+     * 가족 목록을 검색한다.
+     * @param keyword 검색할 키워드
+     * @param pageable 페이지 처리
+     * @return 키워드에 해당하는 가족 목록
+     */
     @GetMapping
     public ResponseEntity getFamilyList (String keyword,
                                          @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
         Page<Family> familyList = familyService.findByKeyword(keyword, pageable);
-
         return ResponseEntity.ok(familyList.getContent());
     }
 }

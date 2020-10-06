@@ -194,4 +194,30 @@ class FamilyControllerTest
         assertThat(objectList.size()).isEqualTo(1);
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("치우(이)네 가족");
     }
+
+    @Test
+    @DisplayName("가족 검색-구성원 태그")
+    void getFamilyList_memberTag() throws Exception
+    {
+        // given
+        String keyword = CustomerType.SHIH_TZU.getKorName();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/family")
+                        .param("keyword", keyword)
+                        .param("page", "0")
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        MockHttpServletResponse response = actions.andReturn().getResponse();
+        String contentAsString = response.getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        List<Object> objectList = parser.parseList(contentAsString);
+
+        assertThat(objectList.size()).isEqualTo(1);
+        assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("치우(이)네 가족");
+    }
 }
