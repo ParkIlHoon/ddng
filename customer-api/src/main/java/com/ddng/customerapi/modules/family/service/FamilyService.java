@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -18,5 +20,10 @@ public class FamilyService
     public Page<Family> findByKeyword(String keyword, Pageable pageable)
     {
         return familyRepository.findByKeyword(keyword, pageable);
+    }
+
+    public Optional<Family> findById(Long id)
+    {
+        return familyRepository.findById(id);
     }
 }

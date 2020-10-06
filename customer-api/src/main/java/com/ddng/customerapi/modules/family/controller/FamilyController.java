@@ -9,8 +9,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 /**
  * <h1>가족 관련 요청 처리 API 컨트롤러</h1>
@@ -36,5 +39,18 @@ public class FamilyController
     {
         Page<Family> familyList = familyService.findByKeyword(keyword, pageable);
         return ResponseEntity.ok(familyList.getContent());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getFamily (@PathVariable("id") Long id)
+    {
+        Optional<Family> optionalFamily = familyService.findById(id);
+
+        if (optionalFamily.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(optionalFamily.get());
     }
 }
