@@ -16,12 +16,12 @@
                                     <div class="card-header">고객 목록</div>
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label class="col-form-label" for="appendedInputButton">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
+                                            <label class="col-form-label" for="searchKeyword">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
                                             <div class="controls">
                                                 <div class="input-group">
-                                                    <input class="form-control" id="appendedInputButton" size="16" type="text">
+                                                    <input class="form-control" id="searchKeyword" size="16" type="text">
                                                     <span class="input-group-append">
-                                                        <button class="btn btn-secondary" type="button">검색</button>
+                                                        <button id="searchButton" class="btn btn-secondary" type="button">검색</button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -161,18 +161,8 @@
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript">
         $(function(){
-            var sampleData = [
-                {"name" : "치우", "type" : "말티즈", "telNo" : "010-9929-8366"},
-                {"name" : "비니", "type" : "요크셔테리어", "telNo" : "010-4066-8366"},
-                {"name" : "볼트", "type" : "말티즈", "telNo" : "010-4066-8366"},
-                {"name" : "라니", "type" : "시츄", "telNo" : "010-9929-8366"}
-            ];
-
-            tui.Grid.applyTheme('clean');
-
             const grid = new tui.Grid({
                 el: document.getElementById('grid'),
-                data : sampleData,
                 scrollX: false,
                 scrollY: false,
                 selectionUnit : "row",
@@ -191,6 +181,37 @@
                     }
                 ]
             });
+
+            tui.Grid.applyTheme('clean');
+
+            $("#searchButton").on("click", function(e){
+                var searchKeyword = $("#searchKeyword").val();
+
+                if (searchKeyword == "")
+                {
+                    alert("검색어를 입력해주세요.");
+                    return;
+                }
+
+                $.ajax({
+                    url : "http://localhost:8090/customer-api/customer",
+                    type : "GET",
+                    data : {"keyword" : searchKeyword}
+                }).done((data, textStatus, jqXHR) => {
+                    grid.resetData(data);
+                })
+            });
+
+            var sampleData = [
+                {"name" : "치우", "type" : "말티즈", "telNo" : "010-9929-8366"},
+                {"name" : "비니", "type" : "요크셔테리어", "telNo" : "010-4066-8366"},
+                {"name" : "볼트", "type" : "말티즈", "telNo" : "010-4066-8366"},
+                {"name" : "라니", "type" : "시츄", "telNo" : "010-9929-8366"}
+            ];
+
+
+
+
 
             function tagRequest(url, tagTitle)
             {

@@ -12,7 +12,7 @@ public class CustomerController
     @GetMapping("/search")
     public String searchCustomerForm (Model model)
     {
-        return "customer/index";
+        return "customer/main";
     }
 
     @GetMapping("/new")
