@@ -54,6 +54,12 @@ public class Family
         customer.setFamily(null);
     }
 
+    public void changeName ()
+    {
+        String customerName = this.customers.get(0).getName();
+        this.name = customerName + "(이)네 가족";
+    }
+
     protected Family ()
     {
 

@@ -4,7 +4,9 @@ import com.ddng.customerapi.modules.customer.CustomerFactory;
 import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.family.domain.Family;
+import com.ddng.customerapi.modules.family.dto.FamilyDto;
 import com.ddng.customerapi.modules.family.repository.FamilyRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,6 +25,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +40,7 @@ class FamilyControllerTest
 {
     @Autowired private WebApplicationContext ctx;
     @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
     @Autowired private CustomerFactory customerFactory;
     @Autowired private FamilyRepository familyRepository;
 
@@ -195,4 +200,102 @@ class FamilyControllerTest
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("치우(이)네 가족");
     }
 
+    @Test
+    @DisplayName("가족 생성")
+    void createFamily() throws Exception
+    {
+        // given
+        Customer customer = customerFactory.createCustomer();
+        FamilyDto.Post dto = FamilyDto.Post.builder()
+                                                .customerId(customer.getId())
+                                            .build();
+
+        // when
+        mockMvc.perform(
+                        post("/family")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        // then
+        List<Family> all = familyRepository.findAll();
+
+        assertThat(all.size()).isEqualTo(3);
+        assertThat(all.get(2).getName()).isEqualTo(customer.getName() + "(이)네 가족");
+        assertThat(all.get(2).getCustomers()).isNotEmpty();
+        assertThat(all.get(2).getCustomers().get(0)).isEqualTo(customer);
+    }
+
+    @Test
+    @DisplayName("가족 구성원 추가")
+    void addMember() throws Exception
+    {
+        // given
+        Customer customer = customerFactory.createCustomer();
+        FamilyDto.Post dto = FamilyDto.Post.builder()
+                                                .customerId(customer.getId())
+                                            .build();
+
+        Family family = familyRepository.findAll().get(1);
+
+        // when
+        mockMvc.perform(
+                        post("/family/{id}/member", family.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        assertThat(family.getCustomers()).contains(customer);
+    }
+
+    @Test
+    @DisplayName("가족 구성원 제거")
+    void removeMember() throws Exception
+    {
+        // given
+        Family family = familyRepository.findAll().get(1);
+        Customer customer = family.getCustomers().get(0);
+        FamilyDto.Delete dto = FamilyDto.Delete.builder()
+                .customerId(customer.getId())
+                .build();
+
+        // when
+        mockMvc.perform(
+                        delete("/family/{id}/member", family.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        assertThat(customer).isNotIn(family);
+        assertThat(family.getName()).isNotEqualTo(customer.getName() + "(이)네 가족");
+    }
+
+    @Test
+    @DisplayName("가족 제거")
+    void deleteFamily() throws Exception
+    {
+        // given
+        Family family = familyRepository.findAll().get(1);
+        Customer customer = family.getCustomers().get(0);
+
+        // when
+        mockMvc.perform(
+                        delete("/family/{id}", family.getId())
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        Optional<Family> byId = familyRepository.findById(family.getId());
+        assertThat(byId).isEmpty();
+        assertThat(customer.getFamily()).isNull();
+    }
 }

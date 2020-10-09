@@ -14,4 +14,12 @@ public class FamilyDto
     {
         private Long customerId;
     }
+
+    @Data @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Delete
+    {
+        private Long customerId;
+    }
 }
