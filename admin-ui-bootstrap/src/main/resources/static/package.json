@@ -81,8 +81,10 @@
     "@coreui/icons": "^1.0.1",
     "@coreui/utils": "^1.2.4",
     "@popperjs/core": "^2.4.0",
-    "@yaireo/tagify": "^3.18.1",
+    "@yaireo/tagify": "^3.20.0",
     "chart.js": "^2.9.3",
+    "jquery": "^3.5.1",
+    "moment": "^2.29.1",
     "perfect-scrollbar": "1.5.0",
     "tui-calendar": "^1.12.14",
     "tui-grid": "^4.15.1"

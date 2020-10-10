@@ -61,15 +61,14 @@
                                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                                             <div class="form-group row">
                                                 <div class="col-md-3">
-                                                    <!-- Avatar -->
-                                                    <img class="img-fluid float-left rounded img-thumbnail" width="200" height="200"
-                                                        src="http://1hoon.iptime.org/images/beauty/work-1.jpg"/>
+                                                    <img id="profile-img" class="img-fluid float-left rounded img-thumbnail"
+                                                         width="200" height="200"/>
                                                 </div>
                                                 <div class="col-md-9">
                                                     <div class="form-group row">
                                                         <label class="col-md-3 col-form-label">고객 번호</label>
                                                         <div class="col-md-9">
-                                                            <p class="form-control-static">1</p>
+                                                            <p id="customer-id" class="form-control-static">1</p>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -116,7 +115,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label" for="tags-input">태그</label>
                                                 <div class="col-md-9">
-                                                    <div id="whitelist" hidden>[{"value":"cat"}, {"value":"dog"}]</div>
+                                                    <div id="whitelist" hidden></div>
                                                     <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp" />
                                                 </div>
                                             </div>
@@ -146,7 +145,7 @@
     <link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <style>
-        .tagify__input{
+        .tagify_input{
             margin: 0;
         }
         .tagify{
@@ -156,11 +155,69 @@
         }
     </style>
     <script th:replace="fragments.html::script"></script>
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
     <script type="application/javascript">
         $(function(){
+            var g_tagify;
+
+            $.ajax({
+                url : "http://localhost:8090/customer-api/tag",
+                type : "GET",
+            }).done((data, textStatus, jqXHR) => {
+                var whiteList = [];
+                data.forEach(function(item){
+                    whiteList.push(item.title);
+                });
+
+                var tagInput = document.querySelector("#tags-input");
+                g_tagify = new Tagify(tagInput, {
+                    pattern: /^.{0,20}$/,
+                    whitelist : whiteList,
+                    dropdown : {
+                        position: "input",
+                        enabled: 1, // suggest tags after a single character input
+                        fuzzySearch: false
+                    }, // map tags
+                    backspace : false
+                });
+
+                g_tagify.on("add", onAdd);
+                g_tagify.on("remove", onRemove);
+                g_tagify.DOM.input.classList.add('form-control');
+                g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
+            });
+
+            $("#searchButton").on("click", function(e){
+                searchCustomerList();
+            });
+            $("#searchKeyword").on("keyup", function(e){
+                if (e.keyCode == 13)
+                {
+                    searchCustomerList();
+                }
+            });
+
+            function searchCustomerList ()
+            {
+                var searchKeyword = $("#searchKeyword").val();
+
+                if (searchKeyword == "")
+                {
+                    alert("검색어를 입력해주세요.");
+                    return;
+                }
+
+                $.ajax({
+                    url : "http://localhost:8090/customer-api/customer",
+                    type : "GET",
+                    data : {"keyword" : searchKeyword}
+                }).done((data, textStatus, jqXHR) => {
+                    grid.resetData(data);
+                });
+            }
+
             const grid = new tui.Grid({
                 el: document.getElementById('grid'),
                 scrollX: false,
@@ -182,36 +239,43 @@
                 ]
             });
 
-            tui.Grid.applyTheme('clean');
-
-            $("#searchButton").on("click", function(e){
-                var searchKeyword = $("#searchKeyword").val();
-
-                if (searchKeyword == "")
+            grid.on("click", function(e){
+                if (e.rowKey == undefined || e.rowKey == null)
                 {
-                    alert("검색어를 입력해주세요.");
                     return;
                 }
 
+                var clickData = grid.getData()[e.rowKey];
+
                 $.ajax({
-                    url : "http://localhost:8090/customer-api/customer",
-                    type : "GET",
-                    data : {"keyword" : searchKeyword}
+                    url : "http://localhost:8090/customer-api/customer/" + clickData.id,
+                    type : "GET"
                 }).done((data, textStatus, jqXHR) => {
-                    grid.resetData(data);
-                })
+                    $("#profile-img").val(data.profileImg);
+                    $("#customer-id").val(data.id);
+                    $("#name-input").val(data.name);
+                    $("#type-input").val(data.type);
+                    $("#telNo-input").val(data.telNo);
+                    $("#date-input").val(moment(data.joinDate, "YYYYMMDD").format("YYYY-MM-DD"));
+                    $("#bigo-input").val(data.bigo);
+
+                    var value = "";
+                    for (var idx = 0; idx < data.tags.length; idx++)
+                    {
+                        if(value != "") value += ",";
+                        value += data.tags[idx].title;
+                    }
+                    $("#tags-input").val("");
+                    $("#tags-input").val(value);
+
+                    if(g_tagify != null)
+                    {
+                        g_tagify.loadOriginalValues(value);
+                    }
+                });
             });
 
-            var sampleData = [
-                {"name" : "치우", "type" : "말티즈", "telNo" : "010-9929-8366"},
-                {"name" : "비니", "type" : "요크셔테리어", "telNo" : "010-4066-8366"},
-                {"name" : "볼트", "type" : "말티즈", "telNo" : "010-4066-8366"},
-                {"name" : "라니", "type" : "시츄", "telNo" : "010-9929-8366"}
-            ];
-
-
-
-
+            tui.Grid.applyTheme('clean');
 
             function tagRequest(url, tagTitle)
             {
@@ -240,18 +304,8 @@
                 tagRequest("/remove", e.detail.data.value);
             }
 
-            var tagInput = document.querySelector("#tags-input");
-            var tagify = new Tagify(tagInput, {
-                pattern: /^.{0,20}$/,
-                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
-                dropdown : {
-                    enabled: 1, // suggest tags after a single character input
-                } // map tags
-            });
-            tagify.on("add", onAdd);
-            tagify.on("remove", onRemove);
-            tagify.DOM.input.classList.add('form-control');
-            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+
+
 
             const historyGrid = new tui.Grid({
                 el: document.getElementById('history-grid'),
