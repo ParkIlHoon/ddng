@@ -252,7 +252,7 @@
                     type : "GET"
                 }).done((data, textStatus, jqXHR) => {
                     $("#profile-img").val(data.profileImg);
-                    $("#customer-id").val(data.id);
+                    $("#customer-id").text(data.id);
                     $("#name-input").val(data.name);
                     $("#type-input").val(data.type);
                     $("#telNo-input").val(data.telNo);
@@ -277,31 +277,31 @@
 
             tui.Grid.applyTheme('clean');
 
-            function tagRequest(url, tagTitle)
+            function tagRequest(method, title)
             {
-                // $.ajax({
-                //     dataType : "json",
-                //     autocomplete : {
-                //         enable : true,
-                //         rightKey : true
-                //     },
-                //     contentType : "application/json; charset=utf-8",
-                //     method : "POST",
-                //     url : "/settings/tags" + url,
-                //     data : JSON.stringify({"tagTitle" : tagTitle})
-                // }).done(function(data, status){
-                //     console.log("${data} and status is ${status}");
-                // });
+                $.ajax({
+                    dataType : "json",
+                    autocomplete : {
+                        enable : true,
+                        rightKey : true
+                    },
+                    contentType : "application/json; charset=utf-8",
+                    method : method,
+                    url : "http://localhost:8090/customer-api/customer/" + $("#customer-id").text() + "/tag",
+                    data : JSON.stringify({"title" : title})
+                }).done(function(data, status){
+                    console.log("${data} and status is ${status}");
+                });
             }
 
             function onAdd(e)
             {
-                tagRequest("/add", e.detail.data.value);
+                tagRequest("POST", e.detail.data.value);
             }
 
             function onRemove(e)
             {
-                tagRequest("/remove", e.detail.data.value);
+                tagRequest("DELETE", e.detail.data.value);
             }
 
 
