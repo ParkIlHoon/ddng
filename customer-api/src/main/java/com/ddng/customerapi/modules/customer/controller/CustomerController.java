@@ -1,5 +1,6 @@
 package com.ddng.customerapi.modules.customer.controller;
 
+import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.service.CustomerService;
 import com.ddng.customerapi.modules.customer.domain.Customer;
@@ -18,7 +19,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -183,5 +184,22 @@ public class CustomerController
 
         customerService.removeTag(optionalCustomer.get(), optionalTag.get());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/type")
+    public ResponseEntity getCustomerType ()
+    {
+        List returnList = new ArrayList();
+        CustomerType[] types = CustomerType.values();
+        for (CustomerType type : types)
+        {
+            HashMap row = new HashMap();
+            row.put("id", type.name());
+            row.put("text", type.getKorName());
+
+            returnList.add(row);
+        }
+
+        return ResponseEntity.ok(returnList);
     }
 }
