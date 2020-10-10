@@ -88,9 +88,11 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="type-input">종류</label>
+                                                <label class="col-md-3 col-form-label" for="type-select">종류</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" id="type-input" type="text" name="type" placeholder="종류를 입력하세요(필수)">
+                                                    <select class="form-control js-example-placeholder-single" id="type-select" name="type">
+                                                        <option></option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -103,7 +105,7 @@
                                                             </svg>
                                                         </span>
                                                     </span>
-                                                    <input class="form-control" id="telNo-input" name="telNo" type="tel" placeholder="전화번호를 입력하세요(필수)">
+                                                    <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -144,6 +146,7 @@
     </div>
     <link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .tagify_input{
             margin: 0;
@@ -158,6 +161,7 @@
     <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script type="application/javascript">
         $(function(){
             var g_tagify;
@@ -187,6 +191,12 @@
                 g_tagify.on("remove", onRemove);
                 g_tagify.DOM.input.classList.add('form-control');
                 g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
+            });
+
+            $("#type-select").select2({
+                placeholder: "종류를 선택해주세요.",
+                allowClear: true,
+                data : [{id:"MALTESE", text:"말티즈"}, {id:"MIX", text:"믹스"}]
             });
 
             $("#searchButton").on("click", function(e){
@@ -254,7 +264,8 @@
                     $("#profile-img").val(data.profileImg);
                     $("#customer-id").text(data.id);
                     $("#name-input").val(data.name);
-                    $("#type-input").val(data.type);
+                    $("#type-select").val(data.type);
+                    $("#type-select").trigger('change');;
                     $("#telNo-input").val(data.telNo);
                     $("#date-input").val(moment(data.joinDate, "YYYYMMDD").format("YYYY-MM-DD"));
                     $("#bigo-input").val(data.bigo);
