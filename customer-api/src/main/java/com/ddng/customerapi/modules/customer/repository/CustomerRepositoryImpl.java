@@ -3,14 +3,17 @@ package com.ddng.customerapi.modules.customer.repository;
 
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.customer.domain.Customer;
+import com.ddng.customerapi.modules.family.domain.QFamily;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import static com.ddng.customerapi.modules.customer.domain.QCustomer.customer;
+import static com.ddng.customerapi.modules.family.domain.QFamily.family;
 import static com.ddng.customerapi.modules.tag.domain.QTag.tag;
 
 
@@ -32,6 +35,7 @@ public class CustomerRepositoryImpl extends QuerydslRepositorySupport implements
                                                     .or(customer.tags.any().title.containsIgnoreCase(keyword))
                                             )
                                     .leftJoin(customer.tags, tag).fetchJoin()
+                                    .leftJoin(customer.family, family).fetchJoin()
                                     .distinct();
 
         JPQLQuery<Customer> pagination = getQuerydsl().applyPagination(pageable, query);

@@ -7,12 +7,15 @@ import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <h1>고객 서비스 클래스</h1>
@@ -33,9 +36,14 @@ public class CustomerService
      * @param pageable 페이징 정보
      * @return 키워드에 해당하는 고객 목록
      */
-    public Page<Customer> findByKeyword(String keyword, Pageable pageable)
+    public Page<CustomerDto.Response> findByKeyword(String keyword, Pageable pageable)
     {
-        return customerRepository.searchByKeyword(keyword, pageable);
+        Page<Customer> customers = customerRepository.searchByKeyword(keyword, pageable);
+
+        List<CustomerDto.Response> collect = customers.getContent().stream()
+                                                                    .map(customer -> new CustomerDto.Response(customer))
+                                                                    .collect(Collectors.toList());
+        return new PageImpl<>(collect, pageable, customers.getTotalElements());
     }
 
     /**

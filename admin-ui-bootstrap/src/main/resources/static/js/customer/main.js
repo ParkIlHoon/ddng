@@ -62,7 +62,7 @@ $(function(){
             },
             {
                 header: '종류',
-                name: 'type'
+                name: 'typeName'
             },
             {
                 header: '전화번호',
@@ -71,6 +71,13 @@ $(function(){
         ]
     });
     tui.Grid.applyTheme('clean');
+
+    const Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
+        totalItems : 0,
+        itemsPerPage : 10,
+        visiblePages : 5,
+        centerAlign : true
+    });
 
     cropper = '';
     let $confirmBtn = $("#confirm-button");
@@ -152,6 +159,7 @@ $(function(){
             $("#profileImage").val(data.profileImg);
             $("#customer-id").text(data.id);
             $("#name-input").val(data.name);
+            $("#family-p").text(data.familyString);
             $("#type-select").val(data.type);
             $("#type-select").trigger('change');;
             $("#telNo-input").val(data.telNo);
@@ -176,6 +184,11 @@ $(function(){
             historyGrid.refreshLayout();
         });
     });
+    Pagination.on("afterMove", function (e){
+        var currentPage = e.page;
+        moveCustomerListPage(currentPage);
+    });
+
     $("#submit-button").on("click", function(e){
         var data = $("#customer-form").serializeObject();
         $.ajax({
@@ -296,9 +309,26 @@ $(function(){
             type : "GET",
             data : {"keyword" : searchKeyword}
         }).done((data, textStatus, jqXHR) => {
-            grid.resetData(data);
+            grid.resetData(data.content);
+
+            Pagination.reset(data.totalElements);
+            // Pagination.movePageTo(movePage);
         });
     }
+
+    function moveCustomerListPage (movePage)
+    {
+        var searchKeyword = $("#searchKeyword").val();
+        $.ajax({
+            url : "http://localhost:8090/customer-api/customer",
+            type : "GET",
+            data : {"keyword" : searchKeyword, "page" : movePage - 1}
+        }).done((data, textStatus, jqXHR) => {
+            grid.resetData(data.content);
+        });
+
+    }
+
     function onAdd(e)
     {
         tagRequest("POST", e.detail.data.value);

@@ -30,25 +30,7 @@
                                             <div id="grid"></div>
                                         </div>
                                         <div class="form-group">
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination justify-content-center">
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="#" aria-label="Previous">
-                                                            <span aria-hidden="true">«</span>
-                                                            <span class="sr-only">Previous</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="#" aria-label="Next">
-                                                            <span aria-hidden="true">»</span>
-                                                            <span class="sr-only">Next</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
+                                            <div id="tui-pagination-container" class="tui-pagination"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -93,9 +75,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-md-3 col-form-label">가족</label>
                                                         <div class="col-md-9">
-                                                            <p class="form-control-static">치우(말티즈/010-9929-8366)</p>
-                                                            <p class="form-control-static">볼트(말티즈/010-9929-8366)</p>
-                                                            <p class="form-control-static">라니(시츄/010-9929-8366)</p>
+                                                            <p id="family-p" class="form-control-static" style="white-space: pre-line"></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,6 +141,7 @@
         </div>
     </div>
     <link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
+    <link href="/node_modules/tui-pagination/dist/tui-pagination.css" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link  href="/node_modules/cropperjs/dist/cropper.min.css" rel="stylesheet">
@@ -176,6 +157,7 @@
     </style>
     <script th:replace="fragments.html::script"></script>
     <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
+    <script src="/node_modules/tui-pagination/dist/tui-pagination.js"></script>
     <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>

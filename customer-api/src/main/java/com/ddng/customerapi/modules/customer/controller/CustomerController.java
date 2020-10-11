@@ -47,8 +47,8 @@ public class CustomerController
     public ResponseEntity getCustomerList(String keyword,
                                           @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
-        Page<Customer> findByKeyword = customerService.findByKeyword(keyword, pageable);
-        return ResponseEntity.ok(findByKeyword.getContent());
+        Page<CustomerDto.Response> findByKeyword = customerService.findByKeyword(keyword, pageable);
+        return ResponseEntity.ok(findByKeyword);
     }
 
     /**
@@ -85,7 +85,9 @@ public class CustomerController
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(customer.get());
+        CustomerDto.Response response = new CustomerDto.Response(customer.get());
+        response.createFamilyString();
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -106,7 +108,8 @@ public class CustomerController
         }
 
         Customer updated = customerService.updateCustomerInfo(id, customerDto);
-        CustomerDto.Response response = modelMapper.map(updated, CustomerDto.Response.class);
+        CustomerDto.Response response = new CustomerDto.Response(updated);
+        response.createFamilyString();
         return ResponseEntity.ok(response);
     }
 
