@@ -303,6 +303,7 @@ $(function(){
             alert("검색어를 입력해주세요.");
             return;
         }
+        $("#searchKeywordSaved").val(searchKeyword);
 
         $.ajax({
             url : "http://localhost:8090/customer-api/customer",
@@ -318,7 +319,7 @@ $(function(){
 
     function moveCustomerListPage (movePage)
     {
-        var searchKeyword = $("#searchKeyword").val();
+        var searchKeyword = $("#searchKeywordSaved").val();
         $.ajax({
             url : "http://localhost:8090/customer-api/customer",
             type : "GET",
@@ -326,7 +327,6 @@ $(function(){
         }).done((data, textStatus, jqXHR) => {
             grid.resetData(data.content);
         });
-
     }
 
     function onAdd(e)
