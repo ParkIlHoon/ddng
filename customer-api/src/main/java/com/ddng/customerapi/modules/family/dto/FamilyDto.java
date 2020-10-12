@@ -38,7 +38,7 @@ public class FamilyDto
         {
             this.id = family.getId();
             this.name = family.getName();
-            this.text = family.getName();
+            this.text = family.getName() + "[" + family.getFamilyString() + "]";
         }
     }
 }

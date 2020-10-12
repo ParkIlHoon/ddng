@@ -5,9 +5,9 @@ import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.family.domain.Family;
 import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 public class CustomerDto
@@ -52,11 +52,7 @@ public class CustomerDto
         {
             if (this.family != null)
             {
-                List<Customer> customers = family.getCustomers();
-                for (Customer customer : customers)
-                {
-                    this.familyString += customer.getName() + "(" + customer.getType().getKorName() + " / " + customer.getTelNo() + ")\n";
-                }
+                this.familyString = this.family.getFamilyString();
             }
         }
     }
@@ -75,6 +71,8 @@ public class CustomerDto
         private String bigo;
         private String profileImg;
         private String sexGb;
+        private Long familyId;
+        private LocalDateTime joinDate = LocalDateTime.now();
     }
 
     /**
@@ -91,5 +89,6 @@ public class CustomerDto
         private String bigo;
         private String profileImg;
         private String sexGb;
+        private LocalDateTime joinDate;
     }
 }

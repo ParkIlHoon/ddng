@@ -4,6 +4,8 @@ import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.service.CustomerService;
 import com.ddng.customerapi.modules.customer.domain.Customer;
+import com.ddng.customerapi.modules.family.domain.Family;
+import com.ddng.customerapi.modules.family.service.FamilyService;
 import com.ddng.customerapi.modules.tag.domain.Tag;
 import com.ddng.customerapi.modules.tag.dto.TagDto;
 import com.ddng.customerapi.modules.tag.repository.TagRepository;
@@ -34,6 +36,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class CustomerController
 {
     private final CustomerService customerService;
+    private final FamilyService familyService;
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
@@ -64,8 +67,28 @@ public class CustomerController
         {
             return ResponseEntity.badRequest().build();
         }
+        Family family = null;
+        if (dto.getFamilyId() != null)
+        {
+            Optional<Family> optionalFamily = familyService.findById(dto.getFamilyId());
+            if (optionalFamily.isEmpty())
+            {
+                return ResponseEntity.badRequest().build();
+            }
+            family = optionalFamily.get();
+        }
 
         Customer created = customerService.createCustomer(dto);
+
+        if (family != null)
+        {
+            familyService.addMember(family, created);
+        }
+        else
+        {
+            familyService.createFamily(created);
+        }
+
         WebMvcLinkBuilder builder = linkTo(CustomerController.class).slash(created.getId());
         return ResponseEntity.created(builder.toUri()).build();
     }

@@ -78,7 +78,6 @@ public class CustomerService
     public Customer createCustomer(CustomerDto.Post dto)
     {
         Customer map = modelMapper.map(dto, Customer.class);
-        map.setJoinDate(LocalDateTime.now());
         Customer save = customerRepository.save(map);
         return save;
     }

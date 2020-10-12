@@ -60,6 +60,16 @@ public class Family
         this.name = customerName + "(이)네 가족";
     }
 
+    public String getFamilyString()
+    {
+        String returnText = "";
+        for (Customer customer : this.customers)
+        {
+            returnText += customer.getName() + "(" + customer.getType().getKorName() + " / " + customer.getTelNo() + ")\n";
+        }
+        return returnText;
+    }
+
     protected Family ()
     {
 

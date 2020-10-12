@@ -2,6 +2,7 @@ package com.ddng.customerapi.modules.family.repository;
 
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.family.domain.Family;
+import com.ddng.customerapi.modules.family.domain.QFamily;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
@@ -23,17 +24,22 @@ public class FamilyRepositoryImpl extends QuerydslRepositorySupport implements F
     @Override
     public Page<Family> findByKeyword(String keyword, Pageable pageable)
     {
+        QFamily f = new QFamily("f");
         JPQLQuery<Family> query = from(family)
                                     .where(
-                                            family.name.containsIgnoreCase(keyword)
-                                            .or(customer.name.containsIgnoreCase(keyword))
-                                            .or(customer.type.in(CustomerType.findEnumByKorNameLike(keyword)))
-                                            .or(customer.telNo.containsIgnoreCase(keyword))
-                                            .or(tag.title.containsIgnoreCase(keyword))
-                                            )
-                                    .leftJoin(family.customers, customer).fetchJoin()
-                                    .leftJoin(customer.tags, tag).fetchJoin()
-                                    .distinct();
+                                            family.in(
+                                                    from(f)
+                                                    .where(f.name.containsIgnoreCase(keyword)
+                                                            .or(customer.name.containsIgnoreCase(keyword))
+                                                            .or(customer.type.in(CustomerType.findEnumByKorNameLike(keyword)))
+                                                            .or(customer.telNo.containsIgnoreCase(keyword))
+                                                            .or(tag.title.containsIgnoreCase(keyword)))
+                                                    .leftJoin(f.customers, customer)
+                                                    .leftJoin(customer.tags, tag)
+                                                    .distinct()
+                                                    )
+                                            );
+
         JPQLQuery<Family> pagination = getQuerydsl().applyPagination(pageable, query);
         QueryResults<Family> queryResults = pagination.fetchResults();
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
