@@ -101,7 +101,9 @@ public enum CustomerType
     DOBERMAN_PINSCHER("도베르만 핀셔"),
     GREAT_DANE("그레이트 데인"),
     BULL_MASTIFF("불 마스티프"),
-    MIX_DOG("믹스견")
+    MIX_DOG("믹스견"),
+    COTON_DE_TULEAR("꼬똥드툴레아"),
+    POM_PITZ("폼피츠")
     ;
 
     private String korName;

@@ -190,6 +190,7 @@ $(function(){
     });
 
     $("#submit-button").on("click", function(e){
+        debugger;
         var data = $("#customer-form").serializeObject();
         $.ajax({
             dataType : "json",
@@ -266,7 +267,6 @@ $(function(){
         $resultImage.html(newImage);
         $resultImage.show();
         $confirmBtn.show();
-
         $confirmBtn.click(function () {
             $newProfileImage.html(newImage);
             $cutBtn.hide();
@@ -274,6 +274,7 @@ $(function(){
             $profileImage.val(dataUrl);
         });
     });
+
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
