@@ -14,21 +14,23 @@
                                 <div class="card-header">고객 등록</div>
                                 <div class="card-body">새로운 고객을 등록합니다.</div>
                                 <div class="card-body">
-                                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                                    <form class="form-horizontal" id="new-customer-form">
                                         <div class="form-group row">
                                             <div class="col-md-4">
-                                                <!-- Avatar -->
-                                                <img class="img-fluid float-left rounded img-thumbnail" width="400" height="400"
-                                                     src="http://1hoon.iptime.org/images/beauty/work-1.jpg"/>
-
+                                                <input id="profileImage" type="hidden" name="profileImg">
+                                                <div id="new-profile-image" class="mt-3"></div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="profile-image-file">
+                                                    <label class="custom-file-label" for="profile-image-file">프로필 이미지 선택</label>
+                                                </div>
+                                                <div id="new-profile-image-control" class="mt-3">
+                                                    <button type="button" class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                                                    <button type="button" class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
+                                                    <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                                                </div>
+                                                <div id="cropped-new-profile-image" class="mt-3"></div>
                                             </div>
                                             <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label">고객 번호</label>
-                                                    <div class="col-md-10">
-                                                        <p class="form-control-static">1</p>
-                                                    </div>
-                                                </div>
                                                 <div class="form-group row">
                                                     <label class="col-md-2 col-form-label" for="name-input">고객 명</label>
                                                     <div class="col-md-10">
@@ -36,9 +38,19 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="type-input">종류</label>
+                                                    <label class="col-md-2 col-form-label" for="type-select">종류</label>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" id="type-input" type="text" name="type" placeholder="종류를 입력하세요(필수)">
+                                                        <select class="form-control js-example-placeholder-single" id="type-select" name="type">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-2 col-form-label" for="family-select">가족</label>
+                                                    <div class="col-md-10">
+                                                        <select class="form-control js-data-example-ajax" id="family-select" name="familyId">
+                                                            <option></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -51,26 +63,19 @@
                                                             </svg>
                                                         </span>
                                                     </span>
-                                                        <input class="form-control" id="telNo-input" name="telNo" type="tel" placeholder="전화번호를 입력하세요(필수)">
+                                                        <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-md-2 col-form-label" for="date-input">가입일</label>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" id="date-input" type="date" name="date-input" placeholder="date">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="tags-input">태그</label>
-                                                    <div class="col-md-10">
-                                                        <div id="whitelist" hidden>[{"value":"cat"}, {"value":"dog"}]</div>
-                                                        <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp" />
+                                                        <input class="form-control" id="date-input" type="date" name="joinDate" placeholder="date">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-md-2 col-form-label" for="bigo-input">비고</label>
                                                     <div class="col-md-10">
-                                                        <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입려하세요"></textarea>
+                                                        <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -78,7 +83,7 @@
                                     </form>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-primary btn-lg btn-block" type="button">등록</button>
+                                    <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="button">등록</button>
                                 </div>
                             </div>
                 </div>
@@ -87,63 +92,138 @@
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
-<link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
-<link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
-<style>
-    .tagify__input{
-        margin: 0;
-    }
-    .tagify{
-        border: 0;
-        padding: 0;
-        margin: 0;
-    }
-</style>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link  href="/node_modules/cropperjs/dist/cropper.min.css" rel="stylesheet">
 <script th:replace="fragments.html::script"></script>
-<script src="/node_modules/jquery/dist/jquery.js"></script>
-<script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
-<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
+<script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
 <script type="application/javascript">
     $(function(){
-        function tagRequest(url, tagTitle)
-        {
-            // $.ajax({
-            //     dataType : "json",
-            //     autocomplete : {
-            //         enable : true,
-            //         rightKey : true
-            //     },
-            //     contentType : "application/json; charset=utf-8",
-            //     method : "POST",
-            //     url : "/settings/tags" + url,
-            //     data : JSON.stringify({"tagTitle" : tagTitle})
-            // }).done(function(data, status){
-            //     console.log("${data} and status is ${status}");
-            // });
-        }
-
-        function onAdd(e)
-        {
-            tagRequest("/add", e.detail.data.value);
-        }
-
-        function onRemove(e)
-        {
-            tagRequest("/remove", e.detail.data.value);
-        }
-
-        var tagInput = document.querySelector("#tags-input");
-        var tagify = new Tagify(tagInput, {
-            pattern: /^.{0,20}$/,
-            whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
-            dropdown : {
-                enabled: 1, // suggest tags after a single character input
-            } // map tags
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 초기 데이터 세팅
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 고객 종류
+        $.ajax({
+            url : "http://localhost:8090/customer-api/customer/type",
+            type : "GET",
+        }).done((data, textStatus, jqXHR) => {
+            $("#type-select").select2({
+                placeholder: "종류를 선택해주세요.",
+                allowClear: true,
+                width : "100%",
+                data : data
+            });
         });
-        tagify.on("add", onAdd);
-        tagify.on("remove", onRemove);
-        tagify.DOM.input.classList.add('form-control');
-        tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+
+        $("#family-select").select2({
+            minimumInputLength : 1,
+            placeholder : "가족을 선택해주세요. 기존에 가족이 없는 경우 빈 칸으로 두세요.",
+            width : "100%",
+            allowClear : true,
+            ajax: {
+                url: "http://localhost:8090/customer-api/family",
+                method: "GET",
+                data : function (params) {return { keyword: params.term };},
+                processResults: function (data) {
+                    return {
+                        results: data.content
+                    };
+                }
+            }
+        });
+
+        cropper = '';
+        let $confirmBtn = $("#confirm-button");
+        let $resetBtn = $("#reset-button");
+        let $cutBtn = $("#cut-button");
+        let $newProfileImage = $("#new-profile-image");
+        let $currentProfileImage = $("#current-profile-image");
+        let $resultImage = $("#cropped-new-profile-image");
+        let $profileImage = $("#profileImage");
+
+        $newProfileImage.hide();
+        $cutBtn.hide();
+        $resetBtn.hide();
+        $confirmBtn.hide();
+
+
+        $("#submit-button").on("click", function(e){
+            var data = $("#new-customer-form").serializeObject();
+            $.ajax({
+                dataType : "json",
+                contentType : "application/json; charset=utf-8",
+                method : "POST",
+                url : "http://localhost:8090/customer-api/customer/",
+                data : JSON.stringify(data)
+            }).done(function(data, status){
+
+            });
+        });
+        $("#profile-image-file").change(function(e) {
+            if (e.target.files.length === 1) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    if (e.target.result) {
+                        if (!e.target.result.startsWith("data:image")) {
+                            alert("이미지 파일을 선택하세요.");
+                            return;
+                        }
+
+                        let img = document.createElement("img");
+                        img.id = 'new-profile';
+                        img.src = e.target.result;
+                        img.setAttribute('width', '100%');
+
+                        $newProfileImage.html(img);
+                        $newProfileImage.show();
+                        $currentProfileImage.hide();
+
+                        let $newImage = $(img);
+                        $newImage.cropper({aspectRatio: 1});
+                        cropper = $newImage.data('cropper');
+
+                        $cutBtn.show();
+                        $confirmBtn.hide();
+                        $resetBtn.show();
+                    }
+                };
+
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        $resetBtn.click(function() {
+            $currentProfileImage.show();
+            $newProfileImage.hide();
+            $resultImage.hide();
+            $resetBtn.hide();
+            $cutBtn.hide();
+            $confirmBtn.hide();
+            $profileImage.val('');
+        });
+        $cutBtn.click(function () {
+            let dataUrl = cropper.getCroppedCanvas().toDataURL();
+
+            if (dataUrl.length > 1000 * 1024) {
+                alert("이미지 파일이 너무 큽니다. 1024000 보다 작은 파일을 사용하세요. 현재 이미지 사이즈 " + dataUrl.length);
+                return;
+            }
+
+            let newImage = document.createElement("img");
+            newImage.id = "cropped-new-profile-image";
+            newImage.src = dataUrl;
+            newImage.width = 125;
+            $resultImage.html(newImage);
+            $resultImage.show();
+            $confirmBtn.show();
+            $confirmBtn.click(function () {
+                $newProfileImage.html(newImage);
+                $cutBtn.hide();
+                $confirmBtn.hide();
+                $profileImage.val(dataUrl);
+            });
+        });
     });
 </script>
 </body>

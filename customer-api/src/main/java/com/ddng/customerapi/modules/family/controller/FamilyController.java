@@ -43,8 +43,8 @@ public class FamilyController
     public ResponseEntity getFamilyList (String keyword,
                                          @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
-        Page<Family> familyList = familyService.findByKeyword(keyword, pageable);
-        return ResponseEntity.ok(familyList.getContent());
+        Page<FamilyDto.Response> familyList = familyService.findByKeyword(keyword, pageable);
+        return ResponseEntity.ok(familyList);
     }
 
     /**

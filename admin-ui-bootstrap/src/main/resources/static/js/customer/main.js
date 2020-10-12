@@ -16,6 +16,7 @@ $(function(){
         $("#type-select").select2({
             placeholder: "종류를 선택해주세요.",
             allowClear: true,
+            width : "100%",
             data : data
         });
     });
@@ -190,7 +191,6 @@ $(function(){
     });
 
     $("#submit-button").on("click", function(e){
-        debugger;
         var data = $("#customer-form").serializeObject();
         $.ajax({
             dataType : "json",
