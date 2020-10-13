@@ -199,7 +199,7 @@
 
         const Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
             totalItems : 0,
-            itemsPerPage : 10,
+            itemsPerPage : 12,
             visiblePages : 5,
             centerAlign : true
         });
@@ -234,11 +234,12 @@
             $.ajax({
                 url : "http://localhost:8090/customer-api/family",
                 type : "GET",
-                data : {"keyword" : searchKeyword}
+                data : {"keyword" : searchKeyword, "size" : 12}
             }).done((data, textStatus, jqXHR) => {
                 deleteAllFamilyCards();
                 createFamilyCards(data);
                 Pagination.reset(data.totalElements);
+                $("#family-card").hide();
             });
         }
 
@@ -248,7 +249,7 @@
             $.ajax({
                 url : "http://localhost:8090/customer-api/family",
                 type : "GET",
-                data : {"keyword" : searchKeyword, "page" : movePage - 1}
+                data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 12}
             }).done((data, textStatus, jqXHR) => {
                 deleteAllFamilyCards();
                 createFamilyCards(data);
@@ -301,6 +302,9 @@
         function openFamilyTab (familyId)
         {
             debugger;
+            $("#family-card").show();
+            var offset = $("#family-card").offset();
+            $('html, body').animate({scrollTop : offset.top}, 400);
         }
     });
 </script>
