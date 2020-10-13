@@ -3,10 +3,12 @@ package com.ddng.customerapi.modules.family.controller;
 import com.ddng.customerapi.modules.customer.CustomerFactory;
 import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
+import com.ddng.customerapi.modules.customer.repository.CustomerRepository;
 import com.ddng.customerapi.modules.family.domain.Family;
 import com.ddng.customerapi.modules.family.dto.FamilyDto;
 import com.ddng.customerapi.modules.family.repository.FamilyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,6 +28,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
 class FamilyControllerTest
 {
     @Autowired private WebApplicationContext ctx;
@@ -43,6 +48,7 @@ class FamilyControllerTest
     @Autowired private ObjectMapper objectMapper;
     @Autowired private CustomerFactory customerFactory;
     @Autowired private FamilyRepository familyRepository;
+    @Autowired private CustomerRepository customerRepository;
 
     @BeforeEach
     void initializeData ()
@@ -68,6 +74,12 @@ class FamilyControllerTest
         family2.addMember(gomsun);
     }
 
+    @AfterEach
+    void resetData ()
+    {
+        familyRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("가족 검색-가족 이름")
     void getFamilyList_familyName() throws Exception
@@ -88,7 +100,8 @@ class FamilyControllerTest
         MockHttpServletResponse response = actions.andReturn().getResponse();
         String contentAsString = response.getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objectList = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
         assertThat(objectList.size()).isEqualTo(1);
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo(keyword);
@@ -114,7 +127,8 @@ class FamilyControllerTest
         MockHttpServletResponse response = actions.andReturn().getResponse();
         String contentAsString = response.getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objectList = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
         assertThat(objectList.size()).isEqualTo(1);
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("치우(이)네 가족");
@@ -140,7 +154,8 @@ class FamilyControllerTest
         MockHttpServletResponse response = actions.andReturn().getResponse();
         String contentAsString = response.getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objectList = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
         assertThat(objectList.size()).isEqualTo(2);
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("아가(이)네 가족");
@@ -167,7 +182,8 @@ class FamilyControllerTest
         MockHttpServletResponse response = actions.andReturn().getResponse();
         String contentAsString = response.getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objectList = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
         assertThat(objectList.size()).isEqualTo(2);
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("아가(이)네 가족");
@@ -194,7 +210,8 @@ class FamilyControllerTest
         MockHttpServletResponse response = actions.andReturn().getResponse();
         String contentAsString = response.getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objectList = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
         assertThat(objectList.size()).isEqualTo(1);
         assertThat(((HashMap) objectList.get(0)).get("name")).isEqualTo("치우(이)네 가족");
@@ -283,7 +300,7 @@ class FamilyControllerTest
     void deleteFamily() throws Exception
     {
         // given
-        Family family = familyRepository.findAll().get(1);
+        Family family = familyRepository.findAll().get(0);
         Customer customer = family.getCustomers().get(0);
 
         // when

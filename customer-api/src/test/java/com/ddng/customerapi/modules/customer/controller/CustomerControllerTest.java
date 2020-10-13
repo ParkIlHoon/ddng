@@ -84,9 +84,10 @@ class CustomerControllerTest
 
         // then
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objects = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
-        assertThat(objects.size()).isEqualTo(2);
+        assertThat(objectList.size()).isEqualTo(2);
     }
 
     @Test
@@ -101,9 +102,10 @@ class CustomerControllerTest
 
         // then
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objects = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
-        assertThat(objects.size()).isEqualTo(1);
+        assertThat(objectList.size()).isEqualTo(1);
     }
 
     @Test
@@ -118,9 +120,10 @@ class CustomerControllerTest
 
         // then
         JacksonJsonParser parser = new JacksonJsonParser();
-        List<Object> objects = parser.parseList(contentAsString);
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List objectList = (List) stringObjectMap.get("content");
 
-        assertThat(objects.size()).isEqualTo(2);
+        assertThat(objectList.size()).isEqualTo(2);
     }
 
     private String getCustomer(String keyword, int page) throws Exception

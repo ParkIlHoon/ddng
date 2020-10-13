@@ -54,6 +54,12 @@ public class Family
         customer.setFamily(null);
     }
 
+    public void removeAllMember ()
+    {
+        this.customers.stream().forEach(customer -> customer.setFamily(null));
+        this.customers = new ArrayList<>();
+    }
+
     public void changeName ()
     {
         String customerName = this.customers.get(0).getName();
