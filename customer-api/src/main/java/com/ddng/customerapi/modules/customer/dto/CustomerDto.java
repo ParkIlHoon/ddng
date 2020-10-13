@@ -89,6 +89,5 @@ public class CustomerDto
         private String bigo;
         private String profileImg;
         private String sexGb;
-        private LocalDateTime joinDate;
     }
 }

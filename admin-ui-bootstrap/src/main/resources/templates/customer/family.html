@@ -17,124 +17,48 @@
                                 <div class="card-body">조회할 가족을 선택합니다.</div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label class="col-form-label" for="appendedInputButton">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
+                                        <label class="col-form-label" for="keyword-input">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
                                         <div class="controls">
                                             <div class="input-group">
-                                                <input class="form-control" id="appendedInputButton" size="16" type="text">
+                                                <input class="form-control" id="keyword-input" size="16" type="text">
+                                                <input class="form-control" id="keyword-input-hidden" size="16" type="hidden">
                                                 <span class="input-group-append">
-                                                        <button class="btn btn-secondary" type="button">검색</button>
-                                                    </span>
+                                                    <button class="btn btn-secondary" id="search-button" type="button">검색</button>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">치우네</div>
-                                                        <small class="text-muted">치우 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                        <small class="text-muted">비니 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                        <small class="text-muted">볼트 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                        <small class="text-muted">라니 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">아가네</div>
-                                                        <small class="text-muted">아가 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                        <small class="text-muted">곰순이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">꿀멍이네</div>
-                                                        <small class="text-muted">꿀멍이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">꿀멍이네</div>
-                                                        <small class="text-muted">꿀멍이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">꿀멍이네</div>
-                                                        <small class="text-muted">꿀멍이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">꿀멍이네</div>
-                                                        <small class="text-muted">꿀멍이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">꿀멍이네</div>
-                                                        <small class="text-muted">꿀멍이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="text-value-lg">꿀멍이네</div>
-                                                        <small class="text-muted">꿀멍이 <div class="c-avatar"><img class="c-avatar-img" src="/assets/img/avatars/6.jpg" alt="user@email.com"></div></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="search-result-row" class="row"></div>
                                     </div>
                                     <div class="form-group">
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">«</span>
-                                                        <span class="sr-only">Previous</span>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <span aria-hidden="true">»</span>
-                                                        <span class="sr-only">Next</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </nav>
+                                        <div id="tui-pagination-container" class="tui-pagination"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-header">치우네</div>
+
+                            <div id="family-card" class="card">
+                                <div id="family-card-title" class="card-header">치우네</div>
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <div class="col-md-12">
                                             <div class="nav-tabs-boxed">
                                                 <ul class="nav nav-tabs" role="tablist">
-                                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home-1" role="tab" aria-controls="home">구성원</a></li>
-                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile">쿠폰북</a></li>
-                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#messages-1" role="tab" aria-controls="messages">Messages</a></li>
+                                                    <li class="nav-item">
+                                                        <a id="member-tab" class="nav-link active" data-toggle="tab" href="#member-tab-page"
+                                                           role="tab" aria-controls="member-tab-page">구성원</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a id="coupon-tab" class="nav-link" data-toggle="tab" href="#coupon-tab-page"
+                                                           role="tab" aria-controls="coupon-tab-page">쿠폰북</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a id="" class="nav-link" data-toggle="tab" href="#messages-1"
+                                                           role="tab" aria-controls="messages">Messages</a>
+                                                    </li>
                                                 </ul>
                                                 <div class="tab-content">
-                                                    <div class="tab-pane active" id="home-1" role="tabpanel">
+                                                    <div class="tab-pane active" id="member-tab-page" role="tabpanel">
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="card overflow-hidden">
@@ -202,7 +126,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane" id="profile-1" role="tabpanel">
+                                                    <div class="tab-pane" id="coupon-tab-page" role="tabpanel">
                                                         <div class="row">
                                                             <div class="col-md-6 col-lg-3">
                                                                 <div class="card">
@@ -257,7 +181,128 @@
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
+<link href="/node_modules/tui-pagination/dist/tui-pagination.css" rel="stylesheet">
+<style>
+    .family-card:hover {
+        background-color: #ced2d8;
+    }
+    .family-card.active {
+        background-color: #3399ff;
+        color: #ffffff; !important;
+    }
+</style>
 <script th:replace="fragments.html::script"></script>
-<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script src="/node_modules/tui-pagination/dist/tui-pagination.js"></script>
+<script type="application/javascript">
+    $(function(){
+        $("#family-card").hide();
+
+        const Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
+            totalItems : 0,
+            itemsPerPage : 10,
+            visiblePages : 5,
+            centerAlign : true
+        });
+
+        Pagination.on("afterMove", function (e){
+            var currentPage = e.page;
+            moveFamilyListPage(currentPage);
+        });
+
+        $("#keyword-input").on("keyup", function(e){
+            if (e.keyCode == 13)
+            {
+                searchFamilies();
+            }
+        });
+
+        $("#search-button").on("click", function(e){
+            searchFamilies();
+        });
+
+        function searchFamilies ()
+        {
+            var searchKeyword = $("#keyword-input").val();
+            $("#keyword-input-hidden").val(searchKeyword);
+
+            if(searchKeyword == undefined || searchKeyword == "")
+            {
+                alert("검색어를 입력해주세요.");
+                return;
+            }
+
+            $.ajax({
+                url : "http://localhost:8090/customer-api/family",
+                type : "GET",
+                data : {"keyword" : searchKeyword}
+            }).done((data, textStatus, jqXHR) => {
+                deleteAllFamilyCards();
+                createFamilyCards(data);
+                Pagination.reset(data.totalElements);
+            });
+        }
+
+        function moveFamilyListPage (movePage)
+        {
+            var searchKeyword = $("#keyword-input-hidden").val();
+            $.ajax({
+                url : "http://localhost:8090/customer-api/family",
+                type : "GET",
+                data : {"keyword" : searchKeyword, "page" : movePage - 1}
+            }).done((data, textStatus, jqXHR) => {
+                deleteAllFamilyCards();
+                createFamilyCards(data);
+            });
+        }
+
+        function createFamilyCards(data)
+        {
+            var families = data.content;
+
+            for (var idx = 0; idx < families.length; idx++)
+            {
+                var childEle = "<div class='col-sm-6 col-lg-3'>";
+                    childEle +=    "<div class='card family-card' id='family-card-" + families[idx].id + "'>\n";
+                    childEle +=        "<div class='card-body'>\n";
+                    childEle +=            "<div class='text-value-lg'>" + families[idx].name + "</div>\n";
+
+                var customers = families[idx].customers;
+                for (var idx2 = 0; idx2 < customers.length; idx2++)
+                {
+                    childEle +=                "<small>" + customers[idx2].name + " \n";
+                    childEle +=                    "<div class='c-avatar'>\n";
+                    childEle +=                        "<img class='c-avatar-img' src='" + customers[idx2].profileImg + "'>\n";
+                    childEle +=                    "</div>\n";
+                    childEle +=                "</small>";
+                }
+                    childEle +=         "</div>";
+                    childEle +=     "</div>";
+                    childEle += "</div>";
+
+                $("#search-result-row").append(childEle);
+                $(".family-card").on("click", function(e){
+                    var cards = $(".family-card");
+                    for (var idx = 0; idx < cards.length; idx++)
+                    {
+                        cards[idx].classList.remove("active");
+                    }
+
+                    var card = e.currentTarget;
+                    card.classList.add("active");
+                    openFamilyTab(card.id.replaceAll("family-card-", ""));
+                });
+            }
+        }
+
+        function deleteAllFamilyCards() {
+            $("#search-result-row").empty();
+        }
+
+        function openFamilyTab (familyId)
+        {
+            debugger;
+        }
+    });
+</script>
 </body>
 </html>
