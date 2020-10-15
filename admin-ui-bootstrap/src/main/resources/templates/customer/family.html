@@ -5,7 +5,7 @@
 <body class="c-app">
 <div th:replace="fragments.html::leftMenu"></div>
 <div class="c-wrapper c-fixed-components">
-    <header th:replace="fragments.html::header ('고객 관리', '쿠폰북')"></header>
+    <header th:replace="fragments.html::header ('고객 관리', '가족 관리')"></header>
     <div class="c-body">
         <main class="c-main">
             <div class="container-fluid">
@@ -59,72 +59,7 @@
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="member-tab-page" role="tabpanel">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="card overflow-hidden">
-                                                                    <div class="card-body p-0 d-flex align-items-center">
-                                                                        <div class="py-1 px-1 mfe-3">
-                                                                            <div style="width: 140px;">
-                                                                                <img style="width: 100%;" src="/assets/img/avatars/6.jpg" alt="user@email.com">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div class="text-value text-primary">치우</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">말티즈</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">태그 목록</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="card overflow-hidden">
-                                                                    <div class="card-body p-0 d-flex align-items-center">
-                                                                        <div class="py-1 px-1 mfe-3">
-                                                                            <div style="width: 140px;">
-                                                                                <img style="width: 100%;" src="/assets/img/avatars/6.jpg" alt="user@email.com">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div class="text-value text-primary">비니</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">요크셔테리어</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">태그 목록</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="card overflow-hidden">
-                                                                    <div class="card-body p-0 d-flex align-items-center">
-                                                                        <div class="py-1 px-1 mfe-3">
-                                                                            <div style="width: 140px;">
-                                                                                <img style="width: 100%;" src="/assets/img/avatars/6.jpg" alt="user@email.com">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div class="text-value text-primary">볼트</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">말티즈</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">태그 목록</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="card overflow-hidden">
-                                                                    <div class="card-body p-0 d-flex align-items-center">
-                                                                        <div class="py-1 px-1 mfe-3">
-                                                                            <div style="width: 140px;">
-                                                                                <img style="width: 100%;" src="/assets/img/avatars/6.jpg" alt="user@email.com">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div class="text-value text-primary">라니</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">시츄</div>
-                                                                            <div class="text-muted text-uppercase font-weight-bold small">태그 목록</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <div class="row" id="member-tab-page-row"></div>
                                                     </div>
                                                     <div class="tab-pane" id="coupon-tab-page" role="tabpanel">
                                                         <div class="row">
@@ -236,6 +171,7 @@
                 type : "GET",
                 data : {"keyword" : searchKeyword, "size" : 12}
             }).done((data, textStatus, jqXHR) => {
+                deleteAllMemberCard();
                 deleteAllFamilyCards();
                 createFamilyCards(data);
                 Pagination.reset(data.totalElements);
@@ -263,7 +199,7 @@
             for (var idx = 0; idx < families.length; idx++)
             {
                 var childEle = "<div class='col-sm-6 col-lg-3'>";
-                    childEle +=    "<div class='card family-card' id='family-card-" + families[idx].id + "'>\n";
+                    childEle +=    "<div class='card family-card' id='family-card-" + families[idx].id + "' name='" + families[idx].name + "'>\n";
                     childEle +=        "<div class='card-body'>\n";
                     childEle +=            "<div class='text-value-lg'>" + families[idx].name + "</div>\n";
 
@@ -290,7 +226,7 @@
 
                     var card = e.currentTarget;
                     card.classList.add("active");
-                    openFamilyTab(card.id.replaceAll("family-card-", ""));
+                    openFamilyTab(card.id.replaceAll("family-card-", ""), card.getAttribute("name"));
                 });
             }
         }
@@ -299,12 +235,66 @@
             $("#search-result-row").empty();
         }
 
-        function openFamilyTab (familyId)
+        function openFamilyTab (familyId, familyName)
         {
-            debugger;
             $("#family-card").show();
             var offset = $("#family-card").offset();
             $('html, body').animate({scrollTop : offset.top}, 400);
+            $("#family-card-title").text(familyName);
+
+            $.ajax({
+                url : "http://localhost:8090/customer-api/family/" + familyId,
+                type : "GET"
+            }).done((data, textStatus, jqXHR) => {
+                var customers = data.customers;
+                deleteAllMemberCard();
+                createMemberCard(customers);
+            });
+        }
+
+        function deleteAllMemberCard()
+        {
+            $("#member-tab-page-row").empty();
+        }
+
+        function createMemberCard(data)
+        {
+            for (var idx = 0; idx < data.length; idx++)
+            {
+                var name = data[idx].name;
+                var type = data[idx].type;
+                var telNo = data[idx].telNo;
+                var profileImg = data[idx].profileImg;
+                var tags = data[idx].tags;
+
+                var card = "<div class=\"col-md-6\">\n" +
+                               "<div class=\"card overflow-hidden\">\n" +
+                                   "<div class=\"card-body p-0 d-flex align-items-center\">\n" +
+                                       "<div class=\"py-1 px-1 mfe-3\">\n" +
+                                           "<div style=\"width: 140px; height: 140px;\">\n" +
+                                               "<img style=\"width: 100%;\" src=\"" + profileImg + "\">\n" +
+                                           "</div>\n" +
+                                       "</div>\n" +
+                                       "<div>\n" +
+                                           "<div class=\"text-value text-primary\">" + name + "</div>\n" +
+                                           "<div class=\"text-muted text-uppercase font-weight-bold small\">" + telNo + "</div>\n" +
+                                           "<div class=\"text-muted text-uppercase font-weight-bold small\">" + type + "</div>\n" +
+                                           "<div class=\"text-muted text-uppercase font-weight-bold small\">";
+
+                for (var idx2 = 0; idx2 < tags.length; idx2++)
+                {
+                    var tagName = tags[idx2].title;
+                    card += "<span class=\"badge badge-secondary\">" + tagName + "</span>\n";
+                }
+
+                card +=                    "</div>\n" +
+                                       "</div>\n" +
+                                   "</div>\n" +
+                               "</div>\n" +
+                           "</div>";
+
+                $("#member-tab-page-row").append(card);
+            }
         }
     });
 </script>

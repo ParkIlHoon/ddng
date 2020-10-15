@@ -62,7 +62,9 @@ public class FamilyController
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(optionalFamily.get());
+        FamilyDto.ResponseWithCustomerTag dto = new FamilyDto.ResponseWithCustomerTag(optionalFamily.get());
+
+        return ResponseEntity.ok(dto);
     }
 
     /**
