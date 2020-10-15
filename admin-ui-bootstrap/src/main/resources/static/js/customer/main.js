@@ -10,7 +10,7 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 고객 종류
     $.ajax({
-        url : "http://localhost:8090/customer-api/customer/type",
+        url : "http://1hoon.iptime.org:8366/customer-api/customer/type",
         type : "GET",
     }).done((data, textStatus, jqXHR) => {
         $("#type-select").select2({
@@ -22,7 +22,7 @@ $(function(){
     });
     // 태그
     $.ajax({
-        url : "http://localhost:8090/customer-api/tag",
+        url : "http://1hoon.iptime.org:8366/customer-api/tag",
         type : "GET",
     }).done((data, textStatus, jqXHR) => {
         var whiteList = [];
@@ -152,7 +152,7 @@ $(function(){
         var clickData = grid.getData()[e.rowKey];
 
         $.ajax({
-            url : "http://localhost:8090/customer-api/customer/" + clickData.id,
+            url : "http://1hoon.iptime.org:8366/customer-api/customer/" + clickData.id,
             type : "GET"
         }).done((data, textStatus, jqXHR) => {
             $("#customer-card").show();
@@ -196,7 +196,7 @@ $(function(){
             dataType : "json",
             contentType : "application/json; charset=utf-8",
             method : "PUT",
-            url : "http://localhost:8090/customer-api/customer/" + $("#customer-id").text(),
+            url : "http://1hoon.iptime.org:8366/customer-api/customer/" + $("#customer-id").text(),
             data : JSON.stringify(data)
         }).done(function(data, status){
             console.log("${data} and status is ${status}");
@@ -283,7 +283,7 @@ $(function(){
     function getTagList ()
     {
         $.ajax({
-            url : "http://localhost:8090/customer-api/tag",
+            url : "http://1hoon.iptime.org:8366/customer-api/tag",
             type : "GET",
         }).done((data, textStatus, jqXHR) => {
             var whiteList = [];
@@ -307,7 +307,7 @@ $(function(){
         $("#searchKeywordSaved").val(searchKeyword);
 
         $.ajax({
-            url : "http://localhost:8090/customer-api/customer",
+            url : "http://1hoon.iptime.org:8366/customer-api/customer",
             type : "GET",
             data : {"keyword" : searchKeyword}
         }).done((data, textStatus, jqXHR) => {
@@ -322,7 +322,7 @@ $(function(){
     {
         var searchKeyword = $("#searchKeywordSaved").val();
         $.ajax({
-            url : "http://localhost:8090/customer-api/customer",
+            url : "http://1hoon.iptime.org:8366/customer-api/customer",
             type : "GET",
             data : {"keyword" : searchKeyword, "page" : movePage - 1}
         }).done((data, textStatus, jqXHR) => {
@@ -348,7 +348,7 @@ $(function(){
             },
             contentType : "application/json; charset=utf-8",
             method : method,
-            url : "http://localhost:8090/customer-api/customer/" + $("#customer-id").text() + "/tag",
+            url : "http://1hoon.iptime.org:8366/customer-api/customer/" + $("#customer-id").text() + "/tag",
             data : JSON.stringify({"title" : title}),
         });
     }

@@ -4,7 +4,7 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 고객 종류
     $.ajax({
-        url : "http://localhost:8090/customer-api/customer/type",
+        url : "http://1hoon.iptime.org:8366/customer-api/customer/type",
         type : "GET",
     }).done((data, textStatus, jqXHR) => {
         $("#type-select").select2({
@@ -21,7 +21,7 @@ $(function(){
         width : "100%",
         allowClear : true,
         ajax: {
-            url: "http://localhost:8090/customer-api/family",
+            url: "http://1hoon.iptime.org:8366/customer-api/family",
             method: "GET",
             data : function (params) {return { keyword: params.term };},
             processResults: function (data) {
@@ -53,7 +53,7 @@ $(function(){
             dataType : "json",
             contentType : "application/json; charset=utf-8",
             method : "POST",
-            url : "http://localhost:8090/customer-api/customer/",
+            url : "http://1hoon.iptime.org:8366/customer-api/customer/",
             data : JSON.stringify(data)
         }).always(function(data, status){
             location.reload();

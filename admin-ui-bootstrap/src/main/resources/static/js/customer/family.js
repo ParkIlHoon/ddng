@@ -36,7 +36,7 @@ $(function(){
         }
 
         $.ajax({
-            url : "http://localhost:8090/customer-api/family",
+            url : "http://1hoon.iptime.org:8366/customer-api/family",
             type : "GET",
             data : {"keyword" : searchKeyword, "size" : 12}
         }).done((data, textStatus, jqXHR) => {
@@ -52,7 +52,7 @@ $(function(){
     {
         var searchKeyword = $("#keyword-input-hidden").val();
         $.ajax({
-            url : "http://localhost:8090/customer-api/family",
+            url : "http://1hoon.iptime.org:8366/customer-api/family",
             type : "GET",
             data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 12}
         }).done((data, textStatus, jqXHR) => {
@@ -112,7 +112,7 @@ $(function(){
         $("#family-card-title").text(familyName);
 
         $.ajax({
-            url : "http://localhost:8090/customer-api/family/" + familyId,
+            url : "http://1hoon.iptime.org:8366/customer-api/family/" + familyId,
             type : "GET"
         }).done((data, textStatus, jqXHR) => {
             var customers = data.customers;
