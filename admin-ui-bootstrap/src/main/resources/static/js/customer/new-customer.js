@@ -56,7 +56,7 @@ $(function(){
             url : "http://1hoon.iptime.org:8366/customer-api/customer/",
             data : JSON.stringify(data)
         }).always(function(data, status){
-            location.reload();
+            location.href = "/new";
         });
     });
     $("#profile-image-file").change(function(e) {

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+  <body class="c-app flex-row align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="clearfix">
+            <h1 class="float-left display-3 mr-4">404</h1>
+            <h4 class="pt-3">페이지를 찾을 수 없습니다.</h4>
+            <p class="text-muted">유효하지 않은 주소이거나 존재하지 않는 페이지입니다.</p>
+          </div>
+          <div class="input-group">
+              <button class="btn btn-info" type="button" onclick="goHomeClick()">첫 화면으로</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script th:replace="fragments.html::script"></script>
+    <script type="application/javascript">
+      function goHomeClick()
+      {
+        location.href = "/";
+      }
+    </script>
+  </body>
+</html>
