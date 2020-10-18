@@ -59,4 +59,9 @@ public class FamilyService
         family.removeMember(customer);
         family.changeName();
     }
+
+    public void updateFamily(Family family, FamilyDto.Put dto)
+    {
+        family.setName(dto.getName());
+    }
 }

@@ -315,4 +315,27 @@ class FamilyControllerTest
         assertThat(byId).isEmpty();
         assertThat(customer.getFamily()).isNull();
     }
+
+    @Test
+    @DisplayName("가족 수정")
+    void updateFamily() throws Exception
+    {
+        // given
+        Family family = familyRepository.findAll().get(0);
+        String changeName = "변경한 이름";
+        FamilyDto.Put dto = FamilyDto.Put.builder().name(changeName).build();
+
+        // when
+        mockMvc.perform(
+                        put("/family/{id}", family.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        Optional<Family> byId = familyRepository.findById(family.getId());
+        assertThat(byId.get().getName()).isEqualTo(changeName);
+    }
 }

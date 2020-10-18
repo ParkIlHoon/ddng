@@ -91,6 +91,29 @@ public class FamilyController
     }
 
     /**
+     * 가족을 수정한다.
+     * @param id 수정할 가족 아이디
+     * @param dto 수정할 정보
+     * @param errors
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity deleteFamily (@PathVariable("id") Long id,
+                                        @RequestBody @Valid FamilyDto.Put dto,
+                                        Errors errors)
+    {
+        Optional<Family> optionalFamily = familyService.findById(id);
+
+        if (optionalFamily.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        familyService.updateFamily(optionalFamily.get(), dto);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * 가족을 제거한다.
      * @param id 제거할 가족 아이디
      * @return

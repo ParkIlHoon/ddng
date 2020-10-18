@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "FAMILY")
-@Getter
+@Getter @Setter
 @EqualsAndHashCode(of = {"id"})
 public class Family
 {

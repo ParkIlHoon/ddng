@@ -27,6 +27,14 @@ public class FamilyDto
     @Data @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class Put
+    {
+        private String name;
+    }
+
+    @Data @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Delete
     {
         private Long customerId;
