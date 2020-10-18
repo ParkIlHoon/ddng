@@ -1,5 +1,6 @@
 $(function(){
     $("#family-card").hide();
+    var g_familyId;
 
     const Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
         totalItems : 0,
@@ -106,6 +107,7 @@ $(function(){
 
     function openFamilyTab (familyId, familyName)
     {
+        g_familyId = familyId;
         $("#family-card").show();
         var offset = $("#family-card").offset();
         $('html, body').animate({scrollTop : offset.top}, 400);
@@ -118,6 +120,7 @@ $(function(){
             var customers = data.customers;
             deleteAllMemberCard();
             createMemberCard(customers);
+            $("#family-name-input").val(data.name);
         });
     }
 
@@ -165,4 +168,38 @@ $(function(){
             $("#member-tab-page-row").append(card);
         }
     }
+
+    $("#family-name-input").change(function(){
+        var value = $("#family-name-input").val();
+
+        if (value != undefined || value != "")
+        {
+            $("#family-name-input").removeClass("is-valid");
+            $("#family-name-input").removeClass("is-invalid");
+            $("#family-name-input-feedback").text("");
+        }
+    })
+
+    $("#submit-family-name-button").on("click", function(){
+        var value = $("#family-name-input").val();
+
+        if (value == undefined || value == "")
+        {
+            $("#family-name-input").addClass("is-invalid");
+            $("#family-name-input-feedback").text("값이 비어있습니다.");
+            $("#family-name-input").focus();
+            return;
+        }
+
+        $.ajax({
+            url : "http://1hoon.iptime.org:8366/customer-api/family/" + g_familyId,
+            type : "PUT",
+            data : JSON.stringify({name : value}),
+            dataType : "json",
+            contentType:"application/json",
+            complete : function (){
+                $("#family-name-input").addClass("is-valid");
+            }
+        });
+    });
 });

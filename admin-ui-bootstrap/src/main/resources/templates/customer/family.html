@@ -114,10 +114,16 @@
                                                                             <li class="breadcrumb-item active" aria-current="page">기본 설정</li>
                                                                         </ol>
                                                                     </nav>
-                                                                    <div class="form-group row">
-                                                                        <label class="col-md-2 col-form-label" for="family-name-input">가족 명</label>
-                                                                        <div class="col-md-10">
-                                                                            <input class="form-control" id="family-name-input" type="text" name="name" placeholder="가족 명을 입력하세요(필수)">
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="family-name-input">가족 이름</label>
+                                                                        <div class="controls">
+                                                                            <div class="input-group">
+                                                                                <input class="form-control" id="family-name-input" type="text">
+                                                                                <span class="input-group-append">
+                                                                                    <button class="btn btn-primary" id="submit-family-name-button" type="button">저장</button>
+                                                                                </span>
+                                                                                <div class="invalid-feedback" id="family-name-input-feedback"></div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
