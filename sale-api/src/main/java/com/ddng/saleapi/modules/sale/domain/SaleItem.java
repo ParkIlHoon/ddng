@@ -1,7 +1,7 @@
-package com.ddng.saleapi.sale;
+package com.ddng.saleapi.modules.sale.domain;
 
-import com.ddng.saleapi.coupon.Coupon;
-import com.ddng.saleapi.item.Item;
+import com.ddng.saleapi.modules.coupon.domain.Coupon;
+import com.ddng.saleapi.modules.item.domain.Item;
 
 import javax.persistence.*;
 

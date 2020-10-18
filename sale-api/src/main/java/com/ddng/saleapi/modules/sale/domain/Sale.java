@@ -1,4 +1,4 @@
-package com.ddng.saleapi.sale;
+package com.ddng.saleapi.modules.sale.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

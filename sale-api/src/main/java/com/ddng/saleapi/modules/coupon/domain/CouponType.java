@@ -1,4 +1,4 @@
-package com.ddng.saleapi.coupon;
+package com.ddng.saleapi.modules.coupon.domain;
 
 import java.util.function.Function;
 

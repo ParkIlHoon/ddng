@@ -1,4 +1,4 @@
-package com.ddng.saleapi.item;
+package com.ddng.saleapi.modules.item.domain;
 
 import javax.persistence.*;
 
