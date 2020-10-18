@@ -201,13 +201,11 @@ $(function(){
             url : "http://1hoon.iptime.org:8366/customer-api/customer/" + $("#customer-id").text(),
             data : JSON.stringify(data)
         }).done(function(data, status){
-            console.log("${data} and status is ${status}");
             $newProfileImage.hide();
             $cutBtn.hide();
             $resetBtn.hide();
             $confirmBtn.hide();
             $currentProfileImage.show();
-            $("#profile-img").attr("src", $("#profileImage").val());
             $("#profile-image-file").val("");
         });
     });
@@ -257,8 +255,8 @@ $(function(){
     $cutBtn.click(function () {
         let dataUrl = cropper.getCroppedCanvas().toDataURL();
 
-        if (dataUrl.length > 1000 * 1024) {
-            alert("이미지 파일이 너무 큽니다. 1024000 보다 작은 파일을 사용하세요. 현재 이미지 사이즈 " + dataUrl.length);
+        if (dataUrl.length > 10 * 1024 * 1024) {
+            alert("이미지 파일이 너무 큽니다. 10MB 보다 작은 파일을 사용하세요. 현재 이미지 사이즈 " + dataUrl.length);
             return;
         }
 
@@ -273,7 +271,8 @@ $(function(){
             $newProfileImage.html(newImage);
             $cutBtn.hide();
             $confirmBtn.hide();
-            $profileImage.val(dataUrl);
+            $("#profile-img").attr("src", dataUrl);
+            $profileImage.val(dataUrl.replaceAll("data:image/png;base64,", ""));
         });
     });
 

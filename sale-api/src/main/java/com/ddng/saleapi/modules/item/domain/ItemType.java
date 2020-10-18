@@ -10,7 +10,9 @@ import lombok.Getter;
 @Getter
 public enum ItemType
 {
-    ITEM("상품"),
+    SNACK("간식"),
+    FEED("사료"),
+    SUPPLIES("용품"),
     BEAUTY("미용"),
     HOTEL("호텔"),
     KINDERGARTEN("유치원");

@@ -1,5 +1,6 @@
 package com.ddng.customerapi.modules.customer.service;
 
+import com.ddng.customerapi.infra.util.FileUtils;
 import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.customer.repository.CustomerRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +31,7 @@ public class CustomerService
 {
     private final CustomerRepository customerRepository;
     private final ModelMapper modelMapper;
+    private final FileUtils fileUtils;
 
     /**
      * 키워드로 고객 목록을 검색한다.
@@ -66,6 +69,14 @@ public class CustomerService
     {
         Customer findById = this.findById(id).orElseThrow();
         modelMapper.map(customerDto, findById);
+
+        if (StringUtils.hasText(findById.getProfileImg()))
+        {
+            String uploadPath = "customer/profile/" + id + ".png";
+            fileUtils.saveBase64AsFile(uploadPath, findById.getProfileImg());
+            findById.setProfileImg(uploadPath);
+        }
+
         Customer save = customerRepository.save(findById);
         return save;
     }
@@ -78,6 +89,14 @@ public class CustomerService
     public Customer createCustomer(CustomerDto.Post dto)
     {
         Customer map = modelMapper.map(dto, Customer.class);
+
+        if (StringUtils.hasText(map.getProfileImg()))
+        {
+            String uploadPath = "customer/profile/" + map.getId() + ".png";
+            fileUtils.saveBase64AsFile(uploadPath, map.getProfileImg());
+            map.setProfileImg(uploadPath);
+        }
+
         Customer save = customerRepository.save(map);
         return save;
     }
@@ -89,6 +108,12 @@ public class CustomerService
     public void deleteCustomer(Long id)
     {
         Customer customer = this.findById(id).orElseThrow();
+
+        if (StringUtils.hasText(customer.getProfileImg()))
+        {
+            fileUtils.deleteFile(customer.getProfileImg());
+        }
+
         customerRepository.delete(customer);
     }
 
@@ -111,4 +136,5 @@ public class CustomerService
     {
         customer.getTags().remove(tag);
     }
+
 }

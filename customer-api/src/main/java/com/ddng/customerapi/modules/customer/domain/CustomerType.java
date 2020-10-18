@@ -3,7 +3,9 @@ package com.ddng.customerapi.modules.customer.domain;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>고객 품종 Enum 클래스</h1>
@@ -127,14 +129,8 @@ public enum CustomerType
 
     public static List<CustomerType> findEnumByKorNameLike(String korName)
     {
-        List<CustomerType> result = new ArrayList<>();
-        for(CustomerType type : CustomerType.values())
-        {
-            if(type.getKorName().trim().indexOf(korName) > -1)
-            {
-                result.add(type);
-            }
-        }
-        return result;
+        return Arrays.stream(CustomerType.values())
+                .filter(type -> type.getKorName().trim().indexOf(korName) > -1)
+                .collect(Collectors.toList());
     }
 }
