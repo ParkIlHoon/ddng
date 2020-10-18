@@ -1,38 +1,35 @@
-# DDNG
-A personal project begins July 2020 and based on MSA(Micro Service Architecture).
-![Project Architecture](https://user-images.githubusercontent.com/32320659/87249065-e89e0f80-c497-11ea-9c10-5a60f1d59c6f.png)
+# About
+MSA 아키텍쳐 기반 똥강아지 애견샵 관리 RESTful API 프로젝트.
 
 ## Technics
 1. Spring Boot
 2. Spring JPA
 3. Spring Cloud Eureka
 4. Spring Cloud Zuul
-
+5. RabbitMQ
 
 ## Services
+### client
+* application name : ddng-admin-ui
+* port : 8080
+### eureka-server
+* application name : ddng-eureka-server
+* port : 8761
 ### gate-way
 * application name : ddng-gate-way
 * port : 8090
 * routes
-  * /api/user/** : ddng-user-api
-  * /api/customer/** : ddng-customer-api
-  * /api/stock/** : ddng-stock-api
-  * /api/sale/** : ddng-sale-api
-  * /api/schedule/** : ddng-schedule-api
-  * /api/statistic/** : ddng-statistic-api
-### eureka-server
-* application name : ddng-eureka-server
-* port : 8761
-### web-site
+  * /user-api/** : ddng-user-api
+  * /customer-api/** : ddng-customer-api
+  * /sale-api/** : ddng-sale-api
+  * /schedule-api/** : ddng-schedule-api
+  * /statistic-api/** : ddng-statistic-api
 ### user-api
 * application name : ddng-user-api
 * port : 8000
 ### customer-api
 * application name : ddng-customer-api
 * port : 8005
-### stock-api
-* application name : ddng-stock-api
-* port : 8010
 ### sale-api
 * application name : ddng-sale-api
 * port : 8015
