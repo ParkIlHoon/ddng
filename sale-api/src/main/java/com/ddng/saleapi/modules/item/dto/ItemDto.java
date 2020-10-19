@@ -9,6 +9,9 @@ import lombok.Setter;
 
 public class ItemDto
 {
+    /**
+     * <h1>응답용 상품 DTO</h1>
+     */
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter @Setter

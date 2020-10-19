@@ -7,6 +7,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * <h1>상품 엔티티</h1>
+ *
+ * @version 1.0
+ */
 @Entity
 @Table(name = "ITEM")
 @Getter @Setter

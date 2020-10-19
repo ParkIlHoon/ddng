@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * <h1>상품 관련 요청 처리 컨트롤러</h1>
+ *
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/item")
 @RequiredArgsConstructor
