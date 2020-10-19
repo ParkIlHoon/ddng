@@ -2,10 +2,10 @@ package com.ddng.saleapi.modules.item.dto;
 
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class ItemDto
 {
@@ -37,5 +37,22 @@ public class ItemDto
 
             this.typeName = item.getType().getName();
         }
+    }
+
+    /**
+     * <h1>Post 요청 처리용 상품 DTO</h1>
+     */
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter @Setter @Builder
+    public static class Post
+    {
+        @NotEmpty
+        private String name;
+        @NotNull
+        private ItemType type;
+        private String barcode;
+        private int price;
+        private int itemQuantity;
     }
 }

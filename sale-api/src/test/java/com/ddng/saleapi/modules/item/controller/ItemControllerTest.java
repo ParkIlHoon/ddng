@@ -2,7 +2,9 @@ package com.ddng.saleapi.modules.item.controller;
 
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
+import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +41,7 @@ class ItemControllerTest
 {
     @Autowired private WebApplicationContext ctx;
     @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
     @Autowired ItemRepository itemRepository;
 
     @BeforeEach
@@ -172,5 +176,59 @@ class ItemControllerTest
                         )
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("상품 생성")
+    void createItem() throws Exception
+    {
+        // given
+        ItemDto.Post dto = ItemDto.Post.builder()
+                                        .name("상품3")
+                                        .type(ItemType.SUPPLIES)
+                                        .barcode("880208482113")
+                                        .price(3500)
+                                        .itemQuantity(10)
+                                        .build();
+
+        // when
+        mockMvc.perform(
+                        post("/item")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        // then
+        List<Item> all = itemRepository.findAll();
+        assertThat(all.size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("상품 생성 - 잘못된 값")
+    void createItem_wrongValue() throws Exception
+    {
+        // given
+        ItemDto.Post dto = ItemDto.Post.builder()
+//                                        .name("상품3")
+//                                        .type(ItemType.SUPPLIES)
+                                        .barcode("880208482113")
+                                        .price(3500)
+                                        .itemQuantity(10)
+                                        .build();
+
+        // when
+        mockMvc.perform(
+                        post("/item")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        // then
+        List<Item> all = itemRepository.findAll();
+        assertThat(all.size()).isEqualTo(2);
     }
 }

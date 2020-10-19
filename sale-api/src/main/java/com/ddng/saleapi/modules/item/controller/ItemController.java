@@ -8,13 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
  * <h1>상품 관련 요청 처리 컨트롤러</h1>
@@ -61,6 +63,23 @@ public class ItemController
         return ResponseEntity.ok(dto);
     }
 
+    /**
+     * 상품을 생성한다.
+     * @param dto 생성할 상품 정보
+     * @param errors
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity createItem (@RequestBody @Valid ItemDto.Post dto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
 
+        Item created = itemService.createItem(dto);
 
+        WebMvcLinkBuilder builder = linkTo(ItemController.class).slash(created.getId());
+        return ResponseEntity.created(builder.toUri()).build();
+    }
 }
