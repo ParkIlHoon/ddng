@@ -134,4 +134,43 @@ class ItemControllerTest
         Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
         return (List<HashMap>) stringObjectMap.get("content");
     }
+
+    @Test
+    @DisplayName("상품 조회 - 존재하는 상품")
+    void getItem_exist() throws Exception
+    {
+        // given
+        Item item = itemRepository.findAll().get(0);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                                                get("/item/{id}", item.getId())
+                                                )
+                                        .andDo(print())
+                                        .andExpect(status().isOk());
+
+        MockHttpServletResponse response = actions.andReturn().getResponse();
+        String contentAsString = response.getContentAsString();
+
+        JacksonJsonParser parser = new JacksonJsonParser();
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+
+        // then
+        assertThat(stringObjectMap.get("name")).isEqualTo("상품1");
+    }
+
+    @Test
+    @DisplayName("상품 조회 - 존재하지않는 상품")
+    void getItem_notExist() throws Exception
+    {
+        // given
+        Long id = 99999L;
+
+        // when
+        mockMvc.perform(
+                       get("/item/{id}", id)
+                        )
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 }

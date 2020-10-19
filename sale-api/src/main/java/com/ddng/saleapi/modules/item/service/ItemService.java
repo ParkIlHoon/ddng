@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,5 +35,10 @@ public class ItemService
                                                             .collect(Collectors.toList());
 
         return new PageImpl<>(collect, pageable, items.getTotalElements());
+    }
+
+    public Optional<Item> findById(Long id)
+    {
+        return itemRepository.findById(id);
     }
 }
