@@ -121,6 +121,9 @@ $(function(){
             deleteAllMemberCard();
             createMemberCard(customers);
             $("#family-name-input").val(data.name);
+            $("#family-name-input").removeClass("is-valid");
+            $("#family-name-input").removeClass("is-invalid");
+            $("#family-name-input-feedback").text("");
         });
     }
 

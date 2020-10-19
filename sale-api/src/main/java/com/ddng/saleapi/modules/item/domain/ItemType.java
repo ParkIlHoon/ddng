@@ -2,6 +2,10 @@ package com.ddng.saleapi.modules.item.domain;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * <h1>상품 타입 Enum 클래스</h1>
  *
@@ -22,5 +26,12 @@ public enum ItemType
     ItemType (String name)
     {
         this.name = name;
+    }
+
+    public static List<ItemType> findEnumByName(String name)
+    {
+        return Arrays.stream(ItemType.values())
+                    .filter(itemType -> itemType.getName().trim().indexOf(name) > -1)
+                    .collect(Collectors.toList());
     }
 }

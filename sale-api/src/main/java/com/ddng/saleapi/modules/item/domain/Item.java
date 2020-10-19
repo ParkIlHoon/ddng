@@ -1,9 +1,17 @@
 package com.ddng.saleapi.modules.item.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "ITEM")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item
 {
     @Id @GeneratedValue
@@ -25,6 +33,4 @@ public class Item
 
     @Column(name = "ITEM_QUANTITY")
     private int itemQuantity;
-
-    protected Item() { }
 }
