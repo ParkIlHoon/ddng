@@ -283,4 +283,42 @@ class ItemControllerTest
                                         .andDo(print())
                                         .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("상품 삭제")
+    void deleteItem_exist() throws Exception
+    {
+        // given
+        Item item = itemRepository.findAll().get(0);
+
+        // when
+        mockMvc.perform(
+                        delete("/item/{id}", item.getId())
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        List<Item> all = itemRepository.findAll();
+        assertThat(item).isNotIn(all);
+    }
+
+    @Test
+    @DisplayName("상품 삭제 - 존재하지않는 상품")
+    void deleteItem_notExist() throws Exception
+    {
+        // given
+        Long id = 9999L;
+
+        // when
+        mockMvc.perform(
+                        delete("/item/{id}", id)
+                        )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        // then
+        List<Item> all = itemRepository.findAll();
+        assertThat(all.size()).isEqualTo(2);
+    }
 }

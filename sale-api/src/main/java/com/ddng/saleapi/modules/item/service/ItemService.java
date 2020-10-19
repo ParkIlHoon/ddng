@@ -56,4 +56,9 @@ public class ItemService
         modelMapper.map(dto, item);
         return itemRepository.save(item);
     }
+
+    public void deleteItem(Item item)
+    {
+        itemRepository.delete(item);
+    }
 }

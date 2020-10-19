@@ -109,4 +109,18 @@ public class ItemController
         Item updated = itemService.updateItem(optionalItem.get(), dto);
         return ResponseEntity.ok(new ItemDto.Response(updated));
     }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteItem (@PathVariable("id") Long id)
+    {
+        Optional<Item> optionalItem = itemService.findById(id);
+        if (optionalItem.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        itemService.deleteItem(optionalItem.get());
+        return ResponseEntity.ok().build();
+    }
 }
