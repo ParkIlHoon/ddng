@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,6 +43,7 @@ class ItemControllerTest
     @Autowired private WebApplicationContext ctx;
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
+    @Autowired ModelMapper modelMapper;
     @Autowired ItemRepository itemRepository;
 
     @BeforeEach
@@ -230,5 +232,55 @@ class ItemControllerTest
         // then
         List<Item> all = itemRepository.findAll();
         assertThat(all.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("상품 수정")
+    void updateItem() throws Exception
+    {
+        // given
+        String changeName = "변경된 이름";
+        Item item = itemRepository.findAll().get(0);
+        ItemDto.Put map = modelMapper.map(item, ItemDto.Put.class);
+        map.setName(changeName);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                                                put("/item/{id}", item.getId())
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                    .content(objectMapper.writeValueAsString(map))
+                                                )
+                                        .andDo(print())
+                                        .andExpect(status().isOk());
+
+        MockHttpServletResponse response = actions.andReturn().getResponse();
+        String contentAsString = response.getContentAsString();
+
+        JacksonJsonParser parser = new JacksonJsonParser();
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+
+        // then
+        assertThat(stringObjectMap.get("name")).isEqualTo(changeName);
+    }
+
+    @Test
+    @DisplayName("상품 수정 - 잘못된 값")
+    void updateItem_wrongValue() throws Exception
+    {
+        // given
+        String changeName = "변경된 이름";
+        Item item = itemRepository.findAll().get(0);
+        ItemDto.Put map = modelMapper.map(item, ItemDto.Put.class);
+        map.setName(changeName);
+        map.setType(null);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                                                put("/item/{id}", item.getId())
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper.writeValueAsString(map))
+                                                )
+                                        .andDo(print())
+                                        .andExpect(status().isBadRequest());
     }
 }

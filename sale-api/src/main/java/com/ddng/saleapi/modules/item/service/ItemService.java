@@ -50,4 +50,10 @@ public class ItemService
         Item map = modelMapper.map(dto, Item.class);
         return itemRepository.save(map);
     }
+
+    public Item updateItem(Item item, ItemDto.Put dto)
+    {
+        modelMapper.map(dto, item);
+        return itemRepository.save(item);
+    }
 }

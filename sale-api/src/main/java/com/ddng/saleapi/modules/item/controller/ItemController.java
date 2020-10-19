@@ -82,4 +82,31 @@ public class ItemController
         WebMvcLinkBuilder builder = linkTo(ItemController.class).slash(created.getId());
         return ResponseEntity.created(builder.toUri()).build();
     }
+
+    /**
+     * 상품 정보를 수정한다.
+     * @param id 수정할 상품 아이디
+     * @param dto 수정할 내용
+     * @param errors
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity updateItem (@PathVariable("id") Long id,
+                                      @RequestBody @Valid ItemDto.Put dto,
+                                      Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Item> optionalItem = itemService.findById(id);
+        if (optionalItem.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Item updated = itemService.updateItem(optionalItem.get(), dto);
+        return ResponseEntity.ok(new ItemDto.Response(updated));
+    }
 }

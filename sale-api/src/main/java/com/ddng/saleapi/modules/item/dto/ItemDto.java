@@ -55,4 +55,21 @@ public class ItemDto
         private int price;
         private int itemQuantity;
     }
+
+    /**
+     * <h1>Put 요청 처리용 상품 DTO</h1>
+     */
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter @Setter @Builder
+    public static class Put
+    {
+        @NotEmpty
+        private String name;
+        @NotNull
+        private ItemType type;
+        private String barcode;
+        private int price;
+        private int itemQuantity;
+    }
 }
