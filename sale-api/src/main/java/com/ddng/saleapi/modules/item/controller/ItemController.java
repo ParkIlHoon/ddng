@@ -110,7 +110,11 @@ public class ItemController
         return ResponseEntity.ok(new ItemDto.Response(updated));
     }
 
-
+    /**
+     * 상품을 삭제한다.
+     * @param id 삭제할 상품 아이디
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity deleteItem (@PathVariable("id") Long id)
     {

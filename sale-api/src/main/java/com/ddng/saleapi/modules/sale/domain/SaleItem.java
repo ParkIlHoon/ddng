@@ -2,11 +2,14 @@ package com.ddng.saleapi.modules.sale.domain;
 
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.item.domain.Item;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "SALE_ITEM")
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class SaleItem
 {
     @Id @GeneratedValue
@@ -33,6 +36,4 @@ public class SaleItem
 
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
-
-    protected SaleItem() { }
 }
