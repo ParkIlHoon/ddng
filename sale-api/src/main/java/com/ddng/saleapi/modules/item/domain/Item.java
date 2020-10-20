@@ -33,6 +33,9 @@ public class Item
     @Column(name = "BARCODE")
     private String barcode;
 
+    @Column(name = "UNIT")
+    private String unit;
+
     @Column(name = "PRICE")
     private int price;
 
