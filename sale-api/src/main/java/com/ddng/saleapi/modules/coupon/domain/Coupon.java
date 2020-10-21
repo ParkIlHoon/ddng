@@ -1,10 +1,14 @@
 package com.ddng.saleapi.modules.coupon.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "COUPON")
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class Coupon
 {
     @Id @GeneratedValue
@@ -32,6 +36,4 @@ public class Coupon
 
     @Column(name = "ITEM_ID")
     private Long itemId;
-
-    protected Coupon() { }
 }

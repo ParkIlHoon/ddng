@@ -30,7 +30,7 @@ public class SaleItem
     @Column(name = "COUNT")
     private int count;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "COUPON_ID")
     private Coupon coupon;
 
