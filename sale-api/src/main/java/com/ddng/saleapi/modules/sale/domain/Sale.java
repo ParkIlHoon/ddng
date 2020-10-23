@@ -1,5 +1,6 @@
 package com.ddng.saleapi.modules.sale.domain;
 
+import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,4 +34,12 @@ public class Sale
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<SaleItem> saleItemList = new ArrayList<>();
+
+    public Sale(SaleDto.Post dto)
+    {
+        this.saleDate = LocalDateTime.now();
+        this.payment = dto.getPayment();
+        this.familyId = dto.getFamilyId();
+        this.type = dto.getType();
+    }
 }

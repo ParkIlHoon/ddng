@@ -41,4 +41,13 @@ public class Item
 
     @Column(name = "ITEM_QUANTITY")
     private int itemQuantity;
+
+    /**
+     * 상품을 판매한다.
+     * @param count 판매할 개수
+     */
+    public void soldItem (int count)
+    {
+        this.itemQuantity -= count;
+    }
 }
