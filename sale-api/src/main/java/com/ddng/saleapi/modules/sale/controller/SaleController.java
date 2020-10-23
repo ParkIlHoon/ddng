@@ -7,12 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -46,5 +45,24 @@ public class SaleController
         Sale sale = saleService.createSale(dto);
         WebMvcLinkBuilder builder = linkTo(SaleController.class).slash(sale.getId());
         return ResponseEntity.created(builder.toUri()).build();
+    }
+
+    /**
+     * 판매 정보를 조회한다.
+     * @param id 조회할 판매 아이디
+     * @return
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity getSale (@PathVariable("id") Long id)
+    {
+        Optional<Sale> optionalSale = saleService.findById(id);
+
+        if (optionalSale.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        SaleDto.Get dto = new SaleDto.Get(optionalSale.get());
+        return ResponseEntity.ok(dto);
     }
 }

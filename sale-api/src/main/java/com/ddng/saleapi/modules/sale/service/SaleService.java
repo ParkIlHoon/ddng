@@ -102,4 +102,9 @@ public class SaleService
 
         return returnList;
     }
+
+    public Optional<Sale> findById(Long id)
+    {
+        return saleRepository.findById(id);
+    }
 }
