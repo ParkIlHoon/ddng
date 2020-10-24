@@ -10,6 +10,9 @@ import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
 import com.ddng.saleapi.modules.sale.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,5 +109,20 @@ public class SaleService
     public Optional<Sale> findById(Long id)
     {
         return saleRepository.findById(id);
+    }
+
+    public Page<SaleDto.Response> searchByDto(SaleDto.Get dto, Pageable pageable)
+    {
+        PageImpl<SaleDto.Response> responses = null;
+        if (dto.isOnlyToday())
+        {
+            Page<Sale> todaySales = saleRepository.findBySaleDateAfterAndSaleDateBefore(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1), pageable);
+            List<SaleDto.Response> collect = todaySales.getContent().stream()
+                                                                    .map(sale -> new SaleDto.Response(sale))
+                                                                    .collect(Collectors.toList());
+            responses = new PageImpl<SaleDto.Response>(collect, pageable, todaySales.getTotalElements());
+        }
+
+        return responses;
     }
 }

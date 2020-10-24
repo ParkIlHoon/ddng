@@ -4,6 +4,10 @@ import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -47,6 +51,20 @@ public class SaleController
         return ResponseEntity.created(builder.toUri()).build();
     }
 
+    @GetMapping
+    public ResponseEntity searchSale (@RequestBody @Valid SaleDto.Get dto,
+                                      Errors errors,
+                                      @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Page<SaleDto.Response> sales = saleService.searchByDto(dto, pageable);
+        return ResponseEntity.ok(sales);
+    }
+
     /**
      * 판매 정보를 조회한다.
      * @param id 조회할 판매 아이디
@@ -62,7 +80,7 @@ public class SaleController
             return ResponseEntity.notFound().build();
         }
 
-        SaleDto.Get dto = new SaleDto.Get(optionalSale.get());
+        SaleDto.ResponseWithSaleItem dto = new SaleDto.ResponseWithSaleItem(optionalSale.get());
         return ResponseEntity.ok(dto);
     }
 }
