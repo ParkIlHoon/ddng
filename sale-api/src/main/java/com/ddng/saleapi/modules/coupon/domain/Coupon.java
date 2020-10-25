@@ -36,9 +36,9 @@ public class Coupon
     @Enumerated(EnumType.STRING)
     private CouponType type;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ITEM_ID")
-    private Item item;
+    @Column(name = "ITEM_TYPE")
+    @Enumerated(EnumType.STRING)
+    private ItemType itemType;
 
 
     /**
@@ -61,7 +61,7 @@ public class Coupon
         if (item.getType().equals(ItemType.BEAUTY) || item.getType().equals(ItemType.HOTEL) || item.getType().equals(ItemType.KINDERGARTEN))
         {
             if (customerId == null) return false;
-            if (this.customerId.equals(customerId) && this.item.equals(item))
+            if (this.customerId.equals(customerId) && this.itemType.equals(item.getType()))
             {
                 return true;
             }
@@ -69,7 +69,7 @@ public class Coupon
         // 상품이 간식, 사료, 용품일 경우 대상자 아이디 필요하지 않음
         else
         {
-            if (this.item.equals(item))
+            if (this.itemType.equals(item.getType()))
             {
                 return true;
             }

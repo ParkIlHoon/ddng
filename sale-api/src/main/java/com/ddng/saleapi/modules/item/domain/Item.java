@@ -42,6 +42,9 @@ public class Item
     @Column(name = "ITEM_QUANTITY")
     private int itemQuantity;
 
+    @Column(name = "STAMP")
+    private boolean stamp;
+
     /**
      * 상품을 판매한다.
      * @param count 판매할 개수

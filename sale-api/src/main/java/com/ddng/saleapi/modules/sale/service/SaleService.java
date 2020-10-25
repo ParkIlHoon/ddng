@@ -2,6 +2,7 @@ package com.ddng.saleapi.modules.sale.service;
 
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
+import com.ddng.saleapi.modules.coupon.service.CouponService;
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
 import com.ddng.saleapi.modules.sale.domain.Sale;
@@ -35,6 +36,7 @@ public class SaleService
     private final SaleRepository saleRepository;
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
+    private final CouponService couponService;
 
     /**
      * 새로운 판매를 생성한다.
@@ -68,6 +70,7 @@ public class SaleService
         Sale save = saleRepository.save(sale);
 
         //TODO 쿠폰 처리
+        couponService.stamp(save);
 
         return save;
     }

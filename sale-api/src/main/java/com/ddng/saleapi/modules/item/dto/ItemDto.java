@@ -23,6 +23,7 @@ public class ItemDto
         private String barcode;
         private int price;
         private int itemQuantity;
+        private boolean stamp;
 
         private String typeName;
 
@@ -34,6 +35,7 @@ public class ItemDto
             this.barcode = item.getBarcode();
             this.price = item.getPrice();
             this.itemQuantity = item.getItemQuantity();
+            this.stamp = item.isStamp();
 
             this.typeName = item.getType().getName();
         }
@@ -54,6 +56,7 @@ public class ItemDto
         private String barcode;
         private int price;
         private int itemQuantity;
+        private boolean stamp;
     }
 
     /**
@@ -71,5 +74,6 @@ public class ItemDto
         private String barcode;
         private int price;
         private int itemQuantity;
+        private boolean stamp;
     }
 }
