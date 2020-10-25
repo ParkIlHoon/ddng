@@ -87,7 +87,7 @@ class SaleControllerTest
         coupon.setExpireDate(LocalDateTime.now().plusDays(1));
         coupon.setCreateDate(LocalDateTime.now());
         coupon.setCustomerId(1L);
-        coupon.setItemId(item.getId());
+        coupon.setItem(item);
         coupon.setType(CouponType.DISCOUNT_ALL);
 
         couponRepository.save(coupon);
