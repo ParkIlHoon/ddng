@@ -36,6 +36,11 @@ public class SaleService
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
 
+    /**
+     * 새로운 판매를 생성한다.
+     * @param dto
+     * @return
+     */
     public Sale createSale(SaleDto.Post dto)
     {
         // 판매할 상품 확인 및 조회
@@ -61,6 +66,8 @@ public class SaleService
 
         // 판매 저장(cascade 처리)
         Sale save = saleRepository.save(sale);
+
+        //TODO 쿠폰 처리
 
         return save;
     }

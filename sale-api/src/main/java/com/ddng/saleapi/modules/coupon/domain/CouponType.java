@@ -11,13 +11,21 @@ import java.util.function.Function;
  */
 public enum CouponType
 {
-    DISCOUNT_ALL(value -> 0),
-    DISCOUNT_HALF(value -> value / 2);
+    DISCOUNT_ALL("무료", value -> 0),
+    DISCOUNT_HALF("반값할인", value -> value / 2);
 
+    private String name;
     private Function<Integer, Integer> expression;
 
-    CouponType(Function<Integer, Integer> expression) {
+    CouponType(String name, Function<Integer, Integer> expression)
+    {
+        this.name = name;
         this.expression = expression;
+    }
+
+    public String getName ()
+    {
+        return this.name;
     }
 
     public int calculate (int value)

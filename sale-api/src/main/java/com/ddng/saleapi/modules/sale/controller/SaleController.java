@@ -51,6 +51,13 @@ public class SaleController
         return ResponseEntity.created(builder.toUri()).build();
     }
 
+    /**
+     * 판매 내역을 검색한다.
+     * @param dto 검색 정보
+     * @param errors
+     * @param pageable
+     * @return
+     */
     @GetMapping
     public ResponseEntity searchSale (@RequestBody @Valid SaleDto.Get dto,
                                       Errors errors,

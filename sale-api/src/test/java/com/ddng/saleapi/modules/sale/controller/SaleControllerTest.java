@@ -12,6 +12,7 @@ import com.ddng.saleapi.modules.sale.domain.SaleType;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
 import com.ddng.saleapi.modules.sale.repository.SaleRepository;
+import com.ddng.saleapi.modules.sale.service.SaleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,11 +20,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -31,11 +35,12 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +57,7 @@ class SaleControllerTest
     @Autowired ItemRepository itemRepository;
     @Autowired SaleRepository saleRepository;
     @Autowired CouponRepository couponRepository;
+    @Autowired SaleService saleService;
 
     @BeforeEach
     public void initializeData ()
@@ -197,5 +203,56 @@ class SaleControllerTest
         assertThat(afterAllItems.get(0).getItemQuantity()).isEqualTo(98);
         assertThat(afterAllItems.get(1).getItemQuantity()).isLessThan(100);
         assertThat(afterAllItems.get(1).getItemQuantity()).isEqualTo(98);
+    }
+
+    @Test
+    @DisplayName("판매 검색 - 오늘 판매")
+    void searchSale_today() throws Exception
+    {
+        // given
+        List<Item> allItem = itemRepository.findAll();
+
+        SaleItemDto saleItemDto1 = SaleItemDto.builder()
+                .itemId(allItem.get(0).getId())
+                .count(2)
+                .build();
+
+        // 500 * 2
+        SaleItemDto saleItemDto2 = SaleItemDto.builder()
+                .itemId(allItem.get(1).getId())
+                .count(2)
+                .build();
+
+        SaleDto.Post saleDto = SaleDto.Post.builder()
+                .familyId(1L)
+                .payment(PaymentType.CARD)
+                .saleItems(List.of(saleItemDto1, saleItemDto2))
+                .type(SaleType.PAYED)
+                .build();
+
+        saleService.createSale(saleDto);
+
+
+        SaleDto.Get dto = new SaleDto.Get();
+        dto.setOnlyToday(true);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                                                get("/sale")
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                    .content(objectMapper.writeValueAsString(dto))
+                                                )
+                                        .andDo(print())
+                                        .andExpect(status().isOk());
+
+        MockHttpServletResponse response = actions.andReturn().getResponse();
+        String contentAsString = response.getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+
+        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+        List<Object> content = (List<Object>) stringObjectMap.get("content");
+
+        // then
+        assertThat(content.size()).isEqualTo(1);
     }
 }

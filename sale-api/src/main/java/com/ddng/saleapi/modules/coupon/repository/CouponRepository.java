@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface CouponRepository extends JpaRepository<Coupon, Long>
+public interface CouponRepository extends JpaRepository<Coupon, Long>, CouponCustomRepository
 {
     List<Coupon> findByIdInAndUseDateIsNullAndExpireDateAfter(List<Long> ids, LocalDateTime dateTime);
 }
