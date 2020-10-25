@@ -32,6 +32,13 @@ public class SaleDto
 
     @Getter @Setter @Builder
     @NoArgsConstructor @AllArgsConstructor
+    public static class Put
+    {
+        private SaleType type;
+    }
+
+    @Getter @Setter @Builder
+    @NoArgsConstructor @AllArgsConstructor
     public static class Response
     {
         private Long familyId;

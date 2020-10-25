@@ -135,4 +135,10 @@ public class SaleService
 
         return responses;
     }
+
+    public Sale updateSale(Sale sale, SaleDto.Put dto)
+    {
+        sale.setType(dto.getType());
+        return saleRepository.save(sale);
+    }
 }

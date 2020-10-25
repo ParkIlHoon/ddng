@@ -39,6 +39,7 @@ public class CouponController
                                         Errors errors,
                                         @PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
+        //FIXME 수정 필요
         if (errors.hasErrors())
         {
             return ResponseEntity.badRequest().build();

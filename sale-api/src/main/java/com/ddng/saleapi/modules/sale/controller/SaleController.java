@@ -90,4 +90,28 @@ public class SaleController
         SaleDto.ResponseWithSaleItem dto = new SaleDto.ResponseWithSaleItem(optionalSale.get());
         return ResponseEntity.ok(dto);
     }
+
+    /**
+     * 판매 정보를 수정한다.
+     * @param id 수정할 판매 아이디
+     * @param dto 수정할 내용
+     * @param errors
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity updateSale (@PathVariable("id") Long id,
+                                      @RequestBody @Valid SaleDto.Put dto,
+                                      Errors errors)
+    {
+        Optional<Sale> optionalSale = saleService.findById(id);
+
+        if (optionalSale.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        Sale updated = saleService.updateSale(optionalSale.get(), dto);
+        SaleDto.ResponseWithSaleItem response = new SaleDto.ResponseWithSaleItem(updated);
+        return ResponseEntity.ok(response);
+    }
 }

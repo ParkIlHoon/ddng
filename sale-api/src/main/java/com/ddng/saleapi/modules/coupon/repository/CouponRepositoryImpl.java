@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
 import static com.ddng.saleapi.modules.coupon.domain.QCoupon.coupon;
 import static com.ddng.saleapi.modules.item.domain.QItem.item;
 
@@ -36,7 +38,7 @@ public class CouponRepositoryImpl implements CouponCustomRepository
                             .from(coupon)
                             .leftJoin(coupon.item, item)
                             .where(
-                                    customerIdEq(dto.getCustomerId())
+                                    customerIdIn(dto.getCustomerIds())
                                     )
                             .offset(pageable.getOffset())
                             .limit(pageable.getPageSize())
@@ -48,5 +50,9 @@ public class CouponRepositoryImpl implements CouponCustomRepository
     private BooleanExpression customerIdEq(Long customerId)
     {
         return customerId != null ? coupon.customerId.eq(customerId) : null;
+    }
+    private BooleanExpression customerIdIn(List<Long> customerIds)
+    {
+        return customerIds != null ? coupon.customerId.in(customerIds) : null;
     }
 }

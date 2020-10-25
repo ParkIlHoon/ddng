@@ -42,6 +42,7 @@ $(function(){
             data : {"keyword" : searchKeyword, "size" : 12}
         }).done((data, textStatus, jqXHR) => {
             deleteAllMemberCard();
+            deleteAllCouponCard();
             deleteAllFamilyCards();
             createFamilyCards(data);
             Pagination.reset(data.totalElements);
@@ -119,7 +120,9 @@ $(function(){
         }).done((data, textStatus, jqXHR) => {
             var customers = data.customers;
             deleteAllMemberCard();
+            deleteAllCouponCard();
             createMemberCard(customers);
+            createCouponCard(customers.map(customer => customer.id))
             $("#family-name-input").val(data.name);
             $("#family-name-input").removeClass("is-valid");
             $("#family-name-input").removeClass("is-invalid");
@@ -130,6 +133,11 @@ $(function(){
     function deleteAllMemberCard()
     {
         $("#member-tab-page-row").empty();
+    }
+
+    function deleteAllCouponCard()
+    {
+        $("#coupon-tab-page-row").empty();
     }
 
     function createMemberCard(data)
@@ -170,6 +178,56 @@ $(function(){
 
             $("#member-tab-page-row").append(card);
         }
+    }
+
+    function createCouponCard(customerIds)
+    {
+        $.ajax({
+            url : "http://1hoon.iptime.org:8366/sale-api/coupon",
+            type : "GET",
+            data : {"customerIds" : customerIds},
+            dataType : "json",
+            contentType:"application/json"
+        }).done((data, textStatus, jqXHR) => {
+            var coupons = data.content;
+
+            for (var idx = 0; idx < coupons.length; idx++)
+            {
+                var name = coupons[idx].name;
+                var createDate = coupons[idx].createDate;
+                var expireDate = coupons[idx].expireDate;
+                var useDate = coupons[idx].useDate;
+
+                var couponHtml = "<div class=\"col-md-6 col-lg-3\">\n" +
+                                    "<div class=\"card\">\n";
+
+                if (useDate == "")
+                {
+                    couponHtml +=       "<div class=\"card text-white bg-gradient-info\">";
+                }
+                else
+                {
+                    couponHtml +=       "<div class=\"card-body text-center\">\n";
+                }
+                    couponHtml +=           "<div class=\"text-muted small text-uppercase font-weight-bold\">" + createDate + "</div>\n" +
+                                            "<div class=\"text-value-xl py-3\">" + name + "</div>\n" +
+                                            "<div>\n";
+                if (useDate == "")
+                {
+                    couponHtml +=               "<small class=\"text-muted\">유효기간 : " + expireDate + "</small>\n";
+                }
+                else
+                {
+                    couponHtml +=               "<small class=\"text-muted\">사용 완료(" + useDate + ")</small>\n";
+                }
+                    couponHtml +=          "</div>\n" +
+                                        "</div>\n" +
+                                    "</div>\n" +
+                                 "</div>";
+
+                $("#coupon-tab-page-row").append(couponHtml);
+            }
+        });
     }
 
     $("#family-name-input").change(function(){

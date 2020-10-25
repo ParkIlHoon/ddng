@@ -6,6 +6,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CouponDto
 {
@@ -13,7 +14,7 @@ public class CouponDto
     @NoArgsConstructor @AllArgsConstructor
     public static class Get
     {
-        private Long customerId;
+        private List<Long> customerIds;
     }
 
     @Getter @Setter @Builder
