@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,6 +28,8 @@ public class CouponController
 {
     private final CouponService couponService;
 
+
+
     /**
      * 쿠폰 목록을 검색한다.
      * @param dto
@@ -35,15 +38,17 @@ public class CouponController
      * @return
      */
     @GetMapping
-    public ResponseEntity searchCoupon (@RequestBody @Valid CouponDto.Get dto,
-                                        Errors errors,
+    public ResponseEntity searchCoupon (@RequestParam("customerIds") List<Long> customerIds,
                                         @PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
         //FIXME 수정 필요
-        if (errors.hasErrors())
-        {
-            return ResponseEntity.badRequest().build();
-        }
+//        if (errors.hasErrors())
+//        {
+//            return ResponseEntity.badRequest().build();
+//        }
+
+        CouponDto.Get dto = new CouponDto.Get();
+        dto.setCustomerIds(customerIds);
 
         Page<CouponDto.Response> content = couponService.searchByDto(dto, pageable);
         return ResponseEntity.ok(content);

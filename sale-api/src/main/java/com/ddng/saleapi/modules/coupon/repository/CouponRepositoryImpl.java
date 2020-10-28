@@ -34,9 +34,8 @@ public class CouponRepositoryImpl implements CouponCustomRepository
         QueryResults<CouponDto.Response> queryResults =
                 queryFactory.select(new QCouponDto_Response(coupon.id, coupon.customerId, coupon.name,
                                                             coupon.createDate, coupon.expireDate, coupon.useDate,
-                                                            coupon.type, item.name))
+                                                            coupon.type, coupon.itemType))
                             .from(coupon)
-                            .leftJoin(coupon.item, item)
                             .where(
                                     customerIdIn(dto.getCustomerIds())
                                     )

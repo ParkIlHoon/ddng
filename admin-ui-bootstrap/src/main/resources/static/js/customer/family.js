@@ -183,11 +183,8 @@ $(function(){
     function createCouponCard(customerIds)
     {
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/coupon",
-            type : "GET",
-            data : {"customerIds" : customerIds},
-            dataType : "json",
-            contentType:"application/json"
+            url : "http://1hoon.iptime.org:8366/sale-api/coupon?customerIds=" + customerIds[0] + "&customerIds=" + customerIds[1] + "&customerIds=" + customerIds[2],
+            type : "GET"
         }).done((data, textStatus, jqXHR) => {
             var coupons = data.content;
 
@@ -201,9 +198,9 @@ $(function(){
                 var couponHtml = "<div class=\"col-md-6 col-lg-3\">\n" +
                                     "<div class=\"card\">\n";
 
-                if (useDate == "")
+                if (useDate == "" || useDate == null)
                 {
-                    couponHtml +=       "<div class=\"card text-white bg-gradient-info\">";
+                    couponHtml +=       "<div class=\"card-body text-center text-white bg-gradient-info\">";
                 }
                 else
                 {
@@ -212,7 +209,7 @@ $(function(){
                     couponHtml +=           "<div class=\"text-muted small text-uppercase font-weight-bold\">" + createDate + "</div>\n" +
                                             "<div class=\"text-value-xl py-3\">" + name + "</div>\n" +
                                             "<div>\n";
-                if (useDate == "")
+                if (useDate == "" || useDate == null)
                 {
                     couponHtml +=               "<small class=\"text-muted\">유효기간 : " + expireDate + "</small>\n";
                 }
