@@ -191,6 +191,8 @@ $(function(){
             for (var idx = 0; idx < coupons.length; idx++)
             {
                 var name = coupons[idx].name;
+                var typeName = coupons[idx].typeName;
+                var itemTypeName = coupons[idx].itemTypeName;
                 var createDate = coupons[idx].createDate;
                 var expireDate = coupons[idx].expireDate;
                 var useDate = coupons[idx].useDate;
@@ -207,7 +209,7 @@ $(function(){
                     couponHtml +=       "<div class=\"card-body text-center\">\n";
                 }
                     couponHtml +=           "<div class=\"text-muted small text-uppercase font-weight-bold\">" + createDate + "</div>\n" +
-                                            "<div class=\"text-value-xl py-3\">" + name + "</div>\n" +
+                                            "<div class=\"text-value-xl py-3\">" + name + "(" + itemTypeName + "/" + typeName + ")" + "</div>\n" +
                                             "<div>\n";
                 if (useDate == "" || useDate == null)
                 {
