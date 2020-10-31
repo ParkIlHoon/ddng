@@ -123,16 +123,21 @@ public class SaleService
 
     public Page<SaleDto.Response> searchByDto(SaleDto.Get dto, Pageable pageable)
     {
-        PageImpl<SaleDto.Response> responses = null;
-        if (dto.isOnlyToday())
+        Page<Sale> salePage = null;
+        if (dto.isOnlyToday() && dto.getItem() == null)
         {
-            Page<Sale> todaySales = saleRepository.findBySaleDateAfterAndSaleDateBefore(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1), pageable);
-            List<SaleDto.Response> collect = todaySales.getContent().stream()
-                                                                    .map(sale -> new SaleDto.Response(sale))
-                                                                    .collect(Collectors.toList());
-            responses = new PageImpl<SaleDto.Response>(collect, pageable, todaySales.getTotalElements());
+            salePage = saleRepository.findBySaleDateAfterAndSaleDateBefore(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1), pageable);
         }
 
+        if (!dto.isOnlyToday() && dto.getItem() != null)
+        {
+            salePage = saleRepository.findSaleByItem(dto.getItem(), pageable);
+        }
+
+        List<SaleDto.Response> collect = salePage.getContent().stream()
+                                                    .map(sale -> new SaleDto.Response(sale))
+                                                    .collect(Collectors.toList());
+        PageImpl<SaleDto.Response> responses = new PageImpl<SaleDto.Response>(collect, pageable, salePage.getTotalElements());
         return responses;
     }
 

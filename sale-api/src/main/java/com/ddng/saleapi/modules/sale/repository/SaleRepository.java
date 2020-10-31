@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.0
  */
 @Transactional(readOnly = true)
-public interface SaleRepository extends JpaRepository<Sale, Long>
+public interface SaleRepository extends JpaRepository<Sale, Long>, SaleCustomRepository
 {
     Page<Sale> findBySaleDateAfterAndSaleDateBefore(LocalDateTime sttDate, LocalDateTime endDate, Pageable pageable);
 }

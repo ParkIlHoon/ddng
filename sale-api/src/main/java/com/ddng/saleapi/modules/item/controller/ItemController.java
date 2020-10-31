@@ -4,6 +4,8 @@ import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.service.ItemService;
+import com.ddng.saleapi.modules.sale.dto.SaleDto;
+import com.ddng.saleapi.modules.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class ItemController
 {
     private final ItemService itemService;
+    private final SaleService saleService;
 
     /**
      * 상품을 검색한다.
@@ -152,5 +155,29 @@ public class ItemController
 
         itemService.deleteItem(optionalItem.get());
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 상품의 최근 판매 기록을 조회한다.
+     * @param id
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/{id}/sale-history")
+    public ResponseEntity getSaleHistory (@PathVariable("id") Long id,
+                                          @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
+    {
+        Optional<Item> optionalItem = itemService.findById(id);
+        if (optionalItem.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        SaleDto.Get dto = new SaleDto.Get();
+        dto.setOnlyToday(false);
+        dto.setItem(optionalItem.get());
+
+        Page<SaleDto.Response> responses = saleService.searchByDto(dto, pageable);
+        return ResponseEntity.ok(responses);
     }
 }

@@ -1,5 +1,6 @@
 package com.ddng.saleapi.modules.sale.dto;
 
+import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.sale.domain.PaymentType;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleType;
@@ -17,6 +18,7 @@ public class SaleDto
     public static class Get
     {
         private boolean onlyToday;    // 오늘꺼만 조회할지 여부
+        private Item item;
     }
 
     @Getter @Setter @Builder
