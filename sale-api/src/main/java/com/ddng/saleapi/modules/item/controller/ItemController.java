@@ -1,6 +1,7 @@
 package com.ddng.saleapi.modules.item.controller;
 
 import com.ddng.saleapi.modules.item.domain.Item;
+import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -61,6 +65,28 @@ public class ItemController
 
         ItemDto.Response dto = new ItemDto.Response(optionalItem.get());
         return ResponseEntity.ok(dto);
+    }
+
+    /**
+     * 상품 종류를 취득한다.
+     * @return
+     */
+    @GetMapping("/type")
+    public ResponseEntity getItemTypes ()
+    {
+        List returnList = new ArrayList();
+        ItemType[] values = ItemType.values();
+
+        for(ItemType type : values)
+        {
+            HashMap row = new HashMap();
+            row.put("id", type.name());
+            row.put("text", type.getName());
+
+            returnList.add(row);
+        }
+
+        return ResponseEntity.ok(returnList);
     }
 
     /**
