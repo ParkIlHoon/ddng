@@ -3,9 +3,11 @@ package com.ddng.saleapi.modules.sale.controller;
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.domain.CouponType;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
+import com.ddng.saleapi.modules.coupon.util.CouponFactory;
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
+import com.ddng.saleapi.modules.item.util.ItemFactory;
 import com.ddng.saleapi.modules.sale.domain.PaymentType;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleType;
@@ -58,6 +60,8 @@ class SaleControllerTest
     @Autowired SaleRepository saleRepository;
     @Autowired CouponRepository couponRepository;
     @Autowired SaleService saleService;
+    @Autowired ItemFactory itemFactory;
+    @Autowired CouponFactory couponFactory;
 
     @BeforeEach
     public void initializeData ()
@@ -66,31 +70,10 @@ class SaleControllerTest
                         .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
                         .build();
 
-        Item item = new Item();
-        item.setName("상품1");
-        item.setType(ItemType.SNACK);
-        item.setBarcode("12345678");
-        item.setPrice(1500);
-        item.setItemQuantity(100);
+        Item item = itemFactory.createItem("상품1", ItemType.SNACK, "12345678", 1500, 100, false);
+        Item item2 = itemFactory.createItem("상품2", ItemType.FEED, "98765432", 500, 100, false);
 
-        Item item2 = new Item();
-        item2.setName("상품2");
-        item2.setType(ItemType.FEED);
-        item2.setBarcode("98765432");
-        item2.setPrice(500);
-        item2.setItemQuantity(100);
-
-        itemRepository.save(item);
-        itemRepository.save(item2);
-
-        Coupon coupon = new Coupon();
-        coupon.setExpireDate(LocalDateTime.now().plusDays(1));
-        coupon.setCreateDate(LocalDateTime.now());
-        coupon.setCustomerId(1L);
-        coupon.setItemType(item.getType());
-        coupon.setType(CouponType.DISCOUNT_ALL);
-
-        couponRepository.save(coupon);
+        couponFactory.createCoupon("테스트 쿠폰", CouponType.DISCOUNT_ALL, item.getType(), LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
     }
 
     @AfterEach

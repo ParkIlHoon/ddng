@@ -4,6 +4,7 @@ import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
+import com.ddng.saleapi.modules.item.util.ItemFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,9 @@ class ItemControllerTest
     @Autowired ObjectMapper objectMapper;
     @Autowired ModelMapper modelMapper;
     @Autowired ItemRepository itemRepository;
+    @Autowired ItemFactory itemFactory;
+
+    private List<Item> savedItems = new ArrayList<>();
 
     @BeforeEach
     public void initializeData ()
@@ -53,28 +58,18 @@ class ItemControllerTest
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
                 .build();
 
-        Item item = new Item();
-        item.setName("상품1");
-        item.setType(ItemType.SNACK);
-        item.setBarcode("12345678");
-        item.setPrice(1500);
-        item.setItemQuantity(100);
+        Item item1 = itemFactory.createItem("상품1", ItemType.SNACK, "12345678", 1500, 100, false);
+        Item item2 = itemFactory.createItem("상품2", ItemType.FEED, "98765432", 1500, 100, false);
 
-        Item item2 = new Item();
-        item2.setName("상품2");
-        item2.setType(ItemType.FEED);
-        item2.setBarcode("98765432");
-        item2.setPrice(1500);
-        item2.setItemQuantity(100);
-
-        itemRepository.save(item);
-        itemRepository.save(item2);
+        savedItems.add(item1);
+        savedItems.add(item2);
     }
 
     @AfterEach
     public void resetData ()
     {
         itemRepository.deleteAll();
+        this.savedItems = new ArrayList<>();
     }
 
     @Test
@@ -98,13 +93,14 @@ class ItemControllerTest
     void searchItem_byBarcode() throws Exception
     {
         // given
-        String keyword = "12345678";
+        Item target = this.savedItems.get(0);
+        String keyword = target.getBarcode();
 
         // when
         List<HashMap> objectList = searchByKeyword(keyword);
 
         assertThat(objectList.size()).isEqualTo(1);
-        assertThat(objectList.get(0).get("name")).isEqualTo("상품1");
+        assertThat(objectList.get(0).get("name")).isEqualTo(target.getName());
         assertThat(objectList.get(0).get("barcode")).isEqualTo(keyword);
     }
 
@@ -113,13 +109,14 @@ class ItemControllerTest
     void searchItem_byTypeName() throws Exception
     {
         // given
-        String keyword = ItemType.FEED.getName();
+        Item target = this.savedItems.get(1);
+        String keyword = target.getType().getName();
 
         // when
         List<HashMap> objectList = searchByKeyword(keyword);
 
         assertThat(objectList.size()).isEqualTo(1);
-        assertThat(objectList.get(0).get("name")).isEqualTo("상품2");
+        assertThat(objectList.get(0).get("name")).isEqualTo(target.getName());
         assertThat(objectList.get(0).get("typeName")).isEqualTo(keyword);
     }
 
@@ -146,7 +143,7 @@ class ItemControllerTest
     void getItem_exist() throws Exception
     {
         // given
-        Item item = itemRepository.findAll().get(0);
+        Item item = this.savedItems.get(0);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -240,7 +237,7 @@ class ItemControllerTest
     {
         // given
         String changeName = "변경된 이름";
-        Item item = itemRepository.findAll().get(0);
+        Item item = this.savedItems.get(0);
         ItemDto.Put map = modelMapper.map(item, ItemDto.Put.class);
         map.setName(changeName);
 
@@ -269,7 +266,7 @@ class ItemControllerTest
     {
         // given
         String changeName = "변경된 이름";
-        Item item = itemRepository.findAll().get(0);
+        Item item = this.savedItems.get(0);
         ItemDto.Put map = modelMapper.map(item, ItemDto.Put.class);
         map.setName(changeName);
         map.setType(null);
@@ -289,7 +286,7 @@ class ItemControllerTest
     void deleteItem_exist() throws Exception
     {
         // given
-        Item item = itemRepository.findAll().get(0);
+        Item item = this.savedItems.get(0);
 
         // when
         mockMvc.perform(
