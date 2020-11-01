@@ -16,25 +16,12 @@ public class CanvasController
     {
         List<Card> cardList = new ArrayList<>();
 
-        Card bolt = Card.builder()
-                        .title("자연스러운 기장")
-                        .content("너무 짧지 않으면서 깔끔한, 자연스러운 기장으로 커트")
-                        .thumbnailPath("/images/canvas/bolt.jpeg")
-                        .build();
-        Card rani = Card.builder()
-                        .title("시츄 가위 컷")
-                        .content("시츄는 사실 이렇게 생겼습니다.")
-                        .thumbnailPath("/images/canvas/rani.jpeg")
-                        .build();
-        cardList.add(bolt);
-        cardList.add(rani);
-
-        for(int idx = 1; idx < 18; idx++)
+        for(int idx = 1; idx < 26; idx++)
         {
             Card card = Card.builder()
                     .title("미용 이름" + idx)
                     .content("미용 설명" + idx)
-                    .thumbnailPath("/images/beauty/work-" + idx + ".jpg")
+                    .thumbnailPath("/images/canvas/canvas-" + idx + ".jpg")
                     .build();
             cardList.add(card);
         }

@@ -10,8 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ItemController
 {
     @GetMapping("/search")
-    public String main (Model model)
+    public String mainForm (Model model)
     {
         return "item/main";
+    }
+
+    @GetMapping("/new")
+    public String newItemForm (Model model)
+    {
+        return "item/new-item";
+    }
+
+    @GetMapping("/barcode")
+    public String barcodeForm (Model model)
+    {
+        return "item/barcode";
     }
 }

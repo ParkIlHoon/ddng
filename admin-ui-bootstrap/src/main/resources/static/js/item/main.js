@@ -36,7 +36,7 @@ $(function(){
         selectionUnit : "row",
         columns: [
             {
-                header: '고객명',
+                header: '상품명',
                 name: 'name'
             },
             {
@@ -44,8 +44,8 @@ $(function(){
                 name: 'typeName'
             },
             {
-                header: '전화번호',
-                name: 'telNo'
+                header: '가격',
+                name: 'price'
             }
         ]
     });
@@ -242,7 +242,7 @@ $(function(){
         $("#searchKeywordSaved").val(searchKeyword);
 
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/saler-api/item",
+            url : "http://1hoon.iptime.org:8366/sale-api/item",
             type : "GET",
             data : {"keyword" : searchKeyword}
         }).done((data, textStatus, jqXHR) => {
@@ -307,6 +307,7 @@ $(function(){
      */
     function searchTopBuyerList (itemId)
     {
+        return;
         $.ajax({
             url : "http://1hoon.iptime.org:8366/sale-api/sale",
             type : "GET",
@@ -322,6 +323,7 @@ $(function(){
      */
     function searchSaleHistory (itemId)
     {
+        return;
         $.ajax({
             url : "http://1hoon.iptime.org:8366/sale-api/sale",
             type : "GET",

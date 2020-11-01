@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="c-app">
+<div th:replace="fragments.html::leftMenu"></div>
+<div class="c-wrapper c-fixed-components">
+    <header th:replace="fragments.html::header ('상품 관리', '상품 등록')"></header>
+    <div class="c-body">
+        <main class="c-main">
+            <div class="container-fluid">
+                <div class="fade-in">
+                    <div class="card">
+                        <div class="card-header">상품 등록</div>
+                        <div class="card-body">새로운 상품을 등록합니다.</div>
+                        <div class="card-body">
+                            <form class="form-horizontal" id="new-item-form">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <input id="itemImage" type="hidden" name="itemImg">
+                                        <div id="new-item-image" class="mt-3"></div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="item-image-file">
+                                            <label class="custom-file-label" for="item-image-file">상품 이미지 선택</label>
+                                        </div>
+                                        <div id="new-item-image-control" class="mt-3">
+                                            <button type="button" class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                                            <button type="button" class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
+                                            <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                                        </div>
+                                        <div id="cropped-new-item-image" class="mt-3"></div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="name-input">상품명</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="name-input" type="text" name="name" placeholder="상품명을 입력하세요(필수)">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="barcode-input">바코드</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="barcode-input" type="number" name="barcode" placeholder="바코드를 입력하세요">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="type-select">종류</label>
+                                            <div class="col-md-10">
+                                                <select class="form-control js-example-placeholder-single" id="type-select" name="type">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="price-input">판매가</label>
+                                            <div class="col-md-10 input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">₩</span>
+                                                </div>
+                                                <input class="form-control" id="price-input" name="price" type="number" pattern="[0-9]" placeholder="판매가를 입력하세요(필수)">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="unit-input">단위</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="unit-input" type="text" name="unit" placeholder="단위를 입력하세요">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="itemQuantity-input">재고</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="itemQuantity-input" type="number" name="itemQuantity" placeholder="재고를 입력하세요">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="stamp-input">쿠폰 적립 여부</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="stamp-input" type="checkbox" name="stamp">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="button">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments.html::footer"></footer>
+    </div>
+</div>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link  href="/node_modules/cropperjs/dist/cropper.min.css" rel="stylesheet">
+<script th:replace="fragments.html::script"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
+<script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
+<!--<script src="/js/item/new-item.js"></script>-->
+</body>
+</html>

@@ -7,8 +7,8 @@
     <title>똥강아지</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/owl.carousel.min.css">
@@ -26,7 +26,7 @@
 
 <nav th:fragment="main-nav (currentMenu)" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-        <a class="navbar-brand" href="/">똥강아지</a>
+        <a class="navbar-brand" href="/" style="font-size: 40px; font-family: 'Jua';">똥강아지</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> Menu
@@ -38,9 +38,9 @@
                 <li class="nav-item" th:classappend="${currentMenu == 'about'}? active"><a href="/about" class="nav-link">똥강아지</a></li>
                 <li class="nav-item" th:classappend="${currentMenu == 'beauty'}? active"><a href="/beauty" class="nav-link">미용</a></li>
                 <li class="nav-item" th:classappend="${currentMenu == 'hotel'}? active"><a href="/hotel" class="nav-link">호텔</a></li>
-                <li class="nav-item" th:classappend="${currentMenu == 'kindergarden'}? active"><a href="/kindergarden" class="nav-link">유치원</a></li>
+                <li class="nav-item" th:classappend="${currentMenu == 'kindergarden'}? active"><a href="/kindergarden" class="nav-link">놀이방</a></li>
                 <li class="nav-item" th:classappend="${currentMenu == 'canvas'}? active"><a href="/canvas" class="nav-link">캔버스</a></li>
-                <li class="nav-item" th:classappend="${currentMenu == 'store'}? active"><a href="/store" class="nav-link">매장</a></li>
+<!--                <li class="nav-item" th:classappend="${currentMenu == 'store'}? active"><a href="/store" class="nav-link">매장</a></li>-->
             </ul>
         </div>
     </div>
@@ -52,13 +52,23 @@
         <div class="row mb-5">
             <div class="col-md">
                 <div class="ftco-footer-widget mb-4">
-                    <h2 class="ftco-heading-2">똥강아지</h2>
-                    <p>당신의 반려견을 더욱 매력있게.</p>
-                    <ul class="ftco-footer-social list-unstyled mt-5">
-<!--                        <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>-->
-<!--                        <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>-->
-                        <li class="ftco-animate"><a href="https://instagram.com/ddgangagi?igshid=1eis2qpawdj36"><span class="icon-instagram"></span></a></li>
-                    </ul>
+                    <h2 class="ftco-heading-2" style="color: #222ba8;">똥강아지</h2>
+                    <div class="block-23 mb-3">
+                        <ul>
+                            <li>
+                                <span class="text" style="color: #222ba8;">당신의 반려견을 더욱 매력있게.</span>
+                            </li>
+                            <li>
+                                <span class="icon icon-watch" style="color: #222ba8;"></span>
+                                <span class="text" style="color: #222ba8;">10:00 ~ 21:00</span>
+                            </li>
+                            <li class="ftco-animate">
+                                <a href="https://instagram.com/ddgangagi?igshid=1eis2qpawdj36">
+                                    <span class="icon-instagram" style="color: #222ba8;"> ddgangagi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -75,17 +85,17 @@
             </div>
             <div class="col-md">
                 <div class="ftco-footer-widget mb-4">
-                    <h2 class="ftco-heading-2">궁금하신게 있으신가요?</h2>
+                    <h2 class="ftco-heading-2" style="color: #222ba8;">궁금하신게 있으신가요?</h2>
                     <div class="block-23 mb-3">
                         <ul>
                             <li>
-                                <span class="icon icon-map-marker"></span>
-                                <span class="text">인천 남동구 호구포로535번길 48-4</span>
+                                <span class="icon icon-map-marker" style="color: #222ba8;"></span>
+                                <span class="text" style="color: #222ba8;">인천 남동구 호구포로535번길 48-4</span>
                             </li>
                             <li>
-                                <a href="tel://07040427072">
-                                    <span class="icon icon-phone"></span>
-                                    <span class="text">070 4042 7072</span>
+                                <a href="tel://01068167072">
+                                    <span class="icon icon-phone" style="color: #222ba8;"></span>
+                                    <span class="text" style="color: #222ba8;">010 6816 7072</span>
                                 </a>
                             </li>
 <!--                            <li>-->

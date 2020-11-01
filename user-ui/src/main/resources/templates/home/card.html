@@ -5,11 +5,11 @@
 
 <div th:fragment="card (card)" class="property-wrap ftco-animate">
     <div class="img d-flex align-items-center justify-content-center"
-         style="background-image: url('/images/beauty/work-1.jpg');" th:style="'background-image: url(' + ${card.thumbnailPath} + ');'">
-        <a href="/properties-single.html"
-           class="icon d-flex align-items-center justify-content-center btn-custom">
-            <span class="ion-ios-link"></span>
-        </a>
+         th:style="'background-image: url(' + ${card.thumbnailPath} + ');'">
+<!--        <a href="/properties-single.html"-->
+<!--           class="icon d-flex align-items-center justify-content-center btn-custom">-->
+<!--            <span class="ion-ios-link"></span>-->
+<!--        </a>-->
     </div>
     <div class="text">
 <!--        <p class="price mb-3">-->
@@ -19,7 +19,7 @@
         <h3 class="mb-0">
             <a href="/properties-single.html" th:text="${card.title}">푸들 기본컷</a>
         </h3>
-        <span class="location d-inline-block mb-3" th:text="${card.content}">무난한 푸들 기본컷. <br>₩ 30,000 ~</span>
+<!--        <span class="location d-inline-block mb-3" th:text="${card.content}">무난한 푸들 기본컷. <br>₩ 30,000 ~</span>-->
 <!--        <ul class="property_list">-->
 <!--            <li><span class="flaticon-bed"></span>3</li>-->
 <!--            <li><span class="flaticon-bathtub"></span>2</li>-->
