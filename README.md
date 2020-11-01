@@ -39,3 +39,5 @@ MSA 아키텍쳐 기반 똥강아지 애견샵 관리 RESTful API 프로젝트.
 ### statistic-api
 * application name : ddng-statistic-api
 * port : 8025
+### Rabbit MQ
+* port : 15672
