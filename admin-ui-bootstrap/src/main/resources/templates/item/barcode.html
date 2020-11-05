@@ -13,6 +13,11 @@
                     <div class="card">
                         <div class="card-header">바코드 생성</div>
                         <div class="card-body">새로운 바코드를 생성합니다.</div>
+                        <div class="card-body">
+                            <div class="row" id="barcode-row">
+
+                            </div>
+                        </div>
                         <div class="card-footer">
                             <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="button">등록</button>
                         </div>
@@ -24,7 +29,7 @@
     </div>
 </div>
 <script th:replace="fragments.html::script"></script>
-<script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
-<!--<script src="/js/item/barcode.js"></script>-->
+<script src="/node_modules/jsbarcode/dist/JsBarcode.all.js"></script>
+<script src="/js/item/barcode.js"></script>
 </body>
 </html>
