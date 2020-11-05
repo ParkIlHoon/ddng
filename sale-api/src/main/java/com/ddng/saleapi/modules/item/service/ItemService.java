@@ -1,16 +1,19 @@
 package com.ddng.saleapi.modules.item.service;
 
+import com.ddng.saleapi.infra.util.FileUtils;
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.util.FileUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +31,7 @@ public class ItemService
 {
     private final ItemRepository itemRepository;
     private final ModelMapper modelMapper;
+    private final FileUtils fileUtils;
 
     public Page<ItemDto.Response> searchByKeyword(String keyword, Pageable pageable)
     {
@@ -48,12 +52,28 @@ public class ItemService
     public Item createItem(ItemDto.Post dto)
     {
         Item map = modelMapper.map(dto, Item.class);
+
+        if (StringUtils.hasText(map.getItemImg()))
+        {
+            String uploadPath = "sale/item/" + map.getId() + ".png";
+            fileUtils.saveBase64AsFile(uploadPath, map.getItemImg());
+            map.setItemImg(uploadPath);
+        }
+
         return itemRepository.save(map);
     }
 
     public Item updateItem(Item item, ItemDto.Put dto)
     {
         modelMapper.map(dto, item);
+
+        if (StringUtils.hasText(dto.getItemImg()))
+        {
+            String uploadPath = "sale/item/" + item.getId() + ".png";
+            fileUtils.saveBase64AsFile(uploadPath, dto.getItemImg());
+            item.setItemImg(uploadPath);
+        }
+
         return itemRepository.save(item);
     }
 

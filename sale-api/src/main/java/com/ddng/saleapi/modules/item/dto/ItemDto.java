@@ -24,6 +24,7 @@ public class ItemDto
         private int price;
         private int itemQuantity;
         private boolean stamp;
+        private String itemImg;
 
         private String typeName;
 
@@ -36,6 +37,7 @@ public class ItemDto
             this.price = item.getPrice();
             this.itemQuantity = item.getItemQuantity();
             this.stamp = item.isStamp();
+            this.itemImg = item.getItemImg();
 
             this.typeName = item.getType().getName();
         }
@@ -57,6 +59,7 @@ public class ItemDto
         private int price;
         private int itemQuantity;
         private boolean stamp;
+        private String itemImg;
     }
 
     /**
@@ -75,5 +78,6 @@ public class ItemDto
         private int price;
         private int itemQuantity;
         private boolean stamp;
+        private String itemImg;
     }
 }

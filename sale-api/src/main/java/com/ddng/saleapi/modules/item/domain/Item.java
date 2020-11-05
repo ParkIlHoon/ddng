@@ -45,6 +45,10 @@ public class Item
     @Column(name = "STAMP")
     private boolean stamp;
 
+    @Lob
+    @Column(name = "ITEM_IMG")
+    private String itemImg;
+
     /**
      * 상품을 판매한다.
      * @param count 판매할 개수

@@ -131,7 +131,7 @@ $(function(){
     /**
      * 상품 이미지 변경 버튼 클릭 이벤트
      */
-    $("#profile-image-file").change(function(e) {
+    $("#item-image-file").change(function(e) {
         if (e.target.files.length === 1) {
             const reader = new FileReader();
             reader.onload = e => {
@@ -197,7 +197,7 @@ $(function(){
             $newItemImage.html(newImage);
             $cutBtn.hide();
             $confirmBtn.hide();
-            $("#profile-img").attr("src", dataUrl);
+            $("#item-img").attr("src", dataUrl);
             $itemImage.val(dataUrl.replaceAll("data:image/png;base64,", ""));
         });
     });

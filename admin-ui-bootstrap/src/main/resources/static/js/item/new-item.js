@@ -39,7 +39,7 @@ $(function(){
             url : "http://1hoon.iptime.org:8366/sale-api/item",
             data : JSON.stringify(data)
         }).always(function(data, status){
-            location.href = "/new";
+            location.href = "/item/new";
         });
     });
     $("#item-image-file").change(function(e) {
