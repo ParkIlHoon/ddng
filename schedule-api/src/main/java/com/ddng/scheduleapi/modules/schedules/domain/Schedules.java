@@ -1,4 +1,4 @@
-package com.ddng.scheduleapi.modules.schedules;
+package com.ddng.scheduleapi.modules.schedules.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +39,9 @@ public class Schedules
 
     @Column(name = "USER_ID")
     private Long userId;
+
+    @Column(name = "PAYED")
+    private boolean payed;
 
     @Lob
     @Column(name = "BIGO")

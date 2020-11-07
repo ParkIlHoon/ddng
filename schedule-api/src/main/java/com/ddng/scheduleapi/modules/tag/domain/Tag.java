@@ -1,6 +1,6 @@
-package com.ddng.scheduleapi.modules.tag;
+package com.ddng.scheduleapi.modules.tag.domain;
 
-import com.ddng.scheduleapi.modules.schedules.Schedules;
+import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import javax.persistence.*;
 
 @Entity

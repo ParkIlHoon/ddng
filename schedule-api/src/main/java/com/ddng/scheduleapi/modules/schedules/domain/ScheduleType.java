@@ -1,7 +1,12 @@
-package com.ddng.scheduleapi.modules.schedules;
+package com.ddng.scheduleapi.modules.schedules.domain;
 
 import lombok.Getter;
 
+/**
+ * <h1>스케쥴 타입 Enum 클래스</h1>
+ *
+ * @version 1.0
+ */
 @Getter
 public enum ScheduleType
 {
