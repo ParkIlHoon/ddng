@@ -3,12 +3,17 @@ package com.ddng.scheduleapi.modules.schedules.dto;
 
 import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 public class SchedulesDto
 {
-
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
     public static class Response
     {
         private Long id;

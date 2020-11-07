@@ -1,8 +1,11 @@
 package com.ddng.scheduleapi.modules.schedules.controller;
 
+import com.ddng.scheduleapi.modules.schedules.domain.CalendarType;
 import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
+import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,6 +49,57 @@ class SchedulesControllerTest
         this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
                 .build();
+
+        Schedules today = new Schedules();
+        today.setName("오늘");
+        today.setStartDate(LocalDateTime.now());
+        today.setEndDate(LocalDateTime.now());
+        today.setAllDay(true);
+        today.setType(ScheduleType.BEAUTY);
+
+        schedulesRepository.save(today);
+
+        Schedules week = new Schedules();
+        week.setName("1주");
+        week.setStartDate(LocalDate.now().plusWeeks(1).atStartOfDay());
+        week.setEndDate(LocalDate.now().plusWeeks(1).atStartOfDay());
+        week.setAllDay(true);
+        week.setType(ScheduleType.HOTEL);
+
+        schedulesRepository.save(week);
+
+        Schedules week2 = new Schedules();
+        week2.setName("2주");
+        week2.setStartDate(LocalDate.now().plusWeeks(2).atStartOfDay());
+        week2.setEndDate(LocalDate.now().plusWeeks(2).atStartOfDay());
+        week2.setAllDay(true);
+        week2.setType(ScheduleType.KINDERGARTEN);
+
+        schedulesRepository.save(week2);
+
+        Schedules week3 = new Schedules();
+        week3.setName("3주");
+        week3.setStartDate(LocalDate.now().plusWeeks(3).atStartOfDay());
+        week3.setEndDate(LocalDate.now().plusWeeks(3).atStartOfDay());
+        week3.setAllDay(true);
+        week3.setType(ScheduleType.ETC);
+
+        schedulesRepository.save(week3);
+
+        Schedules month = new Schedules();
+        month.setName("달");
+        month.setStartDate(LocalDate.now().plusMonths(1).atStartOfDay());
+        month.setEndDate(LocalDate.now().plusMonths(1).atStartOfDay());
+        month.setAllDay(true);
+        month.setType(ScheduleType.VACATION);
+
+        schedulesRepository.save(month);
+    }
+
+    @AfterEach
+    void reset ()
+    {
+        schedulesRepository.deleteAll();
     }
 
     @Test
@@ -63,5 +119,148 @@ class SchedulesControllerTest
         // then
         assertThat(parseList.size()).isEqualTo(ScheduleType.values().length);
         assertThat(((HashMap) parseList.get(0)).get("color")).isEqualTo(ScheduleType.BEAUTY.getColor());
+    }
+
+    @Test
+    @DisplayName("스케쥴 조회 - 파라미터 누락")
+    void getSchedules_missingParam() throws Exception
+    {
+        // given
+        CalendarType calendarType = CalendarType.DAILY;
+        String baseDate = LocalDate.now().toString();
+
+        // when
+        mockMvc.perform(
+                        get("/schedules")
+                            .param("baseDate", baseDate)
+//                          .param("calendarType", calendarType.toString())
+                        )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("스케쥴 조회 - 오늘")
+    void getSchedules_daily() throws Exception
+    {
+        // given
+        CalendarType calendarType = CalendarType.DAILY;
+        String baseDate = LocalDate.now().toString();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                                                get("/schedules")
+                                                        .param("baseDate", baseDate)
+                                                        .param("calendarType", calendarType.toString())
+                                                )
+                                        .andDo(print())
+                                        .andExpect(status().isOk());
+
+        String contentAsString = actions.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        List<Object> parseList = parser.parseList(contentAsString);
+
+        // then
+        assertThat(parseList.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("스케쥴 조회 - 주")
+    void getSchedules_weekly() throws Exception
+    {
+        // given
+        CalendarType calendarType = CalendarType.WEEKLY;
+        String baseDate = LocalDate.now().toString();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/schedules")
+                        .param("baseDate", baseDate)
+                        .param("calendarType", calendarType.toString())
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        String contentAsString = actions.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        List<Object> parseList = parser.parseList(contentAsString);
+
+        // then
+        assertThat(parseList.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("스케쥴 조회 - 월")
+    void getSchedules_monthly() throws Exception
+    {
+        // given
+        CalendarType calendarType = CalendarType.MONTHLY;
+        String baseDate = LocalDate.now().toString();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/schedules")
+                        .param("baseDate", baseDate)
+                        .param("calendarType", calendarType.toString())
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        String contentAsString = actions.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        List<Object> parseList = parser.parseList(contentAsString);
+
+        // then
+        assertThat(parseList.size()).isEqualTo(4);
+    }
+
+    @Test
+    @DisplayName("스케쥴 조회 - 2주")
+    void getSchedules_2week() throws Exception
+    {
+        // given
+        CalendarType calendarType = CalendarType.TWO_WEEKS;
+        String baseDate = LocalDate.now().toString();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/schedules")
+                        .param("baseDate", baseDate)
+                        .param("calendarType", calendarType.toString())
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        String contentAsString = actions.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        List<Object> parseList = parser.parseList(contentAsString);
+
+        // then
+        assertThat(parseList.size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("스케쥴 조회 - 3주")
+    void getSchedules_3week() throws Exception
+    {
+        // given
+        CalendarType calendarType = CalendarType.THREE_WEEKS;
+        String baseDate = LocalDate.now().toString();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/schedules")
+                        .param("baseDate", baseDate)
+                        .param("calendarType", calendarType.toString())
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        String contentAsString = actions.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        List<Object> parseList = parser.parseList(contentAsString);
+
+        // then
+        assertThat(parseList.size()).isEqualTo(4);
     }
 }

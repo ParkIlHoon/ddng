@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,21 +37,26 @@ public class SchedulesService
             case DAILY:
                 startDate = parse.atStartOfDay();
                 endDate = startDate.plusDays(1);
+                break;
             case WEEKLY:
                 startDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).atStartOfDay();
-                endDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).atStartOfDay();
+                endDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)).atStartOfDay().with(LocalTime.MAX);
+                break;
             case MONTHLY:
                 startDate = parse.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay();
-                endDate = parse.with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay();
+                endDate = parse.with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay().with(LocalTime.MAX);
+                break;
             case TWO_WEEKS:
                 startDate = parse.atStartOfDay();
-                endDate = parse.plusWeeks(2).atStartOfDay();
+                endDate = parse.plusWeeks(2).atStartOfDay().with(LocalTime.MAX);
+                break;
             case THREE_WEEKS:
                 startDate = parse.atStartOfDay();
-                endDate = parse.plusWeeks(3).atStartOfDay();
+                endDate = parse.plusWeeks(3).atStartOfDay().with(LocalTime.MAX);
+                break;
         }
 
-        Page<Schedules> schedules = schedulesRepository.findByStartDateAfterAndEndDateBefore(startDate, endDate);
-        return schedules.getContent().stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
+        List<Schedules> schedules = schedulesRepository.findByStartDateAfterAndEndDateBefore(startDate, endDate);
+        return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 }
