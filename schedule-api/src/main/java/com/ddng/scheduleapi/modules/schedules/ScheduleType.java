@@ -1,4 +1,4 @@
-package com.ddng.scheduleapi.schedule;
+package com.ddng.scheduleapi.modules.schedules;
 
 import lombok.Getter;
 

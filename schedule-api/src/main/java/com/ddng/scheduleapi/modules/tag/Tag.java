@@ -1,7 +1,6 @@
-package com.ddng.scheduleapi.tag;
+package com.ddng.scheduleapi.modules.tag;
 
-import com.ddng.scheduleapi.schedule.Schedule;
-
+import com.ddng.scheduleapi.modules.schedules.Schedules;
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +12,7 @@ public class Tag
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SCHEDULE_ID")
-    private Schedule schedule;
+    private Schedules schedules;
 
     @Column(name = "TAG_ID")
     private Long tagId;
