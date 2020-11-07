@@ -47,4 +47,19 @@ public class SchedulesDto
             this.scheduleColor = this.scheduleType.getColor();
         }
     }
+
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    public static class Post
+    {
+        private String name;
+        private ScheduleType scheduleType;
+        private String startDate;
+        private String endDate;
+        private boolean isAllDay;
+        private Long customerId;
+        private Long userId;
+        private String bigo;
+        private boolean payed;
+    }
 }

@@ -5,6 +5,7 @@ import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class SchedulesService
 {
     private final SchedulesRepository schedulesRepository;
+    private final ModelMapper modelMapper;
 
     public List<SchedulesDto.Response> getSchedules(String baseDate, CalendarType calendarType)
     {
@@ -59,4 +62,27 @@ public class SchedulesService
         List<Schedules> schedules = schedulesRepository.findByStartDateAfterAndEndDateBefore(startDate, endDate);
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
+
+    public Optional<Schedules> getSchedule(Long id)
+    {
+        return schedulesRepository.findById(id);
+    }
+
+    public Schedules createSchedule(SchedulesDto.Post dto)
+    {
+        Schedules schedules = new Schedules();
+        schedules.setName(dto.getName());
+        schedules.setType(dto.getScheduleType());
+        schedules.setAllDay(dto.isAllDay());
+        schedules.setStartDate(LocalDateTime.parse(dto.getStartDate()));
+        schedules.setEndDate(LocalDateTime.parse(dto.getEndDate()));
+        schedules.setCustomerId(dto.getCustomerId());
+        schedules.setUserId(dto.getUserId());
+        schedules.setBigo(dto.getBigo());
+        schedules.setPayed(dto.isPayed());
+
+        return schedulesRepository.save(schedules);
+    }
+
+
 }

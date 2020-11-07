@@ -3,6 +3,7 @@ package com.ddng.scheduleapi.modules.schedules.controller;
 import com.ddng.scheduleapi.modules.schedules.domain.CalendarType;
 import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
+import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -262,5 +264,31 @@ class SchedulesControllerTest
 
         // then
         assertThat(parseList.size()).isEqualTo(4);
+    }
+
+    @Test
+    @DisplayName("스케쥴 생성")
+    void createSchedule() throws Exception
+    {
+        // given
+        SchedulesDto.Post dto = new SchedulesDto.Post();
+        dto.setName("테스트 일정");
+        dto.setStartDate(LocalDateTime.now().toString());
+        dto.setEndDate(LocalDateTime.now().plusDays(1).toString());
+        dto.setAllDay(false);
+        dto.setScheduleType(ScheduleType.HOTEL);
+
+        // when
+        mockMvc.perform(
+                        post("/schedules")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        // then
+        List<Schedules> all = schedulesRepository.findAll();
+        assertThat(all.size()).isGreaterThan(5);
     }
 }
