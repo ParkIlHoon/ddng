@@ -43,7 +43,7 @@ public class SchedulesController
             return ResponseEntity.badRequest().build();
         }
 
-        Page<SchedulesDto.Response> responses = schedulesService.getSchedules(baseDate, calendarType);
+        List<SchedulesDto.Response> responses = schedulesService.getSchedules(baseDate, calendarType);
 
         return ResponseEntity.ok(responses);
     }
