@@ -97,4 +97,9 @@ public class SchedulesService
 
         return schedulesRepository.save(schedules);
     }
+
+    public void deleteSchedule(Schedules schedules)
+    {
+        schedulesRepository.delete(schedules);
+    }
 }

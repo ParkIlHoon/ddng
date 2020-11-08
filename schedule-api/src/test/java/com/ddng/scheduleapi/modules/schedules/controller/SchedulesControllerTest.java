@@ -330,4 +330,22 @@ class SchedulesControllerTest
         assertThat(updated.getName()).isEqualTo(changeName);
         assertThat(updated.getEndDate()).isEqualTo(changeEndDate);
     }
+
+    @Test
+    @DisplayName("스케쥴 제거")
+    void deleteSchedule() throws Exception
+    {
+        // given
+        Schedules schedules = schedulesRepository.findAll().get(0);
+
+        // when
+        mockMvc.perform(delete("/schedules/{id}", schedules.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        Optional<Schedules> optional = schedulesRepository.findById(schedules.getId());
+
+        assertThat(optional).isEmpty();
+    }
 }

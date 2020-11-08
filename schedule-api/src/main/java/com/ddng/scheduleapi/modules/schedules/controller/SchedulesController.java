@@ -134,5 +134,21 @@ public class SchedulesController
         return ResponseEntity.ok(new SchedulesDto.Response(updated));
     }
 
+    /**
+     * 스케쥴을 삭제한다.
+     * @param id 삭제할 스케쥴의 아이디
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteSchedule (@PathVariable("id") Long id)
+    {
+        Optional<Schedules> optionalSchedules = schedulesService.getSchedule(id);
+        if (optionalSchedules.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
 
+        schedulesService.deleteSchedule(optionalSchedules.get());
+        return ResponseEntity.ok().build();
+    }
 }
