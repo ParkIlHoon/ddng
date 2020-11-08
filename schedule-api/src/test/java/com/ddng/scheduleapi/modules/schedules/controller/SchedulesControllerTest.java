@@ -5,6 +5,9 @@ import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
+import com.ddng.scheduleapi.modules.tag.domain.Tag;
+import com.ddng.scheduleapi.modules.tag.dto.TagDto;
+import com.ddng.scheduleapi.modules.tag.repository.TagRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +48,7 @@ class SchedulesControllerTest
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private SchedulesRepository schedulesRepository;
+    @Autowired private TagRepository tagRepository;
 
     @BeforeEach
     void initialize ()
@@ -103,6 +107,7 @@ class SchedulesControllerTest
     void reset ()
     {
         schedulesRepository.deleteAll();
+        tagRepository.deleteAll();
     }
 
     @Test
@@ -347,5 +352,54 @@ class SchedulesControllerTest
         Optional<Schedules> optional = schedulesRepository.findById(schedules.getId());
 
         assertThat(optional).isEmpty();
+    }
+
+    @Test
+    @DisplayName("태그 추가")
+    void addTag() throws Exception
+    {
+        // given
+        Schedules schedules = schedulesRepository.findAll().get(0);
+        TagDto dto = TagDto.builder().title("태그").build();
+
+        // when
+        mockMvc.perform(
+                        post("/schedules/{id}/tags", schedules.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        assertThat(schedules.getTags().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("태그 제거")
+    void removeTag() throws Exception
+    {
+        // given
+        Tag tag = new Tag();
+        tag.setTitle("태그");
+        tagRepository.save(tag);
+
+        Schedules schedules = schedulesRepository.findAll().get(0);
+        schedules.getTags().add(tag);
+
+        schedulesRepository.save(schedules);
+        TagDto dto = TagDto.builder().title("태그").build();
+
+        // when
+        mockMvc.perform(
+                        delete("/schedules/{id}/tags", schedules.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        assertThat(schedules.getTags().size()).isEqualTo(0);
     }
 }

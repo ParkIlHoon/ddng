@@ -5,6 +5,9 @@ import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.service.SchedulesService;
+import com.ddng.scheduleapi.modules.tag.domain.Tag;
+import com.ddng.scheduleapi.modules.tag.dto.TagDto;
+import com.ddng.scheduleapi.modules.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class SchedulesController
 {
     private final SchedulesService schedulesService;
+    private final TagRepository tagRepository;
 
     /**
      * 스케쥴을 조회한다.
@@ -149,6 +153,79 @@ public class SchedulesController
         }
 
         schedulesService.deleteSchedule(optionalSchedules.get());
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 스케쥴에 태그를 추가한다.
+     * @param id 태그를 추가할 스케쥴의 아이디
+     * @param tagDto 태그
+     * @param errors
+     * @return
+     */
+    @PostMapping("/{id}/tags")
+    public ResponseEntity addTag (@PathVariable("id") Long id,
+                                  @RequestBody @Valid TagDto tagDto,
+                                  Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Schedules> optionalSchedules = schedulesService.getSchedule(id);
+        if (optionalSchedules.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        Tag tag = null;
+        Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
+        if (optionalTag.isEmpty())
+        {
+            Tag newTag = new Tag();
+            newTag.setTitle(tagDto.getTitle());
+            tag = tagRepository.save(newTag);
+        }
+        else
+        {
+            tag = optionalTag.get();
+        }
+
+        schedulesService.addTag(optionalSchedules.get(), tag);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 스케쥴에 태그를 제거한다.
+     * @param id 태그를 제거할 스케쥴의 아이디
+     * @param tagDto 태그
+     * @param errors
+     * @return
+     */
+    @DeleteMapping("/{id}/tags")
+    public ResponseEntity removeTag (@PathVariable("id") Long id,
+                                     @RequestBody @Valid TagDto tagDto,
+                                     Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Schedules> optionalSchedules = schedulesService.getSchedule(id);
+        if (optionalSchedules.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
+        if (optionalTag.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        schedulesService.removeTag(optionalSchedules.get(), optionalTag.get());
         return ResponseEntity.ok().build();
     }
 }

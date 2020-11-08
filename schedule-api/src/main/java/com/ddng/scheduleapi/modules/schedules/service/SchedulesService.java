@@ -4,6 +4,7 @@ import com.ddng.scheduleapi.modules.schedules.domain.CalendarType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
+import com.ddng.scheduleapi.modules.tag.domain.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -101,5 +102,15 @@ public class SchedulesService
     public void deleteSchedule(Schedules schedules)
     {
         schedulesRepository.delete(schedules);
+    }
+
+    public void addTag(Schedules schedules, Tag tag)
+    {
+        schedules.getTags().add(tag);
+    }
+
+    public void removeTag(Schedules schedules, Tag tag)
+    {
+        schedules.getTags().remove(tag);
     }
 }

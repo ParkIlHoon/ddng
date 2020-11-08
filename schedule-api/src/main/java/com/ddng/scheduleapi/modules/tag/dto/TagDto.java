@@ -1,9 +1,16 @@
 package com.ddng.scheduleapi.modules.tag.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+import javax.validation.constraints.NotBlank;
+
+@Data @Builder
+@AllArgsConstructor @NoArgsConstructor
 public class TagDto
 {
+    @NotBlank
     private String title;
 }

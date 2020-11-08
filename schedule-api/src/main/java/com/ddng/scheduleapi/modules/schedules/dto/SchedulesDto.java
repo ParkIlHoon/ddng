@@ -3,12 +3,15 @@ package com.ddng.scheduleapi.modules.schedules.dto;
 
 import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
+import com.ddng.scheduleapi.modules.tag.domain.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SchedulesDto
 {
@@ -26,6 +29,7 @@ public class SchedulesDto
         private Long userId;
         private String bigo;
         private boolean payed;
+        private Set<Tag> tags = new HashSet<>();
 
         private String scheduleTypeName;
         private String scheduleColor;
@@ -42,6 +46,7 @@ public class SchedulesDto
             this.userId = schedules.getUserId();
             this.bigo = schedules.getBigo();
             this.payed = schedules.isPayed();
+            this.tags = schedules.getTags();
 
             this.scheduleTypeName = this.scheduleType.getName();
             this.scheduleColor = this.scheduleType.getColor();
