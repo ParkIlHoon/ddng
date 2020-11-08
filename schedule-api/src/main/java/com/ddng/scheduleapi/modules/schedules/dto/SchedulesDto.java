@@ -56,6 +56,21 @@ public class SchedulesDto
         private ScheduleType scheduleType;
         private String startDate;
         private String endDate;
+        private boolean isAllDay = false;
+        private Long customerId;
+        private Long userId;
+        private String bigo;
+        private boolean payed = false;
+    }
+
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    public static class Put
+    {
+        private String name;
+        private ScheduleType scheduleType;
+        private String startDate;
+        private String endDate;
         private boolean isAllDay;
         private Long customerId;
         private Long userId;

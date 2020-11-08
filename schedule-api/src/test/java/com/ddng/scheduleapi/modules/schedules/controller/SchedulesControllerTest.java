@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -290,5 +291,43 @@ class SchedulesControllerTest
         // then
         List<Schedules> all = schedulesRepository.findAll();
         assertThat(all.size()).isGreaterThan(5);
+    }
+
+    @Test
+    @DisplayName("스케쥴 수정")
+    void updateSchedule() throws Exception
+    {
+        // given
+        Schedules schedules = schedulesRepository.findAll().get(0);
+        String beforeName = schedules.getName();
+        String changeName = "변경된 스케쥴";
+        LocalDateTime changeEndDate = LocalDateTime.now().plusDays(2);
+
+        SchedulesDto.Put dto = new SchedulesDto.Put();
+        dto.setName(changeName);
+        dto.setAllDay(schedules.isAllDay());
+        dto.setScheduleType(schedules.getType());
+        dto.setStartDate(schedules.getStartDate().toString());
+        dto.setEndDate(changeEndDate.toString());
+        dto.setBigo(schedules.getBigo());
+        dto.setUserId(schedules.getUserId());
+        dto.setCustomerId(schedules.getCustomerId());
+
+        // when
+        mockMvc.perform(
+                        put("/schedules/{id}", schedules.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+                        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // then
+        Optional<Schedules> optional = schedulesRepository.findById(schedules.getId());
+        Schedules updated = optional.get();
+
+        assertThat(updated.getName()).isNotEqualTo(beforeName);
+        assertThat(updated.getName()).isEqualTo(changeName);
+        assertThat(updated.getEndDate()).isEqualTo(changeEndDate);
     }
 }

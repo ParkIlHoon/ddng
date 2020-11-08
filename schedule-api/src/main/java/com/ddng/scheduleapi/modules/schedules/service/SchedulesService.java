@@ -6,8 +6,6 @@ import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +40,8 @@ public class SchedulesService
                 endDate = startDate.plusDays(1);
                 break;
             case WEEKLY:
-                startDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).atStartOfDay();
-                endDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)).atStartOfDay().with(LocalTime.MAX);
+                startDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).atStartOfDay();
+                endDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).atStartOfDay().with(LocalTime.MAX);
                 break;
             case MONTHLY:
                 startDate = parse.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay();
@@ -59,7 +57,7 @@ public class SchedulesService
                 break;
         }
 
-        List<Schedules> schedules = schedulesRepository.findByStartDateAfterAndEndDateBefore(startDate, endDate);
+        List<Schedules> schedules = schedulesRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDate, endDate);
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 
@@ -85,4 +83,18 @@ public class SchedulesService
     }
 
 
+    public Schedules updateSchedule(Schedules schedules, SchedulesDto.Put dto)
+    {
+        schedules.setName(dto.getName());
+        schedules.setType(dto.getScheduleType());
+        schedules.setAllDay(dto.isAllDay());
+        schedules.setStartDate(LocalDateTime.parse(dto.getStartDate()));
+        schedules.setEndDate(LocalDateTime.parse(dto.getEndDate()));
+        schedules.setCustomerId(dto.getCustomerId());
+        schedules.setUserId(dto.getUserId());
+        schedules.setBigo(dto.getBigo());
+        schedules.setPayed(dto.isPayed());
+
+        return schedulesRepository.save(schedules);
+    }
 }

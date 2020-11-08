@@ -1,21 +1,28 @@
 package com.ddng.scheduleapi.modules.tag.domain;
 
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "TAG")
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class Tag
 {
     @Id @GeneratedValue
+    @Column(name = "ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SCHEDULE_ID")
-    private Schedules schedules;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Schedules> schedules = new HashSet<>();
 
-    @Column(name = "TAG_ID")
-    private Long tagId;
-
-    protected Tag() { }
+    @Column(name = "TITLE")
+    private String title;
 }

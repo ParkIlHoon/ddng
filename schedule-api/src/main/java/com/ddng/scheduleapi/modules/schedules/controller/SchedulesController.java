@@ -107,5 +107,32 @@ public class SchedulesController
         return ResponseEntity.created(builder.toUri()).build();
     }
 
+    /**
+     * 스케쥴을 수정한다.
+     * @param id 수정할 스케쥴의 아이디
+     * @param dto 수정할 내용
+     * @param errors
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity updateSchedule (@PathVariable("id") Long id,
+                                          @RequestBody @Valid SchedulesDto.Put dto,
+                                          Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Schedules> optionalSchedules = schedulesService.getSchedule(id);
+        if (optionalSchedules.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        Schedules updated = schedulesService.updateSchedule(optionalSchedules.get(), dto);
+        return ResponseEntity.ok(new SchedulesDto.Response(updated));
+    }
+
 
 }

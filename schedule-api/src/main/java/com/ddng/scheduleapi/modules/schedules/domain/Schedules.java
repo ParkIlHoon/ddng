@@ -1,5 +1,6 @@
 package com.ddng.scheduleapi.modules.schedules.domain;
 
+import com.ddng.scheduleapi.modules.tag.domain.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "SCHEDULES")
@@ -46,4 +49,7 @@ public class Schedules
     @Lob
     @Column(name = "BIGO")
     private String bigo;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Tag> tags = new HashSet<>();
 }
