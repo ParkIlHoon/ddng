@@ -364,19 +364,19 @@
         var iconClassName;
 
         if (type === 'day') {
-            type = 'Daily';
+            type = '오늘 일정';
             iconClassName = 'calendar-icon ic_view_day';
         } else if (type === 'week') {
-            type = 'Weekly';
+            type = '주간 일정';
             iconClassName = 'calendar-icon ic_view_week';
         } else if (options.month.visibleWeeksCount === 2) {
-            type = '2 weeks';
+            type = '2주간 일정';
             iconClassName = 'calendar-icon ic_view_week';
         } else if (options.month.visibleWeeksCount === 3) {
-            type = '3 weeks';
+            type = '3주간 일정';
             iconClassName = 'calendar-icon ic_view_week';
         } else {
-            type = 'Monthly';
+            type = '월간 일정';
             iconClassName = 'calendar-icon ic_view_month';
         }
 
