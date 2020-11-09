@@ -151,7 +151,7 @@ function generateRandomSchedule(calendar, renderStart, renderEnd) {
 
 function generateSchedule(viewName, renderStart, renderEnd) {
     ScheduleList = [];
-    CalendarList.forEach(function(calendar) {
+    ScheduleTypes.forEach(function(calendar) {
         var i = 0, length = 10;
         if (viewName === 'month') {
             length = 3;
