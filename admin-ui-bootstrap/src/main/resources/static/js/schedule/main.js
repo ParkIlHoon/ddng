@@ -409,12 +409,83 @@
         renderRange.innerHTML = html.join('');
     }
 
-    function setSchedules() {
+    /**
+     * 스케쥴을 세팅한다.
+     */
+    function setSchedules()
+    {
         cal.clear();
-        generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
-        cal.createSchedules(ScheduleList);
 
-        refreshScheduleVisibility();
+        var startDateTime = cal.getDateRangeStart();
+        var startDate = moment(startDateTime.toDate()).format('YYYY-MM-DD');
+        var calendarType;
+
+        switch (cal.getViewName())
+        {
+            case "day"   : calendarType = "DAILY";
+            case "week"  : calendarType = "WEEKLY";
+            case "month" : calendarType = "MONTHLY";
+        }
+
+        $.ajax({
+            url : "http://1hoon.iptime.org:8366/schedule-api/schedules",
+            type : "GET",
+            data : {"baseDate" : startDate, "calendarType" : calendarType}
+        }).done((data, textStatus, jqXHR) => {
+            // 스케쥴 초기화
+            ScheduleList = [];
+            // 스케쥴 생성
+            for (var idx = 0; idx < data.length; idx++)
+            {
+                var rawData = data[idx];
+                var schedule = new ScheduleInfo();
+
+                schedule.id = rawData.id;
+                schedule.calendarId = rawData.scheduleType;
+
+                schedule.title = rawData.name;
+                schedule.body = rawData.bigo;
+                schedule.isReadOnly = false;
+
+                schedule.isAllday = rawData.isAllDay;
+                if (schedule.isAllday)
+                {
+                    schedule.category = 'allday';
+                }
+                else
+                {
+                    schedule.category = 'time';
+                }
+                schedule.start = rawData.startDate;
+                schedule.end = rawData.endDate;
+
+                schedule.isPrivate = false;
+                schedule.location = "";
+                schedule.attendees = [];
+                schedule.recurrenceRule = "";
+                schedule.state = "";
+                schedule.color = "black";
+                schedule.bgColor = rawData.scheduleColor;
+                schedule.dragBgColor = rawData.scheduleColor;
+                schedule.borderColor = rawData.scheduleColor;
+
+                if (schedule.category === 'milestone') {
+                    schedule.color = schedule.bgColor;
+                    schedule.bgColor = 'transparent';
+                    schedule.dragBgColor = 'transparent';
+                    schedule.borderColor = 'transparent';
+                }
+
+                schedule.raw.customerId = rawData.customerId;
+                schedule.raw.userId = rawData.userId;
+                schedule.raw.payed = rawData.payed;
+                schedule.raw.tags = rawData.tags;
+
+                ScheduleList.push(schedule);
+            }
+            cal.createSchedules(ScheduleList);
+            refreshScheduleVisibility();
+        });
     }
 
     function setEventListener() {
