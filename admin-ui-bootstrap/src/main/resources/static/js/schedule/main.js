@@ -23,8 +23,8 @@
         cal = new Calendar('#calendar', {
             defaultView: 'month',
             taskView : false,
-            useCreationPopup: useCreationPopup,
-            useDetailPopup: useDetailPopup,
+            useCreationPopup: true,
+            useDetailPopup: true,
             calendars: ScheduleTypes,
             template: {
                 allday: function(schedule) {
@@ -289,7 +289,7 @@
             borderColor: calendar.color,
             location: scheduleData.location,
             raw: {
-                class: scheduleData.raw['class']
+                // class: scheduleData.raw['class']
             },
             state: scheduleData.state
         };
