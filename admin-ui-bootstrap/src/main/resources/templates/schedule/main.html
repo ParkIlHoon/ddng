@@ -90,9 +90,14 @@
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
+
+<div th:replace="schedule/popup.html::scheduleModal"></div>
+
 <link href="/node_modules/tui-calendar/dist/tui-calendar.css" rel="stylesheet">
 <link href="/node_modules/tui-date-picker/dist/tui-date-picker.css" rel="stylesheet">
 <link href="/node_modules/tui-time-picker/dist/tui-time-picker.css" rel="stylesheet">
+<link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script th:replace="fragments.html::script"></script>
 <script src="/node_modules/jquery/dist/jquery.js"></script>
 <script src="/node_modules/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
@@ -102,6 +107,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="/js/schedule/schedule-types.js"></script>
 <script src="/js/schedule/schedules.js"></script>
 <script src="/js/schedule/main.js"></script>

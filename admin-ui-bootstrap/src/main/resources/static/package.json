@@ -82,6 +82,7 @@
     "@coreui/utils": "^1.2.4",
     "@popperjs/core": "^2.4.0",
     "@yaireo/tagify": "^3.20.0",
+    "bootstrap": "^4.5.3",
     "chart.js": "^2.9.3",
     "cropperjs": "^1.5.9",
     "jquery": "^3.5.1",
