@@ -23,14 +23,14 @@
         {
             selectArr.push({"id" : data[idx].id , "text" : data[idx].name, "color" : data[idx].color});
         }
-        function formatState (state) {
-            if (!state.id) {
-                return state.text;
+        function formatTypes (type) {
+            if (!type.id) {
+                return type.text;
             }
-            var $state = $(
-                "<span><i class=\"fa-circle\" style=\"background-color: " + state.color + ";\"></i> " + state.text + "</span>"
+            var $type = $(
+                "<span><i class=\"c-icon cil-circle\" style=\"background-color: " + type.color + ";\"></i>&nbsp;&nbsp;" + type.text + "</span>"
             );
-            return $state;
+            return $type;
         };
 
         $("#type-select").select2({
@@ -38,7 +38,7 @@
             allowClear: true,
             width : "100%",
             data : selectArr,
-            templateResult: formatState
+            templateResult: formatTypes
         });
 
         var tagInput = document.querySelector("#tags-input");
