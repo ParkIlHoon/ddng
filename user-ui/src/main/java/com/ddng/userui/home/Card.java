@@ -7,6 +7,7 @@ import lombok.Builder;
 @Builder
 public class Card
 {
+    private Long id;
     private String title;
     private String content;
     private String thumbnailPath;
