@@ -53,7 +53,7 @@
                 data : function (params) {return { keyword: params.term };},
                 processResults: function (data) {
                     var returnArr = [];
-                    data.content.forEach(customer => returnArr.push({"id" : customer.id, "text" : customer.name}));
+                    data.content.forEach(customer => returnArr.push({"id" : customer.id, "text" : customer.name + "(" + customer.typeName + " / " + customer.telNo + ")"}));
                     return {
                         results: returnArr
                     };
