@@ -13,15 +13,15 @@
             <div class="modal-body">
                 <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="text-input">스케쥴 이름</label>
+                        <label class="col-md-3 col-form-label" for="name-input">스케쥴 이름</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="text-input" type="text" name="text-input" placeholder="스케쥴 이름을 입력하세요.">
+                            <input class="form-control" id="name-input" type="text" name="name" placeholder="스케쥴 이름을 입력하세요.">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="type-select">스케쥴 종류</label>
+                        <label class="col-md-3 col-form-label" for="scheduleType-select">스케쥴 종류</label>
                         <div class="col-md-9">
-                            <select class="form-control js-example-templating" id="type-select" name="type">
+                            <select class="form-control js-example-templating" id="scheduleType-select" name="scheduleType">
                                 <option></option>
                             </select>
                         </div>
@@ -29,7 +29,7 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">하루종일</label>
                         <div class="col-md-9 col-form-label">
-                            <input class="form-control" id="check1" type="checkbox" value="">
+                            <input class="form-control" id="isAllDay-check" type="checkbox" value="true" name="isAllDay" checked="false">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -45,6 +45,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="customer-select">고객</label>
+                        <div class="col-md-9">
+                            <select class="form-control js-example-templating" id="customer-select" name="customerId">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="tags-input">태그</label>
                         <div class="col-md-9">
                             <div id="whitelist" hidden></div>
@@ -52,9 +60,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="textarea-input">비고</label>
+                        <label class="col-md-3 col-form-label" for="bigo-input">비고</label>
                         <div class="col-md-9">
-                            <textarea class="form-control" id="textarea-input" name="textarea-input" rows="9" placeholder="비고"></textarea>
+                            <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고"></textarea>
                         </div>
                     </div>
                 </form>
