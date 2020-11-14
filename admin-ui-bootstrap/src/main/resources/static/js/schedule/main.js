@@ -50,12 +50,16 @@
             ajax: {
                 url: "http://1hoon.iptime.org:8366/customer-api/customer",
                 method: "GET",
-                data : function (params) {return { keyword: params.term };},
-                processResults: function (data) {
+                data : function (params) {return { keyword: params.term , page : params.page || 0};},
+                processResults: function (data, params) {
+                    params.page = data.number || 0;
                     var returnArr = [];
                     data.content.forEach(customer => returnArr.push({"id" : customer.id, "text" : customer.name + "(" + customer.typeName + " / " + customer.telNo + ")"}));
                     return {
-                        results: returnArr
+                        results: returnArr,
+                        pagination: {
+                            more: (params.page * 10) < data.totalElements
+                        }
                     };
                 }
             }
