@@ -27,38 +27,39 @@ public class SchedulesService
     private final SchedulesRepository schedulesRepository;
     private final ModelMapper modelMapper;
 
-    public List<SchedulesDto.Response> getSchedules(String baseDate, CalendarType calendarType)
+    public List<SchedulesDto.Response> getSchedules(String startDate, String endDate, CalendarType calendarType)
     {
-        LocalDate parse = LocalDate.parse(baseDate);
+        LocalDate startParse = LocalDate.parse(startDate);
+        LocalDate endParse = LocalDate.parse(endDate);
 
-        LocalDateTime startDate = null;
-        LocalDateTime endDate = null;
+        LocalDateTime startDateTime = LocalDate.parse(startDate).atStartOfDay();
+        LocalDateTime endDateTime = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+//
+//        switch (calendarType)
+//        {
+//            case DAILY:
+//                startDate = parse.atStartOfDay();
+//                endDate = startDate.plusDays(1);
+//                break;
+//            case WEEKLY:
+//                startDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).atStartOfDay();
+//                endDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).atStartOfDay().with(LocalTime.MAX);
+//                break;
+//            case MONTHLY:
+//                startDate = parse.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay();
+//                endDate = parse.with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay().with(LocalTime.MAX);
+//                break;
+//            case TWO_WEEKS:
+//                startDate = parse.atStartOfDay();
+//                endDate = parse.plusWeeks(2).atStartOfDay().with(LocalTime.MAX);
+//                break;
+//            case THREE_WEEKS:
+//                startDate = parse.atStartOfDay();
+//                endDate = parse.plusWeeks(3).atStartOfDay().with(LocalTime.MAX);
+//                break;
+//        }
 
-        switch (calendarType)
-        {
-            case DAILY:
-                startDate = parse.atStartOfDay();
-                endDate = startDate.plusDays(1);
-                break;
-            case WEEKLY:
-                startDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).atStartOfDay();
-                endDate = parse.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).atStartOfDay().with(LocalTime.MAX);
-                break;
-            case MONTHLY:
-                startDate = parse.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay();
-                endDate = parse.with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay().with(LocalTime.MAX);
-                break;
-            case TWO_WEEKS:
-                startDate = parse.atStartOfDay();
-                endDate = parse.plusWeeks(2).atStartOfDay().with(LocalTime.MAX);
-                break;
-            case THREE_WEEKS:
-                startDate = parse.atStartOfDay();
-                endDate = parse.plusWeeks(3).atStartOfDay().with(LocalTime.MAX);
-                break;
-        }
-
-        List<Schedules> schedules = schedulesRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDate, endDate);
+        List<Schedules> schedules = schedulesRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDateTime, endDateTime);
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 

@@ -386,7 +386,9 @@
             cal.clear();
 
             var startDateTime = cal.getDateRangeStart();
+            var endDateTime = cal.getDateRangeEnd();
             var startDate = moment(startDateTime.toDate()).format('YYYY-MM-DD');
+            var endDate = moment(endDateTime.toDate()).format('YYYY-MM-DD');
             var calendarType;
 
             switch (cal.getViewName())
@@ -399,7 +401,7 @@
             $.ajax({
                 url : SERVER_URL + "/schedule-api/schedules",
                 type : "GET",
-                data : {"baseDate" : startDate, "calendarType" : calendarType}
+                data : {"startDate" : startDate, "endDate" : endDate , "calendarType" : calendarType}
             }).done((data, textStatus, jqXHR) => {
                 // 스케쥴 초기화
                 ScheduleList = [];

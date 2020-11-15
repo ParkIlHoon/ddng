@@ -11,7 +11,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                <form class="form-horizontal" id="modal-schedule-form">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="name-input">스케쥴 이름</label>
                         <div class="col-md-9">
@@ -35,13 +35,13 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="stt-date-input">일정 시작일시</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="stt-date-input" type="datetime-local" name="date-input" placeholder="시작일">
+                            <input class="form-control" id="stt-date-input" type="datetime-local" name="startDate" placeholder="시작일">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="end-date-input">일정 종료일시</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="end-date-input" type="datetime-local" name="date-input" placeholder="시작일">
+                            <input class="form-control" id="end-date-input" type="datetime-local" name="endDate" placeholder="시작일">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -69,7 +69,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button">저장</button>
+                <button class="btn btn-primary" type="button" id="save-schedule-button">저장</button>
             </div>
         </div>
     </div>

@@ -94,3 +94,19 @@ function openPopup (event)
         event.guide.clearGuideElement();
     });
 }
+$("#save-schedule-button").on("click", function (e){
+    var data = $("#modal-schedule-form").serializeObject();
+    var startDate = data.startDate;
+    $.ajax({
+        url : SERVER_URL + "/schedule-api/schedules/",
+        method : "POST",
+        dataType : "json",
+        data : JSON.stringify(data),
+        contentType : "application/json; charset=utf-8"
+    }).done((data, textStatus, jqXHR) => {
+        //TODO 캘린더 새로고침
+        $('#scheduleModal').modal({
+            show: false
+        });
+    });
+});
