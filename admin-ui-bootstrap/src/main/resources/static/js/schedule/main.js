@@ -12,7 +12,7 @@
 
     // 스케쥴 타입 목록 조회
     $.ajax({
-        url : "http://1hoon.iptime.org:8366/schedule-api/schedules/types",
+        url : SERVER_URL + "/schedule-api/schedules/types",
         type : "GET",
     }).done((data, textStatus, jqXHR) => {
         // 스케쥴 타입 목록 초기화
@@ -397,7 +397,7 @@
             }
 
             $.ajax({
-                url : "http://1hoon.iptime.org:8366/schedule-api/schedules",
+                url : SERVER_URL + "/schedule-api/schedules",
                 type : "GET",
                 data : {"baseDate" : startDate, "calendarType" : calendarType}
             }).done((data, textStatus, jqXHR) => {

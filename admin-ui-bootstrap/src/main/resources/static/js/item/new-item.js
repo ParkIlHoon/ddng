@@ -4,7 +4,7 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 고객 종류
     $.ajax({
-        url : "http://1hoon.iptime.org:8366/sale-api/item/type",
+        url : SERVER_URL + "/sale-api/item/type",
         type : "GET",
     }).done((data, textStatus, jqXHR) => {
         $("#type-select").select2({
@@ -36,7 +36,7 @@ $(function(){
             dataType : "json",
             contentType : "application/json; charset=utf-8",
             method : "POST",
-            url : "http://1hoon.iptime.org:8366/sale-api/item",
+            url : SERVER_URL + "/sale-api/item",
             data : JSON.stringify(data)
         }).always(function(data, status){
             location.href = "/item/new";

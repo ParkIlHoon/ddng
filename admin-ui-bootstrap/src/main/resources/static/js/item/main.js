@@ -6,7 +6,7 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 고객 종류
     $.ajax({
-        url : "http://1hoon.iptime.org:8366/sale-api/item/type",
+        url : SERVER_URL + "/sale-api/item/type",
         type : "GET",
     }).done((data, textStatus, jqXHR) => {
         $("#type-select").select2({
@@ -211,7 +211,7 @@ $(function(){
             dataType : "json",
             contentType : "application/json; charset=utf-8",
             method : "PUT",
-            url : "http://1hoon.iptime.org:8366/sale-api/item/" + $("#itemId-p").text(),
+            url : SERVER_URL + "/sale-api/item/" + $("#itemId-p").text(),
             data : JSON.stringify(data)
         }).done(function(data, status){
             $newItemImage.hide();
@@ -242,7 +242,7 @@ $(function(){
         $("#searchKeywordSaved").val(searchKeyword);
 
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/item",
+            url : SERVER_URL + "/sale-api/item",
             type : "GET",
             data : {"keyword" : searchKeyword}
         }).done((data, textStatus, jqXHR) => {
@@ -259,7 +259,7 @@ $(function(){
     {
         var searchKeyword = $("#searchKeywordSaved").val();
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/item",
+            url : SERVER_URL + "/sale-api/item",
             type : "GET",
             data : {"keyword" : searchKeyword, "page" : movePage - 1}
         }).done((data, textStatus, jqXHR) => {
@@ -274,7 +274,7 @@ $(function(){
     function searchItemInfo (itemId)
     {
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/item/" + itemId,
+            url : SERVER_URL + "/sale-api/item/" + itemId,
             type : "GET"
         }).done((data, textStatus, jqXHR) => {
             // 상품 상세 정보 영역 표시
@@ -309,7 +309,7 @@ $(function(){
     {
         return;
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/sale",
+            url : SERVER_URL + "/sale-api/sale",
             type : "GET",
             data : {"itemId" : itemId}
         }).done((data, textStatus, jqXHR) => {
@@ -325,7 +325,7 @@ $(function(){
     {
         return;
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/sale",
+            url : SERVER_URL + "/sale-api/sale",
             type : "GET",
             data : {"itemId" : itemId}
         }).done((data, textStatus, jqXHR) => {

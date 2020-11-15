@@ -36,7 +36,7 @@ function initializePopup (data)
         width : "100%",
         minimumInputLength : 1,
         ajax: {
-            url: "http://1hoon.iptime.org:8366/customer-api/customer",
+            url: SERVER_URL + "/customer-api/customer",
             method: "GET",
             data : function (params) {return { keyword: params.term , page : params.page || 0};},
             processResults: function (data, params) {

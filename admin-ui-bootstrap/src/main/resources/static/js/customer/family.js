@@ -37,7 +37,7 @@ $(function(){
         }
 
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/customer-api/family",
+            url : SERVER_URL + "/customer-api/family",
             type : "GET",
             data : {"keyword" : searchKeyword, "size" : 12}
         }).done((data, textStatus, jqXHR) => {
@@ -54,7 +54,7 @@ $(function(){
     {
         var searchKeyword = $("#keyword-input-hidden").val();
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/customer-api/family",
+            url : SERVER_URL + "/customer-api/family",
             type : "GET",
             data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 12}
         }).done((data, textStatus, jqXHR) => {
@@ -115,7 +115,7 @@ $(function(){
         $("#family-card-title").text(familyName);
 
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/customer-api/family/" + familyId,
+            url : SERVER_URL + "/customer-api/family/" + familyId,
             type : "GET"
         }).done((data, textStatus, jqXHR) => {
             var customers = data.customers;
@@ -183,7 +183,7 @@ $(function(){
     function createCouponCard(customerIds)
     {
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/sale-api/coupon?customerIds=" + customerIds[0] + "&customerIds=" + customerIds[1] + "&customerIds=" + customerIds[2],
+            url : SERVER_URL + "/sale-api/coupon?customerIds=" + customerIds[0] + "&customerIds=" + customerIds[1] + "&customerIds=" + customerIds[2],
             type : "GET"
         }).done((data, textStatus, jqXHR) => {
             var coupons = data.content;
@@ -252,7 +252,7 @@ $(function(){
         }
 
         $.ajax({
-            url : "http://1hoon.iptime.org:8366/customer-api/family/" + g_familyId,
+            url : SERVER_URL + "/customer-api/family/" + g_familyId,
             type : "PUT",
             data : JSON.stringify({name : value}),
             dataType : "json",
