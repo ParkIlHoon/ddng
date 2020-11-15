@@ -44,6 +44,7 @@
             },
             'clickSchedule': function(e) {
                 console.log('clickSchedule', e);
+                openEditPopup(e);
             },
             'clickDayname': function(date) {
                 console.log('clickDayname', date);
@@ -270,7 +271,7 @@
          */
         function createNewSchedule(event)
         {
-            openPopup(event);
+            openNewPopup(event);
         }
 
         function onChangeCalendars(e)

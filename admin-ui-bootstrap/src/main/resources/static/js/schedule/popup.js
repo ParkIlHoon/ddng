@@ -1,10 +1,11 @@
+var g_tagify;
 /**
  * 스케쥴 등록 팝업 초기화
  * @param data 초기 데이터
  */
 function initializePopup (data)
 {
-    var g_tagify;
+
 
     // 스케쥴 팝업 select 용 데이터 가공
     var selectArr = new Array();
@@ -70,7 +71,7 @@ function initializePopup (data)
  * 새로운 스케쥴을 생성하는 팝업을 오픈한다.
  * @param event
  */
-function openPopup (event)
+function openNewPopup (event)
 {
     var start = event.start ? new Date(event.start.getTime()) : new Date();
     var end = event.end ? new Date(event.end.getTime()) : moment().add(1, 'hours').toDate();
@@ -110,3 +111,23 @@ $("#save-schedule-button").on("click", function (e){
         });
     });
 });
+
+function openEditPopup (event)
+{
+    // 팝업 구성
+    $("#modal-title").text("스케쥴 상세 팝업");
+    $("#name-input").val(event.schedule.title);
+    $("#scheduleType-select").val(event.schedule.calendarId).trigger('change');
+    $("#customer-select").val(event.schedule.raw.customerId).trigger('change');
+    $("input:checkbox[id='isAllDay-check']").prop("checked", event.schedule.isAllDay);
+    $("#stt-date-input").val(moment(event.schedule.start).format("YYYY-MM-DD\THH:mm"));
+    $("#end-date-input").val(moment(event.schedule.end).format("YYYY-MM-DD\THH:mm"));
+    $("#bigo-input").val(event.schedule.body);
+    // 태그 추가
+    g_tagify.addTags(event.schedule.raw.tags);
+
+    // 팝업 오픈
+    $('#scheduleModal').modal({
+        show: true
+    });
+}
