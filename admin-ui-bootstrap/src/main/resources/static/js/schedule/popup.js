@@ -5,8 +5,6 @@ var g_tagify;
  */
 function initializePopup (data)
 {
-
-
     // 스케쥴 팝업 select 용 데이터 가공
     var selectArr = new Array();
     for (var idx = 0; idx < data.length; idx++)
@@ -55,15 +53,24 @@ function initializePopup (data)
     });
     // 스케쥴 팝업 tagify 구성
     var tagInput = document.querySelector("#tags-input");
-    g_tagify = new Tagify(tagInput, {
-        pattern: /^.{0,20}$/,
-        whitelist : [],
-        dropdown : {
-            position: "input",
-            enabled: 1, // suggest tags after a single character input
-            fuzzySearch: false
-        }, // map tags
-        backspace : false
+    $.ajax({
+        url : SERVER_URL + "/schedule-api/tag",
+        method : "GET",
+    }).done((data, textStatus, jqXHR) => {
+        var tagData = []
+        data.forEach(tag => tagData.push({"value" : tag.title}));
+        g_tagify = new Tagify(tagInput, {
+            pattern: /^.{0,20}$/,
+            whitelist : tagData,
+            dropdown : {
+                position: "input",
+                enabled: 1, // suggest tags after a single character input
+                fuzzySearch: false
+            }, // map tags
+            backspace : false
+        });
+        g_tagify.DOM.input.classList.add('form-control');
+        g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
     });
 }
 
@@ -98,6 +105,9 @@ function openNewPopup (event)
 $("#save-schedule-button").on("click", function (e){
     var data = $("#modal-schedule-form").serializeObject();
     var startDate = data.startDate;
+    var tagData = [];
+    JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
+    data.tags = tagData;
     $.ajax({
         url : SERVER_URL + "/schedule-api/schedules/",
         method : "POST",
@@ -124,7 +134,10 @@ function openEditPopup (event)
     $("#end-date-input").val(moment(event.schedule.end).format("YYYY-MM-DD\THH:mm"));
     $("#bigo-input").val(event.schedule.body);
     // 태그 추가
-    g_tagify.addTags(event.schedule.raw.tags);
+    var tagData = []
+    event.schedule.raw.tags.forEach(tag => tagData.push({"value" : tag.title}));
+    g_tagify.removeAllTags();
+    g_tagify.addTags(tagData);
 
     // 팝업 오픈
     $('#scheduleModal').modal({

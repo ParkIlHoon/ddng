@@ -4,6 +4,7 @@ package com.ddng.scheduleapi.modules.schedules.dto;
 import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.tag.domain.Tag;
+import com.ddng.scheduleapi.modules.tag.dto.TagDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +67,7 @@ public class SchedulesDto
         private Long userId;
         private String bigo;
         private boolean payed = false;
+        private Set<TagDto> tags = new HashSet<>();
     }
 
     @NoArgsConstructor @AllArgsConstructor

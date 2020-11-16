@@ -5,6 +5,8 @@ import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;
 import com.ddng.scheduleapi.modules.tag.domain.Tag;
+import com.ddng.scheduleapi.modules.tag.dto.TagDto;
+import com.ddng.scheduleapi.modules.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class SchedulesService
 {
     private final SchedulesRepository schedulesRepository;
+    private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
     public List<SchedulesDto.Response> getSchedules(String startDate, String endDate, CalendarType calendarType)
@@ -52,7 +55,27 @@ public class SchedulesService
         schedules.setBigo(dto.getBigo());
         schedules.setPayed(dto.isPayed());
 
-        return schedulesRepository.save(schedules);
+        Schedules save = schedulesRepository.save(schedules);
+
+        for (TagDto tagDto : dto.getTags())
+        {
+            Tag tag = null;
+            Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
+            if (optionalTag.isEmpty())
+            {
+                Tag newTag = new Tag();
+                newTag.setTitle(tagDto.getTitle());
+                tag = tagRepository.save(newTag);
+            }
+            else
+            {
+                tag = optionalTag.get();
+            }
+
+            addTag(save, tag);
+        }
+
+        return save;
     }
 
 
