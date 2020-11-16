@@ -93,6 +93,9 @@ function openNewPopup (event)
     $("#end-date-input").val(moment(end).format("YYYY-MM-DD\THH:mm"));
     $("#bigo-input").val("");
 
+    // 태그 제거
+    g_tagify.removeAllTags();
+
     // 팝업 오픈
     $('#scheduleModal').modal({
         show: true
@@ -106,7 +109,10 @@ $("#save-schedule-button").on("click", function (e){
     var data = $("#modal-schedule-form").serializeObject();
     var startDate = data.startDate;
     var tagData = [];
-    JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
+    if (data.tags != null && data.tags != "")
+    {
+        JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
+    }
     data.tags = tagData;
     $.ajax({
         url : SERVER_URL + "/schedule-api/schedules/",
@@ -128,11 +134,23 @@ function openEditPopup (event)
     $("#modal-title").text("스케쥴 상세 팝업");
     $("#name-input").val(event.schedule.title);
     $("#scheduleType-select").val(event.schedule.calendarId).trigger('change');
-    $("#customer-select").val(event.schedule.raw.customerId).trigger('change');
     $("input:checkbox[id='isAllDay-check']").prop("checked", event.schedule.isAllDay);
-    $("#stt-date-input").val(moment(event.schedule.start).format("YYYY-MM-DD\THH:mm"));
-    $("#end-date-input").val(moment(event.schedule.end).format("YYYY-MM-DD\THH:mm"));
+    $("#stt-date-input").val(moment(event.schedule.start.toDate()).format("YYYY-MM-DD\THH:mm:ss"));
+    $("#end-date-input").val(moment(event.schedule.end.toDate()).format("YYYY-MM-DD\THH:mm:ss"));
     $("#bigo-input").val(event.schedule.body);
+
+    // 고객
+    if (event.schedule.raw.customerId != undefined && event.schedule.raw.customerId != "")
+    {
+        $.ajax({
+            url : SERVER_URL + "/customer-api/customer/" + event.schedule.raw.customerId,
+            method : "GET",
+        }).done((data, textStatus, jqXHR) => {
+            var newOption = new Option(data.name + "(" + data.typeName + " / " + data.telNo + ")", data.id, false, true);
+            $("#customer-select").append(newOption).trigger('change');
+        });
+    }
+
     // 태그 추가
     var tagData = []
     event.schedule.raw.tags.forEach(tag => tagData.push({"value" : tag.title}));
