@@ -1,4 +1,5 @@
 var g_tagify;
+var g_guide;
 /**
  * 스케쥴 등록 팝업 초기화
  * @param data 초기 데이터
@@ -72,6 +73,13 @@ function initializePopup (data)
         g_tagify.DOM.input.classList.add('form-control');
         g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
     });
+    // 팝업이 닫히면 가이드라인 제거
+    $('#scheduleModal').on('hidden.bs.modal', function (e) {
+        if (g_guide != undefined)
+        {
+            g_guide.clearGuideElement();
+        }
+    });
 }
 
 /**
@@ -100,11 +108,12 @@ function openNewPopup (event)
     $('#scheduleModal').modal({
         show: true
     });
-    // 팝업이 닫히면 가이드라인 제거
-    $('#scheduleModal').on('hidden.bs.modal', function (e) {
-        event.guide.clearGuideElement();
-    });
+    g_guide = event.guide;
 }
+
+/**
+ * 저장 버튼 클릭 이벤트 핸들러
+ */
 $("#save-schedule-button").on("click", function (e){
     var data = $("#modal-schedule-form").serializeObject();
     var startDate = data.startDate;
@@ -120,14 +129,19 @@ $("#save-schedule-button").on("click", function (e){
         dataType : "json",
         data : JSON.stringify(data),
         contentType : "application/json; charset=utf-8"
-    }).done((data, textStatus, jqXHR) => {
-        //TODO 캘린더 새로고침
-        $('#scheduleModal').modal({
-            show: false
-        });
+    }).always(function(){
+        $('#scheduleModal').modal('hide');
+        cal.setDate(new Date(startDate));
+        cal.changeView(cal.getViewName(), true);
+        setRenderRangeText();
+        setSchedules();
     });
 });
 
+/**
+ * 스케쥴 상세 팝업을 오픈한다.
+ * @param event
+ */
 function openEditPopup (event)
 {
     // 팝업 구성
@@ -160,5 +174,131 @@ function openEditPopup (event)
     // 팝업 오픈
     $('#scheduleModal').modal({
         show: true
+    });
+}
+
+
+
+
+
+function setRenderRangeText() {
+    var renderRange = document.getElementById('renderRange');
+    var options = cal.getOptions();
+    var viewName = cal.getViewName();
+
+    var html = [];
+    if (viewName === 'day') {
+        html.push(currentCalendarDate('YYYY.MM.DD'));
+    } else if (viewName === 'month' &&
+        (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+        html.push(currentCalendarDate('YYYY.MM'));
+    } else {
+        html.push(moment(cal.getDateRangeStart().getTime()).format('YYYY.MM.DD'));
+        html.push(' ~ ');
+        html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
+    }
+    renderRange.innerHTML = html.join('');
+}
+
+function currentCalendarDate(format) {
+    var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
+
+    return currentDate.format(format);
+}
+
+/**
+ * 스케쥴을 세팅한다.
+ */
+function setSchedules()
+{
+    cal.clear();
+
+    var startDateTime = cal.getDateRangeStart();
+    var endDateTime = cal.getDateRangeEnd();
+    var startDate = moment(startDateTime.toDate()).format('YYYY-MM-DD');
+    var endDate = moment(endDateTime.toDate()).format('YYYY-MM-DD');
+    var calendarType;
+
+    switch (cal.getViewName())
+    {
+        case "day"   : calendarType = "DAILY";
+        case "week"  : calendarType = "WEEKLY";
+        case "month" : calendarType = "MONTHLY";
+    }
+
+    $.ajax({
+        url : SERVER_URL + "/schedule-api/schedules",
+        type : "GET",
+        data : {"startDate" : startDate, "endDate" : endDate , "calendarType" : calendarType}
+    }).done((data, textStatus, jqXHR) => {
+        // 스케쥴 초기화
+        ScheduleList = [];
+        // 스케쥴 생성
+        for (var idx = 0; idx < data.length; idx++)
+        {
+            var rawData = data[idx];
+            var schedule = new ScheduleInfo();
+
+            schedule.id = rawData.id;
+            schedule.calendarId = rawData.scheduleType;
+
+            schedule.title = rawData.name;
+            schedule.body = rawData.bigo;
+            schedule.isReadOnly = false;
+
+            schedule.isAllday = rawData.isAllDay;
+            if (schedule.isAllday)
+            {
+                schedule.category = 'allday';
+            }
+            else
+            {
+                schedule.category = 'time';
+            }
+            schedule.start = rawData.startDate;
+            schedule.end = rawData.endDate;
+
+            schedule.isPrivate = false;
+            schedule.location = "";
+            schedule.attendees = [];
+            schedule.recurrenceRule = "";
+            schedule.state = "";
+            schedule.color = "black";
+            schedule.bgColor = rawData.scheduleColor;
+            schedule.dragBgColor = rawData.scheduleColor;
+            schedule.borderColor = rawData.scheduleColor;
+
+            if (schedule.category === 'milestone') {
+                schedule.color = schedule.bgColor;
+                schedule.bgColor = 'transparent';
+                schedule.dragBgColor = 'transparent';
+                schedule.borderColor = 'transparent';
+            }
+
+            schedule.raw.customerId = rawData.customerId;
+            schedule.raw.userId = rawData.userId;
+            schedule.raw.payed = rawData.payed;
+            schedule.raw.tags = rawData.tags;
+
+            ScheduleList.push(schedule);
+        }
+        cal.createSchedules(ScheduleList);
+        refreshScheduleVisibility();
+    });
+}
+
+
+function refreshScheduleVisibility() {
+    var calendarElements = Array.prototype.slice.call(document.querySelectorAll('#calendarList input'));
+
+    ScheduleTypes.forEach(function(calendar) {
+        cal.toggleSchedules(calendar.id, !calendar.checked, false);
+    });
+
+    cal.render(true);
+
+    calendarElements.forEach(function(input) {
+        var span = input.nextElementSibling;
+        span.style.backgroundColor = input.checked ? span.style.borderColor : 'transparent';
     });
 }

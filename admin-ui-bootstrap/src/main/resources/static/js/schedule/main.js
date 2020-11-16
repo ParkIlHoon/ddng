@@ -8,7 +8,7 @@
 (function(window, Calendar) {
     var cal, resizeThrottled;
     var datePicker, selectedCalendar;
-    // var g_tagify;
+
 
     // 스케쥴 타입 목록 조회
     $.ajax({
@@ -311,155 +311,6 @@
             refreshScheduleVisibility();
         }
 
-        function refreshScheduleVisibility() {
-            var calendarElements = Array.prototype.slice.call(document.querySelectorAll('#calendarList input'));
-
-            ScheduleTypes.forEach(function(calendar) {
-                cal.toggleSchedules(calendar.id, !calendar.checked, false);
-            });
-
-            cal.render(true);
-
-            calendarElements.forEach(function(input) {
-                var span = input.nextElementSibling;
-                span.style.backgroundColor = input.checked ? span.style.borderColor : 'transparent';
-            });
-        }
-
-        function setDropdownCalendarType() {
-            var calendarTypeName = document.getElementById('calendarTypeName');
-            var calendarTypeIcon = document.getElementById('calendarTypeIcon');
-            var options = cal.getOptions();
-            var type = cal.getViewName();
-            var iconClassName;
-
-            if (type === 'day') {
-                type = '오늘 일정';
-                iconClassName = 'calendar-icon ic_view_day';
-            } else if (type === 'week') {
-                type = '주간 일정';
-                iconClassName = 'calendar-icon ic_view_week';
-            } else if (options.month.visibleWeeksCount === 2) {
-                type = '2주간 일정';
-                iconClassName = 'calendar-icon ic_view_week';
-            } else if (options.month.visibleWeeksCount === 3) {
-                type = '3주간 일정';
-                iconClassName = 'calendar-icon ic_view_week';
-            } else {
-                type = '월간 일정';
-                iconClassName = 'calendar-icon ic_view_month';
-            }
-
-            calendarTypeName.innerHTML = type;
-            calendarTypeIcon.className = iconClassName;
-        }
-
-        function currentCalendarDate(format) {
-            var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
-
-            return currentDate.format(format);
-        }
-
-        function setRenderRangeText() {
-            var renderRange = document.getElementById('renderRange');
-            var options = cal.getOptions();
-            var viewName = cal.getViewName();
-
-            var html = [];
-            if (viewName === 'day') {
-                html.push(currentCalendarDate('YYYY.MM.DD'));
-            } else if (viewName === 'month' &&
-                (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-                html.push(currentCalendarDate('YYYY.MM'));
-            } else {
-                html.push(moment(cal.getDateRangeStart().getTime()).format('YYYY.MM.DD'));
-                html.push(' ~ ');
-                html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
-            }
-            renderRange.innerHTML = html.join('');
-        }
-
-        /**
-         * 스케쥴을 세팅한다.
-         */
-        function setSchedules()
-        {
-            cal.clear();
-
-            var startDateTime = cal.getDateRangeStart();
-            var endDateTime = cal.getDateRangeEnd();
-            var startDate = moment(startDateTime.toDate()).format('YYYY-MM-DD');
-            var endDate = moment(endDateTime.toDate()).format('YYYY-MM-DD');
-            var calendarType;
-
-            switch (cal.getViewName())
-            {
-                case "day"   : calendarType = "DAILY";
-                case "week"  : calendarType = "WEEKLY";
-                case "month" : calendarType = "MONTHLY";
-            }
-
-            $.ajax({
-                url : SERVER_URL + "/schedule-api/schedules",
-                type : "GET",
-                data : {"startDate" : startDate, "endDate" : endDate , "calendarType" : calendarType}
-            }).done((data, textStatus, jqXHR) => {
-                // 스케쥴 초기화
-                ScheduleList = [];
-                // 스케쥴 생성
-                for (var idx = 0; idx < data.length; idx++)
-                {
-                    var rawData = data[idx];
-                    var schedule = new ScheduleInfo();
-
-                    schedule.id = rawData.id;
-                    schedule.calendarId = rawData.scheduleType;
-
-                    schedule.title = rawData.name;
-                    schedule.body = rawData.bigo;
-                    schedule.isReadOnly = false;
-
-                    schedule.isAllday = rawData.isAllDay;
-                    if (schedule.isAllday)
-                    {
-                        schedule.category = 'allday';
-                    }
-                    else
-                    {
-                        schedule.category = 'time';
-                    }
-                    schedule.start = rawData.startDate;
-                    schedule.end = rawData.endDate;
-
-                    schedule.isPrivate = false;
-                    schedule.location = "";
-                    schedule.attendees = [];
-                    schedule.recurrenceRule = "";
-                    schedule.state = "";
-                    schedule.color = "black";
-                    schedule.bgColor = rawData.scheduleColor;
-                    schedule.dragBgColor = rawData.scheduleColor;
-                    schedule.borderColor = rawData.scheduleColor;
-
-                    if (schedule.category === 'milestone') {
-                        schedule.color = schedule.bgColor;
-                        schedule.bgColor = 'transparent';
-                        schedule.dragBgColor = 'transparent';
-                        schedule.borderColor = 'transparent';
-                    }
-
-                    schedule.raw.customerId = rawData.customerId;
-                    schedule.raw.userId = rawData.userId;
-                    schedule.raw.payed = rawData.payed;
-                    schedule.raw.tags = rawData.tags;
-
-                    ScheduleList.push(schedule);
-                }
-                cal.createSchedules(ScheduleList);
-                refreshScheduleVisibility();
-            });
-        }
-
         function setEventListener() {
             $('#menu-navi').on('click', onClickNavi);
             $('.dropdown-menu a[role="menuitem"]').on('click', onClickMenu);
@@ -487,7 +338,158 @@
         setRenderRangeText();
         setSchedules();
         setEventListener();
-
     });
+
+    function setDropdownCalendarType()
+    {
+        var calendarTypeName = document.getElementById('calendarTypeName');
+        var calendarTypeIcon = document.getElementById('calendarTypeIcon');
+        var options = cal.getOptions();
+        var type = cal.getViewName();
+        var iconClassName;
+
+        if (type === 'day') {
+            type = '오늘 일정';
+            iconClassName = 'calendar-icon ic_view_day';
+        } else if (type === 'week') {
+            type = '주간 일정';
+            iconClassName = 'calendar-icon ic_view_week';
+        } else if (options.month.visibleWeeksCount === 2) {
+            type = '2주간 일정';
+            iconClassName = 'calendar-icon ic_view_week';
+        } else if (options.month.visibleWeeksCount === 3) {
+            type = '3주간 일정';
+            iconClassName = 'calendar-icon ic_view_week';
+        } else {
+            type = '월간 일정';
+            iconClassName = 'calendar-icon ic_view_month';
+        }
+
+        calendarTypeName.innerHTML = type;
+        calendarTypeIcon.className = iconClassName;
+    }
+
+    function currentCalendarDate(format) {
+        var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
+
+        return currentDate.format(format);
+    }
+
+    function setRenderRangeText() {
+        var renderRange = document.getElementById('renderRange');
+        var options = cal.getOptions();
+        var viewName = cal.getViewName();
+
+        var html = [];
+        if (viewName === 'day') {
+            html.push(currentCalendarDate('YYYY.MM.DD'));
+        } else if (viewName === 'month' &&
+            (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+            html.push(currentCalendarDate('YYYY.MM'));
+        } else {
+            html.push(moment(cal.getDateRangeStart().getTime()).format('YYYY.MM.DD'));
+            html.push(' ~ ');
+            html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
+        }
+        renderRange.innerHTML = html.join('');
+    }
+
+    /**
+     * 스케쥴을 세팅한다.
+     */
+    function setSchedules()
+    {
+        cal.clear();
+
+        var startDateTime = cal.getDateRangeStart();
+        var endDateTime = cal.getDateRangeEnd();
+        var startDate = moment(startDateTime.toDate()).format('YYYY-MM-DD');
+        var endDate = moment(endDateTime.toDate()).format('YYYY-MM-DD');
+        var calendarType;
+
+        switch (cal.getViewName())
+        {
+            case "day"   : calendarType = "DAILY";
+            case "week"  : calendarType = "WEEKLY";
+            case "month" : calendarType = "MONTHLY";
+        }
+
+        $.ajax({
+            url : SERVER_URL + "/schedule-api/schedules",
+            type : "GET",
+            data : {"startDate" : startDate, "endDate" : endDate , "calendarType" : calendarType}
+        }).done((data, textStatus, jqXHR) => {
+            // 스케쥴 초기화
+            ScheduleList = [];
+            // 스케쥴 생성
+            for (var idx = 0; idx < data.length; idx++)
+            {
+                var rawData = data[idx];
+                var schedule = new ScheduleInfo();
+
+                schedule.id = rawData.id;
+                schedule.calendarId = rawData.scheduleType;
+
+                schedule.title = rawData.name;
+                schedule.body = rawData.bigo;
+                schedule.isReadOnly = false;
+
+                schedule.isAllday = rawData.isAllDay;
+                if (schedule.isAllday)
+                {
+                    schedule.category = 'allday';
+                }
+                else
+                {
+                    schedule.category = 'time';
+                }
+                schedule.start = rawData.startDate;
+                schedule.end = rawData.endDate;
+
+                schedule.isPrivate = false;
+                schedule.location = "";
+                schedule.attendees = [];
+                schedule.recurrenceRule = "";
+                schedule.state = "";
+                schedule.color = "black";
+                schedule.bgColor = rawData.scheduleColor;
+                schedule.dragBgColor = rawData.scheduleColor;
+                schedule.borderColor = rawData.scheduleColor;
+
+                if (schedule.category === 'milestone') {
+                    schedule.color = schedule.bgColor;
+                    schedule.bgColor = 'transparent';
+                    schedule.dragBgColor = 'transparent';
+                    schedule.borderColor = 'transparent';
+                }
+
+                schedule.raw.customerId = rawData.customerId;
+                schedule.raw.userId = rawData.userId;
+                schedule.raw.payed = rawData.payed;
+                schedule.raw.tags = rawData.tags;
+
+                ScheduleList.push(schedule);
+            }
+            cal.createSchedules(ScheduleList);
+            refreshScheduleVisibility();
+        });
+    }
+
+
+    function refreshScheduleVisibility() {
+        var calendarElements = Array.prototype.slice.call(document.querySelectorAll('#calendarList input'));
+
+        ScheduleTypes.forEach(function(calendar) {
+            cal.toggleSchedules(calendar.id, !calendar.checked, false);
+        });
+
+        cal.render(true);
+
+        calendarElements.forEach(function(input) {
+            var span = input.nextElementSibling;
+            span.style.backgroundColor = input.checked ? span.style.borderColor : 'transparent';
+        });
+    }
+
 
 })(window, tui.Calendar);
