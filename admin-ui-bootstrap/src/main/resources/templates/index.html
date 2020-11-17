@@ -8,191 +8,211 @@
 -->
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head th:replace="fragments.html :: head"></head>
-  <body class="c-app">
-    <div th:replace="fragments.html::leftMenu"></div>
-    <div class="c-wrapper c-fixed-components">
-      <header th:replace="fragments.html::header ('메인', '대시보드')"></header>
-      <div class="c-body">
+<head th:replace="fragments.html :: head"></head>
+<body class="c-app">
+<div th:replace="fragments.html::leftMenu"></div>
+<div class="c-wrapper c-fixed-components">
+    <header th:replace="fragments.html::header ('메인', '대시보드')"></header>
+    <div class="c-body">
         <main class="c-main">
-          <div class="container-fluid">
-            <div class="fade-in">
-              <div class="row">
-                <div class="col-sm-6 col-lg-3">
-                  <div class="card text-white bg-gradient-primary">
-                    <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                      <div>
-                        <div class="text-value-lg">9.823</div>
-                        <div>오늘의 미용 예약 건수</div>
-                      </div>
-                      <div class="btn-group">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <svg class="c-icon">
-                            <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>
-                          </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
-                      </div>
+            <div class="container-fluid">
+                <div class="fade-in">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-gradient-primary">
+                                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-value-lg">9.823</div>
+                                        <div>오늘의 미용 예약 건수</div>
+                                    </div>
+<!--                                    <div class="btn-group">-->
+<!--                                        <button class="btn btn-transparent dropdown-toggle p-0" type="button"-->
+<!--                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                            <svg class="c-icon">-->
+<!--                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>-->
+<!--                                            </svg>-->
+<!--                                        </button>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item"-->
+<!--                                                                                          href="#">Action</a><a-->
+<!--                                                class="dropdown-item" href="#">Another action</a><a-->
+<!--                                                class="dropdown-item" href="#">Something else here</a></div>-->
+<!--                                    </div>-->
+                                </div>
+                                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                                    <canvas class="chart" id="card-chart1" height="70"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-gradient-info">
+                                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-value-lg">9.823</div>
+                                        <div>오늘의 호텔 예약 건수</div>
+                                    </div>
+<!--                                    <div class="btn-group">-->
+<!--                                        <button class="btn btn-transparent dropdown-toggle p-0" type="button"-->
+<!--                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                            <svg class="c-icon">-->
+<!--                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>-->
+<!--                                            </svg>-->
+<!--                                        </button>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item"-->
+<!--                                                                                          href="#">Action</a><a-->
+<!--                                                class="dropdown-item" href="#">Another action</a><a-->
+<!--                                                class="dropdown-item" href="#">Something else here</a></div>-->
+<!--                                    </div>-->
+                                </div>
+                                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                                    <canvas class="chart" id="card-chart2" height="70"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-gradient-warning">
+                                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-value-lg">9.823</div>
+                                        <div>오늘의 유치원 예약 건수</div>
+                                    </div>
+<!--                                    <div class="btn-group">-->
+<!--                                        <button class="btn btn-transparent dropdown-toggle p-0" type="button"-->
+<!--                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                            <svg class="c-icon">-->
+<!--                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>-->
+<!--                                            </svg>-->
+<!--                                        </button>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item"-->
+<!--                                                                                          href="#">Action</a><a-->
+<!--                                                class="dropdown-item" href="#">Another action</a><a-->
+<!--                                                class="dropdown-item" href="#">Something else here</a></div>-->
+<!--                                    </div>-->
+                                </div>
+                                <div class="c-chart-wrapper mt-3" style="height:70px;">
+                                    <canvas class="chart" id="card-chart3" height="70"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-gradient-danger">
+                                <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-value-lg">9.823</div>
+                                        <div>홈페이지 방문자 수</div>
+                                    </div>
+<!--                                    <div class="btn-group">-->
+<!--                                        <button class="btn btn-transparent dropdown-toggle p-0" type="button"-->
+<!--                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                            <svg class="c-icon">-->
+<!--                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>-->
+<!--                                            </svg>-->
+<!--                                        </button>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item"-->
+<!--                                                                                          href="#">Action</a><a-->
+<!--                                                class="dropdown-item" href="#">Another action</a><a-->
+<!--                                                class="dropdown-item" href="#">Something else here</a></div>-->
+<!--                                    </div>-->
+                                </div>
+                                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                                    <canvas class="chart" id="card-chart4" height="70"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-->
                     </div>
-                    <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                      <canvas class="chart" id="card-chart1" height="70"></canvas>
+                    <!-- /.row-->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title mb-0">호텔, 유치원 현황</h4>
+                                    <div class="small text-muted" id="date-div"></div>
+                                </div>
+                                <div class="btn-toolbar d-none d-md-block" role="toolbar"
+                                     aria-label="Toolbar with buttons">
+                                    <div class="btn-group btn-group-toggle mx-3" data-toggle="buttons">
+                                        <label class="btn btn-outline-secondary">
+                                            <input id="option1" type="radio" name="options" autocomplete="off"> 어제
+                                        </label>
+                                        <label class="btn btn-outline-secondary active">
+                                            <input id="option2" type="radio" name="options" autocomplete="off"
+                                                   checked=""> 오늘
+                                        </label>
+                                        <label class="btn btn-outline-secondary">
+                                            <input id="option3" type="radio" name="options" autocomplete="off"> 내일
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <table class="table table-responsive-sm table-striped" id="schedule-table">
+                                    <thead>
+                                    <tr>
+                                        <th>구분</th>
+                                        <th>이름</th>
+                                        <th>품종</th>
+                                        <th>전화번호</th>
+                                        <th>태그</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="schedule-table-body">
+                                    <tr>
+                                        <td>호텔</td>
+                                        <td>치우</td>
+                                        <td>말티즈</td>
+                                        <td>010-1234-5678</td>
+                                        <td>
+                                            <span class="badge badge-secondary">많이 귀여움</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>유치원</td>
+                                        <td>비니</td>
+                                        <td>요크셔 테리어</td>
+                                        <td>010-1234-5678</td>
+                                        <td>
+                                            <span class="badge badge-secondary">겁 많음</span>
+                                            <span class="badge badge-secondary">관절약 먹고있음</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>유치원</td>
+                                        <td>볼트</td>
+                                        <td>말티즈</td>
+                                        <td>010-1234-5678</td>
+                                        <td>
+                                            <span class="badge badge-secondary">눈치가 없음</span>
+                                            <span class="badge badge-secondary">분리불안</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>호텔</td>
+                                        <td>라니</td>
+                                        <td>시츄</td>
+                                        <td>010-1234-5678</td>
+                                        <td>
+                                            <span class="badge badge-secondary">밥 잘 안먹음</span>
+                                            <span class="badge badge-secondary">똥가지고 논다</span>
+                                            <span class="badge badge-secondary">발 깎기 힘듬</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    <!-- /.card-->
                 </div>
-                <!-- /.col-->
-                <div class="col-sm-6 col-lg-3">
-                  <div class="card text-white bg-gradient-info">
-                    <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                      <div>
-                        <div class="text-value-lg">9.823</div>
-                        <div>오늘의 호텔 예약 건수</div>
-                      </div>
-                      <div class="btn-group">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <svg class="c-icon">
-                            <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>
-                          </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
-                      </div>
-                    </div>
-                    <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                      <canvas class="chart" id="card-chart2" height="70"></canvas>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.col-->
-                <div class="col-sm-6 col-lg-3">
-                  <div class="card text-white bg-gradient-warning">
-                    <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                      <div>
-                        <div class="text-value-lg">9.823</div>
-                        <div>오늘의 유치원 예약 건수</div>
-                      </div>
-                      <div class="btn-group">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <svg class="c-icon">
-                            <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>
-                          </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
-                      </div>
-                    </div>
-                    <div class="c-chart-wrapper mt-3" style="height:70px;">
-                      <canvas class="chart" id="card-chart3" height="70"></canvas>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.col-->
-                <div class="col-sm-6 col-lg-3">
-                  <div class="card text-white bg-gradient-danger">
-                    <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
-                      <div>
-                        <div class="text-value-lg">9.823</div>
-                        <div>홈페이지 방문자 수</div>
-                      </div>
-                      <div class="btn-group">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <svg class="c-icon">
-                            <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-settings"></use>
-                          </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
-                      </div>
-                    </div>
-                    <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
-                      <canvas class="chart" id="card-chart4" height="70"></canvas>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.col-->
-              </div>
-              <!-- /.row-->
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <h4 class="card-title mb-0">호텔, 유치원 현황</h4>
-                      <div class="small text-muted">2020-10-09</div>
-                    </div>
-                    <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
-                      <div class="btn-group btn-group-toggle mx-3" data-toggle="buttons">
-                        <label class="btn btn-outline-secondary">
-                          <input id="option1" type="radio" name="options" autocomplete="off"> 어제
-                        </label>
-                        <label class="btn btn-outline-secondary active">
-                          <input id="option2" type="radio" name="options" autocomplete="off" checked=""> 오늘
-                        </label>
-                        <label class="btn btn-outline-secondary">
-                          <input id="option3" type="radio" name="options" autocomplete="off"> 내일
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <table class="table table-responsive-sm table-striped">
-                      <thead>
-                      <tr>
-                        <th>구분</th>
-                        <th>이름</th>
-                        <th>품종</th>
-                        <th>전화번호</th>
-                        <th>태그</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <td>호텔</td>
-                        <td>치우</td>
-                        <td>말티즈</td>
-                        <td>010-1234-5678</td>
-                        <td>
-                          <span class="badge badge-secondary">많이 귀여움</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>유치원</td>
-                        <td>비니</td>
-                        <td>요크셔 테리어</td>
-                        <td>010-1234-5678</td>
-                        <td>
-                          <span class="badge badge-secondary">겁 많음</span>
-                          <span class="badge badge-secondary">관절약 먹고있음</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>유치원</td>
-                        <td>볼트</td>
-                        <td>말티즈</td>
-                        <td>010-1234-5678</td>
-                        <td>
-                          <span class="badge badge-secondary">눈치가 없음</span>
-                          <span class="badge badge-secondary">분리불안</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>호텔</td>
-                        <td>라니</td>
-                        <td>시츄</td>
-                        <td>010-1234-5678</td>
-                        <td>
-                          <span class="badge badge-secondary">밥 잘 안먹음</span>
-                          <span class="badge badge-secondary">똥가지고 논다</span>
-                          <span class="badge badge-secondary">발 깎기 힘듬</span>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-->
             </div>
-          </div>
         </main>
         <footer th:replace="fragments.html::footer"></footer>
-      </div>
     </div>
-    <div th:replace="fragments.html::script"></div>
-  </body>
+</div>
+<div th:replace="fragments.html::script"></div>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script src="/js/index/main.js"></script>
+</body>
 </html>

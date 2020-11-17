@@ -82,6 +82,7 @@ function initializePopup (data)
         // 버튼 숨김
         $("#save-schedule-button").hide();
         $("#update-schedule-button").hide();
+        $("#delete-schedule-button").hide();
     });
 
     // 버튼 숨김

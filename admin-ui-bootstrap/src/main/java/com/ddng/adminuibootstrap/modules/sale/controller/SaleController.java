@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.controller;
+package com.ddng.adminuibootstrap.modules.sale.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/schedule")
-public class ScheduleController
+@RequestMapping("/sale")
+public class SaleController
 {
-
-    @GetMapping("/main")
-    public String mainForm (Model model)
+    @GetMapping
+    public String main (Model model)
     {
-        return "schedule/main";
+        return "sale/main";
     }
 }

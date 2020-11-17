@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.controller;
+package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;

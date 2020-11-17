@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.controller;
+package com.ddng.adminuibootstrap.modules.canvas.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
