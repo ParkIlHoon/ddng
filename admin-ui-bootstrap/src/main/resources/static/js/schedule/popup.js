@@ -79,7 +79,14 @@ function initializePopup (data)
         {
             g_guide.clearGuideElement();
         }
+        // 버튼 숨김
+        $("#save-schedule-button").hide();
+        $("#update-schedule-button").hide();
     });
+
+    // 버튼 숨김
+    $("#save-schedule-button").hide();
+    $("#update-schedule-button").hide();
 }
 
 /**
@@ -103,6 +110,9 @@ function openNewPopup (event)
 
     // 태그 제거
     g_tagify.removeAllTags();
+    
+    // 저장 버튼 보이게
+    $("#save-schedule-button").show();
 
     // 팝업 오픈
     $('#scheduleModal').modal({
@@ -146,6 +156,7 @@ function openEditPopup (event)
 {
     // 팝업 구성
     $("#modal-title").text("스케쥴 상세 팝업");
+    $("#schedule-id-input").val(event.schedule.id);
     $("#name-input").val(event.schedule.title);
     $("#scheduleType-select").val(event.schedule.calendarId).trigger('change');
     $("input:checkbox[id='isAllDay-check']").prop("checked", event.schedule.isAllDay);
@@ -171,6 +182,9 @@ function openEditPopup (event)
     g_tagify.removeAllTags();
     g_tagify.addTags(tagData);
 
+    // 수정 버튼 보이게
+    $("#update-schedule-button").show();
+
     // 팝업 오픈
     $('#scheduleModal').modal({
         show: true
@@ -179,6 +193,33 @@ function openEditPopup (event)
 
 
 
+/**
+ * 수정 버튼 클릭 이벤트 핸들러
+ */
+$("#update-schedule-button").on("click", function (e){
+    var scheduleId = $("#schedule-id-input").val();
+    var data = $("#modal-schedule-form").serializeObject();
+    var startDate = data.startDate;
+    var tagData = [];
+    if (data.tags != null && data.tags != "")
+    {
+        JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
+    }
+    data.tags = tagData;
+    $.ajax({
+        url : SERVER_URL + "/schedule-api/schedules/" + scheduleId,
+        method : "PUT",
+        dataType : "json",
+        data : JSON.stringify(data),
+        contentType : "application/json; charset=utf-8"
+    }).always(function(){
+        $('#scheduleModal').modal('hide');
+        cal.setDate(new Date(startDate));
+        cal.changeView(cal.getViewName(), true);
+        setRenderRangeText();
+        setSchedules();
+    });
+});
 
 
 function setRenderRangeText() {

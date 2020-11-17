@@ -12,6 +12,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="modal-schedule-form">
+                    <input type="hidden" id="schedule-id-input" name="id">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="name-input">스케쥴 이름</label>
                         <div class="col-md-9">
@@ -69,7 +70,8 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button" id="save-schedule-button">저장</button>
+                <button class="btn btn-primary" type="button" id="save-schedule-button">등록</button>
+                <button class="btn btn-primary" type="button" id="update-schedule-button">수정</button>
             </div>
         </div>
     </div>
