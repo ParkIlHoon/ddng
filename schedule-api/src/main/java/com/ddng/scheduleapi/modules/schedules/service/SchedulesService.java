@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,7 +92,28 @@ public class SchedulesService
         schedules.setBigo(dto.getBigo());
         schedules.setPayed(dto.isPayed());
 
-        return schedulesRepository.save(schedules);
+        Schedules save = schedulesRepository.save(schedules);
+
+        save.setTags(new HashSet<>());
+        for (TagDto tagDto : dto.getTags())
+        {
+            Tag tag = null;
+            Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
+            if (optionalTag.isEmpty())
+            {
+                Tag newTag = new Tag();
+                newTag.setTitle(tagDto.getTitle());
+                tag = tagRepository.save(newTag);
+            }
+            else
+            {
+                tag = optionalTag.get();
+            }
+
+            addTag(save, tag);
+        }
+
+        return save;
     }
 
     public void deleteSchedule(Schedules schedules)

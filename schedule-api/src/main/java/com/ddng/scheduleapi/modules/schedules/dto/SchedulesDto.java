@@ -83,5 +83,6 @@ public class SchedulesDto
         private Long userId;
         private String bigo;
         private boolean payed;
+        private Set<TagDto> tags = new HashSet<>();
     }
 }
