@@ -87,6 +87,7 @@ function initializePopup (data)
     // 버튼 숨김
     $("#save-schedule-button").hide();
     $("#update-schedule-button").hide();
+    $("#delete-schedule-button").hide();
 }
 
 /**
@@ -184,14 +185,13 @@ function openEditPopup (event)
 
     // 수정 버튼 보이게
     $("#update-schedule-button").show();
+    $("#delete-schedule-button").show();
 
     // 팝업 오픈
     $('#scheduleModal').modal({
         show: true
     });
 }
-
-
 
 /**
  * 수정 버튼 클릭 이벤트 핸들러
@@ -219,6 +219,29 @@ $("#update-schedule-button").on("click", function (e){
         setRenderRangeText();
         setSchedules();
     });
+});
+
+/**
+ * 삭제 버튼 클릭 이벤트 핸들러
+ */
+$("#delete-schedule-button").on("click", function (e){
+    var rtn = confirm("이 스케쥴을 삭제하시겠습니까?");
+    if(rtn)
+    {
+        var scheduleId = $("#schedule-id-input").val();
+        var data = $("#modal-schedule-form").serializeObject();
+        var startDate = data.startDate;
+        $.ajax({
+            url : SERVER_URL + "/schedule-api/schedules/" + scheduleId,
+            method : "DELETE",
+        }).always(function(){
+            $('#scheduleModal').modal('hide');
+            cal.setDate(new Date(startDate));
+            cal.changeView(cal.getViewName(), true);
+            setRenderRangeText();
+            setSchedules();
+        });
+    }
 });
 
 
