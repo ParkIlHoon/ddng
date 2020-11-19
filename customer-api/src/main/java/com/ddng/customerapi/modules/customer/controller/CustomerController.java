@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -53,6 +54,22 @@ public class CustomerController
         Page<CustomerDto.Response> findByKeyword = customerService.findByKeyword(keyword, pageable);
         return ResponseEntity.ok(findByKeyword);
     }
+
+    /**
+     * 고객 리스트를 조회한다
+     * @param keyword 조회할 고객 아이디 리스트
+     * @return 고객 아이디 리스트에 해당하는 고객 목록
+     */
+    @GetMapping("/in")
+    public ResponseEntity getCustomerListAsIn(String keyword)
+    {
+        String[] split = keyword.split(",");
+        List<Long> collect = Arrays.stream(split).map(s -> Long.valueOf(s)).collect(Collectors.toList());
+
+        List<CustomerDto.Response> byIds = customerService.findByIds(collect);
+        return ResponseEntity.ok(byIds);
+    }
+
 
     /**
      * 고객을 신규 생성한다.

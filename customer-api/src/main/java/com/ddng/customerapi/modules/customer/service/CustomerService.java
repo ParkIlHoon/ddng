@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -137,4 +138,12 @@ public class CustomerService
         customer.getTags().remove(tag);
     }
 
+    public List<CustomerDto.Response> findByIds(List<Long> ids)
+    {
+        List<Customer> customers = customerRepository.findByIdIn(ids);
+        List<CustomerDto.Response> collect = customers.stream()
+                                                        .map(customer -> new CustomerDto.Response(customer))
+                                                        .collect(Collectors.toList());
+        return collect;
+    }
 }

@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.main.controller;
 
+import com.ddng.adminuibootstrap.modules.main.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.main.utils.ScheduleRestTemplateClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,15 @@ public class MainController
     public String main (Model model)
     {
         String searchDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
-        scheduleRestTemplateClient.getSchedule(searchDate, searchDate);
+        //scheduleRestTemplateClient.getSchedule(searchDate, searchDate);
 
         return "index";
+    }
+
+    @GetMapping("/getSchedules")
+    public String getSchedules (String searchDate)
+    {
+        scheduleRestTemplateClient.getSchedule(searchDate, searchDate);
+        return null;
     }
 }

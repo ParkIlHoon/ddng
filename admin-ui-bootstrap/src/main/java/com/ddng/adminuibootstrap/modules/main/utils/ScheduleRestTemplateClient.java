@@ -41,7 +41,8 @@ public class ScheduleRestTemplateClient
         if (forObject.size() > 0)
         {
             //TODO 스케쥴 정보 DTO 변환
-            //TODO 사용자 정보 조회 처
+            //TODO 사용자 정보 조회 처리
+            
         }
 
         return null;
