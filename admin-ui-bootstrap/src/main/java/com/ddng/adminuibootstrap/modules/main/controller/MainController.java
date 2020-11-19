@@ -25,6 +25,12 @@ public class MainController
         return "index";
     }
 
+    @GetMapping("/login")
+    public String loginPage (Model model)
+    {
+        return "login";
+    }
+
     @GetMapping("/getSchedules")
     public String getSchedules (String searchDate)
     {
