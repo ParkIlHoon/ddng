@@ -37,18 +37,35 @@ public class SchedulesController
      * 스케쥴을 조회한다.
      * @param startDate 시작 일자
      * @param endDate 종료 일자
-     * @param calendarType 캘린더 유형
      * @return
      */
     @GetMapping
-    public ResponseEntity getSchedules (String startDate, String endDate, CalendarType calendarType)
+    public ResponseEntity getSchedules (String startDate, String endDate)
     {
-        if (!StringUtils.hasText(startDate) || !StringUtils.hasText(endDate) || calendarType == null)
+        if (!StringUtils.hasText(startDate) || !StringUtils.hasText(endDate))
         {
             return ResponseEntity.badRequest().build();
         }
 
-        List<SchedulesDto.Response> responses = schedulesService.getSchedules(startDate, endDate, calendarType);
+        List<SchedulesDto.Response> responses = schedulesService.getSchedules(startDate, endDate);
+
+        return ResponseEntity.ok(responses);
+    }
+
+    /**
+     * 특정 일자기준 스케쥴을 조회한다
+     * @param baseDate
+     * @return
+     */
+    @GetMapping("/day")
+    public ResponseEntity getSchedules (String baseDate)
+    {
+        if (!StringUtils.hasText(baseDate))
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<SchedulesDto.Response> responses = schedulesService.getCertainDaySchedules(baseDate);
 
         return ResponseEntity.ok(responses);
     }

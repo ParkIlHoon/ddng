@@ -29,12 +29,21 @@ public class SchedulesService
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
-    public List<SchedulesDto.Response> getSchedules(String startDate, String endDate, CalendarType calendarType)
+    public List<SchedulesDto.Response> getSchedules(String startDate, String endDate)
     {
         LocalDateTime startDateTime = LocalDate.parse(startDate).atTime(LocalTime.MIN);
         LocalDateTime endDateTime = LocalDate.parse(endDate).atTime(LocalTime.MAX);
 
         List<Schedules> schedules = schedulesRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDateTime, endDateTime);
+        return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
+    }
+
+    public List<SchedulesDto.Response> getCertainDaySchedules(String baseDate)
+    {
+        LocalDateTime startDateTime = LocalDate.parse(baseDate).atTime(LocalTime.MAX);
+        LocalDateTime endDateTime = LocalDate.parse(baseDate).atTime(LocalTime.MIN);
+
+        List<Schedules> schedules = schedulesRepository.findByStartDateLessThanEqualAndEndDateGreaterThanEqual(startDateTime, endDateTime);
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 
@@ -130,4 +139,6 @@ public class SchedulesService
     {
         schedules.getTags().remove(tag);
     }
+
+
 }

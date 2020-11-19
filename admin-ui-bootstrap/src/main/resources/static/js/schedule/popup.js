@@ -294,7 +294,7 @@ function setSchedules()
     $.ajax({
         url : SERVER_URL + "/schedule-api/schedules",
         type : "GET",
-        data : {"startDate" : startDate, "endDate" : endDate , "calendarType" : calendarType}
+        data : {"startDate" : startDate, "endDate" : endDate}
     }).done((data, textStatus, jqXHR) => {
         // 스케쥴 초기화
         ScheduleList = [];
