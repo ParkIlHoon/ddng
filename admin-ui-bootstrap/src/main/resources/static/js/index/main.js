@@ -17,10 +17,13 @@ function getSchedules (searchDate) {
         data: {"baseDate": searchDate}
     }).done((data, textStatus, jqXHR) => {
 
-        if (data.length > 0)
+        var showTarget = [];
+        data.forEach(d => (d.scheduleType == "HOTEL" || d.scheduleType == "KINDERGARTEN")? showTarget.push(d) : null);
+
+        if (showTarget.length > 0)
         {
             var customerIds = [];
-            data.forEach(d => customerIds.push(d.customerId));
+            showTarget.forEach(d => customerIds.push(d.customerId));
             var keyword = customerIds.join(",");
 
             $.ajax({
@@ -29,7 +32,7 @@ function getSchedules (searchDate) {
                 data : {"keyword" : keyword},
                 async: false,
                 success : function (customers){
-                    for (var idx = 0; idx < data.length; idx++)
+                    for (var idx = 0; idx < showTarget.length; idx++)
                     {
                         var appendString = "<tr>\n" +
                             "<td>scheduleTypeName</td>\n" +
@@ -41,7 +44,7 @@ function getSchedules (searchDate) {
                             "</td>\n" +
                             "</tr>";
 
-                        var schedule = data[idx];
+                        var schedule = showTarget[idx];
                         appendString = appendString.replaceAll("scheduleTypeName", schedule.scheduleTypeName);
 
                         var customer = customers.find(el => el.id == schedule.customerId);
