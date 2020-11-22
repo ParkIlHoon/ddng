@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -134,14 +133,12 @@ class SchedulesControllerTest
     void getSchedules_missingParam() throws Exception
     {
         // given
-        CalendarType calendarType = CalendarType.DAILY;
-        String baseDate = LocalDate.now().toString();
+        String startDate = LocalDate.now().toString();
 
         // when
         mockMvc.perform(
                         get("/schedules")
-                            .param("baseDate", baseDate)
-//                          .param("calendarType", calendarType.toString())
+                            .param("startDate", startDate)
                         )
                 .andDo(print())
                 .andExpect(status().isBadRequest());
@@ -152,14 +149,13 @@ class SchedulesControllerTest
     void getSchedules_daily() throws Exception
     {
         // given
-        CalendarType calendarType = CalendarType.DAILY;
-        String baseDate = LocalDate.now().toString();
+        String startDate = LocalDate.now().toString();
 
         // when
         ResultActions actions = mockMvc.perform(
                                                 get("/schedules")
-                                                        .param("baseDate", baseDate)
-                                                        .param("calendarType", calendarType.toString())
+                                                        .param("startDate", startDate)
+                                                        .param("endDate", startDate)
                                                 )
                                         .andDo(print())
                                         .andExpect(status().isOk());
@@ -177,14 +173,14 @@ class SchedulesControllerTest
     void getSchedules_weekly() throws Exception
     {
         // given
-        CalendarType calendarType = CalendarType.WEEKLY;
-        String baseDate = LocalDate.now().toString();
+        String startDate = LocalDate.now().toString();
+        String endDate = LocalDate.now().plusWeeks(1).toString();
 
         // when
         ResultActions actions = mockMvc.perform(
                 get("/schedules")
-                        .param("baseDate", baseDate)
-                        .param("calendarType", calendarType.toString())
+                        .param("startDate", startDate)
+                        .param("endDate", endDate)
         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -194,7 +190,7 @@ class SchedulesControllerTest
         List<Object> parseList = parser.parseList(contentAsString);
 
         // then
-        assertThat(parseList.size()).isEqualTo(1);
+        assertThat(parseList.size()).isEqualTo(2);
     }
 
     @Test
@@ -202,14 +198,14 @@ class SchedulesControllerTest
     void getSchedules_monthly() throws Exception
     {
         // given
-        CalendarType calendarType = CalendarType.MONTHLY;
-        String baseDate = LocalDate.now().toString();
+        String startDate = LocalDate.now().toString();
+        String endDate = LocalDate.now().plusMonths(1).toString();
 
         // when
         ResultActions actions = mockMvc.perform(
                 get("/schedules")
-                        .param("baseDate", baseDate)
-                        .param("calendarType", calendarType.toString())
+                        .param("startDate", startDate)
+                        .param("endDate", endDate)
         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -219,7 +215,7 @@ class SchedulesControllerTest
         List<Object> parseList = parser.parseList(contentAsString);
 
         // then
-        assertThat(parseList.size()).isEqualTo(4);
+        assertThat(parseList.size()).isEqualTo(5);
     }
 
     @Test
@@ -227,14 +223,14 @@ class SchedulesControllerTest
     void getSchedules_2week() throws Exception
     {
         // given
-        CalendarType calendarType = CalendarType.TWO_WEEKS;
-        String baseDate = LocalDate.now().toString();
+        String startDate = LocalDate.now().toString();
+        String endDate = LocalDate.now().plusWeeks(2).toString();
 
         // when
         ResultActions actions = mockMvc.perform(
                 get("/schedules")
-                        .param("baseDate", baseDate)
-                        .param("calendarType", calendarType.toString())
+                        .param("startDate", startDate)
+                        .param("endDate", endDate)
         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -252,14 +248,14 @@ class SchedulesControllerTest
     void getSchedules_3week() throws Exception
     {
         // given
-        CalendarType calendarType = CalendarType.THREE_WEEKS;
-        String baseDate = LocalDate.now().toString();
+        String startDate = LocalDate.now().toString();
+        String endDate = LocalDate.now().plusWeeks(3).toString();
 
         // when
         ResultActions actions = mockMvc.perform(
                 get("/schedules")
-                        .param("baseDate", baseDate)
-                        .param("calendarType", calendarType.toString())
+                        .param("startDate", startDate)
+                        .param("endDate", endDate)
         )
                 .andDo(print())
                 .andExpect(status().isOk());

@@ -1,6 +1,5 @@
 package com.ddng.scheduleapi.modules.schedules.service;
 
-import com.ddng.scheduleapi.modules.schedules.domain.CalendarType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.repository.SchedulesRepository;

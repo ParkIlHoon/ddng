@@ -34,8 +34,8 @@ public class Schedules
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
 
-    @Column(name = "IS_ALL_DAY")
-    private boolean isAllDay;
+    @Column(name = "ALL_DAY")
+    private boolean allDay;
 
     @Column(name = "CUSTOMER_ID")
     private Long customerId;

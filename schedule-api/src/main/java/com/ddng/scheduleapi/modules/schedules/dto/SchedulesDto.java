@@ -25,7 +25,7 @@ public class SchedulesDto
         private ScheduleType scheduleType;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
-        private boolean isAllDay;
+        private boolean allDay;
         private Long customerId;
         private Long userId;
         private String bigo;
@@ -42,7 +42,7 @@ public class SchedulesDto
             this.scheduleType = schedules.getType();
             this.startDate = schedules.getStartDate();
             this.endDate = schedules.getEndDate();
-            this.isAllDay = schedules.isAllDay();
+            this.allDay = schedules.isAllDay();
             this.customerId = schedules.getCustomerId();
             this.userId = schedules.getUserId();
             this.bigo = schedules.getBigo();
