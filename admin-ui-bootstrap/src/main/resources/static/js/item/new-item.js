@@ -32,6 +32,8 @@ $(function(){
 
     $("#submit-button").on("click", function(e){
         var data = $("#new-item-form").serializeObject();
+        data.stamp = document.getElementById("stamp-input").checked;
+
         $.ajax({
             dataType : "json",
             contentType : "application/json; charset=utf-8",

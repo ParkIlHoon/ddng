@@ -135,6 +135,7 @@ $("#save-schedule-button").on("click", function (e){
         JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
     }
     data.tags = tagData;
+    data.isAllDay = document.getElementById("isAllDay-check").checked;
     $.ajax({
         url : SERVER_URL + "/schedule-api/schedules/",
         method : "POST",
@@ -161,7 +162,7 @@ function openEditPopup (event)
     $("#schedule-id-input").val(event.schedule.id);
     $("#name-input").val(event.schedule.title);
     $("#scheduleType-select").val(event.schedule.calendarId).trigger('change');
-    $("input:checkbox[id='isAllDay-check']").prop("checked", event.schedule.isAllDay);
+    document.getElementById("isAllDay-check").checked = event.schedule.isAllDay;
     $("#stt-date-input").val(moment(event.schedule.start.toDate()).format("YYYY-MM-DD\THH:mm:ss"));
     $("#end-date-input").val(moment(event.schedule.end.toDate()).format("YYYY-MM-DD\THH:mm:ss"));
     $("#bigo-input").val(event.schedule.body);

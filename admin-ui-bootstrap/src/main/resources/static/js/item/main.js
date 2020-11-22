@@ -207,6 +207,7 @@ $(function(){
      */
     $("#submit-button").on("click", function(e){
         var data = $("#item-form").serializeObject();
+        data.stamp = document.getElementById("stamp-input").checked;
         $.ajax({
             dataType : "json",
             contentType : "application/json; charset=utf-8",
@@ -291,7 +292,7 @@ $(function(){
             $("#price-input").val(data.price);
             $("#unit-input").val(data.unit);
             $("#itemQuantity-input").val(data.itemQuantity);
-            $("#stamp-input").val(data.stamp);
+            document.getElementById("stamp-input").checked = data.stamp;
 
             // 최다 구매 고객 조회
             searchTopBuyerList(itemId);
