@@ -215,7 +215,7 @@
         function onNewSchedule() {
             var title = $('#new-schedule-title').val();
             var location = $('#new-schedule-location').val();
-            var isAllDay = document.getElementById('new-schedule-allday').checked;
+            var allDay = document.getElementById('new-schedule-allday').checked;
             var start = datePicker.getStartDate();
             var end = datePicker.getEndDate();
             var calendar = selectedCalendar ? selectedCalendar : ScheduleTypes[0];
@@ -228,10 +228,10 @@
                 id: String(chance.guid()),
                 calendarId: calendar.id,
                 title: title,
-                isAllDay: isAllDay,
+                isAllDay: allDay,
                 start: start,
                 end: end,
-                category: isAllDay ? 'allday' : 'time',
+                category: allDay ? 'allday' : 'time',
                 dueDateClass: '',
                 color: calendar.color,
                 bgColor: calendar.color,
@@ -434,8 +434,8 @@
                 schedule.body = rawData.bigo;
                 schedule.isReadOnly = false;
 
-                schedule.isAllday = rawData.isAllDay;
-                if (schedule.isAllday)
+                schedule.allDay = rawData.allDay;
+                if (schedule.allDay)
                 {
                     schedule.category = 'allday';
                 }

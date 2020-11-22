@@ -135,7 +135,7 @@ $("#save-schedule-button").on("click", function (e){
         JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
     }
     data.tags = tagData;
-    data.isAllDay = document.getElementById("isAllDay-check").checked;
+    data.allDay = document.getElementById("isAllDay-check").checked;
     $.ajax({
         url : SERVER_URL + "/schedule-api/schedules/",
         method : "POST",
@@ -208,6 +208,7 @@ $("#update-schedule-button").on("click", function (e){
         JSON.parse(data.tags).forEach(tag => tagData.push({"title":tag.value}));
     }
     data.tags = tagData;
+    data.allDay = document.getElementById("isAllDay-check").checked;
     $.ajax({
         url : SERVER_URL + "/schedule-api/schedules/" + scheduleId,
         method : "PUT",
@@ -312,8 +313,8 @@ function setSchedules()
             schedule.body = rawData.bigo;
             schedule.isReadOnly = false;
 
-            schedule.isAllday = rawData.isAllDay;
-            if (schedule.isAllday)
+            schedule.allDay = rawData.allDay;
+            if (schedule.allDay)
             {
                 schedule.category = 'allday';
             }
@@ -368,3 +369,17 @@ function refreshScheduleVisibility() {
         span.style.backgroundColor = input.checked ? span.style.borderColor : 'transparent';
     });
 }
+
+$("#isAllDay-check").change(function(e){
+    var checked = $(this).is(":checked");
+
+    if (checked)
+    {
+        var date = $("#stt-date-input").val();
+        var start = moment(date).startOf('day').format("YYYY-MM-DD\THH:mm");
+        var end = moment(date).endOf('day').format("YYYY-MM-DD\THH:mm");
+
+        $("#stt-date-input").val(start);
+        $("#end-date-input").val(end);
+    }
+})

@@ -15,7 +15,7 @@ function ScheduleInfo() {
 
     this.title = null;
     this.body = null;
-    this.isAllday = false;
+    this.allDay = false;
     this.start = null;
     this.end = null;
     this.category = '';
