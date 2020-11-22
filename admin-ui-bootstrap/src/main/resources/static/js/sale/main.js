@@ -19,6 +19,35 @@ $(function(){
  */
 function initComponents()
 {
+    // 상품 검색 select 구성
+    $("#item-select").select2({
+        placeholder: "상품명/바코드",
+        allowClear: true,
+        width : "100%",
+        minimumInputLength : 1,
+        ajax: {
+            url: SERVER_URL + "/sale-api/item",
+            method: "GET",
+            data : function (params) {return { keyword: params.term , page : params.page || 0};},
+            processResults: function (data, params) {
+                params.page = data.number || 0;
+                var returnArr = [];
+                data.content.forEach(item => returnArr.push({
+                    "id" : item.id,
+                    "text" : item.name + "(" + item.typeName + " / " + item.price + " 원 / " + item.barcode + ")",
+                    "name" : item.name,
+                    "price" : item.price
+                }));
+                return {
+                    results: returnArr,
+                    pagination: {
+                        more: (params.page * 10) < data.totalElements
+                    }
+                };
+            }
+        }
+    });
+
     // 그리드 테마 지정
     tui.Grid.applyTheme('clean');
 
@@ -204,3 +233,22 @@ function getTodaySchedules ()
 
     });
 }
+
+/**
+ * 상품 select 선택 이벤트 핸들러
+ */
+$('#item-select').on('select2:select', function (e) {
+    var data = e.params.data;
+
+    //TODO 상품 데이터 세팅
+    if (data != undefined && data != "")
+    {
+        var row = {
+            "no" : data.id,
+            "name" : data.name,
+            "amount" : data.price
+        };
+        saleGrid.appendRow(row);
+        $('#item-select').val(null).trigger('change');
+    }
+});
