@@ -3,6 +3,8 @@ let hotelGrid;
 let beautyGrid;
 let historyGrid;
 
+let saleGridData = [];
+
 $(function(){
 
     // 컴포넌트 초기화
@@ -11,7 +13,7 @@ $(function(){
     // 스케쥴 데이터 세팅
     getTodaySchedules();
 
-
+    
 });
 
 /**
@@ -54,14 +56,14 @@ function initComponents()
     // 판매 그리드
     saleGrid = new tui.Grid({
         el: document.getElementById('sale-grid'),
-        data : [],
+        data : saleGridData,
         scrollX: false,
         scrollY: false,
         selectionUnit : "row",
         columns: [
             {
                 header: '번호',
-                name: 'no'
+                name: 'id'
             },
             {
                 header: '상품명',
@@ -243,12 +245,57 @@ $('#item-select').on('select2:select', function (e) {
     //TODO 상품 데이터 세팅
     if (data != undefined && data != "")
     {
-        var row = {
-            "no" : data.id,
-            "name" : data.name,
-            "amount" : data.price
-        };
-        saleGrid.appendRow(row);
+        // 판매 그리드 데이터 세팅
+        var existData = saleGridData.find(d => d.id == data.id);
+        if (existData != undefined && existData != null)
+        {
+            existData.count++;
+        }
+        else
+        {
+            var row = {
+                "id" : data.id,
+                "name" : data.name,
+                "amount" : data.price,
+                "count" : 1
+            };
+            saleGridData.push(row);
+        }
+        saleGrid.resetData(saleGridData);
+
+        // 총 금액 세팅
+        var totalPrice = 0;
+        saleGridData.forEach(el => totalPrice += el.amount * el.count);
+        $("#total-price").text(totalPrice);
+
+        // 상품 검색 select 초기화
         $('#item-select').val(null).trigger('change');
     }
+});
+
+/**
+ * 현금 결제 버튼 클릭 핸들러
+ */
+$("#pay-cash-button").on("click", function(e){
+    //TODO 결제
+});
+/**
+ * 카드 결제 버튼 클릭 핸들러
+ */
+$("#pay-card-button").on("click", function(e){
+    //TODO 결제
+});
+/**
+ * 초기화 버튼 클릭 핸들러
+ */
+$("#reset-button").on("click", function(e){
+    saleGridData = [];
+    saleGrid.resetData(saleGridData);
+    $("#total-price").text(0);
+});
+/**
+ * 결제취소 버튼 클릭 핸들러
+ */
+$("#cancel-button").on("click", function(e){
+    //TODO 결제 취소
 });
