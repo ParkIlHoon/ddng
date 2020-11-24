@@ -10,4 +10,6 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long>, ItemCustomRepository
 {
     List<Item> findByIdIn (List<Long> findIds);
+
+    Item findTopByBarcodeStartsWithOrderByBarcodeDesc(String startsWith);
 }

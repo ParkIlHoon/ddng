@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,5 +81,21 @@ public class ItemService
     public void deleteItem(Item item)
     {
         itemRepository.delete(item);
+    }
+
+    public List<String> getAvailableBarcodes(int count)
+    {
+        List<String> returnList = new ArrayList<>();
+
+        Item item = itemRepository.findTopByBarcodeStartsWithOrderByBarcodeDesc("0000");
+        Long aLong = Long.valueOf(item.getBarcode());
+
+        for (int idx = 0; idx < count; idx++)
+        {
+            aLong++;
+            returnList.add(String.format("%" + 13 + "s", aLong).replace(" ", "0"));
+        }
+
+        return returnList;
     }
 }

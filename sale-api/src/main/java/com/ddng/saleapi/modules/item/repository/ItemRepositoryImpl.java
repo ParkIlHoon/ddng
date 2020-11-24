@@ -9,7 +9,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.util.List;
+
 import static com.ddng.saleapi.modules.item.domain.QItem.item;
+import static com.querydsl.jpa.JPAExpressions.select;
 
 public class ItemRepositoryImpl extends QuerydslRepositorySupport implements ItemCustomRepository
 {
