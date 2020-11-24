@@ -9,7 +9,7 @@ $(function(){
 
             for (var idx = 0; idx < count; idx++)
             {
-                var canvas = "<div class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\">";
+                var canvas = "<div class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" style=\"text-align: center\">";
                     canvas+=    "<img class=\"barcode\"\n" +
                                 "  jsbarcode-format=\"CODE128\"\n" +
                                 "  jsbarcode-value=\"" + data[idx] + "\"\n" +
