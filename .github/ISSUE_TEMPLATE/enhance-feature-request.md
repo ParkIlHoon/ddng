@@ -1,15 +1,20 @@
 ---
-name: 기능 추가
-about: Suggest an idea for this project
+name: Enhance Feature request
+about: 기능 수정/개선 요청
 title: ''
 labels: enhancement
 assignees: ''
 
 ---
 
-## 기능 설명
+## 기존 기능
+issue 번호 기재. e.g. #3
+
+## 수정/개선 요청 내용
+수정/개선할 내용 대한 설명
 
 ## 프로세스
+수정할 기능 프로세스
 
 ## 연관 프로젝트
 ### UI[FE]
