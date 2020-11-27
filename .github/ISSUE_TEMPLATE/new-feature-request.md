@@ -2,7 +2,7 @@
 name: New Feature Request
 about: 신규 기능 추가 요청
 title: "[NFR]"
-labels: enhancement
+labels: new feature
 assignees: ''
 
 ---

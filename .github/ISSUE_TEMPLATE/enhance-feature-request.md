@@ -1,7 +1,7 @@
 ---
-name: Enhance Feature request
+name: Enhance Feature Request
 about: 기능 수정/개선 요청
-title: ''
+title: "[EFR]"
 labels: enhancement
 assignees: ''
 
