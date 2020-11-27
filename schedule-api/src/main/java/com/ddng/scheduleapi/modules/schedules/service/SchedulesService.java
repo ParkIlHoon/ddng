@@ -33,7 +33,8 @@ public class SchedulesService
         LocalDateTime startDateTime = LocalDate.parse(startDate).atTime(LocalTime.MIN);
         LocalDateTime endDateTime = LocalDate.parse(endDate).atTime(LocalTime.MAX);
 
-        List<Schedules> schedules = schedulesRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDateTime, endDateTime);
+        List<Schedules> schedules = schedulesRepository.getSchedulesForDuration(startDateTime, endDateTime);
+
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 
