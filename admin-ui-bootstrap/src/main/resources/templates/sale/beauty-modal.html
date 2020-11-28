@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="beauty-modal" class="modal fade" id="beauty-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-title">선택하신 미용을 결제 목록에 추가하시겠습니까?</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="accordion" id="accordion" role="tablist">
+                <div class="mb-0">
+                    <div class="modal-header" id="headingOne" role="tab">
+                        <h5 class="mb-0"><a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">미용 스케쥴 정보</a></h5>
+                    </div>
+                    <div class="collapse show" id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                        <div class="modal-body">
+                            <input type="hidden" id="beauty-id-input" name="id">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">
+                                    <strong>스케쥴 이름</strong>
+                                </label>
+                                <div class="col-md-9 col-form-label">
+                                    <span class="h6">스케쥴 이름 위치</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">
+                                    <strong>일정</strong>
+                                </label>
+                                <div class="col-md-9 col-form-label">
+                                    <span class="h6">2020.11.12 13:30 ~ 2020.11.12.14:30</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">
+                                    <strong>고객</strong>
+                                </label>
+                                <div class="col-md-9 col-form-label">
+                                    <div class="c-avatar">
+                                        <img class="c-avatar-img" src="">
+                                    </div>
+                                    <span class="h6">고객명 (품종 / 전화번호)</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">
+                                    <strong>태그</strong>
+                                </label>
+                                <div class="col-md-9 col-form-label">
+                                    <span class="badge badge-secondary">태그</span>
+                                    <span class="badge badge-secondary">태그2</span>
+                                    <span class="badge badge-secondary">태그3</span>
+                                    <span class="badge badge-secondary">태그4</span>
+                                    <span class="badge badge-secondary">태그5</span>
+                                    <span class="badge badge-secondary">태그6</span>
+                                    <span class="badge badge-secondary">태그7</span>
+                                    <span class="badge badge-secondary">태그8</span>
+                                    <span class="badge badge-secondary">태그9</span>
+                                    <span class="badge badge-secondary">태그10</span>
+                                    <span class="badge badge-secondary">태그11</span>
+                                    <span class="badge badge-secondary">태그12</span>
+                                    <span class="badge badge-secondary">태그13</span>
+                                    <span class="badge badge-secondary">태그14</span>
+                                    <span class="badge badge-secondary">태그15</span>
+                                    <span class="badge badge-secondary">태그16</span>
+                                    <span class="badge badge-secondary">태그17</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">
+                                    <strong>비고</strong>
+                                </label>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" rows="5" placeholder="비고" readonly>com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+                                        at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:857) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:121) ~[eureka-client-1.9.21.jar:1.9.21]
+                                        at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515) ~[na:na]
+                                        at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
+                                        at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[na:na]
+                                        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+                                        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+                                        at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-0">
+                    <div class="modal-header" id="headingTwo" role="tab">
+                        <h5 class="mb-0"><a class="" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">어떤 미용을 하셨나요?</a></h5>
+                    </div>
+                    <div class="collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" style="">
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">
+                                    <strong>미용</strong>
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" id="beauty-select" multiple="multiple">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-0">
+                    <div class="modal-header" id="headingThree" role="tab">
+                        <h5 class="mb-0"><a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">쿠폰을 사용할까요?</a></h5>
+                    </div>
+                    <div class="collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="">
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">사용할 쿠폰</label>
+                                <div class="col-md-9 col-form-label">
+                                    <div class="form-check checkbox">
+                                        <input class="form-check-input" id="check1" type="checkbox" value="">
+                                        <label class="form-check-label" for="check1">100주년 기념 쿠폰</label>
+                                    </div>
+                                    <div class="form-check checkbox">
+                                        <input class="form-check-input" id="check2" type="checkbox" value="">
+                                        <label class="form-check-label" for="check2">1년 이용 감사 쿠폰</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
+                <button class="btn btn-primary" type="button" id="save-beauty-button">결제 목록에 추가</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

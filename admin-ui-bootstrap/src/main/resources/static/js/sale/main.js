@@ -7,11 +7,35 @@ let saleGridData = [];
 
 $(function(){
 
+    // 상품 검색 select 구성
+    $("#beauty-select").select2({
+        multiple : true,
+        placeholder: "어떤 미용을 하셨는 지 선택해주세요.",
+        allowClear: true,
+        width : "100%",
+        data : [
+            {"text" : "기본컷", "id" : 1},
+            {"text" : "가위컷", "id" : 2},
+            {"text" : "약욕", "id" : 3},
+            {"text" : "스파", "id" : 4},
+            {"text" : "발톱정리", "id" : 5},
+            {"text" : "엉킴추가", "id" : 6},
+            {"text" : "테스트", "id" : 7},
+            {"text" : "테스트2", "id" : 8}
+        ]
+    });
+
+
+    $('#beauty-modal').modal({
+        show: true
+    });
+
     // 컴포넌트 초기화
     initComponents();
 
     // 스케쥴 데이터 세팅
     getTodaySchedules();
+
 
     
 });
