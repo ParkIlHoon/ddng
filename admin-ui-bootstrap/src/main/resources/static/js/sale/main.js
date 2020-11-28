@@ -25,8 +25,11 @@ $(function(){
         ]
     });
 
-
     $('#beauty-modal').modal({
+        show: true
+    });
+
+    $('#hotel-modal').modal({
         show: true
     });
 
