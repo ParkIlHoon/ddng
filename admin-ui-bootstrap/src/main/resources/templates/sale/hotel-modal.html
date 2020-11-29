@@ -12,20 +12,21 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="modal-hotel-form">
-                    <input type="hidden" id="hotel-id-input" name="id">
+                    <input type="hidden" id="hotel-id-input">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
                             <strong>스케쥴 이름</strong>
                         </label>
                         <div class="col-md-9 col-form-label">
-                            <span class="h6">스케쥴 이름 위치</span>
+                            <span class="h6" id="hotel-schedule-name">스케쥴 이름 위치</span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
                             <strong>스케쥴 종류</strong>
                         </label>
-                        <div class="col-md-9">
+                        <div class="col-md-9 col-form-label">
+                            <span class="h6" id="hotel-schedule-type"></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -33,7 +34,7 @@
                             <strong>일정</strong>
                         </label>
                         <div class="col-md-9 col-form-label">
-                            <span class="h6">2020.11.12 13:30 ~ 2020.11.12.14:30</span>
+                            <span class="h6" id="hotel-schedule-duration">2020.11.12 13:30 ~ 2020.11.12.14:30</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -42,33 +43,16 @@
                         </label>
                         <div class="col-md-9 col-form-label">
                             <div class="c-avatar">
-                                <img class="c-avatar-img" src="">
+                                <img class="c-avatar-img" id="hotel-schedule-customer-profileImg" src="">
                             </div>
-                            <span class="h6">고객명 (품종 / 전화번호)</span>
+                            <span class="h6" id="hotel-schedule-customer">고객명 (품종 / 전화번호)</span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
                             <strong>태그</strong>
                         </label>
-                        <div class="col-md-9 col-form-label">
-                            <span class="badge badge-secondary">태그</span>
-                            <span class="badge badge-secondary">태그2</span>
-                            <span class="badge badge-secondary">태그3</span>
-                            <span class="badge badge-secondary">태그4</span>
-                            <span class="badge badge-secondary">태그5</span>
-                            <span class="badge badge-secondary">태그6</span>
-                            <span class="badge badge-secondary">태그7</span>
-                            <span class="badge badge-secondary">태그8</span>
-                            <span class="badge badge-secondary">태그9</span>
-                            <span class="badge badge-secondary">태그10</span>
-                            <span class="badge badge-secondary">태그11</span>
-                            <span class="badge badge-secondary">태그12</span>
-                            <span class="badge badge-secondary">태그13</span>
-                            <span class="badge badge-secondary">태그14</span>
-                            <span class="badge badge-secondary">태그15</span>
-                            <span class="badge badge-secondary">태그16</span>
-                            <span class="badge badge-secondary">태그17</span>
+                        <div class="col-md-9 col-form-label" id="hotel-schedule-tags">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -76,20 +60,7 @@
                             <strong>비고</strong>
                         </label>
                         <div class="col-md-9">
-                                    <textarea class="form-control" rows="5" placeholder="비고" readonly>com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-                                        at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:857) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:121) ~[eureka-client-1.9.21.jar:1.9.21]
-                                        at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515) ~[na:na]
-                                        at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
-                                        at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[na:na]
-                                        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
-                                        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
-                                        at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]</textarea>
+                            <textarea class="form-control" id="hotel-schedule-bigo" rows="5" placeholder="비고" readonly></textarea>
                         </div>
                     </div>
                 </form>
@@ -100,6 +71,7 @@
             </div>
         </div>
     </div>
+    <script src="/js/sale/hotel-modal.js"></script>
 </div>
 
 </html>

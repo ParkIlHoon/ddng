@@ -9,10 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import java.util.List;
-
 import static com.ddng.saleapi.modules.item.domain.QItem.item;
-import static com.querydsl.jpa.JPAExpressions.select;
 
 public class ItemRepositoryImpl extends QuerydslRepositorySupport implements ItemCustomRepository
 {
@@ -30,6 +27,21 @@ public class ItemRepositoryImpl extends QuerydslRepositorySupport implements Ite
                                         .or(item.name.containsIgnoreCase(keyword))
                                         .or(item.type.in(ItemType.findEnumByName(keyword)))
                                         );
+
+        JPQLQuery<Item> pagination = getQuerydsl().applyPagination(pageable, query);
+        QueryResults<Item> results = pagination.fetchResults();
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public Page<Item> searchBeautyItemsByKeyword(String keyword, Pageable pageable)
+    {
+        JPQLQuery<Item> query = from(item)
+                                .where(
+                                        item.type.eq(ItemType.BEAUTY)
+                                        .and(item.barcode.eq(keyword)
+                                                .or(item.name.containsIgnoreCase(keyword)))
+                                );
 
         JPQLQuery<Item> pagination = getQuerydsl().applyPagination(pageable, query);
         QueryResults<Item> results = pagination.fetchResults();

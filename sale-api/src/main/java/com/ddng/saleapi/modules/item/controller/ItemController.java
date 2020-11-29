@@ -93,6 +93,20 @@ public class ItemController
     }
 
     /**
+     * 미용 카테고리의 상품을 검색한다.
+     * @param keyword 검색 키워드
+     * @param pageable 페이징 정보
+     * @return
+     */
+    @GetMapping("/beauty")
+    public ResponseEntity getBeautyItems (String keyword,
+                                          @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
+    {
+        Page<ItemDto.Response> items = itemService.searchBeautyItemsByKeyword(keyword, pageable);
+        return ResponseEntity.ok(items);
+    }
+
+    /**
      * 상품을 생성한다.
      * @param dto 생성할 상품 정보
      * @param errors

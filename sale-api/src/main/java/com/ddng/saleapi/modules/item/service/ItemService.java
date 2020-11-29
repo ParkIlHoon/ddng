@@ -50,6 +50,16 @@ public class ItemService
         return itemRepository.findById(id);
     }
 
+    public Page<ItemDto.Response> searchBeautyItemsByKeyword(String keyword, Pageable pageable)
+    {
+        Page<Item> items = itemRepository.searchBeautyItemsByKeyword(keyword, pageable);
+        List<ItemDto.Response> collect = items.getContent().stream()
+                .map(item -> new ItemDto.Response(item))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, items.getTotalElements());
+    }
+
     public Item createItem(ItemDto.Post dto)
     {
         Item map = modelMapper.map(dto, Item.class);
@@ -98,4 +108,5 @@ public class ItemService
 
         return returnList;
     }
+
 }

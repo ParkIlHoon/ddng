@@ -22,4 +22,12 @@ public interface ItemCustomRepository
      * @return
      */
     Page<Item> searchByKeyword(String keyword, Pageable pageable);
+
+    /**
+     * 키워드로 미용 상품을 검색한다.
+     * @param keyword 검색할 키워드(상품명, 바코드)
+     * @param pageable
+     * @return
+     */
+    Page<Item> searchBeautyItemsByKeyword(String keyword, Pageable pageable);
 }

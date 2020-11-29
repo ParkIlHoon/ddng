@@ -6,41 +6,12 @@ let historyGrid;
 let saleGridData = [];
 
 $(function(){
-
-    // 상품 검색 select 구성
-    $("#beauty-select").select2({
-        multiple : true,
-        placeholder: "어떤 미용을 하셨는 지 선택해주세요.",
-        allowClear: true,
-        width : "100%",
-        data : [
-            {"text" : "기본컷", "id" : 1},
-            {"text" : "가위컷", "id" : 2},
-            {"text" : "약욕", "id" : 3},
-            {"text" : "스파", "id" : 4},
-            {"text" : "발톱정리", "id" : 5},
-            {"text" : "엉킴추가", "id" : 6},
-            {"text" : "테스트", "id" : 7},
-            {"text" : "테스트2", "id" : 8}
-        ]
-    });
-
-    $('#beauty-modal').modal({
-        show: true
-    });
-
-    $('#hotel-modal').modal({
-        show: true
-    });
-
     // 컴포넌트 초기화
     initComponents();
 
     // 스케쥴 데이터 세팅
     getTodaySchedules();
 
-
-    
 });
 
 /**
@@ -48,6 +19,9 @@ $(function(){
  */
 function initComponents()
 {
+    /*
+     메인 페이지
+     */
     // 상품 검색 select 구성
     $("#item-select").select2({
         placeholder: "상품명/바코드",
@@ -141,6 +115,13 @@ function initComponents()
             }
         ]
     });
+    hotelGrid.on("click", function(e){
+        if (e.rowKey == undefined || e.rowKey == null) {
+            return;
+        }
+        var clickData = hotelGrid.getData()[e.rowKey];
+        openHotelModal(clickData);
+    });
 
     // 미용 그리드
     beautyGrid = new tui.Grid({
@@ -163,6 +144,13 @@ function initComponents()
                 name: 'customerTelNo'
             }
         ]
+    });
+    beautyGrid.on("click", function(e){
+        if (e.rowKey == undefined || e.rowKey == null) {
+            return;
+        }
+        var clickData = beautyGrid.getData()[e.rowKey];
+        openBeautyModal(clickData);
     });
 
     historyGrid = new tui.Grid({
@@ -201,6 +189,16 @@ function initComponents()
             }
         ]
     });
+
+    /*
+     미용 모달
+     */
+    initBeautyModal();
+
+    /*
+     호텔 모달
+     */
+    initHotelModal();
 }
 
 /**
