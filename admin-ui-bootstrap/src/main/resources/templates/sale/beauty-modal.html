@@ -10,6 +10,7 @@
                 <h4 class="modal-title" id="modal-title">선택하신 미용을 결제 목록에 추가하시겠습니까?</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
+            <form id="beauty-modal-form">
             <div class="accordion" id="accordion" role="tablist">
                 <div class="mb-0">
                     <div class="modal-header" id="headingOne" role="tab">
@@ -74,7 +75,7 @@
                                     <strong>미용</strong>
                                 </label>
                                 <div class="col-md-9">
-                                    <select class="form-control" id="beauty-select" multiple="multiple">
+                                    <select class="form-control" id="beauty-select" multiple="multiple" name="beauty-items">
                                     </select>
                                 </div>
                             </div>
@@ -91,11 +92,11 @@
                                 <label class="col-md-3 col-form-label">사용할 쿠폰</label>
                                 <div class="col-md-9 col-form-label">
                                     <div class="form-check checkbox">
-                                        <input class="form-check-input" id="check1" type="checkbox" value="">
+                                        <input class="form-check-input" id="check1" type="radio" name="beauty-coupons" value="1">
                                         <label class="form-check-label" for="check1">100주년 기념 쿠폰</label>
                                     </div>
                                     <div class="form-check checkbox">
-                                        <input class="form-check-input" id="check2" type="checkbox" value="">
+                                        <input class="form-check-input" id="check2" type="radio" name="beauty-coupons" value="2">
                                         <label class="form-check-label" for="check2">1년 이용 감사 쿠폰</label>
                                     </div>
                                 </div>
@@ -104,9 +105,10 @@
                     </div>
                 </div>
             </div>
+            </form>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button" id="save-beauty-button">결제 목록에 추가</button>
+                <button class="btn btn-primary" type="button" id="add-beauty-button">결제 목록에 추가</button>
             </div>
         </div>
     </div>

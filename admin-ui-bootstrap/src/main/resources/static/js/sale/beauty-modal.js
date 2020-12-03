@@ -32,6 +32,31 @@ function initBeautyModal ()
             }
         }
     });
+
+    $("#add-beauty-button").on("click", function(e){
+        var scheduleId = $("#beauty-id-input").val();
+        /** @type Object[] */
+        var selectedBeauties = $("#beauty-select").select2('data');
+        var selectedCoupon = $("#beauty-modal-form").serializeObject()["beauty-coupons"];
+
+        var beauties = [];
+        selectedBeauties.forEach(b => beauties.push(Number(b.id)));
+
+        debugger;
+
+        // 스케쥴 데이터 조회
+        $.ajax({
+            url: "/sale/cart",
+            type: "POST",
+            dataType : "JSON",
+            contentType : "application/json; charset=utf-8",
+            data : JSON.stringify({
+                scheduleId : scheduleId,
+                beauties : beauties,
+                coupon : selectedCoupon
+            })
+        });
+    });
 }
 
 /**
