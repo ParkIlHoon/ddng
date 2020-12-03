@@ -15,9 +15,24 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("service")
 public class ServiceProperties
 {
+    /**
+     * customer-api 서버 URL
+     */
     private String customer;
+    /**
+     * sale-api 서버 URL
+     */
     private String sale;
+    /**
+     * schedule-api 서버 URL
+     */
     private String schedule;
+    /**
+     * statistic-api 서버 URL
+     */
     private String statistic;
+    /**
+     * user-api 서버 URL
+     */
     private String user;
 }

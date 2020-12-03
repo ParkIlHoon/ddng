@@ -1,8 +1,7 @@
 package com.ddng.adminuibootstrap.modules.main.controller;
 
-import com.ddng.adminuibootstrap.modules.main.dto.ScheduleDto;
-import com.ddng.adminuibootstrap.modules.main.utils.ScheduleRestTemplateClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,16 +10,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController
 {
-    @Autowired
-    ScheduleRestTemplateClient scheduleRestTemplateClient;
+    private final ScheduleTemplate scheduleTemplate;
 
     @GetMapping("/")
     public String main (Model model)
     {
         String searchDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
-        //scheduleRestTemplateClient.getSchedule(searchDate, searchDate);
+        //scheduleTemplate.getSchedule(searchDate, searchDate);
 
         return "index";
     }
@@ -31,10 +30,4 @@ public class MainController
         return "login";
     }
 
-    @GetMapping("/getSchedules")
-    public String getSchedules (String searchDate)
-    {
-        scheduleRestTemplateClient.getSchedule(searchDate, searchDate);
-        return null;
-    }
 }
