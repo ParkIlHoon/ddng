@@ -3,9 +3,9 @@ package com.ddng.adminuibootstrap.modules.sale.controller;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import com.ddng.adminuibootstrap.modules.sale.dto.AddCartDto;
-import com.ddng.adminuibootstrap.modules.sale.dto.CartDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
+import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +28,14 @@ public class SaleController
     private final ItemTemplate itemTemplate;
     private final SaleTemplate saleTemplate;
 
+    @ModelAttribute("cart")
+    public Cart cart ()
+    {
+        return new Cart();
+    }
+
     @GetMapping
-    public String main (Model model)
+    public String main (Model model, @ModelAttribute Cart cart)
     {
         return "sale/main";
     }
@@ -37,7 +43,7 @@ public class SaleController
     @PostMapping("/cart")
     public String addCart (@RequestBody @Valid AddCartDto dto,
                            Errors errors,
-                           @ModelAttribute List<CartDto> cart,
+                           @ModelAttribute Cart cart,
                            Model model)
     {
         if (errors.hasErrors())
@@ -46,8 +52,12 @@ public class SaleController
         }
 
         // 스케쥴 조회
-        ScheduleDto schedule = scheduleTemplate.getSchedule(dto.getScheduleId());
-
+        ScheduleDto schedule = null;
+        if (dto.getScheduleId() != null)
+        {
+            schedule = scheduleTemplate.getSchedule(dto.getScheduleId());
+        }
+        
         // 선택한 상품목록 조회
         List<ItemDto> items = new ArrayList<>();
         for (Long itemId : dto.getItemIds())
@@ -57,24 +67,32 @@ public class SaleController
         }
 
         // 쿠폰 목록 조회
-        CouponDto coupon = saleTemplate.getCounpon(dto.getCouponId());
+        CouponDto coupon = null;
+        if (dto.getCouponId() != null)
+        {
+            coupon = saleTemplate.getCounpon(dto.getCouponId());
+        }
 
         // 카트 추가
-        CartDto cartDto = new CartDto();
-        if (schedule != null)
-        {
-            cartDto.setSchedule(schedule);
-        }
         if (items.size() > 0)
         {
-            cartDto.setItems(items);
+            for(ItemDto item : items)
+            {
+                if (coupon == null)
+                {
+                    cart.addCartItem(item, schedule);
+                }
+                else
+                {
+                    cart.addCartItem(item, schedule, coupon);
+                }
+            }
         }
-        if (coupon != null)
+        else
         {
-            cartDto.setCoupon(coupon);
+            throw new RuntimeException("추가할 상품이 존재하지 않습니다.");
         }
-        cart.add(cartDto);
 
-        return "sale/main";
+        return "sale/main :: #item-list";
     }
 }

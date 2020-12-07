@@ -42,9 +42,7 @@ function initBeautyModal ()
         var beauties = [];
         selectedBeauties.forEach(b => beauties.push(Number(b.id)));
 
-        debugger;
-
-        // 스케쥴 데이터 조회
+        // 장바구니에 추가
         $.ajax({
             url: "/sale/cart",
             type: "POST",
@@ -52,9 +50,12 @@ function initBeautyModal ()
             contentType : "application/json; charset=utf-8",
             data : JSON.stringify({
                 scheduleId : scheduleId,
-                beauties : beauties,
-                coupon : selectedCoupon
+                itemIds : beauties,
+                couponId : selectedCoupon
             })
+        }).always(function (jqXHR) {
+            $('#beauty-modal').modal('hide');
+            $("#item-list").replaceWith(jqXHR.responseText);
         });
     });
 }

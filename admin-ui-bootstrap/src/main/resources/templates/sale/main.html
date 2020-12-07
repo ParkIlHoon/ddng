@@ -24,6 +24,24 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
+                                                <table class="table table-responsive-sm table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>상품명</th>
+                                                        <th>단가</th>
+                                                        <th>개수</th>
+                                                        <th>합계</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="item-list">
+                                                    <tr th:each="cartItem : ${cart.items}">
+                                                        <td th:text="${cartItem.getItemId()}"></td>
+                                                        <td th:text="${cartItem.getSalePrice()}"></td>
+                                                        <td th:text="${cartItem.getCount()}"></td>
+                                                        <td th:text="${cartItem.getCount() * cartItem.getSalePrice()}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                                 <div id="sale-grid"></div>
                                             </div>
                                         </div>

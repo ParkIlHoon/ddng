@@ -13,7 +13,6 @@ import java.util.List;
 public class AddCartDto
 {
     private Long scheduleId;
-
     private List<Long> itemIds = new ArrayList<>();
     private Long couponId;
 }
