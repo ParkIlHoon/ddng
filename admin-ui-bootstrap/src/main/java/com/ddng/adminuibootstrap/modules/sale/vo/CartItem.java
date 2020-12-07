@@ -8,9 +8,11 @@ import lombok.*;
 public class CartItem
 {
     private Long itemId;
+    private String itemName;
     private int count;
     private int salePrice;
     private Long customerId;
     private Long couponId;
     private Long scheduleId;
+    private String scheduleName;
 }

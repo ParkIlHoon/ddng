@@ -57,13 +57,16 @@ public class SaleController
         {
             schedule = scheduleTemplate.getSchedule(dto.getScheduleId());
         }
-        
+
         // 선택한 상품목록 조회
         List<ItemDto> items = new ArrayList<>();
         for (Long itemId : dto.getItemIds())
         {
             ItemDto item = itemTemplate.getItem(itemId);
-            items.add(item);
+            if (item != null)
+            {
+                items.add(item);
+            }
         }
 
         // 쿠폰 목록 조회
@@ -80,7 +83,14 @@ public class SaleController
             {
                 if (coupon == null)
                 {
-                    cart.addCartItem(item, schedule);
+                    if (schedule == null)
+                    {
+                        cart.addCartItem(item);
+                    }
+                    else
+                    {
+                        cart.addCartItem(item, schedule);
+                    }
                 }
                 else
                 {

@@ -19,6 +19,41 @@ public class Cart
         return this.items;
     }
 
+    public void addCartItem (ItemDto item)
+    {
+        if (item == null)
+        {
+            throw new NullArgumentException("item");
+        }
+
+        List<CartItem> sameCartItems = findSameCartItems(item.getId());
+
+        if (sameCartItems.size() == 0)
+        {
+            CartItem cartItem = CartItem.builder()
+                    .itemId(item.getId())
+                    .itemName(item.getName())
+                    .count(1)
+                    .salePrice(item.getPrice())
+                    .scheduleId(null)
+                    .customerId(null)
+                    .couponId(null)
+                    .build();
+
+            this.items.add(cartItem);
+        }
+        else if (sameCartItems.size() == 1)
+        {
+            CartItem cartItem = sameCartItems.get(0);
+            cartItem.setCount(cartItem.getCount() + 1);
+        }
+        else
+        {
+            //TODO
+        }
+
+    }
+
     public void addCartItem (ItemDto item, ScheduleDto schedule)
     {
         if (item == null)
@@ -32,9 +67,11 @@ public class Cart
         {
             CartItem cartItem = CartItem.builder()
                     .itemId(item.getId())
+                    .itemName(item.getName())
                     .count(1)
                     .salePrice(item.getPrice())
                     .scheduleId(schedule.getId())
+                    .scheduleName(schedule.getName())
                     .customerId(schedule.getCustomerId())
                     .couponId(null)
                     .build();
@@ -66,9 +103,11 @@ public class Cart
         {
             CartItem cartItem = CartItem.builder()
                                             .itemId(item.getId())
+                                            .itemName(item.getName())
                                             .count(1)
                                             .salePrice(item.getPrice())
                                             .scheduleId(schedule.getId())
+                                            .scheduleName(schedule.getName())
                                             .customerId(schedule.getCustomerId())
                                             .couponId(coupon.getId())
                                         .build();
@@ -87,12 +126,24 @@ public class Cart
 
     }
 
+    public List<CartItem> findSameCartItems (Long itemId)
+    {
+        Stream<CartItem> stream = this.items.stream()
+                .filter(i -> i.getItemId().equals(itemId)
+                        && (i.getCustomerId() == null)
+                        && (i.getScheduleId() == null)
+                        && (i.getCouponId() == null));
+
+        return stream.collect(Collectors.toList());
+    }
+
     public List<CartItem> findSameCartItems (Long itemId, Long customerId, Long scheduleId)
     {
         Stream<CartItem> stream = this.items.stream()
                 .filter(i -> i.getItemId().equals(itemId)
                         && customerId.equals(i.getCustomerId())
-                        && scheduleId.equals(i.getScheduleId()));
+                        && scheduleId.equals(i.getScheduleId())
+                        && (i.getCouponId() == null));
 
         return stream.collect(Collectors.toList());
     }

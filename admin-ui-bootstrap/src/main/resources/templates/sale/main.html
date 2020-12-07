@@ -28,6 +28,7 @@
                                                     <thead>
                                                     <tr>
                                                         <th>상품명</th>
+                                                        <th>스케쥴</th>
                                                         <th>단가</th>
                                                         <th>개수</th>
                                                         <th>합계</th>
@@ -35,14 +36,14 @@
                                                     </thead>
                                                     <tbody id="item-list">
                                                     <tr th:each="cartItem : ${cart.items}">
-                                                        <td th:text="${cartItem.getItemId()}"></td>
-                                                        <td th:text="${cartItem.getSalePrice()}"></td>
+                                                        <td th:text="${cartItem.getItemName()}"></td>
+                                                        <td th:text="${cartItem.getScheduleName()}"></td>
+                                                        <td th:text="${#numbers.formatInteger(cartItem.getSalePrice(), 3, 'COMMA')}"></td>
                                                         <td th:text="${cartItem.getCount()}"></td>
-                                                        <td th:text="${cartItem.getCount() * cartItem.getSalePrice()}"></td>
+                                                        <td th:text="${#numbers.formatInteger(cartItem.getCount() * cartItem.getSalePrice(), 3, 'COMMA')}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                                <div id="sale-grid"></div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,9 +1,6 @@
-let saleGrid;
 let hotelGrid;
 let beautyGrid;
 let historyGrid;
-
-let saleGridData = [];
 
 $(function(){
     // 컴포넌트 초기화
@@ -11,7 +8,6 @@ $(function(){
 
     // 스케쥴 데이터 세팅
     getTodaySchedules();
-
 });
 
 /**
@@ -53,33 +49,6 @@ function initComponents()
 
     // 그리드 테마 지정
     tui.Grid.applyTheme('clean');
-
-    // 판매 그리드
-    saleGrid = new tui.Grid({
-        el: document.getElementById('sale-grid'),
-        data : saleGridData,
-        scrollX: false,
-        scrollY: false,
-        selectionUnit : "row",
-        columns: [
-            {
-                header: '번호',
-                name: 'id'
-            },
-            {
-                header: '상품명',
-                name: 'name'
-            },
-            {
-                header: '개수',
-                name: 'count'
-            },
-            {
-                header: '금액',
-                name: 'amount'
-            }
-        ]
-    });
 
     // 호텔, 유치원 그리드
     hotelGrid = new tui.Grid({
@@ -270,28 +239,25 @@ $('#item-select').on('select2:select', function (e) {
     //TODO 상품 데이터 세팅
     if (data != undefined && data != "")
     {
-        // 판매 그리드 데이터 세팅
-        var existData = saleGridData.find(d => d.id == data.id);
-        if (existData != undefined && existData != null)
-        {
-            existData.count++;
-        }
-        else
-        {
-            var row = {
-                "id" : data.id,
-                "name" : data.name,
-                "amount" : data.price,
-                "count" : 1
-            };
-            saleGridData.push(row);
-        }
-        saleGrid.resetData(saleGridData);
+        // 장바구니에 추가
+        $.ajax({
+            url: "/sale/cart",
+            type: "POST",
+            dataType : "JSON",
+            contentType : "application/json; charset=utf-8",
+            data : JSON.stringify({
+                scheduleId : null,
+                itemIds : [data.id],
+                couponId : null
+            })
+        }).always(function (jqXHR) {
+            $("#item-list").replaceWith(jqXHR.responseText);
+        });
 
         // 총 금액 세팅
-        var totalPrice = 0;
-        saleGridData.forEach(el => totalPrice += el.amount * el.count);
-        $("#total-price").text(totalPrice);
+        // var totalPrice = 0;
+        // saleGridData.forEach(el => totalPrice += el.amount * el.count);
+        // $("#total-price").text(totalPrice);
 
         // 상품 검색 select 초기화
         $('#item-select').val(null).trigger('change');
@@ -314,8 +280,6 @@ $("#pay-card-button").on("click", function(e){
  * 초기화 버튼 클릭 핸들러
  */
 $("#reset-button").on("click", function(e){
-    saleGridData = [];
-    saleGrid.resetData(saleGridData);
     $("#total-price").text(0);
 });
 /**
