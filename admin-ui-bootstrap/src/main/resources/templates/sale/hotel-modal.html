@@ -11,7 +11,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="modal-hotel-form">
+                <form class="form-horizontal" id="hotel-modal-form">
                     <input type="hidden" id="hotel-id-input">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
@@ -73,7 +73,7 @@
                                 <tr>
                                     <th>상품명</th>
                                     <th>단가</th>
-                                    <th>개수</th>
+                                    <th th:width="80px">개수</th>
                                 </tr>
                                 </thead>
                                 <tbody>

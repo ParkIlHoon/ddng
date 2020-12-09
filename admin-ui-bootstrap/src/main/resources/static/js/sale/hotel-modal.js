@@ -5,12 +5,24 @@ function initHotelModal ()
 {
     $("#add-hotel-button").on("click", function(e){
         var scheduleId = $("#hotel-id-input").val();
-        /** @type Object[] */
-        var selectedBeauties = $("#beauty-select").select2('data');
-        var selectedCoupon = $("#beauty-modal-form").serializeObject()["beauty-coupons"];
+        var selectedItems = $("#hotel-modal-form").serializeObject();
 
-        var beauties = [];
-        selectedBeauties.forEach(b => beauties.push(Number(b.id)));
+        debugger;
+        var keys = Object.keys(selectedItems);
+        var itemId = [];
+
+        for (var idx = 0; idx < keys.length; idx++)
+        {
+            var key = keys[idx];
+
+            if (Number(selectedItems[key]) > 0)
+            {
+                for (var idx2 = 0; idx2 < Number(selectedItems[key]); idx2++)
+                {
+                    itemId.push(key);
+                }
+            }
+        }
 
         // 장바구니에 추가
         $.ajax({
@@ -20,11 +32,11 @@ function initHotelModal ()
             contentType : "application/json; charset=utf-8",
             data : JSON.stringify({
                 scheduleId : scheduleId,
-                itemIds : beauties,
-                couponId : selectedCoupon
+                itemIds : itemId,
+                couponId : null
             })
         }).always(function (jqXHR) {
-            $('#beauty-modal').modal('hide');
+            $('#hotel-modal').modal('hide');
             $("#item-list").replaceWith(jqXHR.responseText);
         });
     });
