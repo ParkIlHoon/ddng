@@ -107,6 +107,28 @@ public class ItemController
     }
 
     /**
+     * 호텔 카테고리의 상품을 검색한다.
+     * @return
+     */
+    @GetMapping("/hotel")
+    public ResponseEntity getHotelItems ()
+    {
+        List<ItemDto.Response> items = itemService.findHotelItems();
+        return ResponseEntity.ok(items);
+    }
+
+    /**
+     * 유치원 카테고리의 상품을 검색한다.
+     * @return
+     */
+    @GetMapping("/kindergarten")
+    public ResponseEntity getKindergartenItems ()
+    {
+        List<ItemDto.Response> items = itemService.findKindergartenItems();
+        return ResponseEntity.ok(items);
+    }
+
+    /**
      * 상품을 생성한다.
      * @param dto 생성할 상품 정보
      * @param errors

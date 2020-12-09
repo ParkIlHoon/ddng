@@ -37,6 +37,11 @@ public class SaleController
     @GetMapping
     public String main (Model model, @ModelAttribute Cart cart)
     {
+        List<ItemDto> hotelItems = itemTemplate.getHotelItems();
+        List<ItemDto> kindergartenItems = itemTemplate.getKindergartenItems();
+
+        model.addAttribute("hotelItems", hotelItems);
+        model.addAttribute("kindergartenItems", kindergartenItems);
         return "sale/main";
     }
 

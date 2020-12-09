@@ -135,7 +135,7 @@
 </div>
 
 <div th:replace="sale/beauty-modal.html::beauty-modal"></div>
-<div th:replace="sale/hotel-modal.html::hotel-modal"></div>
+<div th:replace="sale/hotel-modal.html::hotel-modal(${hotelItems}, ${kindergartenItems})"></div>
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">

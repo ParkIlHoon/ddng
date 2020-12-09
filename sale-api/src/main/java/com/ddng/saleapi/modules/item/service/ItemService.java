@@ -2,6 +2,7 @@ package com.ddng.saleapi.modules.item.service;
 
 import com.ddng.saleapi.infra.util.FileUtils;
 import com.ddng.saleapi.modules.item.domain.Item;
+import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,6 +61,26 @@ public class ItemService
         return new PageImpl<>(collect, pageable, items.getTotalElements());
     }
 
+    public List<ItemDto.Response> findHotelItems()
+    {
+        List<Item> items = itemRepository.findByType(ItemType.HOTEL);
+        List<ItemDto.Response> collect = items.stream()
+                                                .map(item -> new ItemDto.Response(item))
+                                                .collect(Collectors.toList());
+
+        return collect;
+    }
+
+    public List<ItemDto.Response> findKindergartenItems()
+    {
+        List<Item> items = itemRepository.findByType(ItemType.KINDERGARTEN);
+        List<ItemDto.Response> collect = items.stream()
+                                                .map(item -> new ItemDto.Response(item))
+                                                .collect(Collectors.toList());
+
+        return collect;
+    }
+
     public Item createItem(ItemDto.Post dto)
     {
         Item map = modelMapper.map(dto, Item.class);
@@ -108,5 +129,4 @@ public class ItemService
 
         return returnList;
     }
-
 }

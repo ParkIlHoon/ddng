@@ -3,7 +3,31 @@
  */
 function initHotelModal ()
 {
+    $("#add-hotel-button").on("click", function(e){
+        var scheduleId = $("#hotel-id-input").val();
+        /** @type Object[] */
+        var selectedBeauties = $("#beauty-select").select2('data');
+        var selectedCoupon = $("#beauty-modal-form").serializeObject()["beauty-coupons"];
 
+        var beauties = [];
+        selectedBeauties.forEach(b => beauties.push(Number(b.id)));
+
+        // 장바구니에 추가
+        $.ajax({
+            url: "/sale/cart",
+            type: "POST",
+            dataType : "JSON",
+            contentType : "application/json; charset=utf-8",
+            data : JSON.stringify({
+                scheduleId : scheduleId,
+                itemIds : beauties,
+                couponId : selectedCoupon
+            })
+        }).always(function (jqXHR) {
+            $('#beauty-modal').modal('hide');
+            $("#item-list").replaceWith(jqXHR.responseText);
+        });
+    });
 }
 
 /**
@@ -54,7 +78,10 @@ function setHotelData (data)
     $("#hotel-id-input").val(data.id);
     $("#hotel-schedule-name").text(data.name);
     $("#hotel-schedule-type").append("<i class=\"c-icon cil-circle\" id=\"hotel-schedule-type-icon\" style=\"background-color:" + data.scheduleColor + "\"></i> " + data.scheduleTypeName);
-    $("#hotel-schedule-duration").text(data.startDate + " ~ " + data.endDate);
+
+    var duration = moment(data.startDate).format("YYYY-MM-DD HH:mm") + " ~ " + moment(data.endDate).format("YYYY-MM-DD HH:mm");
+    var days = moment(data.endDate).diff(moment(data.startDate), 'days') + 1;
+    $("#hotel-schedule-duration").text(duration + " (" + days + "일)");
 
     $.ajax({
         url: SERVER_URL + "/customer-api/customer/" + data.customerId,

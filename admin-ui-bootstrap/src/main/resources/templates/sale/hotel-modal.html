@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="hotel-modal" class="modal fade" id="hotel-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div th:fragment="hotel-modal(hotelItems, kindergartenItems)" class="modal fade" id="hotel-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -63,11 +63,36 @@
                             <textarea class="form-control" id="hotel-schedule-bigo" rows="5" placeholder="비고" readonly></textarea>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">
+                            <strong>적용 상품</strong>
+                        </label>
+                        <div class="col-md-9">
+                            <table class="table table-responsive-sm table-striped">
+                                <thead>
+                                <tr>
+                                    <th>상품명</th>
+                                    <th>단가</th>
+                                    <th>개수</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${hotelItems}">
+                                    <td th:text="${item.getName()}"></td>
+                                    <td th:text="${#numbers.formatInteger(item.getPrice(), 3, 'COMMA')}"></td>
+                                    <td>
+                                        <input class="form-control" type="number" min="0" value="0" th:name="${item.getId()}">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button" id="save-hotel-button">결제 목록에 추가</button>
+                <button class="btn btn-primary" type="button" id="add-hotel-button">결제 목록에 추가</button>
             </div>
         </div>
     </div>
