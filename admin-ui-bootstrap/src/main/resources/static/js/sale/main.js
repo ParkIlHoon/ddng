@@ -264,9 +264,11 @@ $('#item-select').on('select2:select', function (e) {
             })
         }).always(function (jqXHR) {
             $("#item-list").replaceWith(jqXHR.responseText);
+            // 총 금액 세팅
+            refreshTotalPrice();
         });
 
-        // 총 금액 세팅
+
         // var totalPrice = 0;
         // saleGridData.forEach(el => totalPrice += el.amount * el.count);
         // $("#total-price").text(totalPrice);
@@ -293,10 +295,34 @@ $("#pay-card-button").on("click", function(e){
  */
 $("#reset-button").on("click", function(e){
     $("#total-price").text(0);
+    // 장바구니 초기화
+    $.ajax({
+        url: "/sale/cart",
+        type: "DELETE",
+        contentType : "application/json; charset=utf-8",
+    }).always(function (jqXHR) {
+        $("#item-list").replaceWith(jqXHR.responseText);
+        // 총 금액 세팅
+        refreshTotalPrice();
+    });
 });
+
 /**
  * 결제취소 버튼 클릭 핸들러
  */
 $("#cancel-button").on("click", function(e){
     //TODO 결제 취소
 });
+
+/**
+ * 카트 총 금액 새로고침 함수
+ */
+function refreshTotalPrice ()
+{
+    $.ajax({
+        url: "/sale/cart/totalPrice",
+        type: "GET",
+    }).always(function (responseText) {
+        $("#total-price").replaceWith(responseText);
+    });
+}

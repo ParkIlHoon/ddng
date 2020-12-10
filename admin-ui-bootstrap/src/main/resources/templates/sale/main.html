@@ -60,7 +60,8 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <span class="h2">합계 </span>
-                                                        <span class="h1" id="total-price">0</span>
+                                                        <span class="h1" id="total-price" th:text="${#numbers.formatInteger(cart.getTotalPrice(), 3, 'COMMA')}">
+                                                        </span>
                                                         <span class="h2"> 원</span>
                                                     </div>
                                                 </div>

@@ -37,6 +37,8 @@ function initKindergartenModal ()
         }).always(function (jqXHR) {
             $('#kindergarten-modal').modal('hide');
             $("#item-list").replaceWith(jqXHR.responseText);
+            // 총 금액 세팅
+            refreshTotalPrice();
         });
     });
 }

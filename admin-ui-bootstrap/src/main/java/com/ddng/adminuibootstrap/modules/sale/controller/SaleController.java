@@ -34,6 +34,12 @@ public class SaleController
         return new Cart();
     }
 
+    /**
+     * 결제 화면 폼 요청
+     * @param model
+     * @param cart
+     * @return
+     */
     @GetMapping
     public String main (Model model, @ModelAttribute Cart cart)
     {
@@ -45,6 +51,14 @@ public class SaleController
         return "sale/main";
     }
 
+    /**
+     * 카트에 상품 추가 요청
+     * @param dto
+     * @param errors
+     * @param cart
+     * @param model
+     * @return
+     */
     @PostMapping("/cart")
     public String addCart (@RequestBody @Valid AddCartDto dto,
                            Errors errors,
@@ -109,5 +123,26 @@ public class SaleController
         }
 
         return "sale/main :: #item-list";
+    }
+
+    /**
+     * 카트 초기화 요청
+     * @param cart
+     * @param model
+     * @return
+     */
+    @DeleteMapping("/cart")
+    public String resetCart (@ModelAttribute Cart cart,
+                             Model model)
+    {
+        cart.reset();
+        return "sale/main :: #item-list";
+    }
+
+    @GetMapping("/cart/totalPrice")
+    public String refreshTotalPrice (@ModelAttribute Cart cart,
+                                     Model model)
+    {
+        return "sale/main :: #total-price";
     }
 }
