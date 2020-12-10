@@ -89,7 +89,14 @@ function initComponents()
             return;
         }
         var clickData = hotelGrid.getData()[e.rowKey];
-        openHotelModal(clickData);
+        if (clickData.scheduleType == "HOTEL")
+        {
+            openHotelModal(clickData);
+        }
+        else
+        {
+            openKindergartenModal(clickData);
+        }
     });
 
     // 미용 그리드
@@ -168,6 +175,11 @@ function initComponents()
      호텔 모달
      */
     initHotelModal();
+
+    /*
+     유치원 모달
+     */
+    initKindergartenModal();
 }
 
 /**

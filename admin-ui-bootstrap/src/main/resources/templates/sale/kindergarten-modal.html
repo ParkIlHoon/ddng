@@ -3,22 +3,22 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="hotel-modal(hotelItems)" class="modal fade" id="hotel-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div th:fragment="kindergarten-modal(kindergartenItems)" class="modal fade" id="kindergarten-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modal-title">선택하신 호텔을 결제 목록에 추가하시겠습니까?</h4>
+                <h4 class="modal-title" id="modal-title">선택하신 유치원을 결제 목록에 추가하시겠습니까?</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="hotel-modal-form">
-                    <input type="hidden" id="hotel-id-input">
+                <form class="form-horizontal" id="kindergarten-modal-form">
+                    <input type="hidden" id="kindergarten-id-input">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
                             <strong>스케쥴 이름</strong>
                         </label>
                         <div class="col-md-9 col-form-label">
-                            <span class="h6" id="hotel-schedule-name">스케쥴 이름 위치</span>
+                            <span class="h6" id="kindergarten-schedule-name">스케쥴 이름 위치</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -26,7 +26,7 @@
                             <strong>스케쥴 종류</strong>
                         </label>
                         <div class="col-md-9 col-form-label">
-                            <span class="h6" id="hotel-schedule-type"></span>
+                            <span class="h6" id="kindergarten-schedule-type"></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -34,7 +34,7 @@
                             <strong>일정</strong>
                         </label>
                         <div class="col-md-9 col-form-label">
-                            <span class="h6" id="hotel-schedule-duration">2020.11.12 13:30 ~ 2020.11.12.14:30</span>
+                            <span class="h6" id="kindergarten-schedule-duration">2020.11.12 13:30 ~ 2020.11.12.14:30</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -43,16 +43,16 @@
                         </label>
                         <div class="col-md-9 col-form-label">
                             <div class="c-avatar">
-                                <img class="c-avatar-img" id="hotel-schedule-customer-profileImg" src="">
+                                <img class="c-avatar-img" id="kindergarten-schedule-customer-profileImg" src="">
                             </div>
-                            <span class="h6" id="hotel-schedule-customer">고객명 (품종 / 전화번호)</span>
+                            <span class="h6" id="kindergarten-schedule-customer">고객명 (품종 / 전화번호)</span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
                             <strong>태그</strong>
                         </label>
-                        <div class="col-md-9 col-form-label" id="hotel-schedule-tags">
+                        <div class="col-md-9 col-form-label" id="kindergarten-schedule-tags">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -60,7 +60,7 @@
                             <strong>비고</strong>
                         </label>
                         <div class="col-md-9">
-                            <textarea class="form-control" id="hotel-schedule-bigo" rows="5" placeholder="비고" readonly></textarea>
+                            <textarea class="form-control" id="kindergarten-schedule-bigo" rows="5" placeholder="비고" readonly></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -77,7 +77,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="item : ${hotelItems}">
+                                <tr th:each="item : ${kindergartenItems}">
                                     <td th:text="${item.getName()}"></td>
                                     <td th:text="${#numbers.formatInteger(item.getPrice(), 3, 'COMMA')}"></td>
                                     <td>
@@ -92,11 +92,11 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button" id="add-hotel-button">결제 목록에 추가</button>
+                <button class="btn btn-primary" type="button" id="add-kindergarten-button">결제 목록에 추가</button>
             </div>
         </div>
     </div>
-    <script src="/js/sale/hotel-modal.js"></script>
+    <script src="/js/sale/kindergarten-modal.js"></script>
 </div>
 
 </html>
