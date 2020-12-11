@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.infra.properties;
+package com.ddng.saleapi.infra.properties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,14 +9,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * application.properties 의 exchange 설정을 객체화 하는 클래스
  *
- * @see com.ddng.adminuibootstrap.infra.config.RabbitMQConfig
+ * @see com.ddng.saleapi.infra.config.RabbitMQConfig
  */
 @Getter @Setter
 @ConfigurationProperties("exchange")
 public class ExchangeProperties
 {
     /**
-     * 판매 exchange 명
+     * 결제 exchange 명
      */
     private String selling;
+    /**
+     * 결제 exchange route key
+     */
+    private String sellingRouteKey;
 }

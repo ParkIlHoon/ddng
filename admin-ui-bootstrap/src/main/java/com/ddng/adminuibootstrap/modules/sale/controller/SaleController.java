@@ -139,6 +139,12 @@ public class SaleController
         return "sale/main :: #item-list";
     }
 
+    /**
+     * 카트 총 금액 요청
+     * @param cart
+     * @param model
+     * @return
+     */
     @GetMapping("/cart/totalPrice")
     public String refreshTotalPrice (@ModelAttribute Cart cart,
                                      Model model)

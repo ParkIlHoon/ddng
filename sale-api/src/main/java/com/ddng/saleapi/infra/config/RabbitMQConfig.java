@@ -1,6 +1,6 @@
-package com.ddng.adminuibootstrap.infra.config;
+package com.ddng.saleapi.infra.config;
 
-import com.ddng.adminuibootstrap.infra.properties.ExchangeProperties;
+import com.ddng.saleapi.infra.properties.ExchangeProperties;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * 1. application.properties 의 exchange 설정을 ExchangeProperties 클래스로 객체화함
  * 2. 발행할 TopicExchange Bean 을 생성한다.
  *
- * @see com.ddng.adminuibootstrap.infra.properties.ExchangeProperties
+ * @see com.ddng.saleapi.infra.properties.ExchangeProperties
  */
 @Configuration
 @EnableConfigurationProperties(ExchangeProperties.class)
