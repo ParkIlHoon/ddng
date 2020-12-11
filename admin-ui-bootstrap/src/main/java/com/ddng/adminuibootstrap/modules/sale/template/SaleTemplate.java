@@ -2,7 +2,12 @@ package com.ddng.adminuibootstrap.modules.sale.template;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
+import com.ddng.adminuibootstrap.modules.sale.dto.PaymentType;
+import com.ddng.adminuibootstrap.modules.sale.dto.SaleDto;
+import com.ddng.adminuibootstrap.modules.sale.dto.SaleType;
+import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,5 +42,18 @@ public class SaleTemplate
                 .toUri();
         CouponDto forObject = restTemplate.getForObject(targetUrl, CouponDto.class);
         return forObject;
+    }
+
+    public void saleCart (Cart cart, SaleType saleType, PaymentType paymentType)
+    {
+        String apiPath = SALE_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+        SaleDto saleDto = new SaleDto(cart, saleType, paymentType);
+
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, saleDto, String.class);
     }
 }

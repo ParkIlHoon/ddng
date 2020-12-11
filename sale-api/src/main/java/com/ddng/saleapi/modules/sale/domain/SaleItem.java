@@ -42,6 +42,9 @@ public class SaleItem
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
 
+    @Column(name = "SCHEDULE_ID")
+    private Long scheduleId;
+
     public SaleItem(SaleItemDto dto, Item item)
     {
         this.item = item;
@@ -49,6 +52,7 @@ public class SaleItem
         this.count = dto.getCount();
         this.customerId = dto.getCustomerId();
         this.totalPrice = this.salePrice * this.count;
+        this.scheduleId = dto.getScheduleId();
     }
 
     /**

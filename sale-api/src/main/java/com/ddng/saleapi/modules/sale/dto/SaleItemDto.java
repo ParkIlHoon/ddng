@@ -18,6 +18,7 @@ public class SaleItemDto
     private int count;
     private Long couponId;
     private Long customerId;
+    private Long scheduleId;
 
     @Data @Builder
     @NoArgsConstructor @AllArgsConstructor

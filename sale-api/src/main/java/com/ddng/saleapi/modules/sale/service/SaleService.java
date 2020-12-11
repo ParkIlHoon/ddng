@@ -9,6 +9,8 @@ import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleItem;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
+import com.ddng.saleapi.modules.sale.event.EventDispatcher;
+import com.ddng.saleapi.modules.sale.event.SellingEvent;
 import com.ddng.saleapi.modules.sale.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,6 +39,7 @@ public class SaleService
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
     private final CouponService couponService;
+    private final EventDispatcher eventDispatcher;
 
     /**
      * 새로운 판매를 생성한다.
@@ -70,7 +73,10 @@ public class SaleService
         Sale save = saleRepository.save(sale);
 
         //TODO 쿠폰 처리
-        couponService.stamp(save);
+        //couponService.stamp(save);
+
+        // 이벤트 발행
+        eventDispatcher.send(new SellingEvent(sale.getId()));
 
         return save;
     }

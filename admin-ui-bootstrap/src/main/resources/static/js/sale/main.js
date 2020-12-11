@@ -283,6 +283,10 @@ $('#item-select').on('select2:select', function (e) {
  */
 $("#pay-cash-button").on("click", function(e){
     //TODO 결제
+    $.ajax({
+        url: "/sale",
+        type: "POST"
+    });
 });
 /**
  * 카드 결제 버튼 클릭 핸들러

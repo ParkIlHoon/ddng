@@ -4,6 +4,8 @@ import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import com.ddng.adminuibootstrap.modules.sale.dto.AddCartDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
+import com.ddng.adminuibootstrap.modules.sale.dto.PaymentType;
+import com.ddng.adminuibootstrap.modules.sale.dto.SaleType;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
@@ -150,5 +152,13 @@ public class SaleController
                                      Model model)
     {
         return "sale/main :: #total-price";
+    }
+
+    @PostMapping
+    public String saleCart (@ModelAttribute Cart cart,
+                            Model model)
+    {
+        saleTemplate.saleCart(cart, SaleType.PAYED, PaymentType.CASH);
+        return "sale/main";
     }
 }
