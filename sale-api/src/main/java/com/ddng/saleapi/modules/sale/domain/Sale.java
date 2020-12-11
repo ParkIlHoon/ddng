@@ -42,4 +42,10 @@ public class Sale
         this.familyId = dto.getFamilyId();
         this.type = dto.getType();
     }
+
+    public void addSaleItem(SaleItem saleItem)
+    {
+        this.saleItemList.add(saleItem);
+        saleItem.setSale(this);
+    }
 }

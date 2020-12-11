@@ -65,12 +65,15 @@ public class SaleService
         // 판매 생성
         Sale sale = new Sale(dto);
 
+        // 판매 저장
+        Sale save = saleRepository.save(sale);
+
         // 판매 상품 생성
         List<SaleItem> saleItems = createSaleItems(saleItemDtos, items, coupons);
-        sale.setSaleItemList(saleItems);
-
-        // 판매 저장(cascade 처리)
-        Sale save = saleRepository.save(sale);
+        for (SaleItem saleItem : saleItems)
+        {
+            save.addSaleItem(saleItem);
+        }
 
         //TODO 쿠폰 처리
         //couponService.stamp(save);
