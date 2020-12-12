@@ -1,4 +1,4 @@
-package com.ddng.scheduleapi.modules.schedules.event;
+package com.ddng.scheduleapi.event;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;

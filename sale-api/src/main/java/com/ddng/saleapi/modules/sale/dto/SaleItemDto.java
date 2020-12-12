@@ -30,6 +30,7 @@ public class SaleItemDto
         private int count;
         private int salePrice;
         private int totalPrice;
+        private Long scheduleId;
         private String couponName;
 
         public Get (SaleItem saleItem)
@@ -40,7 +41,11 @@ public class SaleItemDto
             this.count = saleItem.getCount();
             this.salePrice = saleItem.getSalePrice();
             this.totalPrice = saleItem.getTotalPrice();
-            this.couponName = saleItem.getCoupon().getName();
+            this.scheduleId = saleItem.getScheduleId();
+            if(saleItem.getCoupon() != null)
+            {
+                this.couponName = saleItem.getCoupon().getName();
+            }
         }
     }
 }

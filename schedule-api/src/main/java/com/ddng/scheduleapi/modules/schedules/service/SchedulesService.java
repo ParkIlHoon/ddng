@@ -140,5 +140,12 @@ public class SchedulesService
         schedules.getTags().remove(tag);
     }
 
-
+    public void paySchedule(Long scheduleId)
+    {
+        Optional<Schedules> optional = this.getSchedule(scheduleId);
+        if (optional.isPresent())
+        {
+            optional.get().setPayed(true);
+        }
+    }
 }

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class SaleService
     private final CouponRepository couponRepository;
     private final CouponService couponService;
     private final EventDispatcher eventDispatcher;
+    private final EntityManager entityManager;
 
     /**
      * 새로운 판매를 생성한다.
@@ -77,6 +79,8 @@ public class SaleService
 
         //TODO 쿠폰 처리
         //couponService.stamp(save);
+
+        entityManager.flush();
 
         // 이벤트 발행
         eventDispatcher.send(new SellingEvent(sale.getId()));

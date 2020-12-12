@@ -1,4 +1,4 @@
-package com.ddng.scheduleapi.modules.schedules.event;
+package com.ddng.scheduleapi.event;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * <h1>SellingEvent 역직렬화 클래스</h1>
  *
- * @see com.ddng.scheduleapi.modules.schedules.event.SellingEvent
+ * @see SellingEvent
  */
 public class SellingEventDeserializer extends JsonDeserializer<SellingEvent>
 {
