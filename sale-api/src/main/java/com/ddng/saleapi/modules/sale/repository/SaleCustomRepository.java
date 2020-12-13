@@ -15,5 +15,6 @@ public interface SaleCustomRepository
 {
     Page<Sale> findSaleByItem(Item item, Pageable pageable);
 
-    List<CalculateDto> calculate (LocalDate date);
+    List<CalculateDto.ByItem> calculateByItem (LocalDate date);
+    List<CalculateDto.ByPayment> calculateByPayment (LocalDate date);
 }

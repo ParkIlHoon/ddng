@@ -162,8 +162,13 @@ public class SaleService
         return saleRepository.save(sale);
     }
 
-    public List<CalculateDto> getCalculate (LocalDate date)
+    public List<CalculateDto.ByItem> getCalculateByItem (LocalDate date)
     {
-        return saleRepository.calculate(date);
+        return saleRepository.calculateByItem(date);
+    }
+
+    public List<CalculateDto.ByPayment> getCalculateByPayment(LocalDate date)
+    {
+        return saleRepository.calculateByPayment(date);
     }
 }

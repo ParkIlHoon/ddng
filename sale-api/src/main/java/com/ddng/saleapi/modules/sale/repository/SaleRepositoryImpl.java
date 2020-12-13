@@ -2,8 +2,11 @@ package com.ddng.saleapi.modules.sale.repository;
 
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.sale.domain.Sale;
+import com.ddng.saleapi.modules.sale.domain.SaleType;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.QCalculateDto;
+import com.ddng.saleapi.modules.sale.dto.QCalculateDto_ByItem;
+import com.ddng.saleapi.modules.sale.dto.QCalculateDto_ByPayment;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -49,9 +52,9 @@ public class SaleRepositoryImpl implements SaleCustomRepository
     }
 
     @Override
-    public List<CalculateDto> calculate(LocalDate date)
+    public List<CalculateDto.ByItem> calculateByItem(LocalDate date)
     {
-        JPAQuery<CalculateDto> jpaQuery = queryFactory.select(new QCalculateDto(
+        JPAQuery<CalculateDto.ByItem> jpaQuery = queryFactory.select(new QCalculateDto_ByItem(
                                                                     saleItem.item.type,
                                                                     saleItem.count.sum(),
                                                                     saleItem.salePrice.multiply(saleItem.count).sum()
@@ -59,11 +62,33 @@ public class SaleRepositoryImpl implements SaleCustomRepository
                                                         .from(sale)
                                                         .leftJoin(sale.saleItemList, saleItem)
                                                         .where(
-                                                                sale.saleDate.goe(date.atTime(LocalTime.MIN))
-                                                                        .and(sale.saleDate.loe(date.atTime(LocalTime.MAX)))
+                                                                sale.type.eq(SaleType.PAYED)
+                                                                .and(sale.saleDate.goe(date.atTime(LocalTime.MIN))
+                                                                        .and(sale.saleDate.loe(date.atTime(LocalTime.MAX))))
                                                         )
                                                         .groupBy(saleItem.item.type);
 
         return jpaQuery.fetch();
     }
+
+    @Override
+    public List<CalculateDto.ByPayment> calculateByPayment(LocalDate date)
+    {
+        JPAQuery<CalculateDto.ByPayment> jpaQuery = queryFactory.select(new QCalculateDto_ByPayment(
+                                                                        sale.payment,
+                                                                        sale.count().intValue(),
+                                                                        saleItem.salePrice.multiply(saleItem.count).sum()))
+                                                                .from(sale)
+                                                                .leftJoin(sale.saleItemList, saleItem)
+                                                                .where(
+                                                                        sale.type.eq(SaleType.PAYED)
+                                                                                .and(sale.saleDate.goe(date.atTime(LocalTime.MIN))
+                                                                                        .and(sale.saleDate.loe(date.atTime(LocalTime.MAX))))
+                                                                )
+                                                                .groupBy(sale.payment);
+
+        return jpaQuery.fetch();
+    }
+
+
 }

@@ -75,10 +75,14 @@ function drawChartByItem()
     };
 
     $.ajax({
-        url: SERVER_URL + "/sale-api/sale/calculate",
+        url: SERVER_URL + "/sale-api/sale/calculate/item",
         type: "GET",
         data: {"baseDate": today}
     }).done((data, textStatus, jqXHR) => {
+
+        var totalCount = 0;
+        var totalAmount = 0;
+        $("#cal-item-list").empty();
 
         if (data.length > 0)
         {
@@ -91,33 +95,36 @@ function drawChartByItem()
                 chartData.series.pie2.push({
                     name: data[idx].itemTypeName,
                     data: data[idx].amount
-                })
+                });
+
+                totalCount += data[idx].count;
+                totalAmount += data[idx].amount;
+
+                $("#cal-item-list").append("<tr><td>" + data[idx].itemTypeName + "</td><td>" + Number(data[idx].count).format() + "</td><td>" + Number(data[idx].amount).format() + "</td></tr>");
             }
         }
+
+        $("#cal-item-total-count").text(Number(totalCount).format() + " 건");
+        $("#cal-item-total-amount").text(Number(totalAmount).format() + " 원");
         tui.chart.comboChart(container, chartData, options);
     });
 }
 
 function drawChartByPayment()
 {
-    var container = document.getElementById("chart-area-by-payment");
-    var data = {
-        categories: ['결제 수단'],
-        series: [
-            {
-                name: '카드',
-                data: 10
-            },
+    var today = moment().format('YYYY-MM-DD');
 
-            {
-                name: '현금',
-                data: 5
-            },
-            {
-                name: '외상',
-                data: 1
-            }
-        ]
+    var container = document.getElementById("chart-area-by-payment");
+    var chartData = {
+        categories: ['결제 수단'],
+        seriesAlias: {
+            pie1: 'pie',
+            pie2: 'pie'
+        },
+        series: {
+            pie1: [],
+            pie2: []
+        }
     };
     var options = {
         chart: {
@@ -125,14 +132,59 @@ function drawChartByPayment()
             height: 560,
             title: '결제 수단별 분석'
         },
-        series : {
-            showLabel : true
+        series: {
+            pie1: {
+                radiusRange: ['57%'],
+                labelAlign: 'center',
+                showLegend: true
+            },
+            pie2: {
+                radiusRange: ['70%', '100%'],
+                labelAlign: 'outer',
+                showLegend: true
+            }
+        },
+        legend: {
+            visible: false
         },
         tooltip: {
-            suffix: '건'
+            suffix: ''
         },
         theme: "comboChartTheme"
     };
 
-    tui.chart.pieChart(container, data, options);
+    $.ajax({
+        url: SERVER_URL + "/sale-api/sale/calculate/payment",
+        type: "GET",
+        data: {"baseDate": today}
+    }).done((data, textStatus, jqXHR) => {
+
+        var totalCount = 0;
+        var totalAmount = 0;
+        $("#cal-payment-list").empty();
+
+        if (data.length > 0)
+        {
+            for (var idx = 0; idx < data.length; idx++)
+            {
+                chartData.series.pie1.push({
+                    name: data[idx].paymentTypeName,
+                    data: data[idx].count
+                });
+                chartData.series.pie2.push({
+                    name: data[idx].paymentTypeName,
+                    data: data[idx].amount
+                });
+
+                totalCount += data[idx].count;
+                totalAmount += data[idx].amount;
+
+                $("#cal-payment-list").append("<tr><td>" + data[idx].paymentTypeName + "</td><td>" + Number(data[idx].count).format() + "</td><td>" + Number(data[idx].amount).format() + "</td></tr>");
+            }
+        }
+
+        $("#cal-payment-total-count").text(Number(totalCount).format() + " 건");
+        $("#cal-payment-total-amount").text(Number(totalAmount).format() + " 원");
+        tui.chart.comboChart(container, chartData, options);
+    });
 }
