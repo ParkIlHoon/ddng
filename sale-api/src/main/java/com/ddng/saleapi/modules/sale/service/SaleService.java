@@ -7,6 +7,7 @@ import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleItem;
+import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
 import com.ddng.saleapi.modules.sale.event.EventDispatcher;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -158,5 +160,10 @@ public class SaleService
     {
         sale.setType(dto.getType());
         return saleRepository.save(sale);
+    }
+
+    public List<CalculateDto> getCalculate (LocalDate date)
+    {
+        return saleRepository.calculate(date);
     }
 }

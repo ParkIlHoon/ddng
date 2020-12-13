@@ -1,6 +1,7 @@
 package com.ddng.saleapi.modules.sale.controller;
 
 import com.ddng.saleapi.modules.sale.domain.Sale;
+import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -113,5 +116,13 @@ public class SaleController
         Sale updated = saleService.updateSale(optionalSale.get(), dto);
         SaleDto.ResponseWithSaleItem response = new SaleDto.ResponseWithSaleItem(updated);
         return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/calculate")
+    public ResponseEntity calculate()
+    {
+        List<CalculateDto> calculate = saleService.getCalculate(LocalDate.now());
+        return ResponseEntity.ok(calculate);
     }
 }

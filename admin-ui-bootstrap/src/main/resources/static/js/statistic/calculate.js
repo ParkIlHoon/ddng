@@ -22,34 +22,36 @@ $(function(){
 
 function drawChartByItem()
 {
+    var today = moment().format('YYYY-MM-DD');
+
     var container = document.getElementById("chart-area-by-item");
-    var data = {
+    var chartData = {
         categories: ['상품 종류'],
         series: [
-            {
-                name: '간식',
-                data: 10
-            },
-            {
-                name: '사료',
-                data: 2
-            },
-            {
-                name: '용품',
-                data: 5
-            },
-            {
-                name: '미용',
-                data: 6
-            },
-            {
-                name: '호텔',
-                data: 2
-            },
-            {
-                name: '유치원',
-                data: 1
-            }
+            // {
+            //     name: '간식',
+            //     data: 10
+            // },
+            // {
+            //     name: '사료',
+            //     data: 2
+            // },
+            // {
+            //     name: '용품',
+            //     data: 5
+            // },
+            // {
+            //     name: '미용',
+            //     data: 6
+            // },
+            // {
+            //     name: '호텔',
+            //     data: 2
+            // },
+            // {
+            //     name: '유치원',
+            //     data: 1
+            // }
         ]
     };
     var options = {
@@ -85,12 +87,27 @@ function drawChartByItem()
         }
     };
 
-// For apply theme
-
     tui.chart.registerTheme('myTheme', theme);
     options.theme = 'myTheme';
 
-    tui.chart.pieChart(container, data, options);
+    $.ajax({
+        url: SERVER_URL + "/sale-api/sale/calculate",
+        type: "GET",
+        data: {"baseDate": today}
+    }).done((data, textStatus, jqXHR) => {
+
+        if (data.length > 0)
+        {
+            for (var idx = 0; idx < data.length; idx++)
+            {
+                chartData.series.push({
+                    name: data[idx].itemTypeName,
+                    data: data[idx].count
+                })
+            }
+        }
+        tui.chart.pieChart(container, chartData, options);
+    });
 }
 
 function drawChartByPayment()

@@ -238,4 +238,49 @@ class SaleControllerTest
         // then
         assertThat(content.size()).isEqualTo(1);
     }
+
+    @Test
+    void calculate() throws Exception
+    {
+        // given
+        // given
+        List<Item> allItem = itemRepository.findAll();
+
+        SaleItemDto saleItemDto1 = SaleItemDto.builder()
+                .itemId(allItem.get(0).getId())
+                .count(2)
+                .build();
+
+        // 500 * 2
+        SaleItemDto saleItemDto2 = SaleItemDto.builder()
+                .itemId(allItem.get(1).getId())
+                .count(2)
+                .build();
+
+        SaleDto.Post saleDto = SaleDto.Post.builder()
+                .familyId(1L)
+                .payment(PaymentType.CARD)
+                .saleItems(List.of(saleItemDto1, saleItemDto2))
+                .type(SaleType.PAYED)
+                .build();
+
+        saleService.createSale(saleDto);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/sale/calculate"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        MockHttpServletResponse response = actions.andReturn().getResponse();
+        String contentAsString = response.getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+
+        List<Object> objects = parser.parseList(contentAsString);
+
+        // then
+        for (Object obj : objects)
+        {
+            System.out.println(obj.toString());
+        }
+    }
 }
