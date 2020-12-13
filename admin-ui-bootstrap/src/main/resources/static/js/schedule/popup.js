@@ -185,9 +185,33 @@ function openEditPopup (event)
     g_tagify.removeAllTags();
     g_tagify.addTags(tagData);
 
-    // 수정 버튼 보이게
-    $("#update-schedule-button").show();
-    $("#delete-schedule-button").show();
+    if (event.schedule.raw.payed)
+    {
+        $("#name-input").attr("disabled",true);
+        $("#scheduleType-select").prop("disabled", true);
+        $("#customer-select").prop("disabled", true);
+        $("#isAllDay-check").attr("disabled",true);
+        $("#stt-date-input").attr("disabled",true);
+        $("#end-date-input").attr("disabled",true);
+        $("#bigo-input").attr("disabled",true);
+        $("#tags-input").parent().attr("disabled",true);
+        $("#update-schedule-button").hide();
+        $("#delete-schedule-button").hide();
+    }
+    else
+    {
+        $("#name-input").removeAttr("disabled");
+        $("#scheduleType-select").prop("disabled", false);
+        $("#customer-select").prop("disabled", false);
+        $("#isAllDay-check").removeAttr("disabled");
+        $("#stt-date-input").removeAttr("disabled");
+        $("#end-date-input").removeAttr("disabled");
+        $("#bigo-input").removeAttr("disabled");
+        $("#tags-input").parent().removeAttr("disabled");
+        // 수정 버튼 보이게
+        $("#update-schedule-button").show();
+        $("#delete-schedule-button").show();
+    }
 
     // 팝업 오픈
     $('#scheduleModal').modal({
