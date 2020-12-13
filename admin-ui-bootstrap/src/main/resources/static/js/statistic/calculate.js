@@ -1,5 +1,16 @@
 $(function(){
 
+    Number.prototype.format = function(){
+        if(this==0) return 0;
+
+        var reg = /(^[+-]?\d+)(\d{3})/;
+        var n = (this + '');
+
+        while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+
+        return n;
+    };
+
     drawChartByItem();
 
     drawChartByPayment();
@@ -27,32 +38,14 @@ function drawChartByItem()
     var container = document.getElementById("chart-area-by-item");
     var chartData = {
         categories: ['상품 종류'],
-        series: [
-            // {
-            //     name: '간식',
-            //     data: 10
-            // },
-            // {
-            //     name: '사료',
-            //     data: 2
-            // },
-            // {
-            //     name: '용품',
-            //     data: 5
-            // },
-            // {
-            //     name: '미용',
-            //     data: 6
-            // },
-            // {
-            //     name: '호텔',
-            //     data: 2
-            // },
-            // {
-            //     name: '유치원',
-            //     data: 1
-            // }
-        ]
+        seriesAlias: {
+            pie1: 'pie',
+            pie2: 'pie'
+        },
+        series: {
+            pie1: [],
+            pie2: []
+        }
     };
     var options = {
         chart: {
@@ -60,35 +53,26 @@ function drawChartByItem()
             height: 560,
             title: '상품 분류별 분석'
         },
-        series : {
-            showLabel : true
+        series: {
+            pie1: {
+                radiusRange: ['57%'],
+                labelAlign: 'center',
+                showLegend: true
+            },
+            pie2: {
+                radiusRange: ['70%', '100%'],
+                labelAlign: 'outer',
+                showLegend: true
+            }
+        },
+        legend: {
+            visible: false
         },
         tooltip: {
-            suffix: '건'
-        }
+            suffix: ''
+        },
+        theme: "comboChartTheme"
     };
-    var theme = {
-        series: {
-            series: {
-                colors: [
-                    '#83b14e', '#458a3f', '#295ba0', '#2a4175', '#289399',
-                    '#289399', '#617178', '#8a9a9a', '#516f7d', '#dddddd'
-                ]
-            },
-            label: {
-                color: '#000000',
-                fontFamily: 'Noto Sans',
-                borderColor: '#8e6535',
-                selectionColor: '#cccccc',
-                startColor: '#efefef',
-                endColor: 'blue',
-                overColor: 'yellow'
-            }
-        }
-    };
-
-    tui.chart.registerTheme('myTheme', theme);
-    options.theme = 'myTheme';
 
     $.ajax({
         url: SERVER_URL + "/sale-api/sale/calculate",
@@ -100,13 +84,17 @@ function drawChartByItem()
         {
             for (var idx = 0; idx < data.length; idx++)
             {
-                chartData.series.push({
+                chartData.series.pie1.push({
                     name: data[idx].itemTypeName,
                     data: data[idx].count
+                });
+                chartData.series.pie2.push({
+                    name: data[idx].itemTypeName,
+                    data: data[idx].amount
                 })
             }
         }
-        tui.chart.pieChart(container, chartData, options);
+        tui.chart.comboChart(container, chartData, options);
     });
 }
 
@@ -142,32 +130,9 @@ function drawChartByPayment()
         },
         tooltip: {
             suffix: '건'
-        }
+        },
+        theme: "comboChartTheme"
     };
-    var theme = {
-        series: {
-            series: {
-                colors: [
-                    '#83b14e', '#458a3f', '#295ba0', '#2a4175', '#289399',
-                    '#289399', '#617178', '#8a9a9a', '#516f7d', '#dddddd'
-                ]
-            },
-            label: {
-                color: '#000000',
-                fontFamily: 'Noto Sans',
-                borderColor: '#8e6535',
-                selectionColor: '#cccccc',
-                startColor: '#efefef',
-                endColor: 'blue',
-                overColor: 'yellow'
-            }
-        }
-    };
-
-// For apply theme
-
-    tui.chart.registerTheme('myTheme', theme);
-    options.theme = 'myTheme';
 
     tui.chart.pieChart(container, data, options);
 }
