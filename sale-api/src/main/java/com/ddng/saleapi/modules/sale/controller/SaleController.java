@@ -120,16 +120,16 @@ public class SaleController
 
 
     @GetMapping("/calculate/item")
-    public ResponseEntity calculateByItem()
+    public ResponseEntity calculateByItem(String baseDate)
     {
-        List<CalculateDto.ByItem> calculate = saleService.getCalculateByItem(LocalDate.now());
+        List<CalculateDto.ByItem> calculate = saleService.getCalculateByItem(LocalDate.parse(baseDate));
         return ResponseEntity.ok(calculate);
     }
 
     @GetMapping("/calculate/payment")
-    public ResponseEntity calculateByPayment()
+    public ResponseEntity calculateByPayment(String baseDate)
     {
-        List<CalculateDto.ByPayment> calculate = saleService.getCalculateByPayment(LocalDate.now());
+        List<CalculateDto.ByPayment> calculate = saleService.getCalculateByPayment(LocalDate.parse(baseDate));
         return ResponseEntity.ok(calculate);
     }
 }
