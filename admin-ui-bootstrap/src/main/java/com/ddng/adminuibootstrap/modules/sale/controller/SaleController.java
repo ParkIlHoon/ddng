@@ -154,11 +154,22 @@ public class SaleController
         return "sale/main :: #total-price";
     }
 
+    /**
+     * 카트에 담긴 상품을 결제한다.
+     * @param cart
+     * @param model
+     * @return
+     */
     @PostMapping
-    public String saleCart (@ModelAttribute Cart cart,
+    public String saleCart (SaleType saleType,
+                            PaymentType paymentType,
+                            @ModelAttribute Cart cart,
                             Model model)
     {
-        saleTemplate.saleCart(cart, SaleType.PAYED, PaymentType.CASH);
-        return "sale/main";
+        // 판매 처리
+        saleTemplate.saleCart(cart, saleType, paymentType);
+        // 카트 초기화
+        cart.reset();
+        return "sale/main :: #item-list";
     }
 }

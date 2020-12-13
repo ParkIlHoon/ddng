@@ -197,7 +197,7 @@ function getTodaySchedules ()
     $.ajax({
         url: SERVER_URL + "/schedule-api/schedules/day",
         type: "GET",
-        data: {"baseDate": today}
+        data: {"baseDate": today, "payed": false}
     }).done((data, textStatus, jqXHR) => {
 
         if (data.length > 0)
@@ -243,6 +243,39 @@ function getTodaySchedules ()
 }
 
 /**
+ * 카트 총 금액 새로고침 함수
+ */
+function refreshTotalPrice ()
+{
+    $.ajax({
+        url: "/sale/cart/totalPrice",
+        type: "GET",
+    }).always(function (responseText) {
+        $("#total-price").replaceWith(responseText);
+    });
+}
+
+/**
+ * 결제 함수
+ * @param payment 결제 수단(CASH/CARD/CREDIT)
+ */
+function saleCart (payment)
+{
+    $.ajax({
+        url: "/sale",
+        type: "POST",
+        data: {"saleType" : "PAYED", "paymentType" : payment}
+    }).always(function (jqXHR) {
+        // 카트 비움
+        $("#item-list").replaceWith(jqXHR.responseText);
+        // 총 금액 세팅
+        refreshTotalPrice();
+        // 스케쥴 재조회
+        getTodaySchedules();
+    });
+}
+
+/**
  * 상품 select 선택 이벤트 핸들러
  */
 $('#item-select').on('select2:select', function (e) {
@@ -277,22 +310,17 @@ $('#item-select').on('select2:select', function (e) {
         $('#item-select').val(null).trigger('change');
     }
 });
-
 /**
  * 현금 결제 버튼 클릭 핸들러
  */
 $("#pay-cash-button").on("click", function(e){
-    //TODO 결제
-    $.ajax({
-        url: "/sale",
-        type: "POST"
-    });
+    saleCart("CASH");
 });
 /**
  * 카드 결제 버튼 클릭 핸들러
  */
 $("#pay-card-button").on("click", function(e){
-    //TODO 결제
+    saleCart("CARD");
 });
 /**
  * 초기화 버튼 클릭 핸들러
@@ -310,23 +338,9 @@ $("#reset-button").on("click", function(e){
         refreshTotalPrice();
     });
 });
-
 /**
  * 결제취소 버튼 클릭 핸들러
  */
 $("#cancel-button").on("click", function(e){
     //TODO 결제 취소
 });
-
-/**
- * 카트 총 금액 새로고침 함수
- */
-function refreshTotalPrice ()
-{
-    $.ajax({
-        url: "/sale/cart/totalPrice",
-        type: "GET",
-    }).always(function (responseText) {
-        $("#total-price").replaceWith(responseText);
-    });
-}

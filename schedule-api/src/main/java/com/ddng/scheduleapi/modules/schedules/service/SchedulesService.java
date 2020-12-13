@@ -38,12 +38,19 @@ public class SchedulesService
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 
-    public List<SchedulesDto.Response> getCertainDaySchedules(String baseDate)
+    public List<SchedulesDto.Response> searchSchedules(SchedulesDto.Get dto)
     {
-        LocalDateTime startDateTime = LocalDate.parse(baseDate).atTime(LocalTime.MAX);
-        LocalDateTime endDateTime = LocalDate.parse(baseDate).atTime(LocalTime.MIN);
+        List<Schedules> schedules = schedulesRepository.searchSchedules(dto);
+        return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
+    }
 
-        List<Schedules> schedules = schedulesRepository.findByStartDateLessThanEqualAndEndDateGreaterThanEqual(startDateTime, endDateTime);
+    public List<SchedulesDto.Response> getCertainDaySchedules(SchedulesDto.Get dto)
+    {
+//        LocalDateTime startDateTime = LocalDate.parse(dto.getStartDate()).atTime(LocalTime.MAX);
+//        LocalDateTime endDateTime = LocalDate.parse(dto.getEndDate()).atTime(LocalTime.MIN);
+
+//        List<Schedules> schedules = schedulesRepository.findByStartDateLessThanEqualAndEndDateGreaterThanEqual(startDateTime, endDateTime);
+        List<Schedules> schedules = schedulesRepository.getCertainDaysSchedules(dto);
         return schedules.stream().map(s -> new SchedulesDto.Response(s)).collect(Collectors.toList());
     }
 

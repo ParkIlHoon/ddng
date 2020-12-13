@@ -85,4 +85,20 @@ public class SchedulesDto
         private boolean payed;
         private Set<TagDto> tags = new HashSet<>();
     }
+
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    public static class Get
+    {
+        private String name;
+        private ScheduleType scheduleType;
+        private String startDate;
+        private String endDate;
+        private Boolean allDay;
+        private Long customerId;
+        private Long userId;
+        private String bigo;
+        private Boolean payed;
+        private String baseDate;
+    }
 }

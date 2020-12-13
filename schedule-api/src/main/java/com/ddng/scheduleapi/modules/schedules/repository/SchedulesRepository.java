@@ -10,7 +10,4 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface SchedulesRepository extends JpaRepository<Schedules, Long>, SchedulesCustomRepository
 {
-    List<Schedules> findByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDateTime startDate, LocalDateTime endDate);
-
-    List<Schedules> findByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

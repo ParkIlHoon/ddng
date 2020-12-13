@@ -35,38 +35,39 @@ public class SchedulesController
 
     /**
      * 스케쥴을 조회한다.
-     * @param startDate 시작 일자
-     * @param endDate 종료 일자
+     * @param dto 조회 조건
+     * @param errors
      * @return
      */
     @GetMapping
-    public ResponseEntity getSchedules (String startDate, String endDate)
+    public ResponseEntity getSchedules (@Valid SchedulesDto.Get dto, Errors errors)
     {
-        if (!StringUtils.hasText(startDate) || !StringUtils.hasText(endDate))
+        if(errors.hasErrors())
         {
             return ResponseEntity.badRequest().build();
         }
-
-        List<SchedulesDto.Response> responses = schedulesService.getSchedules(startDate, endDate);
-
+        List<SchedulesDto.Response> responses = schedulesService.searchSchedules(dto);
         return ResponseEntity.ok(responses);
     }
 
     /**
      * 특정 일자기준 스케쥴을 조회한다
-     * @param baseDate
+     * @param dto
+     * @param errors
      * @return
      */
     @GetMapping("/day")
-    public ResponseEntity getSchedules (String baseDate)
+    public ResponseEntity getCertainDaysSchedules (@Valid SchedulesDto.Get dto, Errors errors)
     {
-        if (!StringUtils.hasText(baseDate))
+        if(errors.hasErrors())
         {
             return ResponseEntity.badRequest().build();
         }
-
-        List<SchedulesDto.Response> responses = schedulesService.getCertainDaySchedules(baseDate);
-
+        if(!StringUtils.hasText(dto.getBaseDate()))
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        List<SchedulesDto.Response> responses = schedulesService.getCertainDaySchedules(dto);
         return ResponseEntity.ok(responses);
     }
 
