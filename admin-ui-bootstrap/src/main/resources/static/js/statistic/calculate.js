@@ -1,3 +1,5 @@
+let datepicker;
+
 $(function(){
 
     Number.prototype.format = function(){
@@ -11,30 +13,24 @@ $(function(){
         return n;
     };
 
-    drawChartByItem();
-
-    drawChartByPayment();
-
     var container = document.getElementById('tui-date-picker-container');
-    var target = document.getElementById('tui-date-picker-target');
-
-    var instance = new tui.DatePicker(container, {
+    datepicker = new tui.DatePicker(container, {
         language : "ko",
         date : new Date(),
-        input: {
-            element: target
-        }
+        showAlways : true
+    });
+    datepicker.on('change', function() {
+        drawChartByItem(datepicker.getDate());
+        drawChartByPayment(datepicker.getDate());
     });
 
-    instance.getDate();
-
-
+    drawChartByItem(datepicker.getDate());
+    drawChartByPayment(datepicker.getDate());
 });
 
-function drawChartByItem()
+function drawChartByItem(date)
 {
-    var today = moment().format('YYYY-MM-DD');
-
+    var today = moment(date).format('YYYY-MM-DD');
     var container = document.getElementById("chart-area-by-item");
     var chartData = {
         categories: ['상품 종류'],
@@ -102,18 +98,21 @@ function drawChartByItem()
 
                 $("#cal-item-list").append("<tr><td>" + data[idx].itemTypeName + "</td><td>" + Number(data[idx].count).format() + "</td><td>" + Number(data[idx].amount).format() + "</td></tr>");
             }
+            tui.chart.comboChart(container, chartData, options);
+        }
+        else
+        {
+            $("#chart-area-by-item").empty();
         }
 
         $("#cal-item-total-count").text(Number(totalCount).format() + " 건");
         $("#cal-item-total-amount").text(Number(totalAmount).format() + " 원");
-        tui.chart.comboChart(container, chartData, options);
     });
 }
 
-function drawChartByPayment()
+function drawChartByPayment(date)
 {
-    var today = moment().format('YYYY-MM-DD');
-
+    var today = moment(date).format('YYYY-MM-DD');
     var container = document.getElementById("chart-area-by-payment");
     var chartData = {
         categories: ['결제 수단'],
@@ -181,10 +180,14 @@ function drawChartByPayment()
 
                 $("#cal-payment-list").append("<tr><td>" + data[idx].paymentTypeName + "</td><td>" + Number(data[idx].count).format() + "</td><td>" + Number(data[idx].amount).format() + "</td></tr>");
             }
+            tui.chart.comboChart(container, chartData, options);
+        }
+        else
+        {
+            $("#chart-area-by-payment").empty();
         }
 
         $("#cal-payment-total-count").text(Number(totalCount).format() + " 건");
         $("#cal-payment-total-amount").text(Number(totalAmount).format() + " 원");
-        tui.chart.comboChart(container, chartData, options);
     });
 }
