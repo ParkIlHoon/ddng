@@ -15,7 +15,7 @@
                             <div class="card">
                                 <div class="card-header">정산</div>
                                 <div class="card-body">
-                                    <form id="calculate-form" th:action="@{/statistic/calculate}" method="get">
+                                    <form id="calculate-form" action="/statistic/calculate" method="get">
                                         <div class="form-group">
                                             <label class="col-form-label">정산 일시</label>
                                             <div>
@@ -49,32 +49,34 @@
 <script src="/node_modules/tui-time-picker/dist/tui-time-picker.js"></script>
 <script src="/js/statistic/chart-theme.js"></script>
 <script th:inline="javascript" type="application/javascript">
-    let datepicker;
-    Number.prototype.format = function(){
-        if(this==0) return 0;
+    $(function(){
+        let datepicker;
+        Number.prototype.format = function(){
+            if(this==0) return 0;
 
-        var reg = /(^[+-]?\d+)(\d{3})/;
-        var n = (this + '');
+            var reg = /(^[+-]?\d+)(\d{3})/;
+            var n = (this + '');
 
-        while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+            while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
 
-        return n;
-    };
+            return n;
+        };
 
-    /*<![CDATA[*/
-    var baseDate = /*[[${baseDate}]]*/;
-    /*]]>*/
+        /*<![CDATA[*/
+        var baseDate = /*[[${baseDate}]]*/;
+        /*]]>*/
 
-    var container = document.getElementById('tui-date-picker-container');
-    datepicker = new tui.DatePicker(container, {
-        language : "ko",
-        date : new Date(baseDate),
-        showAlways : true
-    });
-    datepicker.on('change', function() {
-        var baseDate = moment(datepicker.getDate()).format('YYYY-MM-DD');
-        $("#tui-date-picker-input").val(baseDate);
-        $("#calculate-form").submit();
+        var container = document.getElementById('tui-date-picker-container');
+        datepicker = new tui.DatePicker(container, {
+            language : "ko",
+            date : new Date(baseDate),
+            showAlways : true
+        });
+        datepicker.on('change', function() {
+            var baseDate = moment(datepicker.getDate()).format('YYYY-MM-DD');
+            $("#tui-date-picker-input").val(baseDate);
+            $("#calculate-form").submit();
+        });
     });
 </script>
 </body>

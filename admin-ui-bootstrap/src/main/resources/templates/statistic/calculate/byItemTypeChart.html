@@ -38,77 +38,77 @@
     <script src="/node_modules/tui-chart/dist/tui-chart-all.js"></script>
     <script src="/js/statistic/chart-theme.js"></script>
     <script th:inline="javascript" type="application/javascript">
-        let itemChartData;
-
         $(function(){
+            let itemChartData;
+
             drawChartByItem();
-        });
 
-        function drawChartByItem()
-        {
-            var container = document.getElementById("chart-area-by-item");
-            itemChartData = {
-                categories: ['상품 종류'],
-                seriesAlias: {
-                    pie1: 'pie',
-                    pie2: 'pie'
-                },
-                series: {
-                    pie1: [],
-                    pie2: []
-                }
-            };
-            var options = {
-                chart: {
-                    width: 600,
-                    height: 560,
-                    title: '상품 분류별 분석'
-                },
-                series: {
-                    pie1: {
-                        radiusRange: ['57%'],
-                        labelAlign: 'center',
-                        showLegend: true
+            function drawChartByItem()
+            {
+                var container = document.getElementById("chart-area-by-item");
+                itemChartData = {
+                    categories: ['상품 종류'],
+                    seriesAlias: {
+                        pie1: 'pie',
+                        pie2: 'pie'
                     },
-                    pie2: {
-                        radiusRange: ['70%', '100%'],
-                        labelAlign: 'outer',
-                        showLegend: true
+                    series: {
+                        pie1: [],
+                        pie2: []
                     }
-                },
-                legend: {
-                    visible: false
-                },
-                tooltip: {
-                    suffix: ''
-                },
-                theme: "comboChartTheme"
-            };
+                };
+                var options = {
+                    chart: {
+                        width: 600,
+                        height: 560,
+                        title: '상품 분류별 분석'
+                    },
+                    series: {
+                        pie1: {
+                            radiusRange: ['57%'],
+                            labelAlign: 'center',
+                            showLegend: true
+                        },
+                        pie2: {
+                            radiusRange: ['70%', '100%'],
+                            labelAlign: 'outer',
+                            showLegend: true
+                        }
+                    },
+                    legend: {
+                        visible: false
+                    },
+                    tooltip: {
+                        suffix: ''
+                    },
+                    theme: "comboChartTheme"
+                };
 
-            /*<![CDATA[*/
+                /*<![CDATA[*/
 
-            /*[# th:each="row : ${datas}"]*/
-            addItemChartData(/*[[${row.getItemTypeName()}]]*/, /*[[${row.getCount()}]]*/, /*[[${row.getAmount()}]]*/);
-            /*[/]*/
+                /*[# th:each="row : ${datas}"]*/
+                addItemChartData(/*[[${row.getItemTypeName()}]]*/, /*[[${row.getCount()}]]*/, /*[[${row.getAmount()}]]*/);
+                /*[/]*/
 
-            /*[# th:if="${#lists.size(datas) > 0}"]*/
-            tui.chart.comboChart(container, itemChartData, options);
-            /*[/]*/
+                /*[# th:if="${#lists.size(datas) > 0}"]*/
+                tui.chart.comboChart(container, itemChartData, options);
+                /*[/]*/
 
-            /*]]>*/
-        }
+                /*]]>*/
+            }
 
-        function addItemChartData(name, count, amount)
-        {
-            itemChartData.series.pie1.push({
-                name: name,
-                data: count
-            });
-            itemChartData.series.pie2.push({
-                name: name,
-                data: amount
-            });
-        }
+            function addItemChartData(name, count, amount)
+            {
+                itemChartData.series.pie1.push({
+                    name: name,
+                    data: count
+                });
+                itemChartData.series.pie2.push({
+                    name: name,
+                    data: amount
+                });
+            }
+        });
     </script>
 </div>
 
