@@ -119,7 +119,7 @@ public class SaleController
     }
 
 
-    @GetMapping("/calculate/item")
+    @GetMapping("/calculate/itemType")
     public ResponseEntity calculateByItem(String baseDate)
     {
         List<CalculateDto.ByItem> calculate = saleService.getCalculateByItem(LocalDate.parse(baseDate));

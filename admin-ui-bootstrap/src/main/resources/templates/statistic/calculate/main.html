@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="c-app">
+<div th:replace="fragments.html::leftMenu"></div>
+<div class="c-wrapper c-fixed-components">
+    <header th:replace="fragments.html::header ('통계', '정산')"></header>
+    <div class="c-body">
+        <main class="c-main">
+            <div class="container-fluid">
+                <div class="fade-in">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">정산</div>
+                                <div class="card-body">
+                                    <form id="calculate-form" th:action="@{/statistic/calculate}" method="get">
+                                        <div class="form-group">
+                                            <label class="col-form-label">정산 일시</label>
+                                            <div>
+                                                <div id="tui-date-picker-container" style="margin-top: -1px; height: 354px">
+                                                    <input id="tui-date-picker-input" type="hidden" name="baseDate">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <div th:replace="statistic/calculate/byItemTypeChart.html :: byItemTypeChart(${byItemType}, ${byItemTypeSumCount}, ${byItemTypeSumAmount})"></div>
+                                    <div th:replace="statistic/calculate/byPaymentChart.html :: byItemPaymentChart(${byPayment}, ${byPaymentSumCount}, ${byPaymentSumAmount})"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments.html::footer"></footer>
+    </div>
+</div>
+
+<link href="/node_modules/tui-date-picker/dist/tui-date-picker.css" rel="stylesheet">
+<link href="/node_modules/tui-time-picker/dist/tui-time-picker.css" rel="stylesheet">
+<script th:replace="fragments.html::script"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script src="/node_modules/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/node_modules/tui-date-picker/dist/tui-date-picker.js"></script>
+<script src="/node_modules/tui-time-picker/dist/tui-time-picker.js"></script>
+<script src="/js/statistic/chart-theme.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    let datepicker;
+    Number.prototype.format = function(){
+        if(this==0) return 0;
+
+        var reg = /(^[+-]?\d+)(\d{3})/;
+        var n = (this + '');
+
+        while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+
+        return n;
+    };
+
+    /*<![CDATA[*/
+    var baseDate = /*[[${baseDate}]]*/;
+    /*]]>*/
+
+    var container = document.getElementById('tui-date-picker-container');
+    datepicker = new tui.DatePicker(container, {
+        language : "ko",
+        date : new Date(baseDate),
+        showAlways : true
+    });
+    datepicker.on('change', function() {
+        var baseDate = moment(datepicker.getDate()).format('YYYY-MM-DD');
+        $("#tui-date-picker-input").val(baseDate);
+        $("#calculate-form").submit();
+    });
+</script>
+</body>
+</html>
