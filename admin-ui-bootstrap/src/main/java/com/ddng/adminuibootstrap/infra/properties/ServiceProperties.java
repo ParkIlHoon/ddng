@@ -35,4 +35,8 @@ public class ServiceProperties
      * user-api 서버 URL
      */
     private String user;
+    /**
+     * 첨부파일 Root Path
+     */
+    private String file;
 }

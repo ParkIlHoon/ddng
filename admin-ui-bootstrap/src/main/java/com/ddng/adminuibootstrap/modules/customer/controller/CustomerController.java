@@ -1,5 +1,7 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
+import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,34 +16,59 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 
+/**
+ * <h1>고객 관리 메뉴 컨트롤러</h1>
+ */
 @Controller
 @RequestMapping("/customer")
+@RequiredArgsConstructor
 public class CustomerController
 {
-    private static final String BASE_PATH = "/Users/1hoon/workspace/file_ddng";
+    private final ServiceProperties serviceProperties;
 
+    /**
+     * 고객 조회 메뉴 폼 요청
+     * @param model
+     * @return
+     */
     @GetMapping("/search")
-    public String searchCustomerForm (Model model)
+    public String searchForm (Model model)
     {
-        return "customer/main";
+        return "customer/search/main";
     }
 
-    @GetMapping("/new")
-    public String newCustomerForm (Model model)
+    /**
+     * 고객 등록 메뉴 폼 요청
+     * @param model
+     * @return
+     */
+    @GetMapping("/register")
+    public String registerForm (Model model)
     {
-        return "customer/new-customer";
+        return "customer/register/main";
     }
 
+    /**
+     * 가족 관리 메뉴 폼 요청
+     * @param model
+     * @return
+     */
     @GetMapping("/family")
     public String familyForm (Model model)
     {
-        return "customer/family";
+        return "customer/family/main";
     }
 
+    /**
+     * 고객 사진 요청
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/**")
     public ResponseEntity getFile (HttpServletRequest request) throws Exception
     {
-        String filePath = BASE_PATH + File.separator + StringUtils.cleanPath(request.getRequestURI().replace("/customer/", ""));
+        String filePath = serviceProperties.getFile() + File.separator + StringUtils.cleanPath(request.getRequestURI().replace("/customer/", ""));
 
         File file = new File(filePath);
 
