@@ -48,16 +48,16 @@ $(function(){
 
 
     $("#submit-button").on("click", function(e){
-        var data = $("#new-customer-form").serializeObject();
-        $.ajax({
-            dataType : "json",
-            contentType : "application/json; charset=utf-8",
-            method : "POST",
-            url : SERVER_URL + "/customer-api/customer/",
-            data : JSON.stringify(data)
-        }).always(function(data, status){
-            location.href = "/new";
-        });
+        // var data = $("#new-customer-form").serializeObject();
+        // $.ajax({
+        //     dataType : "json",
+        //     contentType : "application/json; charset=utf-8",
+        //     method : "POST",
+        //     url : SERVER_URL + "/customer-api/customer/",
+        //     data : JSON.stringify(data)
+        // }).always(function(data, status){
+        //     location.href = "/new";
+        // });
     });
     $("#profile-image-file").change(function(e) {
         if (e.target.files.length === 1) {

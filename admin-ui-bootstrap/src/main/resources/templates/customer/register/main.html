@@ -10,82 +10,98 @@
         <main class="c-main">
             <div class="container-fluid">
                 <div class="fade-in">
-                            <div class="card">
-                                <div class="card-header">고객 등록</div>
-                                <div class="card-body">새로운 고객을 등록합니다.</div>
-                                <div class="card-body">
-                                    <form class="form-horizontal" id="new-customer-form">
+                    <div class="card">
+                        <div class="card-header">고객 등록</div>
+                        <div class="card-body">새로운 고객을 등록합니다.</div>
+                        <form id="new-customer-form" class="form-horizontal needs-validation" action="#" method="post"
+                              th:action="@{/customer/register}" th:object="${registerForm}" novalidate>
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <input id="profileImage" type="hidden" name="profileImg"
+                                            th:field="*{profileImg}">
+                                        <div id="new-profile-image" class="mt-3"></div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="profile-image-file">
+                                            <label class="custom-file-label" for="profile-image-file">프로필 이미지 선택</label>
+                                        </div>
+                                        <div id="new-profile-image-control" class="mt-3">
+                                            <button type="button" class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                                            <button type="button" class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
+                                            <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                                        </div>
+                                        <div id="cropped-new-profile-image" class="mt-3"></div>
+                                    </div>
+                                    <div class="col-md-8">
                                         <div class="form-group row">
-                                            <div class="col-md-4">
-                                                <input id="profileImage" type="hidden" name="profileImg">
-                                                <div id="new-profile-image" class="mt-3"></div>
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="profile-image-file">
-                                                    <label class="custom-file-label" for="profile-image-file">프로필 이미지 선택</label>
-                                                </div>
-                                                <div id="new-profile-image-control" class="mt-3">
-                                                    <button type="button" class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
-                                                    <button type="button" class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
-                                                    <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
-                                                </div>
-                                                <div id="cropped-new-profile-image" class="mt-3"></div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="name-input">고객 명</label>
-                                                    <div class="col-md-10">
-                                                        <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="type-select">종류</label>
-                                                    <div class="col-md-10">
-                                                        <select class="form-control js-example-placeholder-single" id="type-select" name="type">
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="family-select">가족</label>
-                                                    <div class="col-md-10">
-                                                        <select class="form-control js-data-example-ajax" id="family-select" name="familyId">
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="telNo-input">전화번호</label>
-                                                    <div class="col-md-10 input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <svg class="c-icon">
-                                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
-                                                            </svg>
-                                                        </span>
-                                                    </span>
-                                                        <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-md-2 col-form-label" for="bigo-input">비고</label>
-                                                    <div class="col-md-10">
-                                                        <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요"></textarea>
-                                                    </div>
-                                                </div>
+                                            <label class="col-md-2 col-form-label" for="name-input">고객명</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)"
+                                                    th:field="*{name}" minlength="1" maxlength="100" required>
+                                                <div class="invalid-feedback">고객명을 입력하세요 (1~100자)</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="card-footer">
-                                    <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="button">등록</button>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="type-select">종류</label>
+                                            <div class="col-md-10">
+                                                <select class="form-control js-example-placeholder-single" id="type-select" name="type"
+                                                    th:field="*{type}" required>
+                                                    <option value=""></option>
+                                                </select>
+                                                <div class="invalid-feedback">고객 종류를 선택하세요</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="family-select">가족</label>
+                                            <div class="col-md-10">
+                                                <select class="form-control js-data-example-ajax" id="family-select" name="familyId"
+                                                    th:field="*{familyId}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('familyId')}" th:errors="*{familyId}">familyId Error</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="telNo-input">전화번호</label>
+                                            <div class="col-md-10 input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <svg class="c-icon">
+                                                            <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)"
+                                                    th:field="*{telNo}" required>
+                                                <div class="invalid-feedback">전화번호를 입력하세요 (예: 010-1234-5678)</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-form-label" for="bigo-input">비고</label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요"
+                                                    th:field="*{bigo}">
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="card-footer">
+                                <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="submit">등록</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
+<script th:replace="fragments.html::form-validation"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <link  href="/node_modules/cropperjs/dist/cropper.min.css" rel="stylesheet">
 <script th:replace="fragments.html::script"></script>

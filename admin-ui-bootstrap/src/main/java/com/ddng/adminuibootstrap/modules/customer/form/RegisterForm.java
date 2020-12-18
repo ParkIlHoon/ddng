@@ -36,6 +36,7 @@ public class RegisterForm
     /**
      * 전화 번호
      */
+    @NotBlank(message = "전화번호는 반드시 입력해야합니다.")
     @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message = "올바르지 않은 전화번호입니다.")
     private String telNo;
 
