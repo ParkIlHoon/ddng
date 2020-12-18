@@ -48,6 +48,10 @@ $(function(){
 
 
     $("#submit-button").on("click", function(e){
+        // $("#submit-button").attr("disabled", true);
+        // $("#submit-button").text("");
+        // $("#submit-button").append("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...");
+
         // var data = $("#new-customer-form").serializeObject();
         // $.ajax({
         //     dataType : "json",

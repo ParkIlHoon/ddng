@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -65,13 +66,17 @@ public class CustomerController
      * @throws Exception
      */
     @PostMapping("/register")
-    public String registerAction (@Valid @ModelAttribute RegisterForm registerForm, Errors errors) throws Exception
+    public String registerAction (@Valid @ModelAttribute RegisterForm registerForm,
+                                  Errors errors,
+                                  RedirectAttributes redirectAttributes) throws Exception
     {
         if (errors.hasErrors())
         {
             return "customer/register/main";
         }
         customerTemplate.createCustomer(registerForm);
+        redirectAttributes.addFlashAttribute("alertType", "success");
+        redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");
         return "redirect:/customer/register";
     }
 

@@ -10,6 +10,10 @@
         <main class="c-main">
             <div class="container-fluid">
                 <div class="fade-in">
+                    <div th:if="${not #strings.isEmpty(message)}">
+                        <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">고객 등록</div>
                         <div class="card-body">새로운 고객을 등록합니다.</div>

@@ -274,9 +274,17 @@
             // Loop over them and prevent submission
             Array.prototype.filter.call(forms, function (form) {
                 form.addEventListener('submit', function (event) {
+                    var button = event.submitter;
+                    var originalHtml = button.innerHTML;
+
+                    button.disabled = true;
+                    button.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...";
+
                     if (form.checkValidity() === false) {
                         event.preventDefault();
                         event.stopPropagation();
+                        button.disabled = false;
+                        button.innerHTML = originalHtml;
                     }
                     form.classList.add('was-validated')
                 }, false)
@@ -284,6 +292,40 @@
         }, false)
     }())
 </script>
+
+<!-- 알림 -->
+<div th:fragment="alert(type, message)">
+    <div th:if="${type == 'success'}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <p th:text="${message}"></p>
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+    </div>
+    <div th:if="${type == 'info'}">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <p th:text="${message}"></p>
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+    </div>
+    <div th:if="${type == 'warning'}">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <p th:text="${message}"></p>
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+    </div>
+    <div th:if="${type == 'danger'}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <p th:text="${message}"></p>
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+    </div>
+    <div th:if="${type == 'primary'}">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <p th:text="${message}"></p>
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+    </div>
+</div>
 
 
 </html>
