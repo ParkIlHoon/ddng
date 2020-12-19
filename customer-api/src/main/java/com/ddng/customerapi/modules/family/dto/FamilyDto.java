@@ -1,6 +1,7 @@
 package com.ddng.customerapi.modules.family.dto;
 
 import com.ddng.customerapi.modules.customer.domain.Customer;
+import com.ddng.customerapi.modules.customer.dto.CustomerDto;
 import com.ddng.customerapi.modules.family.domain.Family;
 import com.ddng.customerapi.modules.tag.domain.Tag;
 import lombok.AllArgsConstructor;
@@ -49,7 +50,7 @@ public class FamilyDto
         private Long id;
         private String name;
         private String text;
-        private List<Map<String, String>> customers = new ArrayList<>();
+//        private List<CustomerDto.Response> customers = new ArrayList<>();
 
         public Response(Family family)
         {
@@ -57,14 +58,15 @@ public class FamilyDto
             this.name = family.getName();
             this.text = family.getName() + "[" + family.getFamilyString() + "]";
 
-            for (Customer customer : family.getCustomers())
-            {
-                HashMap map = new HashMap();
-                map.put("id", customer.getId().toString());
-                map.put("name", customer.getName());
-                map.put("profileImg", customer.getProfileImg());
-                this.customers.add(map);
-            }
+//            for (Customer customer : family.getCustomers())
+//            {
+//                HashMap map = new HashMap();
+//                map.put("id", customer.getId().toString());
+//                map.put("name", customer.getName());
+//                map.put("profileImg", customer.getProfileImg());
+////                this.customers.add(map);
+//                this.customers.add(new CustomerDto.Response(customer));
+//            }
         }
     }
 

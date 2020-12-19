@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Setter
+@Getter @Setter @Data
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class CustomerDto
@@ -22,5 +22,5 @@ public class CustomerDto
     private String sexGb;
     private Set<CustomerTagDto> tags = new HashSet<>();
     private FamilyDto family;
-    private String familyString = "";
+    private String familyString;
 }

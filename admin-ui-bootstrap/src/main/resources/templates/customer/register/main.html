@@ -114,5 +114,32 @@
 <script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
 <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
 <script src="/js/customer/new-customer.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    $(function(){
+        let customerTypes = [];
+        /*<![CDATA[*/
+
+        /*[# th:each="row : ${customerTypes}"]*/
+        addCustomerType(/*[[${row.getId()}]]*/, /*[[${row.getText()}]]*/);
+        /*[/]*/
+
+        /*]]>*/
+
+        $("#type-select").select2({
+            placeholder: "종류를 선택해주세요.(필수)",
+            allowClear: true,
+            width : "100%",
+            data : customerTypes
+        });
+
+        function addCustomerType (id, text)
+        {
+            customerTypes.push({
+                id : id,
+                text : text
+            });
+        }
+    });
+</script>
 </body>
 </html>

@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/family")
+@RequestMapping("/families")
 @RequiredArgsConstructor
 public class FamilyController
 {

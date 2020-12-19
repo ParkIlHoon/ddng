@@ -2,18 +2,6 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 초기 데이터 세팅
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 고객 종류
-    $.ajax({
-        url : SERVER_URL + "/customer-api/customer/type",
-        type : "GET",
-    }).done((data, textStatus, jqXHR) => {
-        $("#type-select").select2({
-            placeholder: "종류를 선택해주세요.(필수)",
-            allowClear: true,
-            width : "100%",
-            data : data
-        });
-    });
 
     $("#family-select").select2({
         minimumInputLength : 1,
@@ -21,7 +9,7 @@ $(function(){
         width : "100%",
         allowClear : true,
         ajax: {
-            url: SERVER_URL + "/customer-api/family",
+            url: "/customer/families",
             method: "GET",
             data : function (params) {return { keyword: params.term };},
             processResults: function (data) {
@@ -46,23 +34,6 @@ $(function(){
     $resetBtn.hide();
     $confirmBtn.hide();
 
-
-    $("#submit-button").on("click", function(e){
-        // $("#submit-button").attr("disabled", true);
-        // $("#submit-button").text("");
-        // $("#submit-button").append("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...");
-
-        // var data = $("#new-customer-form").serializeObject();
-        // $.ajax({
-        //     dataType : "json",
-        //     contentType : "application/json; charset=utf-8",
-        //     method : "POST",
-        //     url : SERVER_URL + "/customer-api/customer/",
-        //     data : JSON.stringify(data)
-        // }).always(function(data, status){
-        //     location.href = "/new";
-        // });
-    });
     $("#profile-image-file").change(function(e) {
         if (e.target.files.length === 1) {
             const reader = new FileReader();

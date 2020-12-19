@@ -2,6 +2,7 @@ package com.ddng.customerapi.modules.customer.controller;
 
 import com.ddng.customerapi.modules.customer.domain.CustomerType;
 import com.ddng.customerapi.modules.customer.dto.CustomerDto;
+import com.ddng.customerapi.modules.customer.dto.CustomerTypeDto;
 import com.ddng.customerapi.modules.customer.service.CustomerService;
 import com.ddng.customerapi.modules.customer.domain.Customer;
 import com.ddng.customerapi.modules.family.domain.Family;
@@ -32,7 +33,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 @RequiredArgsConstructor
 public class CustomerController
 {
@@ -229,20 +230,19 @@ public class CustomerController
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/type")
+    /**
+     * 고객 종류 목록을 반환한다.
+     * @return
+     */
+    @GetMapping("/types")
     public ResponseEntity getCustomerType ()
     {
-        List returnList = new ArrayList();
-        CustomerType[] types = CustomerType.values();
-        for (CustomerType type : types)
+        List<CustomerTypeDto> collect = new ArrayList<>();
+        CustomerType[] values = CustomerType.values();
+        for(CustomerType type : values)
         {
-            HashMap row = new HashMap();
-            row.put("id", type.name());
-            row.put("text", type.getKorName());
-
-            returnList.add(row);
+            collect.add(new CustomerTypeDto(type));
         }
-
-        return ResponseEntity.ok(returnList);
+        return ResponseEntity.ok(collect);
     }
 }

@@ -44,4 +44,6 @@ public class FamilyRepositoryImpl extends QuerydslRepositorySupport implements F
         QueryResults<Family> queryResults = pagination.fetchResults();
         return new PageImpl<>(queryResults.getResults(), pageable, queryResults.getTotal());
     }
+
+
 }

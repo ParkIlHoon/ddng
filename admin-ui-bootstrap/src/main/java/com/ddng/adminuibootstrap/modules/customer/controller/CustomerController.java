@@ -1,7 +1,8 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
+import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 
 /**
  * <h1>고객 관리 메뉴 컨트롤러</h1>
@@ -54,6 +56,10 @@ public class CustomerController
     @GetMapping("/register")
     public String registerForm (Model model)
     {
+        // 고객 종류 조회
+        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
+
+        model.addAttribute("customerTypes", customerTypes);
         model.addAttribute("registerForm", new RegisterForm());
         return "customer/register/main";
     }
@@ -89,6 +95,17 @@ public class CustomerController
     public String familyForm (Model model)
     {
         return "customer/family/main";
+    }
+
+    @GetMapping("/families")
+    public ResponseEntity familyAction (String keyword)
+    {
+        if (StringUtils.hasText(keyword))
+        {
+            List<FamilyDto> searchFamilies = customerTemplate.searchFamilies(keyword);
+            return ResponseEntity.ok(searchFamilies);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     /**

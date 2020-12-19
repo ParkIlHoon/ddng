@@ -129,7 +129,7 @@ class CustomerControllerTest
     private String getCustomer(String keyword, int page) throws Exception
     {
         ResultActions actions = mockMvc.perform(
-                                                get("/customer")
+                                                get("/customers")
                                                         .param("keyword", keyword)
                                                         .param("page", String.valueOf(page))
                                                 )
@@ -155,7 +155,7 @@ class CustomerControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                get("/customer/{id}", save.getId())
+                                                get("/customers/{id}", save.getId())
                                                 )
                                         .andDo(print())
                                         .andExpect(status().isOk());
@@ -190,7 +190,7 @@ class CustomerControllerTest
                                             .build();
 
         ResultActions actions = mockMvc.perform(
-                                                put("/customer/{id}", save.getId())
+                                                put("/customers/{id}", save.getId())
                                                         .contentType(MediaType.APPLICATION_JSON)
                                                         .content(objectMapper.writeValueAsString(dto))
                                                 )
@@ -222,7 +222,7 @@ class CustomerControllerTest
                                                 .build();
 
         ResultActions actions = mockMvc.perform(
-                                                post("/customer")
+                                                post("/customers")
                                                         .contentType(MediaType.APPLICATION_JSON)
                                                         .content(objectMapper.writeValueAsString(dto))
                                                 )
@@ -245,7 +245,7 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/customer/{id}", save.getId())
+                        delete("/customers/{id}", save.getId())
                         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -274,7 +274,7 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        post("/customer/{id}/tag", save.getId())
+                        post("/customers/{id}/tag", save.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(tagDto))
                         )
@@ -308,7 +308,7 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/customer/{id}/tag", save.getId())
+                        delete("/customers/{id}/tag", save.getId())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(tagDto))
                         )
