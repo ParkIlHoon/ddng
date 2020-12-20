@@ -50,6 +50,7 @@ public class FamilyDto
         private Long id;
         private String name;
         private String text;
+//        private List<Map> customers = new ArrayList<>();
 //        private List<CustomerDto.Response> customers = new ArrayList<>();
 
         public Response(Family family)
@@ -64,7 +65,7 @@ public class FamilyDto
 //                map.put("id", customer.getId().toString());
 //                map.put("name", customer.getName());
 //                map.put("profileImg", customer.getProfileImg());
-////                this.customers.add(map);
+//                this.customers.add(map);
 //                this.customers.add(new CustomerDto.Response(customer));
 //            }
         }

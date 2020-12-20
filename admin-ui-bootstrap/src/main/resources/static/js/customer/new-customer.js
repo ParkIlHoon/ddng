@@ -14,7 +14,7 @@ $(function(){
             data : function (params) {return { keyword: params.term };},
             processResults: function (data) {
                 return {
-                    results: data.content
+                    results: data
                 };
             }
         }

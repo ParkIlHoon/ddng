@@ -1,12 +1,17 @@
 package com.ddng.adminuibootstrap.modules.customer.template;
 
+import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.FamilyPageImpl;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +20,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <h1>Customer-api 고객 관련 요청 템플릿</h1>
@@ -62,14 +71,9 @@ public class CustomerTemplate
                 .build()
                 .encode()
                 .toUri();
-
-//        ResponseEntity<List<FamilyDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<FamilyDto>>() {});
-        ResponseEntity<FamilyPageImpl<FamilyDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, new ParameterizedTypeReference<FamilyPageImpl<FamilyDto>>() {
-        });
+        ParameterizedTypeReference<RestPageImpl<FamilyDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<RestPageImpl<FamilyDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody().getContent();
-
-//        FamilyPageImpl forObject = restTemplate.getForObject(targetUrl, FamilyPageImpl.class);
-//        return forObject.getContent();
     }
 
     /**
