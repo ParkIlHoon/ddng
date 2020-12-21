@@ -5,13 +5,8 @@ import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * <h1>Customer-api 고객 관련 요청 템플릿</h1>
@@ -105,5 +96,28 @@ public class CustomerTemplate
         {
             throw new Exception(responseEntity.getHeaders().toString());
         }
+    }
+
+    /**
+     * 가족 목록을 페이징 처리해 검색한다.
+     * @param keyword 조회 키워드
+     * @param page 조회 페이지
+     * @param size 조회 건수
+     * @return
+     */
+    public RestPageImpl<FamilyDto> searchFamiliesWithPage(String keyword, int page, int size)
+    {
+        String apiPath = FAMILY_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .queryParam("keyword", keyword)
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .build()
+                .encode()
+                .toUri();
+        ParameterizedTypeReference<RestPageImpl<FamilyDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<RestPageImpl<FamilyDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
     }
 }

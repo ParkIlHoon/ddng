@@ -2,104 +2,17 @@ $(function(){
     $("#family-card").hide();
     var g_familyId;
 
-    const Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
-        totalItems : 0,
-        itemsPerPage : 12,
-        visiblePages : 5,
-        centerAlign : true
-    });
-
-    Pagination.on("afterMove", function (e){
-        var currentPage = e.page;
-        moveFamilyListPage(currentPage);
-    });
-
-    $("#keyword-input").on("keyup", function(e){
-        if (e.keyCode == 13)
-        {
-            searchFamilies();
-        }
-    });
-
-    $("#search-button").on("click", function(e){
-        searchFamilies();
-    });
-
-    function searchFamilies ()
-    {
-        var searchKeyword = $("#keyword-input").val();
-        $("#keyword-input-hidden").val(searchKeyword);
-
-        if(searchKeyword == undefined || searchKeyword == "")
-        {
-            alert("검색어를 입력해주세요.");
-            return;
-        }
-
-        $.ajax({
-            url : SERVER_URL + "/customer-api/family",
-            type : "GET",
-            data : {"keyword" : searchKeyword, "size" : 12}
-        }).done((data, textStatus, jqXHR) => {
-            deleteAllMemberCard();
-            deleteAllCouponCard();
-            deleteAllFamilyCards();
-            createFamilyCards(data);
-            Pagination.reset(data.totalElements);
-            $("#family-card").hide();
-        });
-    }
-
-    function moveFamilyListPage (movePage)
-    {
-        var searchKeyword = $("#keyword-input-hidden").val();
-        $.ajax({
-            url : SERVER_URL + "/customer-api/family",
-            type : "GET",
-            data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 12}
-        }).done((data, textStatus, jqXHR) => {
-            deleteAllFamilyCards();
-            createFamilyCards(data);
-        });
-    }
-
-    function createFamilyCards(data)
-    {
-        var families = data.content;
-
-        for (var idx = 0; idx < families.length; idx++)
-        {
-            var childEle = "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-3'>";
-                childEle +=    "<div class='card family-card' id='family-card-" + families[idx].id + "' name='" + families[idx].name + "'>\n";
-                childEle +=        "<div class='card-body'>\n";
-                childEle +=            "<div class='text-value-lg'>" + families[idx].name + "</div>\n";
-
-            var customers = families[idx].customers;
-            for (var idx2 = 0; idx2 < customers.length; idx2++)
+        $(".family-card").on("click", function(e){
+            var cards = $(".family-card");
+            for (var idx = 0; idx < cards.length; idx++)
             {
-                childEle +=                "<small>" + customers[idx2].name + " \n";
-                childEle +=                    "<div class='c-avatar'>\n";
-                childEle +=                        "<img class='c-avatar-img' src='" + customers[idx2].profileImg + "'>\n";
-                childEle +=                    "</div>\n";
-                childEle +=                "</small>";
+                cards[idx].classList.remove("active");
             }
-                childEle +=         "</div>";
-                childEle +=     "</div>";
-                childEle += "</div>";
 
-            $("#search-result-row").append(childEle);
-            $(".family-card").on("click", function(e){
-                var cards = $(".family-card");
-                for (var idx = 0; idx < cards.length; idx++)
-                {
-                    cards[idx].classList.remove("active");
-                }
-
-                var card = e.currentTarget;
-                card.classList.add("active");
-                openFamilyTab(card.id.replaceAll("family-card-", ""), card.getAttribute("name"));
-            });
-        }
+            var card = e.currentTarget;
+            card.classList.add("active");
+            openFamilyTab(card.id.replaceAll("family-card-", ""), card.getAttribute("name"));
+        });
     }
 
     function deleteAllFamilyCards() {

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+    <div class="card family-card" th:fragment="familyCard(${family})" th:id="'family-card-' + ${family.getId()}">
+        <div class="card-body">
+            <div class="text-value-lg" th:text="${family.getName()}"></div>
+            <small th:each="customer : ${family.getCustomers()}" th:text="${customer.getName()}">
+                <div class="c-avatar">
+                    <img class="c-avatar-img" src="" th:src="${customer.getProfileImg()}">
+                </div>
+            </small>
+        </div>
+        <script th:inline="javascript" type="application/javascript">
+            $(function(){
+                /*<![CDATA[*/
+                if (resetPage)
+                {
+                    Pagination.reset(/*[[${totalElements}]]*/);
+                    resetPage = false;
+                }
+                /*]]>*/
+
+                $(".family-card").on("click", function(e){
+                    var cards = $(".family-card");
+                    for (var idx = 0; idx < cards.length; idx++)
+                    {
+                        cards[idx].classList.remove("active");
+                    }
+
+                    var card = e.currentTarget;
+                    card.classList.add("active");
+                    // openFamilyTab(card.id.replaceAll("family-card-", ""), card.getAttribute("name"));
+                });
+            });
+        </script>
+    </div>
+
+</html>

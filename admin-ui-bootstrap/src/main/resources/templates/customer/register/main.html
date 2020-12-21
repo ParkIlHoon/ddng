@@ -40,7 +40,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="name-input">고객명</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)"
+                                                <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)" lang="ko"
                                                     th:field="*{name}" minlength="1" maxlength="100" required>
                                                 <div class="invalid-feedback">고객명을 입력하세요 (1~100자)</div>
                                                 <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
@@ -86,7 +86,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="bigo-input">비고</label>
                                             <div class="col-md-10">
-                                                <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요"
+                                                <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요" lang="ko"
                                                     th:field="*{bigo}">
                                                 </textarea>
                                             </div>
@@ -126,10 +126,29 @@
         /*]]>*/
 
         $("#type-select").select2({
+            language: "ko",
             placeholder: "종류를 선택해주세요.(필수)",
             allowClear: true,
             width : "100%",
             data : customerTypes
+        });
+
+        $("#family-select").select2({
+            language: "ko",
+            minimumInputLength : 1,
+            placeholder : "가족을 선택해주세요. 기존에 가족이 없는 경우 빈 칸으로 두세요.",
+            width : "100%",
+            allowClear : true,
+            ajax: {
+                url: "/customer/families",
+                method: "GET",
+                data : function (params) {return { keyword: params.term };},
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
+            }
         });
 
         function addCustomerType (id, text)

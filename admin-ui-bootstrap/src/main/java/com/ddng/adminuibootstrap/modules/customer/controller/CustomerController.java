@@ -1,12 +1,15 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
+import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
+import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,16 +91,10 @@ public class CustomerController
     }
 
     /**
-     * 가족 관리 메뉴 폼 요청
-     * @param model
+     * 가족 목록 조회
+     * @param keyword
      * @return
      */
-    @GetMapping("/family")
-    public String familyForm (Model model)
-    {
-        return "customer/family/main";
-    }
-
     @GetMapping("/families")
     public ResponseEntity familyAction (String keyword)
     {
@@ -106,6 +104,45 @@ public class CustomerController
             return ResponseEntity.ok(searchFamilies);
         }
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 가족 관리 메뉴 폼 요청
+     * @param model
+     * @return
+     */
+    @GetMapping("/family")
+    public String familyForm (Model model)
+    {
+        model.addAttribute("familySettingForm", new FamilySettingForm());
+        model.addAttribute("families", new ArrayList<>());
+        return "customer/family/main";
+    }
+
+    /**
+     * 가족 카드 조회 요청
+     * @param keyword 조회 키워드
+     * @param page 조회 페이지
+     * @param size 조회 건수
+     * @param model
+     * @return
+     */
+    @GetMapping("/familyCard")
+    public String familyCardAction (String keyword, int page, int size, Model model)
+    {
+        List<FamilyDto> searchFamilies = new ArrayList<>();
+        long totalElements = 0;
+
+        if (StringUtils.hasText(keyword))
+        {
+            RestPageImpl<FamilyDto> familyRestPage = customerTemplate.searchFamiliesWithPage(keyword, page, size);
+            totalElements = familyRestPage.getTotalElements();
+            searchFamilies = familyRestPage.getContent();
+        }
+
+        model.addAttribute("families", searchFamilies);
+        model.addAttribute("totalElements", totalElements);
+        return "customer/family/main :: #search-result-row";
     }
 
     /**

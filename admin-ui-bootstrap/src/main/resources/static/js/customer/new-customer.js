@@ -2,24 +2,6 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 초기 데이터 세팅
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    $("#family-select").select2({
-        minimumInputLength : 1,
-        placeholder : "가족을 선택해주세요. 기존에 가족이 없는 경우 빈 칸으로 두세요.",
-        width : "100%",
-        allowClear : true,
-        ajax: {
-            url: "/customer/families",
-            method: "GET",
-            data : function (params) {return { keyword: params.term };},
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            }
-        }
-    });
-
     cropper = '';
     let $confirmBtn = $("#confirm-button");
     let $resetBtn = $("#reset-button");

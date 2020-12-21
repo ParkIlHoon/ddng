@@ -51,7 +51,7 @@ public class FamilyDto
         private String name;
         private String text;
 //        private List<Map> customers = new ArrayList<>();
-//        private List<CustomerDto.Response> customers = new ArrayList<>();
+        private List<CustomerDto.Response> customers = new ArrayList<>();
 
         public Response(Family family)
         {
@@ -59,15 +59,15 @@ public class FamilyDto
             this.name = family.getName();
             this.text = family.getName() + "[" + family.getFamilyString() + "]";
 
-//            for (Customer customer : family.getCustomers())
-//            {
+            for (Customer customer : family.getCustomers())
+            {
 //                HashMap map = new HashMap();
 //                map.put("id", customer.getId().toString());
 //                map.put("name", customer.getName());
 //                map.put("profileImg", customer.getProfileImg());
 //                this.customers.add(map);
-//                this.customers.add(new CustomerDto.Response(customer));
-//            }
+                this.customers.add(new CustomerDto.Response(customer));
+            }
         }
     }
 

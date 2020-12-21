@@ -29,7 +29,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div id="search-result-row" class="row"></div>
+                                        <div id="search-result-row" class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3"
+                                                 th:if="${not #lists.isEmpty(families)}" th:each="family : ${families}" >
+                                                <div th:replace="customer/family/family-card.html::familyCard(${family})">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div id="tui-pagination-container" class="tui-pagination"></div>
@@ -37,72 +43,8 @@
                                 </div>
                             </div>
 
-                            <div id="family-card" class="card">
-                                <div id="family-card-title" class="card-header">치우네</div>
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <div class="nav-tabs-boxed">
-                                                <ul class="nav nav-tabs" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a id="member-tab" class="nav-link active" data-toggle="tab" href="#member-tab-page"
-                                                           role="tab" aria-controls="member-tab-page">구성원</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a id="coupon-tab" class="nav-link" data-toggle="tab" href="#coupon-tab-page"
-                                                           role="tab" aria-controls="coupon-tab-page">쿠폰북</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a id="history-tab" class="nav-link" data-toggle="tab" href="#history-tab-page"
-                                                           role="tab" aria-controls="history-tab-page">구매이력</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a id="settings-tab" class="nav-link" data-toggle="tab" href="#settings-tab-page"
-                                                           role="tab" aria-controls="settings-tab-page">설정</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="tab-content">
-                                                    <div class="tab-pane active" id="member-tab-page" role="tabpanel">
-                                                        <div class="row" id="member-tab-page-row"></div>
-                                                    </div>
-                                                    <div class="tab-pane" id="coupon-tab-page" role="tabpanel">
-                                                        <div class="row" id="coupon-tab-page-row">
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="history-tab-page" role="tabpanel">
-
-                                                    </div>
-                                                    <div class="tab-pane" id="settings-tab-page" role="tabpanel">
-                                                        <form class="form-horizontal" id="family-settings-form">
-                                                            <div class="form-group row">
-                                                                <div class="col-md-12">
-                                                                    <nav aria-label="breadcrumb" role="navigation">
-                                                                        <ol class="breadcrumb">
-                                                                            <li class="breadcrumb-item active" aria-current="page">기본 설정</li>
-                                                                        </ol>
-                                                                    </nav>
-                                                                    <div class="form-group">
-                                                                        <label class="col-form-label" for="family-name-input">가족 이름</label>
-                                                                        <div class="controls">
-                                                                            <div class="input-group">
-                                                                                <input class="form-control" id="family-name-input" type="text">
-                                                                                <span class="input-group-append">
-                                                                                    <button class="btn btn-primary" id="submit-family-name-button" type="button">저장</button>
-                                                                                </span>
-                                                                                <div class="invalid-feedback" id="family-name-input-feedback"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                            <div th:if="${familySettingForm != null}">
+                                <div id="family-card" th:replace="customer/family/family-section.html::family-card(null, null, ${familySettingForm})"></div>
                             </div>
                         </div>
                     </div>
@@ -125,5 +67,68 @@
 <script th:replace="fragments.html::script"></script>
 <script src="/node_modules/tui-pagination/dist/tui-pagination.js"></script>
 <script src="/js/customer/family.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    let Pagination;
+    let resetPage = false;
+    $(function(){
+        Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
+            totalItems : 0,
+            itemsPerPage : 12,
+            visiblePages : 5,
+            centerAlign : true
+        });
+
+        Pagination.on("afterMove", function (e){
+            var currentPage = e.page;
+            moveFamilyListPage(currentPage);
+        });
+
+        $("#keyword-input").on("keyup", function(e){
+            if (e.keyCode == 13)
+            {
+                searchFamilies();
+            }
+        });
+
+        $("#search-button").on("click", function(e){
+            searchFamilies();
+        });
+
+        function searchFamilies ()
+        {
+            var searchKeyword = $("#keyword-input").val();
+            $("#keyword-input-hidden").val(searchKeyword);
+
+            if(searchKeyword == undefined || searchKeyword == "")
+            {
+                alert("검색어를 입력해주세요.");
+                return;
+            }
+            resetPage = true;
+
+            $.ajax({
+                url : "/customer/familyCard",
+                type : "GET",
+                data : {"keyword" : searchKeyword, "page" : 0, "size" : 12}
+            }).done((data, textStatus, jqXHR) => {
+                var responseText = jqXHR.responseText;
+                $("#search-result-row").replaceWith(responseText);
+            });
+        }
+        function moveFamilyListPage (movePage)
+        {
+            var searchKeyword = $("#keyword-input-hidden").val();
+            resetPage = false;
+            $.ajax({
+                url : "/customer/familyCard",
+                type : "GET",
+                data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 12}
+            }).done((data, textStatus, jqXHR) => {
+                var responseText = jqXHR.responseText;
+                $("#search-result-row").replaceWith(responseText);
+            });
+        }
+    });
+</script>
 </body>
 </html>
