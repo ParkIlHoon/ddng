@@ -6,11 +6,13 @@
     <div class="card family-card" th:fragment="familyCard(${family})" th:id="'family-card-' + ${family.getId()}">
         <div class="card-body">
             <div class="text-value-lg" th:text="${family.getName()}"></div>
-            <small th:each="customer : ${family.getCustomers()}" th:text="${customer.getName()}">
+            <div style="display: -webkit-inline-box;" th:each="customer : ${family.getCustomers()}">
+                <h6 th:text="${customer.getName()}"></h6>
                 <div class="c-avatar">
                     <img class="c-avatar-img" src="" th:src="${customer.getProfileImg()}">
                 </div>
-            </small>
+                &nbsp;&nbsp;
+            </div>
         </div>
         <script th:inline="javascript" type="application/javascript">
             $(function(){
@@ -31,8 +33,21 @@
 
                     var card = e.currentTarget;
                     card.classList.add("active");
-                    // openFamilyTab(card.id.replaceAll("family-card-", ""), card.getAttribute("name"));
+                    createFamilySection(card.id.replaceAll("family-card-", ""));
                 });
+
+                function createFamilySection (familyId)
+                {
+                    $.ajax({
+                        url : "/customer/families/" + familyId,
+                        type : "GET"
+                    }).done((data, textStatus, jqXHR) => {
+                        var responseText = jqXHR.responseText;
+                        $("#family-section").replaceWith(responseText);
+                        var offset = $("#family-section").offset();
+                        $('html, body').animate({scrollTop : offset.top}, 400);
+                    });
+                }
             });
         </script>
     </div>

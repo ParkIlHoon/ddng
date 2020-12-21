@@ -17,10 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,7 +93,7 @@ public class CustomerController
      * @return
      */
     @GetMapping("/families")
-    public ResponseEntity familyAction (String keyword)
+    public ResponseEntity familiesAction (String keyword)
     {
         if (StringUtils.hasText(keyword))
         {
@@ -114,8 +111,6 @@ public class CustomerController
     @GetMapping("/family")
     public String familyForm (Model model)
     {
-        model.addAttribute("familySettingForm", new FamilySettingForm());
-        model.addAttribute("families", new ArrayList<>());
         return "customer/family/main";
     }
 
@@ -143,6 +138,44 @@ public class CustomerController
         model.addAttribute("families", searchFamilies);
         model.addAttribute("totalElements", totalElements);
         return "customer/family/main :: #search-result-row";
+    }
+
+    /**
+     * 가족 섹션 조회 요청
+     * @param id 조회할 가족 아이디
+     * @return
+     */
+    @GetMapping("/families/{id}")
+    public String familySectionAction (@PathVariable("id") Long id, Model model)
+    {
+        if (id == null)
+        {
+            return "customer/family/main :: #family-section";
+        }
+
+        FamilyDto family = customerTemplate.getFamily(id);
+
+        model.addAttribute("familySection", family);
+        model.addAttribute("familySettingForm", new FamilySettingForm(family));
+        return "customer/family/main :: #family-section";
+    }
+
+    /**
+     * 가족 섹션 조회 요청
+     * @param id 조회할 가족 아이디
+     * @return
+     */
+    @PutMapping("/families/{id}")
+    public String familySectionAction (@PathVariable("id") Long id,
+                                       @Valid @ModelAttribute FamilySettingForm familySettingForm,
+                                       Errors errors)
+    {
+        if(errors.hasErrors())
+        {
+            return "customer/family/main";
+        }
+
+        return "customer/family/main";
     }
 
     /**

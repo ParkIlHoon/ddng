@@ -2,8 +2,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="family-card(members, history, familySettingForm)" class="card">
-    <div id="family-card-title" class="card-header">치우네</div>
+<div th:fragment="family-section(${familySection}, ${familySettingForm})" class="card">
+    <div id="family-card-title" class="card-header" th:text="${familySection.getName()}">가족 이름</div>
     <div class="card-body">
         <div class="form-group row">
             <div class="col-md-12">
@@ -28,7 +28,29 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="member-tab-page" role="tabpanel">
-                            <div class="row" id="member-tab-page-row"></div>
+                            <div class="row" id="member-tab-page-row">
+                                <div class="col-md-6" th:each="customer : ${familySection.getCustomers()}">
+                                    <div class="card overflow-hidden">
+                                        <div class="card-body p-0 d-flex align-items-center">
+                                            <div class="py-1 px-1 mfe-3">
+                                                <div style="width: 140px; height: 140px;">
+                                                    <img style="width: 100%;" src="" th:src="${customer.getProfileImg()}">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-value text-primary" th:text="${customer.getName()}"></div>
+                                                <div class="text-muted text-uppercase font-weight-bold small" th:text="${customer.getTelNo()}"></div>
+                                                <div class="text-muted text-uppercase font-weight-bold small" th:text="${customer.getTypeName()}"></div>
+                                                <div class="text-muted text-uppercase font-weight-bold small">
+                                                    <span class="badge badge-secondary" style="margin-right: 5px;"
+                                                          th:each="tag : ${customer.getTags()}" th:text="${tag.getTitle()}">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane" id="coupon-tab-page" role="tabpanel">
                             <div class="row" id="coupon-tab-page-row">
@@ -38,8 +60,8 @@
 
                         </div>
                         <div class="tab-pane" id="settings-tab-page" role="tabpanel">
-                            <form class="form-horizontal needs-validation" id="family-settings-form" novalidate
-                                  th:action="@{/customer/family}" th:object="${familySettingForm}">
+                            <form class="form-horizontal needs-validation" id="family-settings-form" action="#" method="put" novalidate
+                                  th:action="@{/customer/family/} + ${familySection.getId()}" th:object="${familySettingForm}">
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <nav aria-label="breadcrumb" role="navigation">
@@ -50,16 +72,18 @@
                                         <div class="form-group">
                                             <label class="col-form-label" for="family-name-input">가족 이름</label>
                                             <div class="controls">
-                                                <div class="input-group">
-                                                    <input class="form-control" id="family-name-input" type="text" name="name"
-                                                        th:field="*{name}">
-                                                    <span class="input-group-append">
-                                                        <button class="btn btn-primary" id="submit-family-name-button" type="button">저장</button>
-                                                    </span>
-                                                    <div class="invalid-feedback" id="family-name-input-feedback">가족명을 입력하세요 (1~100자)</div>
-                                                    <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
-                                                </div>
+                                                <input class="form-control" id="family-name-input" type="text" name="name"
+                                                       th:field="*{name}" minlength="1" maxlength="100" required>
+                                                <div class="invalid-feedback" id="family-name-input-feedback">가족명을 입력하세요 (1~100자)</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary btn-lg" type="submit">저장</button>
                                         </div>
                                     </div>
                                 </div>
@@ -67,11 +91,30 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    <script th:replace="fragments.html::form-validation"></script>
+    <script type="application/javascript">
+        (function () {
+            'use strict';
+            var form = document.getElementById('family-settings-form');
+            form.addEventListener('submit', function (event) {
+                var button = event.submitter;
+                var originalHtml = button.innerHTML;
+
+                button.disabled = true;
+                button.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...";
+
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    button.disabled = false;
+                    button.innerHTML = originalHtml;
+                }
+                form.classList.add('was-validated')
+            }, false)
+        }())
+    </script>
 </div>
 
 </html>

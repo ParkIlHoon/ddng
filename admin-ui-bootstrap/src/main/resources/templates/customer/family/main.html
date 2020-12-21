@@ -43,9 +43,12 @@
                                 </div>
                             </div>
 
-                            <div th:if="${familySettingForm != null}">
-                                <div id="family-card" th:replace="customer/family/family-section.html::family-card(null, null, ${familySettingForm})"></div>
+                            <div id="family-section">
+                                <div th:if="${familySection != null}">
+                                    <div th:replace="customer/family/family-section.html::family-section(${familySection}, ${familySettingForm})"></div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -113,6 +116,7 @@
             }).done((data, textStatus, jqXHR) => {
                 var responseText = jqXHR.responseText;
                 $("#search-result-row").replaceWith(responseText);
+                $("#family-section").empty();
             });
         }
         function moveFamilyListPage (movePage)
@@ -126,6 +130,7 @@
             }).done((data, textStatus, jqXHR) => {
                 var responseText = jqXHR.responseText;
                 $("#search-result-row").replaceWith(responseText);
+                $("#family-section").empty();
             });
         }
     });

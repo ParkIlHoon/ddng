@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.customer.form;
 
+import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,10 @@ public class FamilySettingForm
     @NotBlank(message = "가족 이름은 반드시 입력해야합니다.")
     @Length(min = 1, max = 100, message = "가족 이름은 1~100자이어야 합니다.")
     private String name;
+
+    public FamilySettingForm(FamilyDto familyDto)
+    {
+        this.id = familyDto.getId();
+        this.name = familyDto.getName();
+    }
 }

@@ -2,19 +2,6 @@ $(function(){
     $("#family-card").hide();
     var g_familyId;
 
-        $(".family-card").on("click", function(e){
-            var cards = $(".family-card");
-            for (var idx = 0; idx < cards.length; idx++)
-            {
-                cards[idx].classList.remove("active");
-            }
-
-            var card = e.currentTarget;
-            card.classList.add("active");
-            openFamilyTab(card.id.replaceAll("family-card-", ""), card.getAttribute("name"));
-        });
-    }
-
     function deleteAllFamilyCards() {
         $("#search-result-row").empty();
     }

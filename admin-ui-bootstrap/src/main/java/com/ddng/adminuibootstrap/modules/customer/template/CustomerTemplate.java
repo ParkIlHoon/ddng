@@ -120,4 +120,22 @@ public class CustomerTemplate
         ResponseEntity<RestPageImpl<FamilyDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
     }
+
+    /**
+     * 가족을 조회한다.
+     * @param id 조회할 가족 아이디
+     * @return
+     */
+    public FamilyDto getFamily(Long id)
+    {
+        String apiPath = FAMILY_API_PATH + "/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        FamilyDto forObject = restTemplate.getForObject(targetUrl, FamilyDto.class);
+        return forObject;
+    }
 }

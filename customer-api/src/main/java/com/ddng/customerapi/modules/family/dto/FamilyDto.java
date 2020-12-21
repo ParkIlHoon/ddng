@@ -78,7 +78,7 @@ public class FamilyDto
     {
         private Long id;
         private String name;
-        private List<Map<String, Object>> customers = new ArrayList<>();
+        private List<CustomerDto.Response> customers = new ArrayList<>();
 
         public ResponseWithCustomerTag(Family family)
         {
@@ -87,15 +87,16 @@ public class FamilyDto
 
             for (Customer customer : family.getCustomers())
             {
-                HashMap map = new HashMap();
-                map.put("id", customer.getId().toString());
-                map.put("name", customer.getName());
-                map.put("telNo", customer.getTelNo());
-                map.put("type", customer.getType().getKorName());
-                map.put("profileImg", customer.getProfileImg());
-                map.put("tags", customer.getTags());
+                CustomerDto.Response dto = new CustomerDto.Response(customer);
+//                HashMap map = new HashMap();
+//                map.put("id", customer.getId().toString());
+//                map.put("name", customer.getName());
+//                map.put("telNo", customer.getTelNo());
+//                map.put("type", customer.getType().getKorName());
+//                map.put("profileImg", customer.getProfileImg());
+//                map.put("tags", customer.getTags());
 
-                this.customers.add(map);
+                this.customers.add(dto);
             }
         }
     }
