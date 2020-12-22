@@ -2,11 +2,14 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
+import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
+import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>고객 관리 메뉴 컨트롤러</h1>
@@ -37,6 +41,7 @@ public class CustomerController
 {
     private final ServiceProperties serviceProperties;
     private final CustomerTemplate customerTemplate;
+    private final SaleTemplate saleTemplate;
 
     /**
      * 고객 조회 메뉴 폼 요청
@@ -155,6 +160,14 @@ public class CustomerController
 
         FamilyDto family = customerTemplate.getFamily(id);
 
+        if (family != null)
+        {
+            List<CustomerDto> customers = family.getCustomers();
+            List<Long> collect = customers.stream().map(c -> c.getId()).collect(Collectors.toList());
+            List<CouponDto> coupons = saleTemplate.getCoupons(collect).getContent();
+            model.addAttribute("familyCoupons", coupons);
+        }
+
         model.addAttribute("familySection", family);
         model.addAttribute("familySettingForm", new FamilySettingForm(family));
         return "customer/family/main :: #family-section";
@@ -165,16 +178,31 @@ public class CustomerController
      * @param id 조회할 가족 아이디
      * @return
      */
-    @PutMapping("/families/{id}")
+    @PostMapping("/families/{id}")
     public String familySectionAction (@PathVariable("id") Long id,
                                        @Valid @ModelAttribute FamilySettingForm familySettingForm,
-                                       Errors errors)
+                                       Errors errors,
+                                       Model model)
     {
         if(errors.hasErrors())
         {
             return "customer/family/main";
         }
 
+        customerTemplate.updateFamilySetting(familySettingForm);
+
+        FamilyDto family = customerTemplate.getFamily(id);
+
+        if (family != null)
+        {
+            List<CustomerDto> customers = family.getCustomers();
+            List<Long> collect = customers.stream().map(c -> c.getId()).collect(Collectors.toList());
+            List<CouponDto> coupons = saleTemplate.getCoupons(collect).getContent();
+            model.addAttribute("familyCoupons", coupons);
+        }
+
+        model.addAttribute("familySection", family);
+        model.addAttribute("familySettingForm", new FamilySettingForm(family));
         return "customer/family/main";
     }
 

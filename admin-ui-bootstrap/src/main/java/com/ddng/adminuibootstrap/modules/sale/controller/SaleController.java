@@ -94,7 +94,7 @@ public class SaleController
         CouponDto coupon = null;
         if (dto.getCouponId() != null)
         {
-            coupon = saleTemplate.getCounpon(dto.getCouponId());
+            coupon = saleTemplate.getCoupon(dto.getCouponId());
         }
 
         // 카트 추가

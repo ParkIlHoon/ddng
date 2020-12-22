@@ -98,9 +98,9 @@ public class FamilyController
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity deleteFamily (@PathVariable("id") Long id,
-                                        @RequestBody @Valid FamilyDto.Put dto,
-                                        Errors errors)
+    public ResponseEntity updateFamily(@PathVariable("id") Long id,
+                                       @RequestBody @Valid FamilyDto.Put dto,
+                                       Errors errors)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
 
@@ -119,7 +119,7 @@ public class FamilyController
      * @return
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteFamily (@PathVariable("id") Long id)
+    public ResponseEntity updateFamily(@PathVariable("id") Long id)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
 

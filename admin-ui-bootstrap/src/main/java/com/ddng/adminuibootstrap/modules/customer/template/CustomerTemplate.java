@@ -4,6 +4,7 @@ import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
+import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -137,5 +138,17 @@ public class CustomerTemplate
 
         FamilyDto forObject = restTemplate.getForObject(targetUrl, FamilyDto.class);
         return forObject;
+    }
+
+    public void updateFamilySetting (FamilySettingForm familySettingForm)
+    {
+        String apiPath = FAMILY_API_PATH + "/" + familySettingForm.getId();
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        restTemplate.put(targetUrl, familySettingForm);
     }
 }

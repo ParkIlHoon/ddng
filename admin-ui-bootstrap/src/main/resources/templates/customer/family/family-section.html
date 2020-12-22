@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="family-section(${familySection}, ${familySettingForm})" class="card">
+<div th:fragment="family-section(${familySection}, ${familyCoupons}, ${familySettingForm})" class="card">
     <div id="family-card-title" class="card-header" th:text="${familySection.getName()}">가족 이름</div>
     <div class="card-body">
         <div class="form-group row">
@@ -54,14 +54,40 @@
                         </div>
                         <div class="tab-pane" id="coupon-tab-page" role="tabpanel">
                             <div class="row" id="coupon-tab-page-row">
+                                <div class="col-md-6 col-lg-3" th:each="coupon : ${familyCoupons}">
+                                    <div class="card">
+                                        <!-- 미사용 쿠폰 -->
+                                        <div class="card-body text-center text-white bg-gradient-info"
+                                            th:if="${coupon.getUseDate() == null}">
+                                            <div class="text-muted small text-uppercase font-weight-bold"
+                                                th:text="${#temporals.format(coupon.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
+                                            <div class="text-value-xl py-3"
+                                                th:text="${coupon.getName() + '(' + coupon.getItemTypeName() + '/' + coupon.getTypeName() + ')'}"></div>
+                                            <div>
+                                                <small class=\"text-muted\" th:text="'유효기간 : ' + ${#temporals.format(coupon.getExpireDate(), 'yyyy-MM-dd HH:mm')}">유효기간</small>
+                                            </div>
+                                        </div>
+                                        <!-- 사용 쿠폰 -->
+                                        <div class="card-body text-center"
+                                             th:if="${coupon.getUseDate() != null}">
+                                            <div class="text-muted small text-uppercase font-weight-bold"
+                                                 th:text="${#temporals.format(coupon.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
+                                            <div class="text-value-xl py-3"
+                                                 th:text="${coupon.getName() + '(' + coupon.getItemTypeName() + '/' + coupon.getTypeName() + ')'}"></div>
+                                            <div>
+                                                <small class=\"text-muted\" th:text="'사용 완료(' + ${#temporals.format(coupon.getUseDate(), 'yyyy-MM-dd HH:mm')} + ')'">사용일자</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="history-tab-page" role="tabpanel">
 
                         </div>
                         <div class="tab-pane" id="settings-tab-page" role="tabpanel">
-                            <form class="form-horizontal needs-validation" id="family-settings-form" action="#" method="put" novalidate
-                                  th:action="@{/customer/family/} + ${familySection.getId()}" th:object="${familySettingForm}">
+                            <form class="form-horizontal needs-validation" id="family-settings-form" action="#" method="post" novalidate
+                                  th:action="@{/customer/families/} + ${familySection.getId()}" th:object="${familySettingForm}">
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <nav aria-label="breadcrumb" role="navigation">

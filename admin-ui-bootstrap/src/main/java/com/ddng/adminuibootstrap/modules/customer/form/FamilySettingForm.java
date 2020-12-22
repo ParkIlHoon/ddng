@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * <h1>가족 설정 폼 클래스</h1>
@@ -18,7 +19,7 @@ public class FamilySettingForm
     /**
      * 가족 아이디
      */
-    @NotBlank
+    @NotNull
     private Long id;
 
     /**
