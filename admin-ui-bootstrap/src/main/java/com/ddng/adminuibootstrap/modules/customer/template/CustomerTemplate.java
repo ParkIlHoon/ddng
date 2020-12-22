@@ -2,6 +2,8 @@ package com.ddng.adminuibootstrap.modules.customer.template;
 
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
@@ -27,6 +29,7 @@ public class CustomerTemplate
 {
     private static final String CUSTOMER_API_PATH = "/customers";
     private static final String FAMILY_API_PATH = "/families";
+    private static final String TAG_API_PATH = "/tags";
 
     private final RestTemplate restTemplate;
     private final ServiceProperties serviceProperties;
@@ -140,6 +143,10 @@ public class CustomerTemplate
         return forObject;
     }
 
+    /**
+     * 가족 설정을 수정한다.
+     * @param familySettingForm 수정할 내용
+     */
     public void updateFamilySetting (FamilySettingForm familySettingForm)
     {
         String apiPath = FAMILY_API_PATH + "/" + familySettingForm.getId();
@@ -150,5 +157,63 @@ public class CustomerTemplate
                 .toUri();
 
         restTemplate.put(targetUrl, familySettingForm);
+    }
+
+    /**
+     * 고객 목록을 페이징 처리해 조회한다.
+     * @param keyword 조회할 키워드
+     * @param page 조회 페이지
+     * @param size 조회 사이즈
+     * @return
+     */
+    public RestPageImpl<CustomerDto> searchCustomersWithPage(String keyword, int page, int size)
+    {
+        String apiPath = CUSTOMER_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .queryParam("keyword", keyword)
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .build()
+                .encode()
+                .toUri();
+        ParameterizedTypeReference<RestPageImpl<CustomerDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<RestPageImpl<CustomerDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
+    }
+
+    /**
+     * 고객을 조회한다.
+     * @param id 조회할 고객 아이디
+     * @return
+     */
+    public CustomerDto getCustomer(Long id)
+    {
+        String apiPath = CUSTOMER_API_PATH + "/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+        CustomerDto forObject = restTemplate.getForObject(targetUrl, CustomerDto.class);
+        return forObject;
+    }
+
+    /**
+     * 고객 태그 목록을 조회한다.
+     * @return
+     */
+    public List<CustomerTagDto> getCustomerTags ()
+    {
+        String apiPath = TAG_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<CustomerTagDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<CustomerTagDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
     }
 }

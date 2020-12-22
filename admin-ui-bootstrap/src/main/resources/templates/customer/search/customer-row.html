@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<tr th:fragment="customer-row(${customers})"
+        th:each="customer : ${customers}" th:onclick="'openCustomerCard(' + ${customer.getId()} + ');'">
+    <td th:text="${customer.getName()}"></td>
+    <td th:text="${customer.getTypeName()}"></td>
+    <td th:text="${customer.getTelNo()}"></td>
+    <script th:inline="javascript" type="application/javascript">
+        $(function(){
+            /*<![CDATA[*/
+            if (resetPage)
+            {
+                Pagination.reset(/*[[${totalElements}]]*/);
+                resetPage = false;
+            }
+            /*]]>*/
+        });
+    </script>
+</tr>
+
+
+</html>

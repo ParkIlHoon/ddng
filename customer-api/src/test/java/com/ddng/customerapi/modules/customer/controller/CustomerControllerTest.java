@@ -274,7 +274,7 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        post("/customers/{id}/tag", save.getId())
+                        post("/customers/{id}/tags", save.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(tagDto))
                         )
@@ -308,7 +308,7 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/customers/{id}/tag", save.getId())
+                        delete("/customers/{id}/tags", save.getId())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(tagDto))
                         )

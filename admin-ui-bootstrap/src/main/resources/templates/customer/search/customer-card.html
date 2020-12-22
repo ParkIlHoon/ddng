@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="customer-card(${customerForm})" class="card">
+    <div class="card-header">상세 정보</div>
+    <div class="card-body">고객 목록에서 선택한 고객의 상세 정보가 표시됩니다.</div>
+    <form id="edit-customer-form" class="form-horizontal needs-validation" action="#" method="post"
+          th:action="@{/customer/edit/} + ${customerForm.getId()}" th:object="${customerForm}" novalidate>
+        <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <div id="current-profile-image" class="mt-3">
+                            <img id="profile-img" class="img-fluid float-left rounded img-thumbnail"/>
+                            <input id="profileImage" type="hidden" name="profileImg">
+                        </div>
+                        <div id="new-profile-image" class="mt-3"></div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="profile-image-file"
+                                   th:field="*{profileImg}">
+                            <label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>
+                        </div>
+                        <div id="new-profile-image-control" class="mt-3">
+                            <button type="button" class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                            <button type="button" class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
+                            <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                        </div>
+                        <div id="cropped-new-profile-image" class="mt-3"></div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">고객 번호</label>
+                            <div class="col-md-9">
+                                <p id="customer-id" class="form-control-static"></p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="name-input">고객 명</label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)" lang="ko"
+                                       th:field="*{name}" minlength="1" maxlength="100" required>
+                                <div class="invalid-feedback">고객명을 입력하세요 (1~100자)</div>
+                                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">가족</label>
+                            <div class="col-md-9">
+                                <p id="family-p" class="form-control-static" style="white-space: pre-line"
+                                    th:text="${customerForm.getFamilyString()}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="type-select">종류</label>
+                    <div class="col-md-9">
+                        <select class="form-control js-example-placeholder-single" id="type-select" name="type"
+                            th:field="*{type}" required>
+                            <option value=""></option>
+                        </select>
+                        <div class="invalid-feedback">고객 종류를 선택하세요</div>
+                        <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="telNo-input">전화번호</label>
+                    <div class="col-md-9 input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text">
+                                <svg class="c-icon">
+                                    <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
+                                </svg>
+                            </span>
+                        </span>
+                        <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)"
+                               th:field="*{telNo}" required>
+                        <div class="invalid-feedback">전화번호를 입력하세요 (예: 010-1234-5678)</div>
+                        <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="date-input">가입일</label>
+                    <div class="col-md-9">
+                        <input class="form-control" id="date-input" type="date" name="date-input" th:field="*{joinDate}" required>
+                        <div class="invalid-feedback">가입일을 입력하세요</div>
+                        <small class="text-danger" th:if="${#fields.hasErrors('joinDate')}" th:errors="*{joinDate}">joinDate Error</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="tags-input">태그</label>
+                    <div class="col-md-9">
+                        <div id="whitelist" hidden></div>
+                        <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="bigo-input">비고</label>
+                    <div class="col-md-9">
+                        <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요" lang="ko"
+                             th:field="*{bigo}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="history-grid">구매 이력</label>
+                    <div class="col-md-9">
+                        <div id="history-grid"></div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-block btn-primary" type="submit">저장</button>
+        </div>
+    </form>
+    <script src="/js/customer/main.js"></script>
+    <script type="application/javascript">
+        (function () {
+            'use strict';
+            var form = document.getElementById('edit-customer-form');
+            form.addEventListener('submit', function (event) {
+                var button = event.submitter;
+                var originalHtml = button.innerHTML;
+
+                button.disabled = true;
+                button.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...";
+
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    button.disabled = false;
+                    button.innerHTML = originalHtml;
+                }
+                form.classList.add('was-validated')
+            }, false)
+        }())
+    </script>
+    <script th:inline="javascript" type="application/javascript">
+        $(function(){
+            let customerTypes = [];
+            let whitelist = [];
+            let tagify;
+            /*<![CDATA[*/
+            const customerId = /*[[${customerForm.getId()}]]*/
+            /*]]>*/
+            /*<![CDATA[*/
+
+            /*[# th:each="row : ${customerTypes}"]*/
+            addCustomerType(/*[[${row.getId()}]]*/, /*[[${row.getText()}]]*/);
+            /*[/]*/
+            /*[# th:each="tag : ${customerTags}"]*/
+            addTagWhitelist(/*[[${tag.getTitle()}]]*/);
+            /*[/]*/
+
+            var tagInput = document.querySelector("#tags-input");
+            tagify = new Tagify(tagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist : whitelist,
+                dropdown : {
+                    position: "input",
+                    enabled: 1, // suggest tags after a single character input
+                    fuzzySearch: false
+                }, // map tags
+                backspace : false
+            });
+
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+            tagify.DOM.input.classList.add('form-control');
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+
+
+            addCustomerTag();
+
+
+            /*]]>*/
+
+            $("#type-select").select2({
+                language: "ko",
+                placeholder: "종류를 선택해주세요.(필수)",
+                allowClear: true,
+                width : "100%",
+                data : customerTypes
+            });
+
+            /*<![CDATA[*/
+            $("#type-select").val(/*[[${customerForm.getType()}]]*/);
+            $("#type-select").trigger('change');
+            /*]]>*/
+
+            function addCustomerType (id, text)
+            {
+                customerTypes.push({
+                    id : id,
+                    text : text
+                });
+            }
+            function addTagWhitelist (title)
+            {
+                whitelist.push(title);
+            }
+            function addCustomerTag()
+            {
+                var value = "";
+                /*<![CDATA[*/
+                /*[# th:each="tag : ${customerForm.getTags()}"]*/
+                var tag = /*[[${tag.getTitle()}]]*/
+                if(value != "") value += ",";
+                value += tag;
+                /*[/]*/
+
+                $("#tags-input").val("");
+                $("#tags-input").val(value);
+
+                if(tagify != null)
+                {
+                    tagify.removeAllTags();
+                    tagify.loadOriginalValues(value);
+                }
+                /*]]>*/
+            }
+
+            function onAdd(e)
+            {
+                tagRequest("POST", e.detail.data.value);
+            }
+            function onRemove(e)
+            {
+                tagRequest("DELETE", e.detail.data.value);
+            }
+            function tagRequest(method, title)
+            {
+                $.ajax({
+                    dataType : "json",
+                    autocomplete : {
+                        enable : true,
+                        rightKey : true
+                    },
+                    contentType : "application/json; charset=utf-8",
+                    method : method,
+                    url : "/customer/" + customerId + "/tag",
+                    data : JSON.stringify({"title" : title}),
+                });
+            }
+        });
+    </script>
+</div>
+
+</html>

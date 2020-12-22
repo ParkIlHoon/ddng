@@ -1,5 +1,7 @@
 package com.ddng.adminuibootstrap.modules.customer.form;
 
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,9 +47,9 @@ public class EditForm
     private String type;
 
     /**
-     * 가족 아이디
+     * 가족
      */
-    private Long familyId;
+    private String familyString;
 
     /**
      * 전화 번호
@@ -65,10 +67,22 @@ public class EditForm
     /**
      * 태그
      */
-    private Set<String> tags = new HashSet<>();
+    private Set<CustomerTagDto> tags = new HashSet<>();
 
     /**
      * 비고
      */
     private String bigo;
+
+    public EditForm(CustomerDto dto)
+    {
+        this.id = dto.getId();
+        this.profileImg = dto.getProfileImg();
+        this.name = dto.getName();
+        this.type = dto.getType();
+        this.familyString = dto.getFamilyString();
+        this.telNo = dto.getTelNo();
+        this.joinDate = dto.getJoinDate();
+        this.tags = dto.getTags();
+    }
 }

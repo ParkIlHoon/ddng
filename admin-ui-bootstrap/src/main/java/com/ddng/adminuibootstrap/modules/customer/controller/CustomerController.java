@@ -3,8 +3,10 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
+import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
@@ -12,7 +14,6 @@ import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,53 @@ public class CustomerController
     public String searchForm (Model model)
     {
         return "customer/search/main";
+    }
+
+    /**
+     * 고객 목록 조회 요청
+     * @param keyword 조회 키워드
+     * @return
+     */
+    @GetMapping("/customers")
+    public String searchAction (String keyword, int page, int size, Model model)
+    {
+        List<CustomerDto> searchCustomers = new ArrayList<>();
+        long totalElements = 0;
+
+        if (StringUtils.hasText(keyword))
+        {
+            RestPageImpl<CustomerDto> customersWithPage = customerTemplate.searchCustomersWithPage(keyword, page, size);
+            totalElements = customersWithPage.getTotalElements();
+            searchCustomers = customersWithPage.getContent();
+        }
+
+        model.addAttribute("customers", searchCustomers);
+        model.addAttribute("totalElements", totalElements);
+        return "customer/search/main :: #customer-list";
+    }
+
+    /**
+     * 고객 조회 요청
+     * @param id 고객 아이디
+     * @param model
+     * @return
+     */
+    @GetMapping("/search/{id}")
+    public String searchCustomerAction (@PathVariable("id") Long id, Model model)
+    {
+        if (id == null)
+        {
+            return "customer/search/main :: #customer-card";
+        }
+
+        CustomerDto customer = customerTemplate.getCustomer(id);
+        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
+        List<CustomerTagDto> customerTags = customerTemplate.getCustomerTags();
+
+        model.addAttribute("customerForm", new EditForm(customer));
+        model.addAttribute("customerTypes", customerTypes);
+        model.addAttribute("customerTags", customerTags);
+        return "customer/search/main :: #customer-card";
     }
 
     /**
@@ -174,8 +222,8 @@ public class CustomerController
     }
 
     /**
-     * 가족 섹션 조회 요청
-     * @param id 조회할 가족 아이디
+     * 가족 설정 수정 요청
+     * @param id 수정할 가족 아이디
      * @return
      */
     @PostMapping("/families/{id}")
@@ -203,6 +251,8 @@ public class CustomerController
 
         model.addAttribute("familySection", family);
         model.addAttribute("familySettingForm", new FamilySettingForm(family));
+        model.addAttribute("alertType", "success");
+        model.addAttribute("message", familySettingForm.getName() + " 가족의 설정 내용이 정상적으로 변경되었습니다.");
         return "customer/family/main";
     }
 

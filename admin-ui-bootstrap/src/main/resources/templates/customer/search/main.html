@@ -16,19 +16,30 @@
                                     <div class="card-header">고객 목록</div>
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label class="col-form-label" for="searchKeyword">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
+                                            <label class="col-form-label" for="keyword-input">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
                                             <div class="controls">
                                                 <div class="input-group">
-                                                    <input class="form-control" id="searchKeyword" size="16" type="text">
-                                                    <input class="form-control" id="searchKeywordSaved" size="16" type="hidden">
+                                                    <input class="form-control" id="keyword-input" size="16" type="text">
+                                                    <input class="form-control" id="keyword-input-hidden" size="16" type="hidden">
                                                     <span class="input-group-append">
-                                                        <button id="searchButton" class="btn btn-secondary" type="button">검색</button>
+                                                        <button id="search-button" class="btn btn-secondary" type="button">검색</button>
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div id="grid"></div>
+                                            <table class="table table-responsive-sm table-striped table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>고객명</th>
+                                                    <th>종류</th>
+                                                    <th>전화번호</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="customer-list">
+                                                <tr th:replace="customer/search/customer-row::customer-row(${customers})"></tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <div class="form-group">
                                             <div id="tui-pagination-container" class="tui-pagination"></div>
@@ -37,100 +48,9 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-7 col-lg-8">
-                                <div id="customer-card" class="card">
-                                    <div class="card-header">상세 정보</div>
-                                    <div class="card-body">고객 목록에서 선택한 고객의 상세 정보가 표시됩니다.</div>
-                                    <div class="card-body">
-                                        <form class="form-horizontal" id="item-form">
-                                            <div class="form-group row">
-                                                <div class="col-md-4">
-                                                    <div id="current-profile-image" class="mt-3">
-                                                        <img id="profile-img" class="img-fluid float-left rounded img-thumbnail"/>
-                                                        <input id="profileImage" type="hidden" name="profileImg">
-                                                    </div>
-                                                    <div id="new-profile-image" class="mt-3"></div>
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" id="profile-image-file">
-                                                        <label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>
-                                                    </div>
-                                                    <div id="new-profile-image-control" class="mt-3">
-                                                        <button type="button" class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
-                                                        <button type="button" class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
-                                                        <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
-                                                    </div>
-                                                    <div id="cropped-new-profile-image" class="mt-3"></div>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">고객 번호</label>
-                                                        <div class="col-md-9">
-                                                            <p id="customer-id" class="form-control-static"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label" for="name-input">고객 명</label>
-                                                        <div class="col-md-9">
-                                                            <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">가족</label>
-                                                        <div class="col-md-9">
-                                                            <p id="family-p" class="form-control-static" style="white-space: pre-line"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="type-select">종류</label>
-                                                <div class="col-md-9">
-                                                    <select class="form-control js-example-placeholder-single" id="type-select" name="type">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="telNo-input">전화번호</label>
-                                                <div class="col-md-9 input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <svg class="c-icon">
-                                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
-                                                            </svg>
-                                                        </span>
-                                                    </span>
-                                                    <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="date-input">가입일</label>
-                                                <div class="col-md-9">
-                                                    <input class="form-control" id="date-input" type="date" name="date-input" placeholder="date">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="tags-input">태그</label>
-                                                <div class="col-md-9">
-                                                    <div id="whitelist" hidden></div>
-                                                    <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="bigo-input">비고</label>
-                                                <div class="col-md-9">
-                                                    <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입려하세요"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label" for="history-grid">구매 이력</label>
-                                                <div class="col-md-9">
-                                                    <div id="history-grid"></div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-block btn-primary" type="button" id="submit-button">저장</button>
+                                <div id="customer-card">
+                                    <div th:if="${customerForm != null}">
+                                        <div th:replace="customer/search/customer-card::customer-card(${customerForm})"></div>
                                     </div>
                                 </div>
                             </div>
@@ -164,6 +84,81 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
     <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
-    <script src="/js/customer/main.js"></script>
+    <script th:inline="javascript" type="application/javascript">
+        let Pagination;
+        let resetPage = false;
+        $(function(){
+            Pagination = new tui.Pagination(document.getElementById('tui-pagination-container'), {
+                totalItems : 0,
+                itemsPerPage : 10,
+                visiblePages : 5,
+                centerAlign : true
+            });
+
+            Pagination.on("afterMove", function (e){
+                var currentPage = e.page;
+                moveCustomerListPage(currentPage);
+            });
+
+            $("#keyword-input").on("keyup", function(e){
+                if (e.keyCode == 13)
+                {
+                    searchCustomers();
+                }
+            });
+
+            $("#search-button").on("click", function(e){
+                searchCustomers();
+            });
+
+            function searchCustomers ()
+            {
+                var searchKeyword = $("#keyword-input").val();
+                $("#keyword-input-hidden").val(searchKeyword);
+
+                if(searchKeyword == undefined || searchKeyword == "")
+                {
+                    alert("검색어를 입력해주세요.");
+                    return;
+                }
+                resetPage = true;
+
+                $.ajax({
+                    url : "/customer/customers",
+                    type : "GET",
+                    data : {"keyword" : searchKeyword, "page" : 0, "size" : 10}
+                }).done((data, textStatus, jqXHR) => {
+                    var responseText = jqXHR.responseText;
+                    $("#customer-list").replaceWith(responseText);
+                    $("#customer-card").empty();
+                });
+            }
+            function moveCustomerListPage (movePage)
+            {
+                var searchKeyword = $("#keyword-input-hidden").val();
+                resetPage = false;
+                $.ajax({
+                    url : "/customer/customers",
+                    type : "GET",
+                    data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 10}
+                }).done((data, textStatus, jqXHR) => {
+                    var responseText = jqXHR.responseText;
+                    $("#customer-list").replaceWith(responseText);
+                    $("#customer-card").empty();
+                });
+            }
+        });
+
+        function openCustomerCard (id)
+        {
+            $.ajax({
+                url : "/customer/search/" + id,
+                type : "GET"
+            }).done((data, textStatus, jqXHR) => {
+                var responseText = jqXHR.responseText;
+                $("#customer-card").replaceWith(responseText);
+            });
+        }
+    </script>
 </body>
 </html>
