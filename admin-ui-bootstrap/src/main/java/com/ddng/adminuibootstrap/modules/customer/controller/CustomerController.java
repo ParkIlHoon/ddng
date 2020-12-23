@@ -13,6 +13,7 @@ import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -100,6 +101,40 @@ public class CustomerController
         model.addAttribute("customerTypes", customerTypes);
         model.addAttribute("customerTags", customerTags);
         return "customer/search/main :: #customer-card";
+    }
+
+    /**
+     * 고객 태그 추가 요청
+     * @param id 고객 아이디
+     * @param dto 추가 태그 dto
+     * @param model
+     * @return
+     * @throws JSONException
+     */
+    @PostMapping("/{id}/tags/add")
+    public ResponseEntity customerTagAddAction (@PathVariable("id") Long id,
+                                                @RequestBody CustomerTagDto dto,
+                                                Model model) throws JSONException
+    {
+        customerTemplate.addCustomerTag(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 고객 태그 제거 요청
+     * @param id 고객 아이디
+     * @param dto 제거 태그 dto
+     * @param model
+     * @return
+     * @throws JSONException
+     */
+    @PostMapping("/{id}/tags/remove")
+    public ResponseEntity customerTagRemoveAction (@PathVariable("id") Long id,
+                                                @RequestBody CustomerTagDto dto,
+                                                Model model) throws JSONException
+    {
+        customerTemplate.removeCustomerTag(id, dto);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -255,6 +290,8 @@ public class CustomerController
         model.addAttribute("message", familySettingForm.getName() + " 가족의 설정 내용이 정상적으로 변경되었습니다.");
         return "customer/family/main";
     }
+
+
 
     /**
      * 고객 사진 요청

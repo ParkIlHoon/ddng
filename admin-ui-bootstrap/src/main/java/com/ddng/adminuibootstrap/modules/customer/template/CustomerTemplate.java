@@ -9,10 +9,11 @@ import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.parser.JSONParser;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -215,5 +216,55 @@ public class CustomerTemplate
         ParameterizedTypeReference<List<CustomerTagDto>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<CustomerTagDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
+    }
+
+    /**
+     * 고객에 태그를 추가한다.
+     * @param id 고객 아이디
+     * @param dto 추가할 태그 dto
+     * @throws JSONException
+     */
+    public void addCustomerTag(Long id, CustomerTagDto dto) throws JSONException
+    {
+        String apiPath = CUSTOMER_API_PATH + "/" + id + "/tag";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", dto.getTitle());
+
+        HttpEntity<String> entity = new HttpEntity<String>(jsonObject.toString(), headers);
+        restTemplate.exchange(targetUrl, HttpMethod.POST, entity, ResponseEntity.class);
+    }
+
+    /**
+     * 고객의 태그를 제거한다.
+     * @param id 고객 아이디
+     * @param dto 제거할 태그 dto
+     * @throws JSONException
+     */
+    public void removeCustomerTag(Long id, CustomerTagDto dto) throws JSONException
+    {
+        String apiPath = CUSTOMER_API_PATH + "/" + id + "/tag";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", dto.getTitle());
+
+        HttpEntity<String> entity = new HttpEntity<String>(jsonObject.toString(), headers);
+        restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, ResponseEntity.class);
     }
 }
