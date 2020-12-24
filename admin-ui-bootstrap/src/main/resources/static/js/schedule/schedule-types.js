@@ -53,52 +53,6 @@ function ScheduleType()
 }
 
 /**
- * 스케쥴 타입 초기화 함수
- * @param data 초기화 데이터
- */
-function initializeScheduleType (data)
-{
-    ScheduleTypes = [];
-
-    for (var idx = 0; idx < data.length; idx++)
-    {
-        var typeId = data[idx].id;
-        var typeName = data[idx].name;
-        var typeColor = data[idx].color;
-
-        var newType = new ScheduleType();
-        newType.id = typeId;
-        newType.name = typeName;
-        newType.bgColor = typeColor;
-        newType.borderColor = typeColor;
-        newType.dragBgColor = typeColor;
-
-        addScheduleType(newType);
-    }
-
-    var calendarList = document.getElementById('calendarList');
-    var html = [];
-    ScheduleTypes.forEach(function(scheduleType) {
-        html.push('<div class="lnb-calendars-item"><label>' +
-            '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + scheduleType.id + '" checked>' +
-            '<span style="border-color: ' + scheduleType.borderColor + '; background-color: ' + scheduleType.borderColor + ';"></span>' +
-            '<span>' + scheduleType.name + '</span>' +
-            '</label></div>'
-        );
-    });
-    calendarList.innerHTML = html.join('\n');
-}
-
-/**
- * 스케쥴 타입을 추가한다.
- * @param type 추가할 스케쥴 타입
- */
-function addScheduleType(type)
-{
-    ScheduleTypes.push(type);
-}
-
-/**
  * 스케쥴 타입을 찾는다.
  * @param id 찾을 스케쥴 타입의 아이디
  * @returns {*|ScheduleType}
@@ -114,16 +68,4 @@ function findScheduleType(id)
     });
 
     return found || ScheduleTypes[0];
-}
-
-function hexToRGBA(hex)
-{
-    var radix = 16;
-    var r = parseInt(hex.slice(1, 3), radix),
-        g = parseInt(hex.slice(3, 5), radix),
-        b = parseInt(hex.slice(5, 7), radix),
-        a = parseInt(hex.slice(7, 9), radix) / 255 || 1;
-    var rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
-
-    return rgba;
 }

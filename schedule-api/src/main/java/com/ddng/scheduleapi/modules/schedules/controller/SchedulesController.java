@@ -1,8 +1,8 @@
 package com.ddng.scheduleapi.modules.schedules.controller;
 
-import com.ddng.scheduleapi.modules.schedules.domain.CalendarType;
 import com.ddng.scheduleapi.modules.schedules.domain.ScheduleType;
 import com.ddng.scheduleapi.modules.schedules.domain.Schedules;
+import com.ddng.scheduleapi.modules.schedules.dto.ScheduleTypeDto;
 import com.ddng.scheduleapi.modules.schedules.dto.SchedulesDto;
 import com.ddng.scheduleapi.modules.schedules.service.SchedulesService;
 import com.ddng.scheduleapi.modules.tag.domain.Tag;
@@ -99,12 +99,7 @@ public class SchedulesController
         List returnList = new ArrayList();
         for (ScheduleType type : ScheduleType.values())
         {
-            Map row = new HashMap();
-            row.put("id", type.name());
-            row.put("name", type.getName());
-            row.put("color", type.getColor());
-
-            returnList.add(row);
+            returnList.add(new ScheduleTypeDto(type));
         }
         return ResponseEntity.ok(returnList);
     }

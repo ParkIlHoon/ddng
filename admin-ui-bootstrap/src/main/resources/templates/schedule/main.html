@@ -33,6 +33,16 @@
                                                 </div>
                                             </div>
                                             <div id="calendarList" class="lnb-calendars-d1">
+                                                <!-- 스케쥴 타입 목록 시작 -->
+                                                <div class="lnb-calendars-item" th:each="type : ${scheduleTypes}">
+                                                    <label>
+                                                        <input type="checkbox" class="tui-full-calendar-checkbox-round" checked
+                                                            th:value="${type.getId()}">
+                                                        <span th:style="'border-color : ' + ${type.getColor()} + '; background-color : ' + ${type.getColor()} + ';'"></span>
+                                                        <span th:text="${type.getName()}"></span>
+                                                    </label>
+                                                </div>
+                                                <!-- 스케쥴 타입 목록 끝 -->
                                             </div>
                                         </div>
                                     </div>
@@ -93,11 +103,11 @@
 
 <div th:replace="schedule/popup.html::scheduleModal"></div>
 
-<link href="/node_modules/tui-calendar/dist/tui-calendar.css" rel="stylesheet">
-<link href="/node_modules/tui-date-picker/dist/tui-date-picker.css" rel="stylesheet">
-<link href="/node_modules/tui-time-picker/dist/tui-time-picker.css" rel="stylesheet">
+<link rel="stylesheet" href="/node_modules/tui-calendar/dist/tui-calendar.css">
+<link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+<link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
 <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css" />
 <script th:replace="fragments.html::script"></script>
 <script src="/node_modules/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
 <script src="/node_modules/tui-time-picker/dist/tui-time-picker.js"></script>
@@ -106,9 +116,47 @@
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="/node_modules/select2/dist/js/select2.min.js"></script>
 <script src="/js/schedule/schedule-types.js"></script>
 <script src="/js/schedule/schedules.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    var g_popupSelect = [];
+    var g_popupWhitelist = [];
+    $(function(){
+        /*<![CDATA[*/
+
+        /*[# th:each="type : ${scheduleTypes}"]*/
+        var typeId = /*[[${type.getId()}]]*/
+        var typeName = /*[[${type.getName()}]]*/
+        var typeColor = /*[[${type.getColor()}]]*/
+
+        var newType = new ScheduleType();
+        newType.id = typeId;
+        newType.name = typeName;
+        newType.bgColor = typeColor;
+        newType.borderColor = typeColor;
+        newType.dragBgColor = typeColor;
+
+        ScheduleTypes.push(newType);
+        g_popupSelect.push({
+            id : typeId,
+            text : typeName,
+            color : typeColor
+        });
+        /*[/]*/
+
+        /*[# th:each="tag : ${scheduleTags}"]*/
+        g_popupWhitelist.push({
+           value : /*[[${tag.getTitle()}]]*/
+        });
+        /*[/]*/
+
+        /*]]>*/
+
+        // 스케쥴 팝업 초기화
+        initializePopup();
+    });
+</script>
 <script src="/js/schedule/popup.js"></script>
 <script src="/js/schedule/main.js"></script>
 </body>

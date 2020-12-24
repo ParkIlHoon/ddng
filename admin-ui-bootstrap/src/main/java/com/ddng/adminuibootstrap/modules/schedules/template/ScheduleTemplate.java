@@ -2,7 +2,12 @@ package com.ddng.adminuibootstrap.modules.schedules.template;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
+import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
+import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTypeDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,6 +23,7 @@ import java.util.List;
 public class ScheduleTemplate
 {
     private static final String SCHEDULE_API_PATH = "/schedules";
+    private static final String TAG_API_PATH = "/tags";
 
     private final RestTemplate restTemplate;
     private final ServiceProperties serviceProperties;
@@ -55,15 +61,47 @@ public class ScheduleTemplate
                 .build()
                 .encode()
                 .toUri();
-        List forObject = restTemplate.getForObject(targetUrl, List.class);
 
-        if (forObject.size() > 0)
-        {
-            //TODO 스케쥴 정보 DTO 변환
-            //TODO 사용자 정보 조회 처리
+        ParameterizedTypeReference<List<ScheduleDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<ScheduleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
 
-        }
+        return exchange.getBody();
+    }
 
-        return null;
+    /**
+     * 스케쥴 타입 목록을 조회한다.
+     * @return
+     */
+    public List<ScheduleTypeDto> getScheduleTypes()
+    {
+        String apiPath = SCHEDULE_API_PATH + "/types";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<ScheduleTypeDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<ScheduleTypeDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+
+        return exchange.getBody();
+    }
+
+    /**
+     * 스케쥴 태그 목록을 조회한다.
+     * @return
+     */
+    public List<ScheduleTagDto> getScheduleTags()
+    {
+        String apiPath = TAG_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<ScheduleTagDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<ScheduleTagDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
     }
 }

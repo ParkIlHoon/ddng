@@ -49,7 +49,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="type-select">종류</label>
                                             <div class="col-md-10">
-                                                <select class="form-control js-example-placeholder-single" id="type-select" name="type"
+                                                <select class="form-control js-example-placeholder-single select2" id="type-select" name="type"
                                                     th:field="*{type}" required>
                                                     <option value=""></option>
                                                 </select>
@@ -69,18 +69,20 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="telNo-input">전화번호</label>
-                                            <div class="col-md-10 input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <svg class="c-icon">
-                                                            <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
-                                                        </svg>
-                                                    </span>
+                                            <div class="col-md-10">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <svg class="c-icon">
+                                                                <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-phone"></use>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)"
+                                                        th:field="*{telNo}" required>
+                                                    <div class="invalid-feedback">전화번호를 입력하세요 (예: 010-1234-5678)</div>
+                                                    <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
                                                 </div>
-                                                <input class="form-control" id="telNo-input" name="telNo" type="tel" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" placeholder="전화번호를 입력하세요(필수)"
-                                                    th:field="*{telNo}" required>
-                                                <div class="invalid-feedback">전화번호를 입력하세요 (예: 010-1234-5678)</div>
-                                                <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">

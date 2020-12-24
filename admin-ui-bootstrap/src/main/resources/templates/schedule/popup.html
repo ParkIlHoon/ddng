@@ -11,20 +11,23 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="modal-schedule-form">
+                <form class="form-horizontal needs-validation" id="modal-schedule-form" novalidate>
                     <input type="hidden" id="schedule-id-input" name="id">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="name-input">스케쥴 이름</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="name-input" type="text" name="name" placeholder="스케쥴 이름을 입력하세요.">
+                            <input class="form-control" id="name-input" type="text" name="name" placeholder="스케쥴 이름을 입력하세요"
+                                required lang="ko" minlength="1" maxlength="200">
+                            <div class="invalid-feedback">스케쥴 이름을 입력하세요 (1~200자)</div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="scheduleType-select">스케쥴 종류</label>
                         <div class="col-md-9">
-                            <select class="form-control js-example-templating" id="scheduleType-select" name="scheduleType">
+                            <select class="form-control js-example-templating select2" id="scheduleType-select" name="scheduleType" required>
                                 <option></option>
                             </select>
+                            <div class="invalid-feedback">스케쥴 종류를 선택하세요</div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -36,21 +39,24 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="stt-date-input">일정 시작일시</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="stt-date-input" type="datetime-local" name="startDate" placeholder="시작일">
+                            <input class="form-control" id="stt-date-input" type="datetime-local" name="startDate" placeholder="시작일" required>
+                            <div class="invalid-feedback">스케쥴의 시작일시를 입력하세요</div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="end-date-input">일정 종료일시</label>
                         <div class="col-md-9">
-                            <input class="form-control" id="end-date-input" type="datetime-local" name="endDate" placeholder="시작일">
+                            <input class="form-control" id="end-date-input" type="datetime-local" name="endDate" placeholder="종료일" required>
+                            <div class="invalid-feedback">스케쥴의 시작일시를 입력하세요</div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="customer-select">고객</label>
                         <div class="col-md-9">
-                            <select class="form-control js-example-templating" id="customer-select" name="customerId">
+                            <select class="form-control js-example-templating select2" id="customer-select" name="customerId" required>
                                 <option></option>
                             </select>
+                            <div class="invalid-feedback">스케쥴의 고객을 선택하세요</div>
                         </div>
                     </div>
                     <div class="form-group row">

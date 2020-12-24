@@ -137,6 +137,14 @@ public class CustomerController
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 고객 정보 수정 요청
+     * @param id 고객 아이디
+     * @param editForm 수정 내용
+     * @param errors
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping("/edit/{id}")
     public String editCustomerAction (@PathVariable("id") Long id,
                                       @Valid @ModelAttribute EditForm editForm,
@@ -145,7 +153,7 @@ public class CustomerController
     {
         if (errors.hasErrors())
         {
-            return "customer/search/main";
+            return "customer/search/main::#customer-card";
         }
         customerTemplate.updateCustomer(id, editForm);
         redirectAttributes.addFlashAttribute("alertType", "success");

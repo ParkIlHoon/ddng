@@ -273,7 +273,6 @@
             // Loop over them and prevent submission
             Array.prototype.filter.call(forms, function (form) {
                 form.addEventListener('submit', function (event) {
-                    debugger;
                     var button = event.submitter;
                     var originalHtml = button.innerHTML;
 

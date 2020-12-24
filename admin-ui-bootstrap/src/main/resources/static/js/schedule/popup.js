@@ -4,30 +4,23 @@ var g_guide;
  * 스케쥴 등록 팝업 초기화
  * @param data 초기 데이터
  */
-function initializePopup (data)
+function initializePopup ()
 {
-    // 스케쥴 팝업 select 용 데이터 가공
-    var selectArr = new Array();
-    for (var idx = 0; idx < data.length; idx++)
-    {
-        selectArr.push({"id" : data[idx].id , "text" : data[idx].name, "color" : data[idx].color});
-    }
-    function formatTypes (type) {
-        if (!type.id) {
-            return type.text;
-        }
-        var $type = $(
-            "<span><i class=\"c-icon cil-circle\" style=\"background-color: " + type.color + ";\"></i>&nbsp;&nbsp;" + type.text + "</span>"
-        );
-        return $type;
-    }
     // 스케쥴 팝업 select 구성
     $("#scheduleType-select").select2({
         placeholder: "스케쥴 종류를 선택해주세요.",
         allowClear: true,
         width : "100%",
-        data : selectArr,
-        templateResult: formatTypes
+        data : g_popupSelect,
+        templateResult: function (type){
+            if (!type.id) {
+                return type.text;
+            }
+            var $type = $(
+                "<span><i class=\"c-icon cil-circle\" style=\"background-color: " + type.color + ";\"></i>&nbsp;&nbsp;" + type.text + "</span>"
+            );
+            return $type;
+        }
     });
     // 스케쥴 팝업 select 구성
     $("#customer-select").select2({
@@ -36,9 +29,9 @@ function initializePopup (data)
         width : "100%",
         minimumInputLength : 1,
         ajax: {
-            url: SERVER_URL + "/customer-api/customer",
+            url: "/schedule/customers",
             method: "GET",
-            data : function (params) {return { keyword: params.term , page : params.page || 0};},
+            data : function (params) {return { keyword: params.term , page : params.page || 0 , size : 10};},
             processResults: function (data, params) {
                 params.page = data.number || 0;
                 var returnArr = [];
@@ -54,25 +47,19 @@ function initializePopup (data)
     });
     // 스케쥴 팝업 tagify 구성
     var tagInput = document.querySelector("#tags-input");
-    $.ajax({
-        url : SERVER_URL + "/schedule-api/tag",
-        method : "GET",
-    }).done((data, textStatus, jqXHR) => {
-        var tagData = []
-        data.forEach(tag => tagData.push({"value" : tag.title}));
-        g_tagify = new Tagify(tagInput, {
-            pattern: /^.{0,20}$/,
-            whitelist : tagData,
-            dropdown : {
-                position: "input",
-                enabled: 1, // suggest tags after a single character input
-                fuzzySearch: false
-            }, // map tags
-            backspace : false
-        });
-        g_tagify.DOM.input.classList.add('form-control');
-        g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
+    g_tagify = new Tagify(tagInput, {
+        pattern: /^.{0,20}$/,
+        whitelist : g_popupWhitelist,
+        dropdown : {
+            position: "input",
+            enabled: 1, // suggest tags after a single character input
+            fuzzySearch: false
+        }, // map tags
+        backspace : false
     });
+    g_tagify.DOM.input.classList.add('form-control');
+    g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
+
     // 팝업이 닫히면 가이드라인 제거
     $('#scheduleModal').on('hidden.bs.modal', function (e) {
         if (g_guide != undefined)
@@ -127,6 +114,27 @@ function openNewPopup (event)
  * 저장 버튼 클릭 이벤트 핸들러
  */
 $("#save-schedule-button").on("click", function (e){
+
+    var form = document.getElementById('modal-schedule-form');
+    var button = document.getElementById('save-schedule-button');
+    var originalHtml = button.innerHTML;
+
+    button.disabled = true;
+    button.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...";
+
+    if (form.checkValidity() === false)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        button.disabled = false;
+        button.innerHTML = originalHtml;
+    }
+    form.classList.add('was-validated');
+    if (form.checkValidity() === false)
+    {
+        return;
+    }
+
     var data = $("#modal-schedule-form").serializeObject();
     var startDate = data.startDate;
     var tagData = [];
@@ -171,7 +179,7 @@ function openEditPopup (event)
     if (event.schedule.raw.customerId != undefined && event.schedule.raw.customerId != "")
     {
         $.ajax({
-            url : SERVER_URL + "/customer-api/customer/" + event.schedule.raw.customerId,
+            url : "/schedule/customers/" + event.schedule.raw.customerId,
             method : "GET",
         }).done((data, textStatus, jqXHR) => {
             var newOption = new Option(data.name + "(" + data.typeName + " / " + data.telNo + ")", data.id, false, true);
@@ -222,7 +230,29 @@ function openEditPopup (event)
 /**
  * 수정 버튼 클릭 이벤트 핸들러
  */
-$("#update-schedule-button").on("click", function (e){
+$("#update-schedule-button").on("click", function (e)
+{
+
+    var form = document.getElementById('modal-schedule-form');
+    var button = document.getElementById('save-schedule-button');
+    var originalHtml = button.innerHTML;
+
+    button.disabled = true;
+    button.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n  저장중...";
+
+    if (form.checkValidity() === false)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        button.disabled = false;
+        button.innerHTML = originalHtml;
+    }
+    form.classList.add('was-validated');
+    if (form.checkValidity() === false)
+    {
+        return;
+    }
+
     var scheduleId = $("#schedule-id-input").val();
     var data = $("#modal-schedule-form").serializeObject();
     var startDate = data.startDate;
@@ -318,7 +348,7 @@ function setSchedules()
     }
 
     $.ajax({
-        url : SERVER_URL + "/schedule-api/schedules",
+        url : "/schedule/search",
         type : "GET",
         data : {"startDate" : startDate, "endDate" : endDate}
     }).done((data, textStatus, jqXHR) => {
