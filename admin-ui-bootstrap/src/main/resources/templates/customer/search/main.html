@@ -10,6 +10,10 @@
             <main class="c-main">
                 <div class="container-fluid">
                     <div class="fade-in">
+                        <div th:if="${not #strings.isEmpty(message)}">
+                            <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-sm-6 col-md-5 col-lg-4">
                                 <div class="card">
@@ -63,9 +67,6 @@
     </div>
     <link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
     <link href="/node_modules/tui-pagination/dist/tui-pagination.css" rel="stylesheet">
-    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link  href="/node_modules/cropperjs/dist/cropper.min.css" rel="stylesheet">
     <style>
         .tagify__input{
             margin: 0;
@@ -79,11 +80,6 @@
     <script th:replace="fragments.html::script"></script>
     <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
     <script src="/node_modules/tui-pagination/dist/tui-pagination.js"></script>
-    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
-    <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
     <script th:inline="javascript" type="application/javascript">
         let Pagination;
         let resetPage = false;

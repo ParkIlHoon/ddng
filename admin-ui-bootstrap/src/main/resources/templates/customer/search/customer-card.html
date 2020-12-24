@@ -32,6 +32,7 @@
                             <label class="col-md-3 col-form-label">고객 번호</label>
                             <div class="col-md-9">
                                 <p id="customer-id" class="form-control-static"></p>
+                                <input type="hidden" th:field="*{id}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -82,16 +83,14 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="date-input">가입일</label>
                     <div class="col-md-9">
-                        <input class="form-control" id="date-input" type="date" name="date-input" th:field="*{joinDate}" required>
-                        <div class="invalid-feedback">가입일을 입력하세요</div>
-                        <small class="text-danger" th:if="${#fields.hasErrors('joinDate')}" th:errors="*{joinDate}">joinDate Error</small>
+                        <input class="form-control" id="date-input" type="date" name="date-input" th:value="${#temporals.format(customerForm.getJoinDate(), 'yyyy-MM-dd')}" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="tags-input">태그</label>
                     <div class="col-md-9">
                         <div id="whitelist" hidden></div>
-                        <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
+                        <input id="tags-input" type="text" aria-describedby="tagHelp"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -113,7 +112,14 @@
             <button class="btn btn-block btn-primary" type="submit">저장</button>
         </div>
     </form>
-<!--    <script src="/js/customer/main.js"></script>-->
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <link rel="stylesheet" href="/node_modules/cropperjs/dist/cropper.min.css">
+    <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/select2/dist/js/select2.full.js"></script>
+    <script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
+    <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript">
         (function () {
             'use strict';

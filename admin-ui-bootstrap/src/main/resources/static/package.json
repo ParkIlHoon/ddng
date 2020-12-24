@@ -90,6 +90,7 @@
     "jsbarcode": "^3.11.3",
     "moment": "^2.29.1",
     "perfect-scrollbar": "1.5.0",
+    "select2": "^4.0.13",
     "tui-calendar": "^1.12.14",
     "tui-chart": "^3.11.2",
     "tui-grid": "^4.15.1",

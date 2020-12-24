@@ -7,6 +7,7 @@
     <td th:text="${customer.getName()}"></td>
     <td th:text="${customer.getTypeName()}"></td>
     <td th:text="${customer.getTelNo()}"></td>
+    <script th:replace="fragments.html::script"></script>
     <script th:inline="javascript" type="application/javascript">
         $(function(){
             /*<![CDATA[*/

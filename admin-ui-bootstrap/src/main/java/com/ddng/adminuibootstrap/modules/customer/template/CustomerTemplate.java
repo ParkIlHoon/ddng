@@ -6,6 +6,7 @@ import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
+import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import lombok.RequiredArgsConstructor;
@@ -266,5 +267,22 @@ public class CustomerTemplate
 
         HttpEntity<String> entity = new HttpEntity<String>(jsonObject.toString(), headers);
         restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, ResponseEntity.class);
+    }
+
+    /**
+     * 고객 정보를 수정한다
+     * @param id 고객 아이디
+     * @param editForm 수정할 정보
+     */
+    public void updateCustomer(Long id, EditForm editForm)
+    {
+        String apiPath = CUSTOMER_API_PATH + "/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        restTemplate.put(targetUrl, editForm);
     }
 }

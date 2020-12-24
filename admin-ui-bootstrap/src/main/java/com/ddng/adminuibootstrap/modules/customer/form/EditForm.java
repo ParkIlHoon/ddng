@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class EditForm
     /**
      * 고객 아이디
      */
-    @NotBlank
+    @NotNull
     private Long id;
 
     /**
