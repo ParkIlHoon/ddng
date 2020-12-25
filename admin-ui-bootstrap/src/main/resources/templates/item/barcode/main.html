@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -15,7 +16,13 @@
                         <div class="card-body">새로운 바코드를 생성합니다.</div>
                         <div class="card-body">
                             <div class="row" id="barcode-row">
-
+                                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" style="text-align: center"
+                                     th:each="barcode : ${barcodes}">
+                                    <img class="barcode" jsbarcode-format="CODE128"
+                                         th:attr="jsbarcode-value=${barcode}"
+                                         jsbarcode-textmargin="0"
+                                         jsbarcode-fontoptions="bold" />
+                                </div>
                             </div>
                         </div>
 <!--                        <div class="card-footer">-->
@@ -30,6 +37,10 @@
 </div>
 <script th:replace="fragments.html::script"></script>
 <script src="/node_modules/jsbarcode/dist/JsBarcode.all.js"></script>
-<script src="/js/item/barcode.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    $(function(){
+        JsBarcode(".barcode").init();
+    });
+</script>
 </body>
 </html>

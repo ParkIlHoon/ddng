@@ -159,4 +159,24 @@ public class ItemTemplate
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, registerForm, String.class);
     }
+
+    /**
+     * 바코드를 생성한다.
+     * @return
+     */
+    public List<String> getBarcodes(int count)
+    {
+        String apiPath = ITEM_API_PATH + "/barcode";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .queryParam("count", count)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<String>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<String>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+
+        return exchange.getBody();
+    }
 }

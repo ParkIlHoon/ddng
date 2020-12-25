@@ -168,6 +168,9 @@ public class ItemController
     @GetMapping("/barcode")
     public String barcodeForm (Model model)
     {
+        List<String> barcodes = itemTemplate.getBarcodes(12);
+
+        model.addAttribute("barcodes", barcodes);
         return "item/barcode/main";
     }
 }
