@@ -10,14 +10,20 @@
         <main class="c-main">
             <div class="container-fluid">
                 <div class="fade-in">
+                    <div th:if="${not #strings.isEmpty(message)}">
+                        <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">상품 등록</div>
                         <div class="card-body">새로운 상품을 등록합니다.</div>
-                        <div class="card-body">
-                            <form class="form-horizontal" id="new-item-form">
+                        <form class="form-horizontal needs-validation" id="new-item-form" action="#" method="post"
+                            th:action="@{/item/register}" th:object="${registerForm}" novalidate>
+                            <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-md-4">
-                                        <input id="itemImage" type="hidden" name="itemImg">
+                                        <input id="itemImage" type="hidden" name="itemImg"
+                                            th:field="*{itemImg}">
                                         <div id="new-item-image" class="mt-3"></div>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="item-image-file">
@@ -34,21 +40,30 @@
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="name-input">상품명</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" id="name-input" type="text" name="name" placeholder="상품명을 입력하세요(필수)">
+                                                <input class="form-control" id="name-input" type="text" name="name" placeholder="상품명을 입력하세요(필수)"
+                                                       th:field="*{name}" minlength="1" maxlength="200" required>
+                                                <div class="invalid-feedback">상품명을 입력하세요 (1~200자)</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="barcode-input">바코드</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" id="barcode-input" type="number" name="barcode" placeholder="바코드를 입력하세요">
+                                                <input class="form-control" id="barcode-input" type="number" name="barcode" placeholder="바코드를 입력하세요"
+                                                       th:field="*{barcode}" required>
+                                                <div class="invalid-feedback">바코드를 입력하세요</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('barcode')}" th:errors="*{barcode}">barcode Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="type-select">종류</label>
                                             <div class="col-md-10">
-                                                <select class="form-control js-example-placeholder-single" id="type-select" name="type">
-                                                    <option></option>
+                                                <select class="form-control js-example-placeholder-single select2" id="type-select" name="type"
+                                                        th:field="*{type}" required>
+                                                    <option value=""></option>
                                                 </select>
+                                                <div class="invalid-feedback">종류를 선택하세요</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -57,34 +72,44 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">₩</span>
                                                 </div>
-                                                <input class="form-control" id="price-input" name="price" type="number" pattern="[0-9]" placeholder="판매가를 입력하세요(필수)">
+                                                <input class="form-control" id="price-input" name="price" type="number" pattern="[0-9]" placeholder="판매가를 입력하세요(필수)"
+                                                       th:field="*{price}" min="0" required>
+                                                <div class="invalid-feedback">판매가를 입력하세요</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">price Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="unit-input">단위</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" id="unit-input" type="text" name="unit" placeholder="단위를 입력하세요">
+                                                <input class="form-control" id="unit-input" type="text" name="unit" placeholder="단위를 입력하세요"
+                                                       th:field="*{unit}">
+                                                <div class="invalid-feedback">단위를 입력하세요</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}">unit Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="itemQuantity-input">재고</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" id="itemQuantity-input" type="number" name="itemQuantity" placeholder="재고를 입력하세요">
+                                                <input class="form-control" id="itemQuantity-input" type="number" name="itemQuantity" placeholder="재고를 입력하세요"
+                                                       th:field="*{itemQuantity}">
+                                                <div class="invalid-feedback">재고를 입력하세요</div>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('itemQuantity')}" th:errors="*{itemQuantity}">itemQuantity Error</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label" for="stamp-input">쿠폰 적립 여부</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" id="stamp-input" type="checkbox" name="stamp" value="true">
+                                                <input class="form-control" id="stamp-input" type="checkbox" name="stamp" value="true"
+                                                       th:field="*{stamp}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="card-footer">
-                            <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="button">등록</button>
-                        </div>
+                            </div>
+                            <div class="card-footer">
+                                <button id="submit-button" class="btn btn-primary btn-lg btn-block" type="submit">등록</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -92,13 +117,42 @@
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<link  href="/node_modules/cropperjs/dist/cropper.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css"/>
+<link rel="stylesheet" href="/node_modules/cropperjs/dist/cropper.min.css">
 <script th:replace="fragments.html::script"></script>
+<script th:replace="fragments.html::form-validation"></script>
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="/node_modules/select2/dist/js/select2.min.js"></script>
 <script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
 <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
 <script src="/js/item/new-item.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    $(function(){
+        let itemTypes = [];
+        /*<![CDATA[*/
+
+        /*[# th:each="row : ${types}"]*/
+        addItemType(/*[[${row.getId()}]]*/, /*[[${row.getText()}]]*/);
+        /*[/]*/
+
+        /*]]>*/
+
+        $("#type-select").select2({
+            language: "ko",
+            placeholder: "종류를 선택해주세요.(필수)",
+            allowClear: true,
+            width : "100%",
+            data : itemTypes
+        });
+
+        function addItemType (id, text)
+        {
+            itemTypes.push({
+                id : id,
+                text : text
+            });
+        }
+    });
+</script>
 </body>
 </html>

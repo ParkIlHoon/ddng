@@ -5,6 +5,7 @@ import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
+import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -141,5 +142,21 @@ public class ItemTemplate
                 .toUri();
 
         restTemplate.put(targetUrl, editForm);
+    }
+
+    /**
+     * 상품을 생성한다.
+     * @param registerForm 생성할 상품 정보
+     */
+    public void createItem(RegisterForm registerForm)
+    {
+        String apiPath = ITEM_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, registerForm, String.class);
     }
 }

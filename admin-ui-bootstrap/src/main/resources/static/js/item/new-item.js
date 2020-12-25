@@ -1,21 +1,4 @@
 $(function(){
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 초기 데이터 세팅
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 고객 종류
-    $.ajax({
-        url : SERVER_URL + "/sale-api/item/type",
-        type : "GET",
-    }).done((data, textStatus, jqXHR) => {
-        $("#type-select").select2({
-            placeholder: "상품 종류를 선택해주세요.",
-            allowClear: true,
-            width : "100%",
-            data : data
-        });
-    });
-
-
     cropper = '';
     let $confirmBtn = $("#confirm-button");
     let $resetBtn = $("#reset-button");
@@ -30,20 +13,6 @@ $(function(){
     $resetBtn.hide();
     $confirmBtn.hide();
 
-    $("#submit-button").on("click", function(e){
-        var data = $("#new-item-form").serializeObject();
-        data.stamp = document.getElementById("stamp-input").checked;
-
-        $.ajax({
-            dataType : "json",
-            contentType : "application/json; charset=utf-8",
-            method : "POST",
-            url : SERVER_URL + "/sale-api/item",
-            data : JSON.stringify(data)
-        }).always(function(data, status){
-            location.href = "/item/new";
-        });
-    });
     $("#item-image-file").change(function(e) {
         if (e.target.files.length === 1) {
             const reader = new FileReader();

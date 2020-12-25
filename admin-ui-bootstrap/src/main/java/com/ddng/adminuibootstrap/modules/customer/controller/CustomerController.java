@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -158,7 +159,7 @@ public class CustomerController
         customerTemplate.updateCustomer(id, editForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", editForm.getName() + " 고객 정보가 정상적으로 변경되었습니다.");
-        return "redirect:/customer/search/";
+        return "redirect:/customer/search";
     }
 
     /**
@@ -187,10 +188,20 @@ public class CustomerController
     @PostMapping("/register")
     public String registerAction (@Valid @ModelAttribute RegisterForm registerForm,
                                   Errors errors,
+                                  Model model,
                                   RedirectAttributes redirectAttributes) throws Exception
     {
         if (errors.hasErrors())
         {
+            String message = "";
+            List<ObjectError> allErrors = errors.getAllErrors();
+            for (ObjectError error : allErrors)
+            {
+                message += error.getDefaultMessage() + "\n";
+            }
+
+            model.addAttribute("alertType", "danger");
+            model.addAttribute("message", message);
             return "customer/register/main";
         }
         customerTemplate.createCustomer(registerForm);

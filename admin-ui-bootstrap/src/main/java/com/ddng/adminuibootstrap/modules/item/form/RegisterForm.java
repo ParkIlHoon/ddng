@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * <h1>상품 등록 폼 클래스</h1>
@@ -41,7 +42,7 @@ public class RegisterForm
     /**
      * 상품 판매가
      */
-    @NotBlank(message = "상품 가격은 반드시 입력해야합니다.")
+    @NotNull(message = "상품 가격은 반드시 입력해야합니다.")
     @Min(value = 0, message = "상품 가격은 최소 0원 입니다.")
     private int price;
 
