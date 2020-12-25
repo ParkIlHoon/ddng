@@ -1,7 +1,10 @@
 package com.ddng.adminuibootstrap.modules.item.template;
 
+import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
+import com.ddng.adminuibootstrap.modules.item.dto.ItemTypeDto;
+import com.ddng.adminuibootstrap.modules.item.form.EditForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -77,5 +80,66 @@ public class ItemTemplate
         });
 
         return exchange.getBody();
+    }
+
+    /**
+     * 상품 목록을 검색한다.
+     * @param keyword
+     * @param page
+     * @param size
+     * @return
+     */
+    public RestPageImpl<ItemDto> searchItemsWithPage(String keyword, int page, int size) 
+    {
+        String apiPath = ITEM_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .queryParam("keyword", keyword)
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<RestPageImpl<ItemDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<RestPageImpl<ItemDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+
+        return exchange.getBody();
+    }
+
+    /**
+     * 상품 종류 목록을 조회한다.
+     * @return
+     */
+    public List<ItemTypeDto> getTypes()
+    {
+        String apiPath = ITEM_API_PATH + "/types";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<ItemTypeDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<ItemTypeDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+
+        return exchange.getBody();
+    }
+
+    /**
+     * 상품 정보를 수정한다.
+     * @param id 수정할 상품의 아이디
+     * @param editForm 수정할 내용
+     */
+    public void updateItem(Long id, EditForm editForm)
+    {
+        String apiPath = ITEM_API_PATH + "/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        restTemplate.put(targetUrl, editForm);
     }
 }

@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.item.form;
 
+import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * <h1>상품 수정 폼 클래스</h1>
@@ -18,7 +20,6 @@ public class EditForm
     /**
      * 상품 아이디
      */
-    @NotBlank
     private Long id;
 
     /**
@@ -47,7 +48,7 @@ public class EditForm
     /**
      * 상품 판매가
      */
-    @NotBlank(message = "상품 가격은 반드시 입력해야합니다.")
+    @NotNull(message = "상품 가격은 반드시 입력해야합니다.")
     @Min(value = 0, message = "상품 가격은 최소 0원 입니다.")
     private int price;
 
@@ -65,4 +66,17 @@ public class EditForm
      * 적립 여부
      */
     private boolean stamp;
+
+    public EditForm(ItemDto item)
+    {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.itemImg = item.getItemImg();
+        this.barcode = item.getBarcode();
+        this.type = item.getType();
+        this.price = item.getPrice();
+        this.unit = item.getUnit();
+        this.itemQuantity = item.getItemQuantity();
+        this.stamp = item.isStamp();
+    }
 }

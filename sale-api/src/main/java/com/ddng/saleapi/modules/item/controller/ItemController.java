@@ -3,6 +3,7 @@ package com.ddng.saleapi.modules.item.controller;
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
+import com.ddng.saleapi.modules.item.dto.ItemTypeDto;
 import com.ddng.saleapi.modules.item.service.ItemService;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
@@ -74,19 +75,15 @@ public class ItemController
      * 상품 종류를 취득한다.
      * @return
      */
-    @GetMapping("/type")
+    @GetMapping("/types")
     public ResponseEntity getItemTypes ()
     {
-        List returnList = new ArrayList();
+        List<ItemTypeDto> returnList = new ArrayList();
         ItemType[] values = ItemType.values();
 
         for(ItemType type : values)
         {
-            HashMap row = new HashMap();
-            row.put("id", type.name());
-            row.put("text", type.getName());
-
-            returnList.add(row);
+            returnList.add(new ItemTypeDto(type));
         }
 
         return ResponseEntity.ok(returnList);

@@ -12,6 +12,7 @@ public class ItemDto
     private String type;
     private String barcode;
     private int price;
+    private String unit;
     private int itemQuantity;
     private boolean stamp;
     private String itemImg;

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<tr th:fragment="item-row(${items})"
+    th:each="item : ${items}" th:onclick="'openItemCard(' + ${item.getId()} + ');'">
+    <td th:text="${item.getName()}"></td>
+    <td th:text="${item.getTypeName()}"></td>
+    <td th:text="${#numbers.formatInteger(item.getPrice(), 3, 'COMMA')}"></td>
+    <script th:replace="fragments.html::script"></script>
+    <script th:inline="javascript" type="application/javascript">
+        $(function(){
+            /*<![CDATA[*/
+            if (resetPage)
+            {
+                Pagination.reset(/*[[${totalElements}]]*/);
+                resetPage = false;
+            }
+            /*]]>*/
+        });
+    </script>
+</tr>
+</html>
