@@ -1,6 +1,7 @@
 package com.ddng.adminuibootstrap.modules.schedules.dto;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -14,7 +15,9 @@ public class ScheduleDto
     private Long id;
     private String name;
     private String scheduleType;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime endDate;
     private boolean allDay;
     private Long customerId;

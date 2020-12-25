@@ -9,16 +9,17 @@ import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTypeDto;
+import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
 import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class ScheduleController
 
         model.addAttribute("scheduleTypes", scheduleTypes);
         model.addAttribute("scheduleTags", scheduleTags);
+        model.addAttribute("scheduleForm", new ScheduleForm());
         return "schedule/main";
     }
 
@@ -98,6 +100,58 @@ public class ScheduleController
 
         CustomerDto customer = customerTemplate.getCustomer(id);
         return ResponseEntity.ok(customer);
+    }
+
+    /**
+     * 스케쥴 신규 생성 요청
+     * @param scheduleForm 생성할 내용
+     * @param errors
+     * @return
+     */
+    @PostMapping("/add")
+    public ResponseEntity addScheduleAction (@Valid @RequestBody ScheduleForm scheduleForm,
+                                             Errors errors) throws Exception
+    {
+        if(errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        scheduleTemplate.createSchedule(scheduleForm);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 스케쥴 수정 요청
+     * @param id 스케쥴 아이디
+     * @param scheduleForm 수정할 내용
+     * @param errors
+     * @return
+     */
+    @PostMapping("/update/{id}")
+    public ResponseEntity updateScheduleAction (@PathVariable("id") Long id,
+                                                @Valid @RequestBody ScheduleForm scheduleForm,
+                                                Errors errors)
+    {
+        if(errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        scheduleTemplate.updateSchedule(id, scheduleForm);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 스케쥴 제거 요청
+     * @param id 스케쥴 아이디
+     * @return
+     */
+    @PostMapping("/remove/{id}")
+    public ResponseEntity removeScheduleAction (@PathVariable("id") Long id)
+    {
+        scheduleTemplate.deleteSchedule(id);
+        return ResponseEntity.ok().build();
     }
 
 }

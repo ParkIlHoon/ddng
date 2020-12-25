@@ -145,7 +145,7 @@ $("#save-schedule-button").on("click", function (e){
     data.tags = tagData;
     data.allDay = document.getElementById("isAllDay-check").checked;
     $.ajax({
-        url : SERVER_URL + "/schedule-api/schedules/",
+        url : "/schedule/add",
         method : "POST",
         dataType : "json",
         data : JSON.stringify(data),
@@ -171,8 +171,8 @@ function openEditPopup (event)
     $("#name-input").val(event.schedule.title);
     $("#scheduleType-select").val(event.schedule.calendarId).trigger('change');
     document.getElementById("isAllDay-check").checked = event.schedule.isAllDay;
-    $("#stt-date-input").val(moment(event.schedule.start.toDate()).format("YYYY-MM-DD\THH:mm:ss"));
-    $("#end-date-input").val(moment(event.schedule.end.toDate()).format("YYYY-MM-DD\THH:mm:ss"));
+    $("#stt-date-input").val(moment(event.schedule.start.toDate()).format("YYYY-MM-DD\THH:mm"));
+    $("#end-date-input").val(moment(event.schedule.end.toDate()).format("YYYY-MM-DD\THH:mm"));
     $("#bigo-input").val(event.schedule.body);
 
     // 고객
@@ -264,8 +264,8 @@ $("#update-schedule-button").on("click", function (e)
     data.tags = tagData;
     data.allDay = document.getElementById("isAllDay-check").checked;
     $.ajax({
-        url : SERVER_URL + "/schedule-api/schedules/" + scheduleId,
-        method : "PUT",
+        url : "/schedule/update/" + scheduleId,
+        method : "POST",
         dataType : "json",
         data : JSON.stringify(data),
         contentType : "application/json; charset=utf-8"
@@ -289,8 +289,8 @@ $("#delete-schedule-button").on("click", function (e){
         var data = $("#modal-schedule-form").serializeObject();
         var startDate = data.startDate;
         $.ajax({
-            url : SERVER_URL + "/schedule-api/schedules/" + scheduleId,
-            method : "DELETE",
+            url : "/schedule/remove/" + scheduleId,
+            method : "POST",
         }).always(function(){
             $('#scheduleModal').modal('hide');
             cal.setDate(new Date(startDate));

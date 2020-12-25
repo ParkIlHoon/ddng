@@ -63,10 +63,10 @@ public class SchedulesService
     {
         Schedules schedules = new Schedules();
         schedules.setName(dto.getName());
-        schedules.setType(dto.getScheduleType());
+        schedules.setType(dto.getType());
         schedules.setAllDay(dto.isAllDay());
-        schedules.setStartDate(LocalDateTime.parse(dto.getStartDate()));
-        schedules.setEndDate(LocalDateTime.parse(dto.getEndDate()));
+        schedules.setStartDate(dto.getStartDate());
+        schedules.setEndDate(dto.getEndDate());
         schedules.setCustomerId(dto.getCustomerId());
         schedules.setUserId(dto.getUserId());
         schedules.setBigo(dto.getBigo());
@@ -99,10 +99,10 @@ public class SchedulesService
     public Schedules updateSchedule(Schedules schedules, SchedulesDto.Put dto)
     {
         schedules.setName(dto.getName());
-        schedules.setType(dto.getScheduleType());
+        schedules.setType(dto.getType());
         schedules.setAllDay(dto.isAllDay());
-        schedules.setStartDate(LocalDateTime.parse(dto.getStartDate()));
-        schedules.setEndDate(LocalDateTime.parse(dto.getEndDate()));
+        schedules.setStartDate(dto.getStartDate());
+        schedules.setEndDate(dto.getEndDate());
         schedules.setCustomerId(dto.getCustomerId());
         schedules.setUserId(dto.getUserId());
         schedules.setBigo(dto.getBigo());

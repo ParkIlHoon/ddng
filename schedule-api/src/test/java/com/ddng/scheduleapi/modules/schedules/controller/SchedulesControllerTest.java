@@ -274,10 +274,10 @@ class SchedulesControllerTest
         // given
         SchedulesDto.Post dto = new SchedulesDto.Post();
         dto.setName("테스트 일정");
-        dto.setStartDate(LocalDateTime.now().toString());
-        dto.setEndDate(LocalDateTime.now().plusDays(1).toString());
+        dto.setStartDate(LocalDateTime.now());
+        dto.setEndDate(LocalDateTime.now().plusDays(1));
         dto.setAllDay(false);
-        dto.setScheduleType(ScheduleType.HOTEL);
+        dto.setType(ScheduleType.HOTEL);
 
         // when
         mockMvc.perform(
@@ -306,9 +306,9 @@ class SchedulesControllerTest
         SchedulesDto.Put dto = new SchedulesDto.Put();
         dto.setName(changeName);
         dto.setAllDay(schedules.isAllDay());
-        dto.setScheduleType(schedules.getType());
-        dto.setStartDate(schedules.getStartDate().toString());
-        dto.setEndDate(changeEndDate.toString());
+        dto.setType(schedules.getType());
+        dto.setStartDate(schedules.getStartDate());
+        dto.setEndDate(changeEndDate);
         dto.setBigo(schedules.getBigo());
         dto.setUserId(schedules.getUserId());
         dto.setCustomerId(schedules.getCustomerId());

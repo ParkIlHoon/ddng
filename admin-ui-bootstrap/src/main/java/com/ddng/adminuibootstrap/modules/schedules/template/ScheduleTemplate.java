@@ -4,9 +4,11 @@ import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTypeDto;
+import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -103,5 +105,69 @@ public class ScheduleTemplate
         ParameterizedTypeReference<List<ScheduleTagDto>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<ScheduleTagDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
+    }
+
+    /**
+     * 스케쥴을 생성한다.
+     * @param form
+     * @throws Exception
+     */
+    public void createSchedule(ScheduleForm form) throws Exception
+    {
+        String apiPath = SCHEDULE_API_PATH;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, form, String.class);
+        HttpStatus statusCode = responseEntity.getStatusCode();
+
+        if(statusCode.is2xxSuccessful())
+        {
+
+        }
+        else if(statusCode.is4xxClientError())
+        {
+            throw new IllegalArgumentException();
+        }
+        else
+        {
+            throw new Exception(responseEntity.getHeaders().toString());
+        }
+    }
+
+    /**
+     * 스케쥴을 수정한다.
+     * @param id 수정할 스케쥴 아이디
+     * @param form 수정할 내용
+     */
+    public void updateSchedule(Long id, ScheduleForm form)
+    {
+        String apiPath = SCHEDULE_API_PATH + "/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        restTemplate.put(targetUrl, form);
+    }
+
+    /**
+     * 스케쥴을 삭제한다.
+     * @param id 삭제할 스케쥴 아이디
+     */
+    public void deleteSchedule(Long id)
+    {
+        String apiPath = SCHEDULE_API_PATH + "/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        restTemplate.delete(targetUrl);
     }
 }

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -59,10 +60,12 @@ public class SchedulesDto
     public static class Post
     {
         private String name;
-        private ScheduleType scheduleType;
-        private String startDate;
-        private String endDate;
-        private boolean isAllDay = false;
+        private ScheduleType type;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        private LocalDateTime startDate;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        private LocalDateTime endDate;
+        private boolean allDay = false;
         private Long customerId;
         private Long userId;
         private String bigo;
@@ -75,10 +78,12 @@ public class SchedulesDto
     public static class Put
     {
         private String name;
-        private ScheduleType scheduleType;
-        private String startDate;
-        private String endDate;
-        private boolean isAllDay;
+        private ScheduleType type;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        private LocalDateTime startDate;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        private LocalDateTime endDate;
+        private boolean allDay;
         private Long customerId;
         private Long userId;
         private String bigo;
