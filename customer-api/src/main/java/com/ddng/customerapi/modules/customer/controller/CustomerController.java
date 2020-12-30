@@ -58,15 +58,13 @@ public class CustomerController
 
     /**
      * 고객 리스트를 조회한다
-     * @param keyword 조회할 고객 아이디 리스트
+     * @param customerIds 조회할 고객 아이디 배열
      * @return 고객 아이디 리스트에 해당하는 고객 목록
      */
     @GetMapping("/in")
-    public ResponseEntity getCustomerListAsIn(String keyword)
+    public ResponseEntity getCustomerListAsIn(Long[] customerIds)
     {
-        String[] split = keyword.split(",");
-        List<Long> collect = Arrays.stream(split).map(s -> Long.valueOf(s)).collect(Collectors.toList());
-
+        List<Long> collect = Arrays.stream(customerIds).collect(Collectors.toList());
         List<CustomerDto.Response> byIds = customerService.findByIds(collect);
         return ResponseEntity.ok(byIds);
     }

@@ -74,22 +74,25 @@ public class SchedulesService
 
         Schedules save = schedulesRepository.save(schedules);
 
-        for (TagDto tagDto : dto.getTags())
+        if (dto.getTags() != null)
         {
-            Tag tag = null;
-            Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
-            if (optionalTag.isEmpty())
+            for (TagDto tagDto : dto.getTags())
             {
-                Tag newTag = new Tag();
-                newTag.setTitle(tagDto.getTitle());
-                tag = tagRepository.save(newTag);
-            }
-            else
-            {
-                tag = optionalTag.get();
-            }
+                Tag tag = null;
+                Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
+                if (optionalTag.isEmpty())
+                {
+                    Tag newTag = new Tag();
+                    newTag.setTitle(tagDto.getTitle());
+                    tag = tagRepository.save(newTag);
+                }
+                else
+                {
+                    tag = optionalTag.get();
+                }
 
-            addTag(save, tag);
+                addTag(save, tag);
+            }
         }
 
         return save;
@@ -111,22 +114,25 @@ public class SchedulesService
         Schedules save = schedulesRepository.save(schedules);
 
         save.setTags(new HashSet<>());
-        for (TagDto tagDto : dto.getTags())
+        if (dto.getTags() != null)
         {
-            Tag tag = null;
-            Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
-            if (optionalTag.isEmpty())
+            for (TagDto tagDto : dto.getTags())
             {
-                Tag newTag = new Tag();
-                newTag.setTitle(tagDto.getTitle());
-                tag = tagRepository.save(newTag);
-            }
-            else
-            {
-                tag = optionalTag.get();
-            }
+                Tag tag = null;
+                Optional<Tag> optionalTag = tagRepository.findByTitle(tagDto.getTitle());
+                if (optionalTag.isEmpty())
+                {
+                    Tag newTag = new Tag();
+                    newTag.setTitle(tagDto.getTitle());
+                    tag = tagRepository.save(newTag);
+                }
+                else
+                {
+                    tag = optionalTag.get();
+                }
 
-            addTag(save, tag);
+                addTag(save, tag);
+            }
         }
 
         return save;

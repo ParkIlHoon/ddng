@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemTemplate
 {
-    private static final String ITEM_API_PATH = "/item";
+    private static final String ITEM_API_PATH = "/items";
 
     private final RestTemplate restTemplate;
     private final ServiceProperties serviceProperties;

@@ -67,11 +67,13 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
-                                                    <button class="btn btn-primary" type="button" id="pay-cash-button">현금 결제</button>
-                                                    <button class="btn btn-secondary" type="button" id="pay-card-button">카드 결제</button>
-                                                    <button class="btn btn-light" type="button" id="reset-button">초기화</button>
-                                                    <button class="btn btn-dark" type="button" id="cancel-button">결제 취소</button>
+                                                <div class="col-md-12">
+                                                    <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
+                                                        <button class="btn btn-primary" type="button" id="pay-cash-button">현금 결제</button>
+                                                        <button class="btn btn-secondary" type="button" id="pay-card-button">카드 결제</button>
+                                                        <button class="btn btn-light" type="button" id="reset-button">초기화</button>
+                                                        <button class="btn btn-dark" type="button" id="cancel-button">결제 취소</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,13 +141,220 @@
 <div th:replace="sale/hotel-modal.html::hotel-modal(${hotelItems})"></div>
 <div th:replace="sale/kindergarten-modal.html::kindergarten-modal(${kindergartenItems})"></div>
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<link href="/node_modules/tui-grid/dist/tui-grid.css" rel="stylesheet">
+<link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css"/>
+<link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
 <script th:replace="fragments.html::script"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="/node_modules/select2/dist/js/select2.min.js"></script>
 <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
 <script src="/js/sale/main.js"></script>
+<script th:inline="javascript" type="application/javascript">
+    $(function(){
+        let hotelGridData = [];
+        let beautyGridData = [];
+        /*<![CDATA[*/
+
+        /*[# th:each="row : ${schedules}"]*/
+        var scheduleType = /*[[${row.getScheduleType()}]]*/;
+        if (scheduleType == "HOTEL" || scheduleType == "KINDERGARTEN")
+        {
+            hotelGridData.push({
+                id : /*[[${row.getId()}]]*/,
+                scheduleTypeName : /*[[${row.getScheduleTypeName()}]]*/,
+                customerName : /*[[${row.getCustomerName()}]]*/,
+                customerTypeName : /*[[${row.getCustomerTypeName()}]]*/,
+                customerTelNo : /*[[${row.getCustomerTelNo()}]]*/,
+                startDate : /*[[${row.getStartDate()}]]*/,
+                endDate : /*[[${row.getEndDate()}]]*/
+            });
+        }
+        else if (scheduleType == "BEAUTY")
+        {
+            beautyGridData.push({
+                id : /*[[${row.getId()}]]*/,
+                customerName : /*[[${row.getCustomerName()}]]*/,
+                customerTypeName : /*[[${row.getCustomerTypeName()}]]*/,
+                customerTelNo : /*[[${row.getCustomerTelNo()}]]*/
+            });
+        }
+        /*[/]*/
+
+        initComponents();
+        /*]]>*/
+
+        /**
+         * 화면 내 컴포넌트 초기화 함수
+         */
+        function initComponents()
+        {
+            /*
+             메인 페이지
+             */
+            // 상품 검색 select 구성
+            $("#item-select").select2({
+                placeholder: "상품명/바코드",
+                allowClear: true,
+                width : "100%",
+                minimumInputLength : 1,
+                ajax: {
+                    url: "/sale/items",
+                    method: "GET",
+                    data : function (params) {return { keyword: params.term , page : params.page || 0, size : 10};},
+                    processResults: function (data, params) {
+                        params.page = data.number || 0;
+                        var returnArr = [];
+                        data.content.forEach(item => returnArr.push({
+                            "id" : item.id,
+                            "text" : item.name + "(" + item.typeName + " / " + item.price + " 원 / " + item.barcode + ")",
+                            "name" : item.name,
+                            "price" : item.price
+                        }));
+                        return {
+                            results: returnArr,
+                            pagination: {
+                                more: (params.page * 10) < data.totalElements
+                            }
+                        };
+                    }
+                }
+            });
+
+            // 그리드 테마 지정
+            tui.Grid.applyTheme('clean');
+
+            // 호텔, 유치원 그리드
+            hotelGrid = new tui.Grid({
+                el: document.getElementById('hotel-grid'),
+                data : hotelGridData,
+                scrollX: false,
+                scrollY: false,
+                selectionUnit : "row",
+                columns: [
+                    {
+                        header: '구분',
+                        name: 'scheduleTypeName'
+                    },
+                    {
+                        header: '고객명',
+                        name: 'customerName'
+                    },
+                    {
+                        header: '품종',
+                        name: 'customerTypeName'
+                    },
+                    {
+                        header: '전화번호',
+                        name: 'customerTelNo'
+                    },
+                    {
+                        header: '시작일자',
+                        name: 'startDate'
+                    },
+                    {
+                        header: '종료일자',
+                        name: 'endDate'
+                    }
+                ]
+            });
+            hotelGrid.on("click", function(e){
+                if (e.rowKey == undefined || e.rowKey == null) {
+                    return;
+                }
+                var clickData = hotelGrid.getData()[e.rowKey];
+                if (clickData.scheduleType == "HOTEL")
+                {
+                    openHotelModal(clickData);
+                }
+                else
+                {
+                    openKindergartenModal(clickData);
+                }
+            });
+
+            // 미용 그리드
+            beautyGrid = new tui.Grid({
+                el: document.getElementById('beauty-grid'),
+                data : beautyGridData,
+                scrollX: false,
+                scrollY: false,
+                selectionUnit : "row",
+                columns: [
+                    {
+                        header: '고객명',
+                        name: 'customerName'
+                    },
+                    {
+                        header: '품종',
+                        name: 'customerTypeName'
+                    },
+                    {
+                        header: '전화번호',
+                        name: 'customerTelNo'
+                    }
+                ]
+            });
+            beautyGrid.on("click", function(e){
+                if (e.rowKey == undefined || e.rowKey == null) {
+                    return;
+                }
+                var clickData = beautyGrid.getData()[e.rowKey];
+                openBeautyModal(clickData);
+            });
+
+            historyGrid = new tui.Grid({
+                el: document.getElementById('history-grid'),
+                data : [
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-09-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-08-19", "type" : "미용", "amount" : "30,000"},
+                    {"date" : "2020-07-22", "type" : "유치원", "amount" : "10,000"},
+                    {"date" : "2020-07-11", "type" : "호텔", "amount" : "70,000"}
+                ],
+                scrollX: false,
+                scrollY: true,
+                selectionUnit : "row",
+                bodyHeight: 300,
+                columns: [
+                    {
+                        header: '구분',
+                        name: 'type'
+                    },
+                    {
+                        header: '날짜',
+                        name: 'date'
+                    },
+                    {
+                        header: '금액',
+                        name: 'amount'
+                    }
+                ]
+            });
+
+            /*
+             미용 모달
+             */
+            initBeautyModal();
+
+            /*
+             호텔 모달
+             */
+            initHotelModal();
+
+            /*
+             유치원 모달
+             */
+            initKindergartenModal();
+        }
+    });
+</script>
 </body>
 </html>

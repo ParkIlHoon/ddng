@@ -151,6 +151,9 @@ $("#save-schedule-button").on("click", function (e){
         data : JSON.stringify(data),
         contentType : "application/json; charset=utf-8"
     }).always(function(){
+        form.classList.remove('was-validated');
+        button.disabled = false;
+        button.innerHTML = originalHtml;
         $('#scheduleModal').modal('hide');
         cal.setDate(new Date(startDate));
         cal.changeView(cal.getViewName(), true);
@@ -189,7 +192,10 @@ function openEditPopup (event)
 
     // 태그 추가
     var tagData = []
-    event.schedule.raw.tags.forEach(tag => tagData.push({"value" : tag.title}));
+    if (event.schedule.raw.tags != null)
+    {
+        event.schedule.raw.tags.forEach(tag => tagData.push({"value" : tag.title}));
+    }
     g_tagify.removeAllTags();
     g_tagify.addTags(tagData);
 
@@ -270,6 +276,9 @@ $("#update-schedule-button").on("click", function (e)
         data : JSON.stringify(data),
         contentType : "application/json; charset=utf-8"
     }).always(function(){
+        form.classList.remove('was-validated');
+        button.disabled = false;
+        button.innerHTML = originalHtml;
         $('#scheduleModal').modal('hide');
         cal.setDate(new Date(startDate));
         cal.changeView(cal.getViewName(), true);

@@ -285,4 +285,29 @@ public class CustomerTemplate
 
         restTemplate.put(targetUrl, editForm);
     }
+
+    /**
+     * 사용자 목록을 조회한다.
+     * @param customerIds
+     * @return
+     * @throws JSONException
+     */
+    public List<CustomerDto> getCustomers(List<Long> customerIds) throws JSONException
+    {
+        String apiPath = CUSTOMER_API_PATH + "/in";
+        UriComponentsBuilder path = UriComponentsBuilder.fromUriString(serviceProperties.getCustomer()).path(apiPath);
+        for (Long id : customerIds)
+        {
+            path = path.queryParam("customerIds", id);
+        }
+
+        URI targetUrl= path
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<CustomerDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<CustomerDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
+    }
 }

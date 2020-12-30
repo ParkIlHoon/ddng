@@ -2,6 +2,7 @@ package com.ddng.adminuibootstrap.modules.sale.template;
 
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.PaymentType;
 import com.ddng.adminuibootstrap.modules.sale.dto.SaleDto;
@@ -27,6 +28,7 @@ public class SaleTemplate
 {
     private static final String SALE_API_PATH = "/sale";
     private static final String COUPON_API_PATH = "/coupon";
+    private static final String ITEM_API_PATH = "/items";
 
     private final RestTemplate restTemplate;
     private final ServiceProperties serviceProperties;
@@ -82,5 +84,30 @@ public class SaleTemplate
         ParameterizedTypeReference<RestPageImpl<CouponDto>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<RestPageImpl<CouponDto>> responseEntity = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return responseEntity.getBody();
+    }
+
+    /**
+     * 미용 상품 목록을 조회한다.
+     * @param keyword
+     * @param page
+     * @param size
+     * @return
+     */
+    public RestPageImpl<ItemDto> getBeautyItems(String keyword, int page, int size)
+    {
+        String apiPath = ITEM_API_PATH + "/beauty";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .queryParam("keyword", keyword)
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<RestPageImpl<ItemDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<RestPageImpl<ItemDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+
+        return exchange.getBody();
     }
 }

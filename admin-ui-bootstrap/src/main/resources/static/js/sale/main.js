@@ -2,14 +2,6 @@ let hotelGrid;
 let beautyGrid;
 let historyGrid;
 
-$(function(){
-    // 컴포넌트 초기화
-    initComponents();
-
-    // 스케쥴 데이터 세팅
-    getTodaySchedules();
-});
-
 /**
  * 화면 내 컴포넌트 초기화 함수
  */
@@ -25,9 +17,9 @@ function initComponents()
         width : "100%",
         minimumInputLength : 1,
         ajax: {
-            url: SERVER_URL + "/sale-api/item",
+            url: "/sale/items",
             method: "GET",
-            data : function (params) {return { keyword: params.term , page : params.page || 0};},
+            data : function (params) {return { keyword: params.term , page : params.page || 0, size : 10};},
             processResults: function (data, params) {
                 params.page = data.number || 0;
                 var returnArr = [];
@@ -183,66 +175,6 @@ function initComponents()
 }
 
 /**
- * 오늘 스케쥴을 조회해 각 그리드에 세팅해주는 함수
- */
-function getTodaySchedules ()
-{
-    // 오늘 날짜 세팅
-    var today = moment().format('YYYY-MM-DD');
-
-    // 그리드 초기화
-    hotelGrid.resetData([]);
-    beautyGrid.resetData([]);
-
-    $.ajax({
-        url: SERVER_URL + "/schedule-api/schedules/day",
-        type: "GET",
-        data: {"baseDate": today, "payed": false}
-    }).done((data, textStatus, jqXHR) => {
-
-        if (data.length > 0)
-        {
-            var customerIds = [];
-            data.forEach(d => customerIds.push(d.customerId));
-            var keyword = customerIds.join(",");
-
-            $.ajax({
-                url: SERVER_URL + "/customer-api/customer/in",
-                type: "GET",
-                data : {"keyword" : keyword},
-                async: false,
-                success : function (customers){
-                    var hotelGridData = [];
-                    var beautyGridData = [];
-
-                    for (var idx = 0; idx < data.length; idx++)
-                    {
-                        var schedule = data[idx];
-                        var customer = customers.find(el => el.id == schedule.customerId);
-                        schedule.customerName = customer.name;
-                        schedule.customerTypeName = customer.typeName;
-                        schedule.customerTelNo = customer.telNo;
-
-                        if (schedule.scheduleType == "HOTEL" || schedule.scheduleType == "KINDERGARTEN")
-                        {
-                            hotelGridData.push(schedule);
-                        }
-                        else if (schedule.scheduleType == "BEAUTY")
-                        {
-                            beautyGridData.push(schedule);
-                        }
-                    }
-
-                    hotelGrid.resetData(hotelGridData);
-                    beautyGrid.resetData(beautyGridData);
-                }
-            });
-        }
-
-    });
-}
-
-/**
  * 카트 총 금액 새로고침 함수
  */
 function refreshTotalPrice ()
@@ -270,8 +202,6 @@ function saleCart (payment)
         $("#item-list").replaceWith(jqXHR.responseText);
         // 총 금액 세팅
         refreshTotalPrice();
-        // 스케쥴 재조회
-        getTodaySchedules();
     });
 }
 
@@ -281,7 +211,6 @@ function saleCart (payment)
 $('#item-select').on('select2:select', function (e) {
     var data = e.params.data;
 
-    //TODO 상품 데이터 세팅
     if (data != undefined && data != "")
     {
         // 장바구니에 추가
@@ -300,11 +229,6 @@ $('#item-select').on('select2:select', function (e) {
             // 총 금액 세팅
             refreshTotalPrice();
         });
-
-
-        // var totalPrice = 0;
-        // saleGridData.forEach(el => totalPrice += el.amount * el.count);
-        // $("#total-price").text(totalPrice);
 
         // 상품 검색 select 초기화
         $('#item-select').val(null).trigger('change');

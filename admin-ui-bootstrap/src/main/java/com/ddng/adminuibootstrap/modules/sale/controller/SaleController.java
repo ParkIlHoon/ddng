@@ -1,24 +1,30 @@
 package com.ddng.adminuibootstrap.modules.sale.controller;
 
+import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
-import com.ddng.adminuibootstrap.modules.sale.dto.AddCartDto;
-import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
-import com.ddng.adminuibootstrap.modules.sale.dto.PaymentType;
-import com.ddng.adminuibootstrap.modules.sale.dto.SaleType;
+import com.ddng.adminuibootstrap.modules.sale.dto.*;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.jettison.json.JSONException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/sale")
@@ -29,6 +35,7 @@ public class SaleController
     private final ScheduleTemplate scheduleTemplate;
     private final ItemTemplate itemTemplate;
     private final SaleTemplate saleTemplate;
+    private final CustomerTemplate customerTemplate;
 
     @ModelAttribute("cart")
     public Cart cart ()
@@ -43,13 +50,28 @@ public class SaleController
      * @return
      */
     @GetMapping
-    public String main (Model model, @ModelAttribute Cart cart)
+    public String main (Model model, @ModelAttribute Cart cart) throws JSONException
     {
+        // 호텔, 유치원 상품 조회
         List<ItemDto> hotelItems = itemTemplate.getHotelItems();
         List<ItemDto> kindergartenItems = itemTemplate.getKindergartenItems();
 
+        // 오늘 결제 대상 조회
+        List<ScheduleDto> schedules = scheduleTemplate.getNotPayedSchedules();
+        // 결제 대상들의 고객 조회
+        List<Long> customerIds = new ArrayList<>();
+        schedules.forEach(c -> customerIds.add(c.getCustomerId()));
+        List<Long> uniqueIds = new ArrayList<Long>(new HashSet<>(customerIds));
+        List<CustomerDto> customers = customerTemplate.getCustomers(uniqueIds);
+
+        List<ScheduleToSaleDto> collect = schedules.stream().map(s -> {
+            Optional<CustomerDto> first = customers.stream().filter(c -> c.getId().equals(s.getCustomerId())).findFirst();
+            return new ScheduleToSaleDto(s, first.get());
+        }).collect(Collectors.toList());
+
         model.addAttribute("hotelItems", hotelItems);
         model.addAttribute("kindergartenItems", kindergartenItems);
+        model.addAttribute("schedules", collect);
         return "sale/main";
     }
 
@@ -171,5 +193,77 @@ public class SaleController
         // 카트 초기화
         cart.reset();
         return "sale/main :: #item-list";
+    }
+
+    /**
+     * 상품 검색 요청
+     * @param keyword
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/items")
+    public ResponseEntity searchItems(String keyword, int page, int size)
+    {
+        if (StringUtils.hasText(keyword))
+        {
+            RestPageImpl<ItemDto> restPage = itemTemplate.searchItemsWithPage(keyword, page, size);
+            return ResponseEntity.ok(restPage);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    /**
+     * 고객 조회 요청
+     * @param id 조회할 고객 아이디
+     * @return
+     */
+    @GetMapping("/customers/{id}")
+    public ResponseEntity searchCustomer(@PathVariable("id") Long id)
+    {
+        if (id == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        CustomerDto customer = customerTemplate.getCustomer(id);
+        return ResponseEntity.ok(customer);
+    }
+
+    /**
+     * 스케쥴 조회 요청
+     * @param id 조회할 스케쥴 아이디
+     * @return
+     */
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity searchSchedules(@PathVariable("id") Long id)
+    {
+        if (id == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        ScheduleDto schedule = scheduleTemplate.getSchedule(id);
+        return ResponseEntity.ok(schedule);
+    }
+
+    /**
+     * 미용 상품 검색 요청
+     * @param keyword
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/items/beauty")
+    public ResponseEntity searchBeautyItems(String keyword, int page, int size)
+    {
+        if (StringUtils.isEmpty(keyword))
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        RestPageImpl<ItemDto> beautyItems = saleTemplate.getBeautyItems(keyword, page, size);
+        return ResponseEntity.ok(beautyItems);
     }
 }

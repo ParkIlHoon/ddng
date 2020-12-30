@@ -11,9 +11,9 @@ function initBeautyModal ()
         width : "100%",
         minimumInputLength : 1,
         ajax: {
-            url: SERVER_URL + "/sale-api/item/beauty",
+            url: "/sale/items/beauty",
             method: "GET",
-            data : function (params) {return { keyword: params.term , page : params.page || 0};},
+            data : function (params) {return { keyword: params.term , page : params.page || 0, size : 10};},
             processResults: function (data, params) {
                 params.page = data.number || 0;
                 var returnArr = [];
@@ -73,7 +73,7 @@ function openBeautyModal (data)
 
     // 스케쥴 데이터 조회
     $.ajax({
-        url: SERVER_URL + "/schedule-api/schedules/" + data.id,
+        url: "/sale/schedules/" + data.id,
         type: "GET",
         success : function (result){
             // 모달 element에 값 세팅
@@ -113,10 +113,10 @@ function setBeautyData (data)
 {
     $("#beauty-id-input").val(data.id);
     $("#beauty-schedule-name").text(data.name);
-    $("#beauty-schedule-duration").text(data.startDate + " ~ " + data.endDate);
+    $("#beauty-schedule-duration").text(moment(data.startDate).format("YYYY-MM-DD HH:mm") + " ~ " + moment(data.endDate).format("YYYY-MM-DD HH:mm"));
 
     $.ajax({
-        url: SERVER_URL + "/customer-api/customer/" + data.customerId,
+        url: "/sale/customers/" + data.customerId,
         type: "GET",
         success : function (result){
             $("#beauty-schedule-customer-profileImg").attr("src", result.profileImg);

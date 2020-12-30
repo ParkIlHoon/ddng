@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -169,5 +171,21 @@ public class ScheduleTemplate
                 .toUri();
 
         restTemplate.delete(targetUrl);
+    }
+
+    public List<ScheduleDto> getNotPayedSchedules()
+    {
+        String apiPath = SCHEDULE_API_PATH + "/day";
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+                .path(apiPath)
+                .queryParam("baseDate", LocalDate.now().toString())
+                .queryParam("payed", false)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<ScheduleDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<ScheduleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
     }
 }
