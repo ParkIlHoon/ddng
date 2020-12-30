@@ -54,7 +54,7 @@ function openKindergartenModal (data)
 
     // 스케쥴 데이터 조회
     $.ajax({
-        url: SERVER_URL + "/schedule-api/schedules/" + data.id,
+        url: "/sale/schedules/" + data.id,
         type: "GET",
         success : function (result){
             // 모달 element에 값 세팅
@@ -97,7 +97,7 @@ function setKindergartenData (data)
     $("#kindergarten-schedule-duration").text(duration + " (" + days + "일)");
 
     $.ajax({
-        url: SERVER_URL + "/customer-api/customer/" + data.customerId,
+        url: "/sale/customers/" + data.customerId,
         type: "GET",
         success : function (result){
             $("#kindergarten-schedule-customer-profileImg").attr("src", result.profileImg);
@@ -105,9 +105,12 @@ function setKindergartenData (data)
         }
     });
 
-    for(var idx = 0; idx < data.tags.length; idx++)
+    if (data.tags != null)
     {
-        $("#kindergarten-schedule-tags").append("<span class=\"badge badge-secondary\">" + data.tags[idx].title + "</span>");
+        for(var idx = 0; idx < data.tags.length; idx++)
+        {
+            $("#kindergarten-schedule-tags").append("<span class=\"badge badge-secondary\">" + data.tags[idx].title + "</span>");
+        }
     }
 
     $("#kindergarten-schedule-bigo").val(data.bigo);

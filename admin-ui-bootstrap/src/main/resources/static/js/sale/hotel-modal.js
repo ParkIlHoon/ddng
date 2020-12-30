@@ -6,8 +6,6 @@ function initHotelModal ()
     $("#add-hotel-button").on("click", function(e){
         var scheduleId = $("#hotel-id-input").val();
         var selectedItems = $("#hotel-modal-form").serializeObject();
-
-        debugger;
         var keys = Object.keys(selectedItems);
         var itemId = [];
 
@@ -55,7 +53,7 @@ function openHotelModal (data)
 
     // 스케쥴 데이터 조회
     $.ajax({
-        url: SERVER_URL + "/schedule-api/schedules/" + data.id,
+        url: "/sale/schedules/" + data.id,
         type: "GET",
         success : function (result){
             // 모달 element에 값 세팅
@@ -98,7 +96,7 @@ function setHotelData (data)
     $("#hotel-schedule-duration").text(duration + " (" + days + "일)");
 
     $.ajax({
-        url: SERVER_URL + "/customer-api/customer/" + data.customerId,
+        url: "/sale/customers/" + data.customerId,
         type: "GET",
         success : function (result){
             $("#hotel-schedule-customer-profileImg").attr("src", result.profileImg);
@@ -106,9 +104,12 @@ function setHotelData (data)
         }
     });
 
-    for(var idx = 0; idx < data.tags.length; idx++)
+    if (data.tags != null)
     {
-        $("#hotel-schedule-tags").append("<span class=\"badge badge-secondary\">" + data.tags[idx].title + "</span>");
+        for(var idx = 0; idx < data.tags.length; idx++)
+        {
+            $("#hotel-schedule-tags").append("<span class=\"badge badge-secondary\">" + data.tags[idx].title + "</span>");
+        }
     }
 
     $("#hotel-schedule-bigo").val(data.bigo);
