@@ -1,6 +1,8 @@
 # About
 MSA 아키텍쳐 기반 똥강아지 애견샵 관리 RESTful API 프로젝트.
 
+![diagram](diagram_img.png)
+
 ## Technics
 1. Spring Boot
 2. Spring JPA
@@ -40,4 +42,4 @@ MSA 아키텍쳐 기반 똥강아지 애견샵 관리 RESTful API 프로젝트.
 * application name : ddng-statistic-api
 * port : 8025
 ### Rabbit MQ
-* port : 15672
+* port : 5672
