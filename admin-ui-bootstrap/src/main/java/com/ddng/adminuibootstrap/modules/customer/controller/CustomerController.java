@@ -95,11 +95,13 @@ public class CustomerController
         List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
         List<CustomerTagDto> customerTags = customerTemplate.getCustomerTags();
 
-        //TODO 결제 이력
+        // 결제 이력 조회
+        List<SaleItemDto> customerSaleItems = saleTemplate.getCustomersSaleHistory(id);
 
         model.addAttribute("customerForm", new EditForm(customer));
         model.addAttribute("customerTypes", customerTypes);
         model.addAttribute("customerTags", customerTags);
+        model.addAttribute("customerSaleItems", customerSaleItems);
         return "customer/search/main :: #customer-card";
     }
 
@@ -285,7 +287,7 @@ public class CustomerController
             List<CouponDto> coupons = saleTemplate.getCoupons(customerIds).getContent();
             model.addAttribute("familyCoupons", coupons);
 
-            //TODO 결제 이력
+            // 결제 이력 조회
             List<SaleDto> saleHistory = saleTemplate.getSaleHistory(family.getId());
             model.addAttribute("familySaleHistory", saleHistory);
         }

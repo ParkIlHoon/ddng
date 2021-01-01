@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="customer-card(${customerForm})" class="card">
+<div th:fragment="customer-card(${customerForm}, ${customerSaleItems})" class="card">
     <div class="card-header">상세 정보</div>
     <div class="card-body">고객 목록에서 선택한 고객의 상세 정보가 표시됩니다.</div>
     <form id="edit-customer-form" class="form-horizontal needs-validation" action="#" method="post"
@@ -101,9 +101,26 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="history-grid">구매 이력</label>
+                    <label class="col-md-3 col-form-label">구매 이력</label>
                     <div class="col-md-9">
-                        <div id="history-grid"></div>
+                        <table class="table table-responsive-sm table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>상품명</th>
+                                <th>개수</th>
+                                <th>금액</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="saleItem : ${customerSaleItems}">
+                                <td>날짜 위치</td>
+                                <td th:text="${saleItem.getItemName()}"></td>
+                                <td th:text="${saleItem.getCount()}"></td>
+                                <td th:text="${#numbers.formatInteger(saleItem.getTotalPrice(), 3, 'COMMA')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

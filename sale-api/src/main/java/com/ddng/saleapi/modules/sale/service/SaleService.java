@@ -178,4 +178,11 @@ public class SaleService
         List<SaleDto.ResponseWithSaleItem> collect = sales.stream().map(sale -> new SaleDto.ResponseWithSaleItem(sale)).collect(Collectors.toList());
         return collect;
     }
+
+    public List<SaleItemDto.Get> getHistoryByCustomer(Long customerId)
+    {
+        List<SaleItem> saleItems = saleRepository.findSaleByCustomerId(customerId);
+        List<SaleItemDto.Get> collect = saleItems.stream().map(si -> new SaleItemDto.Get(si)).collect(Collectors.toList());
+        return collect;
+    }
 }

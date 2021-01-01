@@ -2,6 +2,7 @@ package com.ddng.adminuibootstrap.modules.sale.template;
 
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.customer.dto.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.PaymentType;
@@ -127,6 +128,20 @@ public class SaleTemplate
 
         ParameterizedTypeReference<List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
+    }
+
+    public List<SaleItemDto> getCustomersSaleHistory(Long id)
+    {
+        String apiPath = SALE_API_PATH + "/history/customer/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<SaleItemDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<SaleItemDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
     }
 }

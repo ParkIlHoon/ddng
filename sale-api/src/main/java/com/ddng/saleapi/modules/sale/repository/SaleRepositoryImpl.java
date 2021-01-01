@@ -2,6 +2,7 @@ package com.ddng.saleapi.modules.sale.repository;
 
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.sale.domain.Sale;
+import com.ddng.saleapi.modules.sale.domain.SaleItem;
 import com.ddng.saleapi.modules.sale.domain.SaleType;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.QCalculateDto_ByItem;
@@ -60,6 +61,16 @@ public class SaleRepositoryImpl implements SaleCustomRepository
                                         .leftJoin(sale.saleItemList, saleItem)
                                         .where(sale.familyId.eq(familyId))
                                         .groupBy(sale.id)
+                                        .fetch();
+        return fetch;
+    }
+
+    @Override
+    public List<SaleItem> findSaleByCustomerId(Long customerId)
+    {
+        List<SaleItem> fetch = queryFactory.select(saleItem)
+                                        .from(saleItem)
+                                        .where(saleItem.customerId.eq(customerId))
                                         .fetch();
         return fetch;
     }

@@ -3,6 +3,7 @@ package com.ddng.saleapi.modules.sale.controller;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
+import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -132,6 +133,22 @@ public class SaleController
         }
 
         List<SaleDto.ResponseWithSaleItem> history = saleService.getHistoryByFamily(familyId);
+        return ResponseEntity.ok(history);
+    }
+    /**
+     * 고객의 구매 이력을 조회한다.
+     * @param customerId 조회할 고객 아이디
+     * @return
+     */
+    @GetMapping("/history/customer/{customerId}")
+    public ResponseEntity getHistoryByCustomer (@PathVariable("customerId") Long customerId)
+    {
+        if (customerId == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<SaleItemDto.Get> history = saleService.getHistoryByCustomer(customerId);
         return ResponseEntity.ok(history);
     }
 

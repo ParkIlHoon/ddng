@@ -54,7 +54,7 @@
                             <div class="col-sm-6 col-md-7 col-lg-8">
                                 <div id="customer-card">
                                     <div th:if="${customerForm != null}">
-                                        <div th:replace="customer/search/customer-card::customer-card(${customerForm})"></div>
+                                        <div th:replace="customer/search/customer-card::customer-card(${customerForm}, ${customerSaleItems})"></div>
                                     </div>
                                 </div>
                             </div>
