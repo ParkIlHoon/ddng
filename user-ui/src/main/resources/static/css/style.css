@@ -41,6 +41,7 @@
   box-sizing: border-box; }
 
 html {
+  height: 100%;
   font-family: "Noto Sans";
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
@@ -57,7 +58,11 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #fff; }
+  background-color: #fff;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+}
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
