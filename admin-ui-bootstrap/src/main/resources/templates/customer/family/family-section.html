@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="family-section(${familySection}, ${familyCoupons}, ${familySettingForm})" class="card">
+<div th:fragment="family-section(${familySection}, ${familyCoupons}, ${familySaleHistory}, ${familySettingForm})" class="card">
     <div id="family-card-title" class="card-header" th:text="${familySection.getName()}">가족 이름</div>
     <div class="card-body">
         <div class="form-group row">
@@ -83,7 +83,24 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="history-tab-page" role="tabpanel">
-
+                            <table class="table table-responsive-sm table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>구분</th>
+                                    <th>날짜</th>
+                                    <th>금액</th>
+                                    <th>결재수단</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="sale : ${familySaleHistory}">
+                                    <td th:text="${sale.getTypeName()}"></td>
+                                    <td th:text="${#temporals.format(sale.getSaleDate(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${#numbers.formatInteger(sale.getTotal(), 3, 'COMMA')}"></td>
+                                    <td th:text="${sale.getPaymentTypeName()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="tab-pane" id="settings-tab-page" role="tabpanel">
                             <form class="form-horizontal needs-validation" id="family-settings-form" action="#" method="post" novalidate

@@ -4,7 +4,6 @@ import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleType;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
-import com.ddng.saleapi.modules.sale.dto.QCalculateDto;
 import com.ddng.saleapi.modules.sale.dto.QCalculateDto_ByItem;
 import com.ddng.saleapi.modules.sale.dto.QCalculateDto_ByPayment;
 import com.querydsl.core.QueryResults;
@@ -51,6 +50,18 @@ public class SaleRepositoryImpl implements SaleCustomRepository
                                                             .fetchResults();
 
         return new PageImpl<>(saleQueryResults.getResults(), pageable, saleQueryResults.getTotal());
+    }
+
+    @Override
+    public List<Sale> findSaleByFamilyId(Long familyId)
+    {
+        List<Sale> fetch = queryFactory.select(sale)
+                                        .from(sale)
+                                        .leftJoin(sale.saleItemList, saleItem)
+                                        .where(sale.familyId.eq(familyId))
+                                        .groupBy(sale.id)
+                                        .fetch();
+        return fetch;
     }
 
     @Override

@@ -118,6 +118,22 @@ public class SaleController
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 가족의 구매 이력을 조회한다.
+     * @param familyId 조회할 가족 아이디
+     * @return
+     */
+    @GetMapping("/history/family/{familyId}")
+    public ResponseEntity getHistoryByFamily (@PathVariable("familyId") Long familyId)
+    {
+        if (familyId == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<SaleDto.ResponseWithSaleItem> history = saleService.getHistoryByFamily(familyId);
+        return ResponseEntity.ok(history);
+    }
 
     @GetMapping("/calculate/itemType")
     public ResponseEntity calculateByItem(String baseDate)

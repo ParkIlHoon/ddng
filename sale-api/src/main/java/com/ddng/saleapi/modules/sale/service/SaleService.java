@@ -171,4 +171,11 @@ public class SaleService
     {
         return saleRepository.calculateByPayment(date);
     }
+
+    public List<SaleDto.ResponseWithSaleItem> getHistoryByFamily(Long familyId)
+    {
+        List<Sale> sales = saleRepository.findSaleByFamilyId(familyId);
+        List<SaleDto.ResponseWithSaleItem> collect = sales.stream().map(sale -> new SaleDto.ResponseWithSaleItem(sale)).collect(Collectors.toList());
+        return collect;
+    }
 }

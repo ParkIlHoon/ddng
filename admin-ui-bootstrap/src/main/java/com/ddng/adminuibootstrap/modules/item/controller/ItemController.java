@@ -83,6 +83,9 @@ public class ItemController
         ItemDto item = itemTemplate.getItem(id);
         List<ItemTypeDto> types = itemTemplate.getTypes();
 
+        //TODO 최다 구매 가족
+        //TODO 결제 이력
+
         model.addAttribute("types", types);
         model.addAttribute("itemForm", new EditForm(item));
         return "item/search/main :: #item-card";

@@ -110,4 +110,23 @@ public class SaleTemplate
 
         return exchange.getBody();
     }
+
+    /**
+     * 가족의 구매 이력을 조회한다.
+     * @param familyId 가족 아이디
+     * @return
+     */
+    public List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto> getSaleHistory(Long familyId)
+    {
+        String apiPath = SALE_API_PATH + "/history/family/" + familyId;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
+    }
 }

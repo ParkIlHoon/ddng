@@ -15,6 +15,8 @@ public interface SaleCustomRepository
 {
     Page<Sale> findSaleByItem(Item item, Pageable pageable);
 
+    List<Sale> findSaleByFamilyId(Long familyId);
+
     List<CalculateDto.ByItem> calculateByItem (LocalDate date);
     List<CalculateDto.ByPayment> calculateByPayment (LocalDate date);
 }

@@ -2,10 +2,7 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
+import com.ddng.adminuibootstrap.modules.customer.dto.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
@@ -97,6 +94,8 @@ public class CustomerController
         CustomerDto customer = customerTemplate.getCustomer(id);
         List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
         List<CustomerTagDto> customerTags = customerTemplate.getCustomerTags();
+
+        //TODO 결제 이력
 
         model.addAttribute("customerForm", new EditForm(customer));
         model.addAttribute("customerTypes", customerTypes);
@@ -280,10 +279,15 @@ public class CustomerController
 
         if (family != null)
         {
-            List<CustomerDto> customers = family.getCustomers();
-            List<Long> collect = customers.stream().map(c -> c.getId()).collect(Collectors.toList());
-            List<CouponDto> coupons = saleTemplate.getCoupons(collect).getContent();
+            List<Long> customerIds = family.getCustomers().stream().map(c -> c.getId()).collect(Collectors.toList());
+
+            // 가족 구성원들의 쿠폰 목록 조회
+            List<CouponDto> coupons = saleTemplate.getCoupons(customerIds).getContent();
             model.addAttribute("familyCoupons", coupons);
+
+            //TODO 결제 이력
+            List<SaleDto> saleHistory = saleTemplate.getSaleHistory(family.getId());
+            model.addAttribute("familySaleHistory", saleHistory);
         }
 
         model.addAttribute("familySection", family);
