@@ -96,7 +96,7 @@ public class CustomerController
         List<CustomerTagDto> customerTags = customerTemplate.getCustomerTags();
 
         // 결제 이력 조회
-        List<SaleItemDto> customerSaleItems = saleTemplate.getCustomersSaleHistory(id);
+        List<SaleItemDto> customerSaleItems = saleTemplate.getSaleHistoryByCustomerId(id);
 
         model.addAttribute("customerForm", new EditForm(customer));
         model.addAttribute("customerTypes", customerTypes);
@@ -288,7 +288,7 @@ public class CustomerController
             model.addAttribute("familyCoupons", coupons);
 
             // 결제 이력 조회
-            List<SaleDto> saleHistory = saleTemplate.getSaleHistory(family.getId());
+            List<SaleDto> saleHistory = saleTemplate.getSaleHistoryByFamilyId(family.getId());
             model.addAttribute("familySaleHistory", saleHistory);
         }
 

@@ -1,11 +1,13 @@
 package com.ddng.adminuibootstrap.modules.item.controller;
 
 import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.customer.dto.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
 import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
+import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ import java.util.List;
 public class ItemController
 {
     private final ItemTemplate itemTemplate;
+    private final SaleTemplate saleTemplate;
 
     /**
      * 상품 조회 메뉴 폼 요청
@@ -83,8 +86,13 @@ public class ItemController
         ItemDto item = itemTemplate.getItem(id);
         List<ItemTypeDto> types = itemTemplate.getTypes();
 
-        //TODO 최다 구매 가족
-        //TODO 결제 이력
+        if (item != null)
+        {
+            //TODO 최다 구매 가족
+            //TODO 결제 이력
+            List<SaleItemDto> saleHistoryByItemId = saleTemplate.getSaleHistoryByItemId(item.getId());
+            model.addAttribute("saleHistory", saleHistoryByItemId);
+        }
 
         model.addAttribute("types", types);
         model.addAttribute("itemForm", new EditForm(item));

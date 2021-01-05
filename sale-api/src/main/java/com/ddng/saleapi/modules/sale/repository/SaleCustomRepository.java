@@ -18,6 +18,7 @@ public interface SaleCustomRepository
 
     List<Sale> findSaleByFamilyId(Long familyId);
     List<SaleItem> findSaleByCustomerId(Long customerId);
+    List<SaleItem> findSaleByItemId(Long itemId);
 
     List<CalculateDto.ByItem> calculateByItem (LocalDate date);
     List<CalculateDto.ByPayment> calculateByPayment (LocalDate date);

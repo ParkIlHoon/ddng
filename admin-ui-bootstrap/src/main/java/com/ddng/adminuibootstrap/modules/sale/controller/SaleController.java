@@ -58,20 +58,23 @@ public class SaleController
 
         // 오늘 결제 대상 조회
         List<ScheduleDto> schedules = scheduleTemplate.getNotPayedSchedules();
-        // 결제 대상들의 고객 조회
-        List<Long> customerIds = new ArrayList<>();
-        schedules.forEach(c -> customerIds.add(c.getCustomerId()));
-        List<Long> uniqueIds = new ArrayList<Long>(new HashSet<>(customerIds));
-        List<CustomerDto> customers = customerTemplate.getCustomers(uniqueIds);
 
-        List<ScheduleToSaleDto> collect = schedules.stream().map(s -> {
-            Optional<CustomerDto> first = customers.stream().filter(c -> c.getId().equals(s.getCustomerId())).findFirst();
-            return new ScheduleToSaleDto(s, first.get());
-        }).collect(Collectors.toList());
+        if(schedules.size() > 0)
+        {
+            // 결제 대상들의 고객 조회
+            List<Long> customerIds = new ArrayList<>();
+            schedules.forEach(c -> customerIds.add(c.getCustomerId()));
+            List<Long> uniqueIds = new ArrayList<Long>(new HashSet<>(customerIds));
+            List<CustomerDto> customers = customerTemplate.getCustomers(uniqueIds);
+            List<ScheduleToSaleDto> collect = schedules.stream().map(s -> {
+                Optional<CustomerDto> first = customers.stream().filter(c -> c.getId().equals(s.getCustomerId())).findFirst();
+                return new ScheduleToSaleDto(s, first.get());
+            }).collect(Collectors.toList());
+            model.addAttribute("schedules", collect);
+        }
 
         model.addAttribute("hotelItems", hotelItems);
         model.addAttribute("kindergartenItems", kindergartenItems);
-        model.addAttribute("schedules", collect);
         return "sale/main";
     }
 

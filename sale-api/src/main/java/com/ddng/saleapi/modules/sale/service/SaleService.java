@@ -185,4 +185,11 @@ public class SaleService
         List<SaleItemDto.Get> collect = saleItems.stream().map(si -> new SaleItemDto.Get(si)).collect(Collectors.toList());
         return collect;
     }
+
+    public List<SaleItemDto.Get> getHistoryByItem(Long itemId)
+    {
+        List<SaleItem> saleItems = saleRepository.findSaleByItemId(itemId);
+        List<SaleItemDto.Get> collect = saleItems.stream().map(si -> new SaleItemDto.Get(si)).collect(Collectors.toList());
+        return collect;
+    }
 }

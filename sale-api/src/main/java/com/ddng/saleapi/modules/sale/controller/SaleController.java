@@ -135,6 +135,7 @@ public class SaleController
         List<SaleDto.ResponseWithSaleItem> history = saleService.getHistoryByFamily(familyId);
         return ResponseEntity.ok(history);
     }
+
     /**
      * 고객의 구매 이력을 조회한다.
      * @param customerId 조회할 고객 아이디
@@ -149,6 +150,23 @@ public class SaleController
         }
 
         List<SaleItemDto.Get> history = saleService.getHistoryByCustomer(customerId);
+        return ResponseEntity.ok(history);
+    }
+
+    /**
+     * 상품의 구매 이력을 조회한다.
+     * @param itemId 조회할 상품의 아이디
+     * @return
+     */
+    @GetMapping("/history/item/{itemId}")
+    public ResponseEntity getHistoryByItem (@PathVariable("itemId") Long itemId)
+    {
+        if (itemId == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<SaleItemDto.Get> history = saleService.getHistoryByItem(itemId);
         return ResponseEntity.ok(history);
     }
 

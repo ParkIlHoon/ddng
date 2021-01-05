@@ -76,6 +76,16 @@ public class SaleRepositoryImpl implements SaleCustomRepository
     }
 
     @Override
+    public List<SaleItem> findSaleByItemId(Long itemId)
+    {
+        List<SaleItem> fetch = queryFactory.select(saleItem)
+                .from(saleItem)
+                .where(saleItem.id.eq(itemId))
+                .fetch();
+        return fetch;
+    }
+
+    @Override
     public List<CalculateDto.ByItem> calculateByItem(LocalDate date)
     {
         JPAQuery<CalculateDto.ByItem> jpaQuery = queryFactory.select(new QCalculateDto_ByItem(

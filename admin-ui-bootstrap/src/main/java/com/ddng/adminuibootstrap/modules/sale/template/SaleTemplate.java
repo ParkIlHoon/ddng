@@ -117,7 +117,7 @@ public class SaleTemplate
      * @param familyId 가족 아이디
      * @return
      */
-    public List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto> getSaleHistory(Long familyId)
+    public List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto> getSaleHistoryByFamilyId(Long familyId)
     {
         String apiPath = SALE_API_PATH + "/history/family/" + familyId;
         URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
@@ -131,9 +131,33 @@ public class SaleTemplate
         return exchange.getBody();
     }
 
-    public List<SaleItemDto> getCustomersSaleHistory(Long id)
+    /**
+     * 고객의 구매 이력을 조회힌다.
+     * @param id
+     * @return
+     */
+    public List<SaleItemDto> getSaleHistoryByCustomerId(Long id)
     {
         String apiPath = SALE_API_PATH + "/history/customer/" + id;
+        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<SaleItemDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<SaleItemDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
+    }
+
+    /**
+     * 상품의 판매 이력을 조회한다.
+     * @param id
+     * @return
+     */
+    public List<SaleItemDto> getSaleHistoryByItemId(Long id)
+    {
+        String apiPath = SALE_API_PATH + "/history/item/" + id;
         URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
                 .path(apiPath)
                 .build()
