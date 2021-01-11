@@ -1,10 +1,7 @@
 package com.ddng.adminuibootstrap.modules.schedules.controller;
 
-import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
-import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
@@ -20,7 +17,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

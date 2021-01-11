@@ -1,7 +1,8 @@
 package com.ddng.adminuibootstrap.modules.sale.template;
 
-import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.customer.dto.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
@@ -9,7 +10,6 @@ import com.ddng.adminuibootstrap.modules.sale.dto.PaymentType;
 import com.ddng.adminuibootstrap.modules.sale.dto.SaleDto;
 import com.ddng.adminuibootstrap.modules.sale.dto.SaleType;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +24,12 @@ import java.util.List;
  * <h1>Sale-api 스케쥴 관련 RestTemplate 클래스</h1>
  */
 @Component
-@RequiredArgsConstructor
-public class SaleTemplate
+public class SaleTemplate extends AbstractTemplate
 {
-    private static final String SALE_API_PATH = "/sale";
-    private static final String COUPON_API_PATH = "/coupon";
-    private static final String ITEM_API_PATH = "/items";
-
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
+    public SaleTemplate(RestTemplate restTemplate, ServiceProperties serviceProperties)
+    {
+        super(restTemplate, serviceProperties);
+    }
 
     /**
      * 쿠폰을 조회한다.
@@ -42,7 +39,7 @@ public class SaleTemplate
     public CouponDto getCoupon(Long id)
     {
         String apiPath = COUPON_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -60,7 +57,7 @@ public class SaleTemplate
     public void saleCart(Cart cart, SaleType saleType, PaymentType paymentType)
     {
         String apiPath = SALE_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -78,7 +75,7 @@ public class SaleTemplate
     public RestPageImpl<CouponDto> getCoupons(List<Long> customerIds)
     {
         String apiPath = COUPON_API_PATH;
-        UriComponentsBuilder path = UriComponentsBuilder.fromUriString(serviceProperties.getSale()).path(apiPath);
+        UriComponentsBuilder path = getSaleApiUriBuilder().path(apiPath);
         customerIds.forEach(c -> path.queryParam("customerIds", c));
         URI targetUrl = path.build().encode().toUri();
 
@@ -97,7 +94,7 @@ public class SaleTemplate
     public RestPageImpl<ItemDto> getBeautyItems(String keyword, int page, int size)
     {
         String apiPath = ITEM_API_PATH + "/beauty";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("keyword", keyword)
                 .queryParam("page", page)
@@ -120,7 +117,7 @@ public class SaleTemplate
     public List<com.ddng.adminuibootstrap.modules.customer.dto.SaleDto> getSaleHistoryByFamilyId(Long familyId)
     {
         String apiPath = SALE_API_PATH + "/history/family/" + familyId;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -139,7 +136,7 @@ public class SaleTemplate
     public List<SaleItemDto> getSaleHistoryByCustomerId(Long id)
     {
         String apiPath = SALE_API_PATH + "/history/customer/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -158,7 +155,7 @@ public class SaleTemplate
     public List<SaleItemDto> getSaleHistoryByItemId(Long id)
     {
         String apiPath = SALE_API_PATH + "/history/item/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()

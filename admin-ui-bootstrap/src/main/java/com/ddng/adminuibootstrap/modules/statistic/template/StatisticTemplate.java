@@ -1,26 +1,24 @@
 package com.ddng.adminuibootstrap.modules.statistic.template;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.statistic.dto.CalculateDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
-public class StatisticTemplate
+public class StatisticTemplate extends AbstractTemplate
 {
-    private static final String SALE_API_PATH = "/sale/calculate";
-
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
+    public StatisticTemplate(RestTemplate restTemplate, ServiceProperties serviceProperties)
+    {
+        super(restTemplate, serviceProperties);
+    }
 
     /**
      * 상품 종류별 정산 데이터를 조회한다.
@@ -30,7 +28,7 @@ public class StatisticTemplate
     public List<CalculateDto.ByItemType> getCalculateByItemType (String baseDate)
     {
         String apiPath = SALE_API_PATH + "/itemType";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("baseDate", baseDate)
                 .build()
@@ -49,7 +47,7 @@ public class StatisticTemplate
     public List<CalculateDto.ByPayment> getCalculateByPayment (String baseDate)
     {
         String apiPath = SALE_API_PATH + "/payment";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("baseDate", baseDate)
                 .build()

@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.infra;
+package com.ddng.adminuibootstrap.modules.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

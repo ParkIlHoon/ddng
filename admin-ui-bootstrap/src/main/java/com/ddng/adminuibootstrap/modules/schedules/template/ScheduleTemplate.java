@@ -1,36 +1,32 @@
 package com.ddng.adminuibootstrap.modules.schedules.template;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
 import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTypeDto;
 import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * <h1>Schedule-api 스케쥴 관련 RestTemplate 클래스</h1>
  */
 @Component
-@RequiredArgsConstructor
-public class ScheduleTemplate
+public class ScheduleTemplate extends AbstractTemplate
 {
-    private static final String SCHEDULE_API_PATH = "/schedules";
-    private static final String TAG_API_PATH = "/tags";
-
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
+    public ScheduleTemplate(RestTemplate restTemplate, ServiceProperties serviceProperties)
+    {
+        super(restTemplate, serviceProperties);
+    }
 
     /**
      * 스케쥴을 조회한다.
@@ -40,7 +36,7 @@ public class ScheduleTemplate
     public ScheduleDto getSchedule(Long id)
     {
         String apiPath = SCHEDULE_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -58,7 +54,7 @@ public class ScheduleTemplate
      */
     public List<ScheduleDto> getSchedule(String startDate, String endDate)
     {
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(SCHEDULE_API_PATH)
                 .queryParam("startDate", startDate)
                 .queryParam("endDate", endDate)
@@ -79,7 +75,7 @@ public class ScheduleTemplate
     public List<ScheduleTypeDto> getScheduleTypes()
     {
         String apiPath = SCHEDULE_API_PATH + "/types";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -98,7 +94,7 @@ public class ScheduleTemplate
     public List<ScheduleTagDto> getScheduleTags()
     {
         String apiPath = TAG_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -117,7 +113,7 @@ public class ScheduleTemplate
     public void createSchedule(ScheduleForm form) throws Exception
     {
         String apiPath = SCHEDULE_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -148,7 +144,7 @@ public class ScheduleTemplate
     public void updateSchedule(Long id, ScheduleForm form)
     {
         String apiPath = SCHEDULE_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -164,7 +160,7 @@ public class ScheduleTemplate
     public void deleteSchedule(Long id)
     {
         String apiPath = SCHEDULE_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -176,7 +172,7 @@ public class ScheduleTemplate
     public List<ScheduleDto> getNotPayedSchedules()
     {
         String apiPath = SCHEDULE_API_PATH + "/day";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSchedule())
+        URI targetUrl= getScheduleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("baseDate", LocalDate.now().toString())
                 .queryParam("payed", false)

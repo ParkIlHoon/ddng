@@ -1,6 +1,6 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
-import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.customer.dto.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;

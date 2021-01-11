@@ -1,6 +1,6 @@
 package com.ddng.adminuibootstrap.modules.sale.controller;
 
-import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;

@@ -1,18 +1,17 @@
 package com.ddng.adminuibootstrap.modules.item.template;
 
-import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.dto.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
 import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -21,13 +20,12 @@ import java.util.List;
  * <h1>Sale-api 아이템 관련 RestTemplate 클래스</h1>
  */
 @Component
-@RequiredArgsConstructor
-public class ItemTemplate
+public class ItemTemplate extends AbstractTemplate
 {
-    private static final String ITEM_API_PATH = "/items";
-
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
+    public ItemTemplate(RestTemplate restTemplate, ServiceProperties serviceProperties)
+    {
+        super(restTemplate, serviceProperties);
+    }
 
     /**
      * 상품을 조회한다.
@@ -37,7 +35,7 @@ public class ItemTemplate
     public ItemDto getItem (Long id)
     {
         String apiPath = ITEM_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -54,7 +52,7 @@ public class ItemTemplate
     public List<ItemDto> getHotelItems ()
     {
         String apiPath = ITEM_API_PATH + "/hotel";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -72,7 +70,7 @@ public class ItemTemplate
     public List<ItemDto> getKindergartenItems ()
     {
         String apiPath = ITEM_API_PATH + "/kindergarten";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -93,7 +91,7 @@ public class ItemTemplate
     public RestPageImpl<ItemDto> searchItemsWithPage(String keyword, int page, int size) 
     {
         String apiPath = ITEM_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("keyword", keyword)
                 .queryParam("page", page)
@@ -115,7 +113,7 @@ public class ItemTemplate
     public List<ItemTypeDto> getTypes()
     {
         String apiPath = ITEM_API_PATH + "/types";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -135,7 +133,7 @@ public class ItemTemplate
     public void updateItem(Long id, EditForm editForm)
     {
         String apiPath = ITEM_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -151,7 +149,7 @@ public class ItemTemplate
     public void createItem(RegisterForm registerForm)
     {
         String apiPath = ITEM_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -167,7 +165,7 @@ public class ItemTemplate
     public List<String> getBarcodes(int count)
     {
         String apiPath = ITEM_API_PATH + "/barcode";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getSale())
+        URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("count", count)
                 .build()

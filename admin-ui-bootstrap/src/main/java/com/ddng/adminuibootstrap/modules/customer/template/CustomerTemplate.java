@@ -1,7 +1,8 @@
 package com.ddng.adminuibootstrap.modules.customer.template;
 
-import com.ddng.adminuibootstrap.infra.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTypeDto;
@@ -9,8 +10,6 @@ import com.ddng.adminuibootstrap.modules.customer.dto.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
-import lombok.RequiredArgsConstructor;
-import net.minidev.json.parser.JSONParser;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,15 +25,12 @@ import java.util.List;
  * <h1>Customer-api 고객 관련 요청 템플릿</h1>
  */
 @Component
-@RequiredArgsConstructor
-public class CustomerTemplate
+public class CustomerTemplate extends AbstractTemplate
 {
-    private static final String CUSTOMER_API_PATH = "/customers";
-    private static final String FAMILY_API_PATH = "/families";
-    private static final String TAG_API_PATH = "/tags";
-
-    private final RestTemplate restTemplate;
-    private final ServiceProperties serviceProperties;
+    public CustomerTemplate(RestTemplate restTemplate, ServiceProperties serviceProperties)
+    {
+        super(restTemplate, serviceProperties);
+    }
 
     /**
      * 고객 종류를 조회하는 API를 호출한다.
@@ -43,7 +39,8 @@ public class CustomerTemplate
     public List<CustomerTypeDto> getCustomerTypes ()
     {
         String apiPath = CUSTOMER_API_PATH + "/types";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -62,7 +59,7 @@ public class CustomerTemplate
     public List<FamilyDto> searchFamilies(String keyword)
     {
         String apiPath = FAMILY_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .queryParam("keyword", keyword)
                 .build()
@@ -81,7 +78,7 @@ public class CustomerTemplate
     public void createCustomer (RegisterForm registerForm) throws Exception
     {
         String apiPath = CUSTOMER_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -114,7 +111,7 @@ public class CustomerTemplate
     public RestPageImpl<FamilyDto> searchFamiliesWithPage(String keyword, int page, int size)
     {
         String apiPath = FAMILY_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .queryParam("keyword", keyword)
                 .queryParam("page", page)
@@ -135,7 +132,7 @@ public class CustomerTemplate
     public FamilyDto getFamily(Long id)
     {
         String apiPath = FAMILY_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -152,7 +149,7 @@ public class CustomerTemplate
     public void updateFamilySetting (FamilySettingForm familySettingForm)
     {
         String apiPath = FAMILY_API_PATH + "/" + familySettingForm.getId();
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -171,7 +168,7 @@ public class CustomerTemplate
     public RestPageImpl<CustomerDto> searchCustomersWithPage(String keyword, int page, int size)
     {
         String apiPath = CUSTOMER_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .queryParam("keyword", keyword)
                 .queryParam("page", page)
@@ -192,7 +189,7 @@ public class CustomerTemplate
     public CustomerDto getCustomer(Long id)
     {
         String apiPath = CUSTOMER_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -208,7 +205,7 @@ public class CustomerTemplate
     public List<CustomerTagDto> getCustomerTags ()
     {
         String apiPath = TAG_API_PATH;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -228,7 +225,7 @@ public class CustomerTemplate
     public void addCustomerTag(Long id, CustomerTagDto dto) throws JSONException
     {
         String apiPath = CUSTOMER_API_PATH + "/" + id + "/tag";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -253,7 +250,7 @@ public class CustomerTemplate
     public void removeCustomerTag(Long id, CustomerTagDto dto) throws JSONException
     {
         String apiPath = CUSTOMER_API_PATH + "/" + id + "/tag";
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -277,7 +274,7 @@ public class CustomerTemplate
     public void updateCustomer(Long id, EditForm editForm)
     {
         String apiPath = CUSTOMER_API_PATH + "/" + id;
-        URI targetUrl= UriComponentsBuilder.fromUriString(serviceProperties.getCustomer())
+        URI targetUrl= getCustomerApiUriBuilder()
                 .path(apiPath)
                 .build()
                 .encode()
@@ -295,7 +292,7 @@ public class CustomerTemplate
     public List<CustomerDto> getCustomers(List<Long> customerIds) throws JSONException
     {
         String apiPath = CUSTOMER_API_PATH + "/in";
-        UriComponentsBuilder path = UriComponentsBuilder.fromUriString(serviceProperties.getCustomer()).path(apiPath);
+        UriComponentsBuilder path = getCustomerApiUriBuilder().path(apiPath);
         for (Long id : customerIds)
         {
             path = path.queryParam("customerIds", id);
