@@ -80,7 +80,7 @@ public class SaleRepositoryImpl implements SaleCustomRepository
     {
         List<SaleItem> fetch = queryFactory.select(saleItem)
                 .from(saleItem)
-                .where(saleItem.id.eq(itemId))
+                .where(saleItem.item.id.eq(itemId))
                 .fetch();
         return fetch;
     }

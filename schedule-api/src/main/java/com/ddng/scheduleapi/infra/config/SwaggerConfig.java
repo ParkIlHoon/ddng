@@ -1,4 +1,4 @@
-package com.ddng.customerapi.infra.config;
+package com.ddng.scheduleapi.infra.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +35,7 @@ public class SwaggerConfig
         return new Docket(DocumentationType.SWAGGER_2)
                     .useDefaultResponseMessages(false)
                     .select()
-                    .apis(RequestHandlerSelectors.basePackage("com.ddng.customerapi.modules"))
+                    .apis(RequestHandlerSelectors.basePackage("com.ddng.scheduleapi.modules"))
                     .paths(PathSelectors.ant("/**"))
                     .build()
                     .apiInfo(apiInfo());
@@ -55,9 +55,9 @@ public class SwaggerConfig
     private ApiInfo apiInfo ()
     {
         ApiInfoBuilder builder = new ApiInfoBuilder();
-        builder.title("ddng-customer-api")
+        builder.title("ddng-schedule-api")
                 .contact(new Contact(NAME, URL, EMAIL))
-                .description("똥강아지 프로젝트 고객 관련 API")
+                .description("똥강아지 프로젝트 스케쥴 관련 API")
                 .version("1.0");
 
         return builder.build();
