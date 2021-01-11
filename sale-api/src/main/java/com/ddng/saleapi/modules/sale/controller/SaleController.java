@@ -5,6 +5,8 @@ import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  * @version 1.0
  */
 @RestController
+@Api(value = "판매 컨트롤러")
 @RequestMapping("/sale")
 @RequiredArgsConstructor
 public class SaleController
@@ -42,6 +45,7 @@ public class SaleController
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "판매", notes = "새로운 판매를 생성합니다.")
     public ResponseEntity createSale (@RequestBody @Valid SaleDto.Post dto,
                                    Errors errors)
     {
@@ -63,6 +67,7 @@ public class SaleController
      * @return
      */
     @GetMapping
+    @ApiOperation(value = "판매 목록 검색", notes = "검색 정보에 해당하는 판매 목록을 검색합니다.")
     public ResponseEntity searchSale (@RequestBody @Valid SaleDto.Get dto,
                                       Errors errors,
                                       @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
@@ -82,6 +87,7 @@ public class SaleController
      * @return
      */
     @GetMapping("/{id}")
+    @ApiOperation(value = "판매 조회", notes = "특정 판매를 조회합니다.")
     public ResponseEntity getSale (@PathVariable("id") Long id)
     {
         Optional<Sale> optionalSale = saleService.findById(id);
@@ -103,6 +109,7 @@ public class SaleController
      * @return
      */
     @PutMapping("/{id}")
+    @ApiOperation(value = "판매 수정", notes = "특정 판매 정보를 수정합니다.")
     public ResponseEntity updateSale (@PathVariable("id") Long id,
                                       @RequestBody @Valid SaleDto.Put dto,
                                       Errors errors)
@@ -125,6 +132,7 @@ public class SaleController
      * @return
      */
     @GetMapping("/history/family/{familyId}")
+    @ApiOperation(value = "가족의 판매 이력 조회", notes = "특정 가족의 판매 이력을 조회합니다.")
     public ResponseEntity getHistoryByFamily (@PathVariable("familyId") Long familyId)
     {
         if (familyId == null)
@@ -142,6 +150,7 @@ public class SaleController
      * @return
      */
     @GetMapping("/history/customer/{customerId}")
+    @ApiOperation(value = "고객의 판매 이력 조회", notes = "특정 고객의 판매 이력을 조회합니다.")
     public ResponseEntity getHistoryByCustomer (@PathVariable("customerId") Long customerId)
     {
         if (customerId == null)
@@ -159,6 +168,7 @@ public class SaleController
      * @return
      */
     @GetMapping("/history/item/{itemId}")
+    @ApiOperation(value = "상품의 판매 이력 조회", notes = "특정 상품의 판매 이력을 조회합니다.")
     public ResponseEntity getHistoryByItem (@PathVariable("itemId") Long itemId)
     {
         if (itemId == null)
@@ -171,6 +181,7 @@ public class SaleController
     }
 
     @GetMapping("/calculate/itemType")
+    @ApiOperation(value = "상품 타입별 정산", notes = "특정 일자의 상품 타입별 판매 이력을 조회합니다.")
     public ResponseEntity calculateByItem(String baseDate)
     {
         List<CalculateDto.ByItem> calculate = saleService.getCalculateByItem(LocalDate.parse(baseDate));
@@ -178,6 +189,7 @@ public class SaleController
     }
 
     @GetMapping("/calculate/payment")
+    @ApiOperation(value = "결제 수단별 정산", notes = "특정 일자의 결제 수단별 판매 이력을 조회합니다.")
     public ResponseEntity calculateByPayment(String baseDate)
     {
         List<CalculateDto.ByPayment> calculate = saleService.getCalculateByPayment(LocalDate.parse(baseDate));

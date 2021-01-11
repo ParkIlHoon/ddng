@@ -3,16 +3,15 @@ package com.ddng.saleapi.modules.coupon.controller;
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.dto.CouponDto;
 import com.ddng.saleapi.modules.coupon.service.CouponService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,30 +21,28 @@ import java.util.Optional;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/coupon")
+@Api(value = "쿠폰 컨트롤러")
+@RequestMapping("/coupons")
 @RequiredArgsConstructor
 public class CouponController
 {
     private final CouponService couponService;
 
-
-
     /**
-     * 쿠폰 목록을 검색한다.
-     * @param dto
-     * @param errors
-     * @param pageable
+     * 쿠폰 목록을 조회한다.
+     * @param customerIds 조회할 사용자 아이디 배열
+     * @param pageable 페이징 정보
      * @return
      */
     @GetMapping
-    public ResponseEntity searchCoupon (@RequestParam("customerIds") List<Long> customerIds,
-                                        @PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.DESC) Pageable pageable)
+    @ApiOperation(value = "쿠폰 목록 검색", notes = "사용자들의 보유 쿠폰 목록을 조회합니다.")
+    public ResponseEntity searchCoupon (@ApiParam(value = "사용자 아이디 목록", required = true) @RequestParam("customerIds") List<Long> customerIds,
+                                        @ApiParam(value = "페이징 정보", required = false) @PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
-        //FIXME 수정 필요
-//        if (errors.hasErrors())
-//        {
-//            return ResponseEntity.badRequest().build();
-//        }
+        if (customerIds == null || customerIds.size() == 0)
+        {
+            return ResponseEntity.badRequest().build();
+        }
 
         CouponDto.Get dto = new CouponDto.Get();
         dto.setCustomerIds(customerIds);
@@ -60,7 +57,8 @@ public class CouponController
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity getCoupon (@PathVariable("id") Long id)
+    @ApiOperation(value = "쿠폰 조회", notes = "특정 쿠폰을 조회합니다.")
+    public ResponseEntity getCoupon (@ApiParam(value = "쿠폰 아이디", required = true, example = "1") @PathVariable("id") Long id)
     {
         Optional<Coupon> optionalCoupon = couponService.findById(id);
 

@@ -7,6 +7,8 @@ import com.ddng.saleapi.modules.item.dto.ItemTypeDto;
 import com.ddng.saleapi.modules.item.service.ItemService;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  * @version 1.0
  */
 @RestController
+@Api(value = "상품 컨트롤러")
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController
@@ -45,6 +48,7 @@ public class ItemController
      * @return 키워드에 해당하는 상품 목록
      */
     @GetMapping
+    @ApiOperation(value = "상품 목록 검색", notes = "키워드에 해당하는 상품 목록을 검색합니다.")
     public ResponseEntity searchItem (String keyword,
                                       @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
@@ -58,6 +62,7 @@ public class ItemController
      * @return 아이디에 해당하는 상품 정보
      */
     @GetMapping("/{id}")
+    @ApiOperation(value = "상품 조회", notes = "특정 상품을 조회합니다.")
     public ResponseEntity getItem (@PathVariable("id") Long id)
     {
         Optional<Item> optionalItem = itemService.findById(id);
@@ -76,6 +81,7 @@ public class ItemController
      * @return
      */
     @GetMapping("/types")
+    @ApiOperation(value = "상품 타입 조회", notes = "상품 타입 목록을 조회합니다.")
     public ResponseEntity getItemTypes ()
     {
         List<ItemTypeDto> returnList = new ArrayList();
@@ -96,6 +102,7 @@ public class ItemController
      * @return
      */
     @GetMapping("/beauty")
+    @ApiOperation(value = "미용 상품 목록 조회", notes = "미용 타입의 상품 목록을 조회합니다.")
     public ResponseEntity getBeautyItems (String keyword,
                                           @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
@@ -108,6 +115,7 @@ public class ItemController
      * @return
      */
     @GetMapping("/hotel")
+    @ApiOperation(value = "호텔 상품 목록 조회", notes = "호텔 타입의 상품 목록을 조회합니다.")
     public ResponseEntity getHotelItems ()
     {
         List<ItemDto.Response> items = itemService.findHotelItems();
@@ -119,6 +127,7 @@ public class ItemController
      * @return
      */
     @GetMapping("/kindergarten")
+    @ApiOperation(value = "유치원 상품 목록 조회", notes = "유치원 타입의 상품 목록을 조회합니다.")
     public ResponseEntity getKindergartenItems ()
     {
         List<ItemDto.Response> items = itemService.findKindergartenItems();
@@ -132,6 +141,7 @@ public class ItemController
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "상품 생성", notes = "새로운 상품을 생성합니다.")
     public ResponseEntity createItem (@RequestBody @Valid ItemDto.Post dto, Errors errors)
     {
         if (errors.hasErrors())
@@ -153,6 +163,7 @@ public class ItemController
      * @return
      */
     @PutMapping("/{id}")
+    @ApiOperation(value = "상품 수정", notes = "기존 상품을 수정합니다.")
     public ResponseEntity updateItem (@PathVariable("id") Long id,
                                       @RequestBody @Valid ItemDto.Put dto,
                                       Errors errors)
@@ -178,6 +189,7 @@ public class ItemController
      * @return
      */
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "상품 삭제", notes = "상품을 삭제합니다.")
     public ResponseEntity deleteItem (@PathVariable("id") Long id)
     {
         Optional<Item> optionalItem = itemService.findById(id);
@@ -197,6 +209,7 @@ public class ItemController
      * @return
      */
     @GetMapping("/{id}/sale-history")
+    @ApiOperation(value = "상품 판매 기록 조회", notes = "특정 상품의 판매 기록을 조회합니다.")
     public ResponseEntity getSaleHistory (@PathVariable("id") Long id,
                                           @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
@@ -220,6 +233,7 @@ public class ItemController
      * @return
      */
     @GetMapping("/barcode")
+    @ApiOperation(value = "바코드 목록 조회", notes = "현재 존재하지 않는 바코드 목록을 조회합니다.")
     public ResponseEntity getBarcodeList (int count)
     {
         List<String> barcodes = itemService.getAvailableBarcodes(count);
