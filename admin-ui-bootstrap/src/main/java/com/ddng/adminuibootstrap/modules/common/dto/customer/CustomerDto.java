@@ -10,6 +10,7 @@ import java.util.Set;
  * <h1>ddng-customer-api 고객 DTO</h1>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class CustomerDto
 {
     private Long id;

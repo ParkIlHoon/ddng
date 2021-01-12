@@ -6,6 +6,7 @@ import lombok.*;
  * <h1>ddng-schedule-api 스케쥴 타입 DTO</h1>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class ScheduleTypeDto
 {
     private String id;

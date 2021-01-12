@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  * <h1>ddng-sale-api 쿠폰 DTO</h1>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class CouponDto
 {
     private Long id;

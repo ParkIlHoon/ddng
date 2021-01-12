@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
  * <h1>ddng-sale-api 판매 상품 DTO</h1>
  */
 @Data @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class SaleItemDto
 {
     @NotNull

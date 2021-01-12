@@ -11,6 +11,7 @@ import java.util.List;
  * <h1>ddng-sale-api 판매 DTO</h1>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class SaleDto
 {
     private Long familyId;

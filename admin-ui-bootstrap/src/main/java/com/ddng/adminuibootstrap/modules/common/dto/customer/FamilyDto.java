@@ -9,6 +9,7 @@ import java.util.List;
  * <h1>ddng-customer-api 가족 DTO</h1>>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class FamilyDto
 {
     private Long id;

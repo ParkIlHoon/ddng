@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
  * <h1>ddng-customer-api 고객 종류 DTO</h1>
  */
 @Data
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class CustomerTypeDto
 {
     private String name;

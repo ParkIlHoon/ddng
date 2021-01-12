@@ -11,6 +11,7 @@ import java.util.Set;
  * <h1>ddng-schedule-api 스케쥴 DTO</h1>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class ScheduleDto
 {
     private Long id;

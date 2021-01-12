@@ -6,6 +6,7 @@ import lombok.*;
  * <h1>ddng-sale-api 상품 타입 DTO</h1>
  */
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class ItemTypeDto
 {
     private String id;
