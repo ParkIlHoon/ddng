@@ -120,7 +120,7 @@
                 resetPage = true;
 
                 $.ajax({
-                    url : "/customer-management/customers",
+                    url : "/customer-management/search-customer/customer-list",
                     type : "GET",
                     data : {"keyword" : searchKeyword, "page" : 0, "size" : 10}
                 }).done((data, textStatus, jqXHR) => {
@@ -134,7 +134,7 @@
                 var searchKeyword = $("#keyword-input-hidden").val();
                 resetPage = false;
                 $.ajax({
-                    url : "/customer-management/customers",
+                    url : "/customer-management/search-customer/customer-list",
                     type : "GET",
                     data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 10}
                 }).done((data, textStatus, jqXHR) => {
@@ -148,7 +148,7 @@
         function openCustomerCard (id)
         {
             $.ajax({
-                url : "/customer-management/search/" + id,
+                url : "/customer-management/search-customer/customers/" + id,
                 type : "GET"
             }).done((data, textStatus, jqXHR) => {
                 var responseText = jqXHR.responseText;

@@ -39,7 +39,7 @@
                 function createFamilySection (familyId)
                 {
                     $.ajax({
-                        url : "/customer-management/families/" + familyId,
+                        url : "/customer-management/family-management/families/" + familyId,
                         type : "GET"
                     }).done((data, textStatus, jqXHR) => {
                         var responseText = jqXHR.responseText;
