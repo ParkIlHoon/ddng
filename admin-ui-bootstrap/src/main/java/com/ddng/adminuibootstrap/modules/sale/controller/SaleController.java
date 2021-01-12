@@ -1,14 +1,15 @@
 package com.ddng.adminuibootstrap.modules.sale.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
-import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
-import com.ddng.adminuibootstrap.modules.sale.dto.*;
+import com.ddng.adminuibootstrap.modules.sale.form.ScheduleToSaleForm;
+import com.ddng.adminuibootstrap.modules.sale.form.AddCartForm;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.codehaus.jettison.json.JSONException;
@@ -66,9 +67,9 @@ public class SaleController
             schedules.forEach(c -> customerIds.add(c.getCustomerId()));
             List<Long> uniqueIds = new ArrayList<Long>(new HashSet<>(customerIds));
             List<CustomerDto> customers = customerTemplate.getCustomers(uniqueIds);
-            List<ScheduleToSaleDto> collect = schedules.stream().map(s -> {
+            List<ScheduleToSaleForm> collect = schedules.stream().map(s -> {
                 Optional<CustomerDto> first = customers.stream().filter(c -> c.getId().equals(s.getCustomerId())).findFirst();
-                return new ScheduleToSaleDto(s, first.get());
+                return new ScheduleToSaleForm(s, first.get());
             }).collect(Collectors.toList());
             model.addAttribute("schedules", collect);
         }
@@ -87,7 +88,7 @@ public class SaleController
      * @return
      */
     @PostMapping("/cart")
-    public String addCart (@RequestBody @Valid AddCartDto dto,
+    public String addCart (@RequestBody @Valid AddCartForm dto,
                            Errors errors,
                            @ModelAttribute Cart cart,
                            Model model)

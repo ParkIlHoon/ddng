@@ -1,8 +1,8 @@
 package com.ddng.adminuibootstrap.modules.sale.vo;
 
-import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
-import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.CouponDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
 import org.apache.commons.lang.NullArgumentException;
 
 import java.util.ArrayList;

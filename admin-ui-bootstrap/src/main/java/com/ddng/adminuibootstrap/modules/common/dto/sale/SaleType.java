@@ -1,11 +1,9 @@
-package com.ddng.adminuibootstrap.modules.sale.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.sale;
 
 import lombok.Getter;
 
 /**
- * <h1>판매 타입 Enum 클래스</h1>
- *
- * @version 1.0
+ * <h1>ddng-sale-api 판매 타입 Enum 클래스</h1>
  */
 @Getter
 public enum SaleType

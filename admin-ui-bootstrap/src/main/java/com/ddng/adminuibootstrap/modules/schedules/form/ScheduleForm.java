@@ -1,6 +1,6 @@
 package com.ddng.adminuibootstrap.modules.schedules.form;
 
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTagDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;

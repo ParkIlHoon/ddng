@@ -1,13 +1,14 @@
-package com.ddng.adminuibootstrap.modules.customer.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @Data
-@NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+/**
+ * <h1>ddng-customer-api 가족 DTO</h1>>
+ */
+@Data
 public class FamilyDto
 {
     private Long id;

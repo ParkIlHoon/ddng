@@ -1,6 +1,6 @@
 package com.ddng.adminuibootstrap.modules.item.form;
 
-import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

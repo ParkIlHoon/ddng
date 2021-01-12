@@ -2,9 +2,9 @@ package com.ddng.adminuibootstrap.modules.schedules.template;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTypeDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTagDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTypeDto;
 import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;

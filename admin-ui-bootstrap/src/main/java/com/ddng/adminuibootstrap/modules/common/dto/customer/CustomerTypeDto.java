@@ -1,12 +1,13 @@
-package com.ddng.adminuibootstrap.modules.customer.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * <h1>고객 종류 DTO</h1>
+ * <h1>ddng-customer-api 고객 종류 DTO</h1>
  */
-@Getter
+@Data
 @NoArgsConstructor
 public class CustomerTypeDto
 {

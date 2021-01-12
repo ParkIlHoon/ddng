@@ -2,7 +2,7 @@ package com.ddng.adminuibootstrap.modules.statistic.template;
 
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
-import com.ddng.adminuibootstrap.modules.statistic.dto.CalculateDto;
+import com.ddng.adminuibootstrap.modules.common.dto.statistic.CalculateDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

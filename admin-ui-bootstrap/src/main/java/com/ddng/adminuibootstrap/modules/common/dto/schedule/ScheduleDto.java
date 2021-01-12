@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.schedules.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.schedule;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+/**
+ * <h1>ddng-schedule-api 스케쥴 DTO</h1>
+ */
+@Data
 public class ScheduleDto
 {
     private Long id;

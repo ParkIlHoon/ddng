@@ -6,7 +6,7 @@
     <div class="card-header">상세 정보</div>
     <div class="card-body">고객 목록에서 선택한 고객의 상세 정보가 표시됩니다.</div>
     <form id="edit-customer-form" class="form-horizontal needs-validation" action="#" method="post"
-          th:action="@{/customer/edit/} + ${customerForm.getId()}" th:object="${customerForm}" novalidate>
+          th:action="@{/customer-management/edit/} + ${customerForm.getId()}" th:object="${customerForm}" novalidate>
         <div class="card-body">
                 <div class="form-group row">
                     <div class="col-md-4">
@@ -262,7 +262,7 @@
                     },
                     contentType : "application/json; charset=utf-8",
                     method : "post",
-                    url : "/customer/" + customerId + "/tags/" + method,
+                    url : "/customer-management/" + customerId + "/tags/" + method,
                     data : JSON.stringify({"title" : title}),
                 });
             }

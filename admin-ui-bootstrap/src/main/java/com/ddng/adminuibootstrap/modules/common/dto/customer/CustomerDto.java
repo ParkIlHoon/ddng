@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.customer.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
 import lombok.*;
 
@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Setter @Data
-@NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+/**
+ * <h1>ddng-customer-api 고객 DTO</h1>
+ */
+@Data
 public class CustomerDto
 {
     private Long id;

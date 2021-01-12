@@ -1,12 +1,11 @@
-package com.ddng.adminuibootstrap.modules.item.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.sale;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+/**
+ * <h1>ddng-sale-api 상품 타입 DTO</h1>
+ */
+@Data
 public class ItemTypeDto
 {
     private String id;

@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.customer.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
 import lombok.Data;
 

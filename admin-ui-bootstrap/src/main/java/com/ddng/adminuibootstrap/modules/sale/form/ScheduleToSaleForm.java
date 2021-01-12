@@ -1,16 +1,17 @@
-package com.ddng.adminuibootstrap.modules.sale.dto;
+package com.ddng.adminuibootstrap.modules.sale.form;
 
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class ScheduleToSaleDto
+/**
+ * <h1>미결재 스케쥴</h1>
+ */
+@Data
+public class ScheduleToSaleForm
 {
     private Long id;
     private String name;
@@ -33,7 +34,7 @@ public class ScheduleToSaleDto
     private String customerTelNo;
     private String customerProfileImg;
 
-    public ScheduleToSaleDto(ScheduleDto scheduleDto, CustomerDto customerDto)
+    public ScheduleToSaleForm(ScheduleDto scheduleDto, CustomerDto customerDto)
     {
         this.id = scheduleDto.getId();
         this.name = scheduleDto.getName();

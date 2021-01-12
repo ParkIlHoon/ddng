@@ -1,7 +1,7 @@
 package com.ddng.adminuibootstrap.modules.customer.form;
 
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerTagDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTagDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

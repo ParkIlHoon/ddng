@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.sale.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.sale;
 
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import com.ddng.adminuibootstrap.modules.sale.vo.CartItem;
@@ -7,8 +7,10 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+/**
+ * <h1>ddng-sale-api 판매 DTO</h1>
+ */
+@Data
 public class SaleDto
 {
     private Long familyId;

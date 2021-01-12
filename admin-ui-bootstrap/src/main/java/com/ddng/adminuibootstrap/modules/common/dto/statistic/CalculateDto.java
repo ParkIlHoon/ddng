@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.statistic.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.statistic;
 
 import lombok.*;
 

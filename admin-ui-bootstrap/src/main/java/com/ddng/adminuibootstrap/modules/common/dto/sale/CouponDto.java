@@ -1,12 +1,13 @@
-package com.ddng.adminuibootstrap.modules.sale.dto;
+package com.ddng.adminuibootstrap.modules.common.dto.sale;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+/**
+ * <h1>ddng-sale-api 쿠폰 DTO</h1>
+ */
+@Data
 public class CouponDto
 {
     private Long id;

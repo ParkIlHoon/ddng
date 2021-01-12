@@ -1,9 +1,9 @@
 package com.ddng.adminuibootstrap.modules.item.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
-import com.ddng.adminuibootstrap.modules.customer.dto.SaleItemDto;
-import com.ddng.adminuibootstrap.modules.item.dto.ItemDto;
-import com.ddng.adminuibootstrap.modules.item.dto.ItemTypeDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
 import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;

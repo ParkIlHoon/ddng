@@ -1,6 +1,6 @@
 package com.ddng.adminuibootstrap.modules.statistic.controller;
 
-import com.ddng.adminuibootstrap.modules.statistic.dto.CalculateDto;
+import com.ddng.adminuibootstrap.modules.common.dto.statistic.CalculateDto;
 import com.ddng.adminuibootstrap.modules.statistic.template.StatisticTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

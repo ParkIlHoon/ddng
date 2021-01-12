@@ -2,12 +2,12 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
-import com.ddng.adminuibootstrap.modules.customer.dto.*;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
-import com.ddng.adminuibootstrap.modules.sale.dto.CouponDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.CouponDto;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.codehaus.jettison.json.JSONException;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * <h1>고객 관리 메뉴 컨트롤러</h1>
  */
 @Controller
-@RequestMapping("/customer")
+@RequestMapping("/customer-management")
 @RequiredArgsConstructor
 public class CustomerController
 {
@@ -48,7 +48,7 @@ public class CustomerController
      * @param model
      * @return
      */
-    @GetMapping("/search")
+    @GetMapping("/search-form")
     public String searchForm (Model model)
     {
         return "customer/search/main";
@@ -331,8 +331,6 @@ public class CustomerController
         model.addAttribute("message", familySettingForm.getName() + " 가족의 설정 내용이 정상적으로 변경되었습니다.");
         return "customer/family/main";
     }
-
-
 
     /**
      * 고객 사진 요청

@@ -18,7 +18,7 @@
                         <div class="card-header">고객 등록</div>
                         <div class="card-body">새로운 고객을 등록합니다.</div>
                         <form id="new-customer-form" class="form-horizontal needs-validation" action="#" method="post"
-                              th:action="@{/customer/register}" th:object="${registerForm}" novalidate>
+                              th:action="@{/customer-management/register}" th:object="${registerForm}" novalidate>
                             <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-md-4">
@@ -142,7 +142,7 @@
             width : "100%",
             allowClear : true,
             ajax: {
-                url: "/customer/families",
+                url: "/customer-management/families",
                 method: "GET",
                 data : function (params) {return { keyword: params.term };},
                 processResults: function (data) {

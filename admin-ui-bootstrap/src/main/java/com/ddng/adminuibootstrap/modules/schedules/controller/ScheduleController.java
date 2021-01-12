@@ -1,11 +1,11 @@
 package com.ddng.adminuibootstrap.modules.schedules.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
-import com.ddng.adminuibootstrap.modules.customer.dto.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleDto;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTagDto;
-import com.ddng.adminuibootstrap.modules.schedules.dto.ScheduleTypeDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTagDto;
+import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTypeDto;
 import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
 import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;

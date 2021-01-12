@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.sale.dto;
+package com.ddng.adminuibootstrap.modules.sale.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class AddCartDto
+public class AddCartForm
 {
     private Long scheduleId;
     private List<Long> itemIds = new ArrayList<>();

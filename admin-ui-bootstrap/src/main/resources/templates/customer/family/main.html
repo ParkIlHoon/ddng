@@ -113,7 +113,7 @@
             resetPage = true;
 
             $.ajax({
-                url : "/customer/familyCard",
+                url : "/customer-management/familyCard",
                 type : "GET",
                 data : {"keyword" : searchKeyword, "page" : 0, "size" : 12}
             }).done((data, textStatus, jqXHR) => {
@@ -127,7 +127,7 @@
             var searchKeyword = $("#keyword-input-hidden").val();
             resetPage = false;
             $.ajax({
-                url : "/customer/familyCard",
+                url : "/customer-management/familyCard",
                 type : "GET",
                 data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 12}
             }).done((data, textStatus, jqXHR) => {
