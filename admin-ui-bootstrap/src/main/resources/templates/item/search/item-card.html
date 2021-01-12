@@ -6,7 +6,7 @@
     <div class="card-header">상세 정보</div>
     <div class="card-body">상품 목록에서 선택한 상품의 상세 정보가 표시됩니다.</div>
     <form class="form-horizontal needs-validation" id="item-form" action="#" method="post"
-        th:action="@{/item/edit/} + ${itemForm.getId()}" th:object="${itemForm}" novalidate>
+        th:action="@{/item-management/search-item/items/} + ${itemForm.getId()}" th:object="${itemForm}" novalidate>
         <div class="card-body">
             <div class="form-group row">
                 <div class="col-md-4">

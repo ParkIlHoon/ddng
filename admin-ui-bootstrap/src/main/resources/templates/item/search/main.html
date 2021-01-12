@@ -122,7 +122,7 @@
                 resetPage = true;
 
                 $.ajax({
-                    url : "/item/items",
+                    url : "/item-management/search-item/item-list",
                     type : "GET",
                     data : {"keyword" : searchKeyword, "page" : 0, "size" : 10}
                 }).done((data, textStatus, jqXHR) => {
@@ -141,7 +141,7 @@
                 var searchKeyword = $("#searchKeywordSaved").val();
                 resetPage = false;
                 $.ajax({
-                    url : "/item/items",
+                    url : "/item-management/search-item/item-list",
                     type : "GET",
                     data : {"keyword" : searchKeyword, "page" : movePage - 1, "size" : 10}
                 }).done((data, textStatus, jqXHR) => {
@@ -155,7 +155,7 @@
         function openItemCard (id)
         {
             $.ajax({
-                url : "/item/search/" + id,
+                url : "/item-management/search-item/item-card/" + id,
                 type : "GET"
             }).done((data, textStatus, jqXHR) => {
                 var responseText = jqXHR.responseText;

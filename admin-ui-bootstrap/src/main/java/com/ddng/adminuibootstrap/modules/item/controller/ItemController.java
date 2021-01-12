@@ -5,7 +5,6 @@ import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
-import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <h1>상품 관리 메뉴 컨트롤러</h1>
+ * <h1>상품 관리 > 상품 조회 메뉴 컨트롤러</h1>
  */
 @Controller
-@RequestMapping("/item")
+@RequestMapping("/item-management/search-item")
 @RequiredArgsConstructor
 public class ItemController
 {
@@ -37,7 +35,7 @@ public class ItemController
      * @param model
      * @return
      */
-    @GetMapping("/search")
+    @GetMapping("/search-form")
     public String searchForm (Model model)
     {
         return "item/search/main";
@@ -51,7 +49,7 @@ public class ItemController
      * @param model
      * @return
      */
-    @GetMapping("/items")
+    @GetMapping("/item-list")
     public String searchAction (String keyword, int page, int size, Model model)
     {
         List<ItemDto> items = new ArrayList<>();
@@ -75,7 +73,7 @@ public class ItemController
      * @param model
      * @return
      */
-    @GetMapping("/search/{id}")
+    @GetMapping("/item-card/{id}")
     public String searchItemAction (@PathVariable("id") Long id, Model model)
     {
         if (id == null)
@@ -107,7 +105,7 @@ public class ItemController
      * @param redirectAttributes
      * @return
      */
-    @PostMapping("/edit/{id}")
+    @PostMapping("/items/{id}")
     public String editItemAction (@PathVariable("id") Long id,
                                   @Valid @ModelAttribute EditForm editForm,
                                   Errors errors,
@@ -124,64 +122,5 @@ public class ItemController
         return "redirect:/item/search";
     }
 
-    /**
-     * 상품 등록 메뉴 폼 요청
-     * @param model
-     * @return
-     */
-    @GetMapping("/register")
-    public String registerForm (Model model)
-    {
-        List<ItemTypeDto> types = itemTemplate.getTypes();
-        model.addAttribute("types", types);
-        model.addAttribute("registerForm", new RegisterForm());
-        return "item/register/main";
-    }
 
-    /**
-     * 상픔 등록 요청
-     * @param registerForm 등록할 내용
-     * @param errors
-     * @param redirectAttributes
-     * @return
-     */
-    @PostMapping("/register")
-    public String registerAction (@Valid @ModelAttribute RegisterForm registerForm,
-                                  Errors errors,
-                                  Model model,
-                                  RedirectAttributes redirectAttributes)
-    {
-        if(errors.hasErrors())
-        {
-            String message = "";
-            List<ObjectError> allErrors = errors.getAllErrors();
-            for (ObjectError error : allErrors)
-            {
-                message += error.getDefaultMessage() + "\n";
-            }
-
-            model.addAttribute("alertType", "danger");
-            model.addAttribute("message", message);
-            return "customer/register/main";
-        }
-
-        itemTemplate.createItem(registerForm);
-        redirectAttributes.addFlashAttribute("alertType", "success");
-        redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 상품이 정상적으로 생성되었습니다.");
-        return "redirect:/item/register";
-    }
-
-    /**
-     * 바코드 생성 메뉴 폼 요청
-     * @param model
-     * @return
-     */
-    @GetMapping("/barcode")
-    public String barcodeForm (Model model)
-    {
-        List<String> barcodes = itemTemplate.getBarcodes(12);
-
-        model.addAttribute("barcodes", barcodes);
-        return "item/barcode/main";
-    }
 }
