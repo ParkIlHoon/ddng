@@ -5,6 +5,9 @@ import com.ddng.customerapi.modules.customer.service.CustomerService;
 import com.ddng.customerapi.modules.family.domain.Family;
 import com.ddng.customerapi.modules.family.dto.FamilyDto;
 import com.ddng.customerapi.modules.family.service.FamilyService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  * @version 1.0
  */
 @RestController
+@Api(value = "가족 컨트롤러")
 @RequestMapping("/families")
 @RequiredArgsConstructor
 public class FamilyController
@@ -40,7 +44,8 @@ public class FamilyController
      * @return 키워드에 해당하는 가족 목록
      */
     @GetMapping
-    public ResponseEntity getFamilyList (String keyword,
+    @ApiOperation(value = "가족 목록 검색", notes = "검색 키워드에 해당하는 가족 목록을 조회합니다.")
+    public ResponseEntity getFamilyList (@ApiParam(value = "검색할 키워드", required = true, example = "치우네") String keyword,
                                          @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
         Page<FamilyDto.Response> familyList = familyService.findByKeyword(keyword, pageable);
@@ -53,7 +58,8 @@ public class FamilyController
      * @return 아이디에 해당하는 가족
      */
     @GetMapping("/{id}")
-    public ResponseEntity getFamily (@PathVariable("id") Long id)
+    @ApiOperation(value = "가족 조회", notes = "특정 아이디에 해당하는 가족을 조회합니다.")
+    public ResponseEntity getFamily (@ApiParam(value = "조회할 가족 아이디", required = true, example = "1") @PathVariable("id") Long id)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
 
@@ -74,7 +80,8 @@ public class FamilyController
      * @return 생성된 가족 URI
      */
     @PostMapping
-    public ResponseEntity postFamily (@RequestBody @Valid FamilyDto.Post dto,
+    @ApiOperation(value = "가족 생성", notes = "새로운 가족을 생성합니다.")
+    public ResponseEntity postFamily (@ApiParam(value = "생성할 가족 정보", required = true) @RequestBody @Valid FamilyDto.Post dto,
                                       Errors errors)
     {
         Optional<Customer> optionalCustomer = customerService.findById(dto.getCustomerId());
@@ -98,8 +105,9 @@ public class FamilyController
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity updateFamily(@PathVariable("id") Long id,
-                                       @RequestBody @Valid FamilyDto.Put dto,
+    @ApiOperation(value = "가족 정보 수정", notes = "가족의 정보를 수정합니다.")
+    public ResponseEntity updateFamily(@ApiParam(value = "수정할 가족 아이디", required = true, example = "1") @PathVariable("id") Long id,
+                                       @ApiParam(value = "수정할 정보", required = true) @RequestBody @Valid FamilyDto.Put dto,
                                        Errors errors)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
@@ -119,7 +127,8 @@ public class FamilyController
      * @return
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity updateFamily(@PathVariable("id") Long id)
+    @ApiOperation(value = "가족 삭제", notes = "가족을 삭제합니다.")
+    public ResponseEntity updateFamily(@ApiParam(value = "삭제할 가족 아이디", required = true, example = "1") @PathVariable("id") Long id)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
 
@@ -140,8 +149,9 @@ public class FamilyController
      * @return
      */
     @PostMapping("/{id}/member")
-    public ResponseEntity addMember (@PathVariable("id") Long id,
-                                     @RequestBody @Valid FamilyDto.Post dto,
+    @ApiOperation(value = "가족 구성원 추가", notes = "가족에 구성원을 추가합니다.")
+    public ResponseEntity addMember (@ApiParam(value = "가족 아이디", required = true, example = "1") @PathVariable("id") Long id,
+                                     @ApiParam(value = "추가할 구성원 정보", required = true) @RequestBody @Valid FamilyDto.Post dto,
                                      Errors errors)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
@@ -170,8 +180,9 @@ public class FamilyController
      * @return
      */
     @DeleteMapping("/{id}/member")
-    public ResponseEntity removeMember (@PathVariable("id") Long id,
-                                        @RequestBody @Valid FamilyDto.Delete dto)
+    @ApiOperation(value = "가족 구성원 제거", notes = "가족의 구성원을 제거합니다.")
+    public ResponseEntity removeMember (@ApiParam(value = "가족 아이디", required = true, example = "1") @PathVariable("id") Long id,
+                                        @ApiParam(value = "삭제할 구성원 정보", required = true) @RequestBody @Valid FamilyDto.Delete dto)
     {
         Optional<Family> optionalFamily = familyService.findById(id);
 
