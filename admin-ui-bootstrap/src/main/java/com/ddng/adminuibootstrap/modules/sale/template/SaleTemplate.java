@@ -12,6 +12,7 @@ import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleType;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -54,7 +55,7 @@ public class SaleTemplate extends AbstractTemplate
      * @param saleType
      * @param paymentType
      */
-    public void saleCart(Cart cart, SaleType saleType, PaymentType paymentType)
+    public HttpStatus saleCart(Cart cart, SaleType saleType, PaymentType paymentType)
     {
         String apiPath = SALE_API_PATH;
         URI targetUrl= getSaleApiUriBuilder()
@@ -65,6 +66,7 @@ public class SaleTemplate extends AbstractTemplate
         SaleDto saleDto = new SaleDto(cart, saleType, paymentType);
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, saleDto, String.class);
+        return responseEntity.getStatusCode();
     }
 
     /**
@@ -163,6 +165,24 @@ public class SaleTemplate extends AbstractTemplate
 
         ParameterizedTypeReference<List<SaleItemDto>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<SaleItemDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        return exchange.getBody();
+    }
+
+    /**
+     * 쿠폰 발금이 가능한 사용자 아이디 목록을 조회한다.
+     * @return
+     */
+    public List<Long> getCouponIssueableCustomers()
+    {
+        String apiPath = SALE_API_PATH + "/coupons/addable";
+        URI targetUrl= getSaleApiUriBuilder()
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<Long>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<Long>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
     }
 }

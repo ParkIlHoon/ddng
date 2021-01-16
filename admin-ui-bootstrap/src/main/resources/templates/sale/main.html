@@ -10,6 +10,10 @@
         <main class="c-main">
             <div class="container-fluid">
                 <div class="fade-in">
+                    <div th:if="${not #strings.isEmpty(message)}">
+                        <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
+                    </div>
+
                     <div class="row">
                         <div class="col-lg-8 col-md-7 col-sm-12">
                             <div class="card">
@@ -73,6 +77,7 @@
                                                         <button class="btn btn-secondary" type="button" id="pay-card-button">카드 결제</button>
                                                         <button class="btn btn-light" type="button" id="reset-button">초기화</button>
                                                         <button class="btn btn-dark" type="button" id="cancel-button">결제 취소</button>
+                                                        <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#coupon-modal">테스트</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,6 +145,7 @@
 <div th:replace="sale/beauty-modal.html::beauty-modal"></div>
 <div th:replace="sale/hotel-modal.html::hotel-modal(${hotelItems})"></div>
 <div th:replace="sale/kindergarten-modal.html::kindergarten-modal(${kindergartenItems})"></div>
+<div th:replace="sale/coupon-modal.html::coupon-modal(${couponIssueableCustomers})"></div>
 
 <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css"/>
 <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">

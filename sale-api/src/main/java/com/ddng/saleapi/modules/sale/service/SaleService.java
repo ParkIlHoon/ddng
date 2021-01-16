@@ -1,7 +1,6 @@
 package com.ddng.saleapi.modules.sale.service;
 
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
-import com.ddng.saleapi.modules.coupon.event.NewCouponEvent;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
 import com.ddng.saleapi.modules.coupon.service.CouponService;
 import com.ddng.saleapi.modules.item.domain.Item;
@@ -82,14 +81,13 @@ public class SaleService
         }
 
         // 스탬프 적립
-        NewCouponEvent newCouponEvent = couponService.stamp(save);
+        couponService.stamp(save);
 
         // 플러시
         entityManager.flush();
 
         // 이벤트 발행
         eventDispatcher.send(new SellingEvent(sale.getId()));
-        eventDispatcher.send(newCouponEvent);
 
         return save;
     }

@@ -13,12 +13,14 @@ import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.codehaus.jettison.json.JSONException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -190,13 +192,33 @@ public class SaleController
     public String saleCart (SaleType saleType,
                             PaymentType paymentType,
                             @ModelAttribute Cart cart,
-                            Model model)
+                            Model model,
+                            RedirectAttributes attributes)
     {
         // 판매 처리
-        saleTemplate.saleCart(cart, saleType, paymentType);
-        // 카트 초기화
-        cart.reset();
-        return "sale/main :: #item-list";
+        HttpStatus status = saleTemplate.saleCart(cart, saleType, paymentType);
+
+        if(status.is2xxSuccessful())
+        {
+            // 카트 초기화
+            cart.reset();
+            // 쿠폰 적립 가능한 사용자 목록 조회
+            List<Long> customerIds = saleTemplate.getCouponIssueableCustomers();
+            if (customerIds.size() > 0)
+            {
+                List<CustomerDto> customers = customerTemplate.getCustomers(customerIds);
+                attributes.addFlashAttribute("couponIssueableCustomers", customers);
+            }
+            attributes.addFlashAttribute("alertType", "success");
+            attributes.addFlashAttribute("message", "결제가 정상적으로 완료되었습니다.");
+        }
+        else
+        {
+            attributes.addFlashAttribute("alertType", "danger");
+            attributes.addFlashAttribute("message", "결제 중 오류가 발생했습니다.");
+        }
+
+        return "redirect:/sale";
     }
 
     /**

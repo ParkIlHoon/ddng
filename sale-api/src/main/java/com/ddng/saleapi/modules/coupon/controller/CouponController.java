@@ -70,4 +70,11 @@ public class CouponController
         CouponDto.Response content = new CouponDto.Response(optionalCoupon.get());
         return ResponseEntity.ok(content);
     }
+
+    @GetMapping("/addable")
+    public ResponseEntity getCouponIssueableCustomers()
+    {
+        List<Long> customerIds = couponService.getCouponIssueableCustomerIds();
+        return ResponseEntity.ok(customerIds);
+    }
 }

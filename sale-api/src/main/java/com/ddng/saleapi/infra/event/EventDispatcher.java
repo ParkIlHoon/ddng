@@ -1,7 +1,6 @@
 package com.ddng.saleapi.infra.event;
 
 import com.ddng.saleapi.infra.properties.ExchangeProperties;
-import com.ddng.saleapi.modules.coupon.event.NewCouponEvent;
 import com.ddng.saleapi.modules.sale.event.SellingEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,14 +20,5 @@ public class EventDispatcher
     public void send(final SellingEvent sellingEvent)
     {
         rabbitTemplate.convertAndSend(exchangeProperties.getSelling(), exchangeProperties.getSellingRouteKey(), sellingEvent);
-    }
-
-    /**
-     * 메시지큐로 쿠폰 발행 이벤트를 전달한다
-     * @param newCouponEvent
-     */
-    public void send(final NewCouponEvent newCouponEvent)
-    {
-        rabbitTemplate.convertAndSend(exchangeProperties.getNewCoupon(), exchangeProperties.getNewCouponRouteKey(), newCouponEvent);
     }
 }

@@ -289,7 +289,7 @@ public class CustomerTemplate extends AbstractTemplate
      * @return
      * @throws JSONException
      */
-    public List<CustomerDto> getCustomers(List<Long> customerIds) throws JSONException
+    public List<CustomerDto> getCustomers(List<Long> customerIds)
     {
         String apiPath = CUSTOMER_API_PATH + "/in";
         UriComponentsBuilder path = getCustomerApiUriBuilder().path(apiPath);
@@ -298,10 +298,7 @@ public class CustomerTemplate extends AbstractTemplate
             path = path.queryParam("customerIds", id);
         }
 
-        URI targetUrl= path
-                .build()
-                .encode()
-                .toUri();
+        URI targetUrl= path.build().encode().toUri();
 
         ParameterizedTypeReference<List<CustomerDto>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<CustomerDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);

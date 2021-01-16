@@ -124,9 +124,12 @@ function setBeautyData (data)
         }
     });
 
-    for(var idx = 0; idx < data.tags.length; idx++)
+    if (data.tags != null)
     {
-        $("#beauty-schedule-tags").append("<span class=\"badge badge-secondary\">" + data.tags[idx].title + "</span>");
+        for(var idx = 0; idx < data.tags.length; idx++)
+        {
+            $("#beauty-schedule-tags").append("<span class=\"badge badge-secondary\">" + data.tags[idx].title + "</span>");
+        }
     }
 
     $("#beauty-schedule-bigo").val(data.bigo);

@@ -155,7 +155,7 @@ public class CustomerController
         customerTemplate.updateCustomer(id, editForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", editForm.getName() + " 고객 정보가 정상적으로 변경되었습니다.");
-        return "redirect:/customer/search";
+        return "redirect:/customer-management/search-customer/search-form";
     }
 
     /**

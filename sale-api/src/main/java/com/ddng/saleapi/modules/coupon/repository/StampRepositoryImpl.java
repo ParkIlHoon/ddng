@@ -20,14 +20,11 @@ public class StampRepositoryImpl implements StampCustomRepository
     }
 
     @Override
-    public List<Long> getCouponChangableCustomerIds(List<Long> customerIds, int standardCount)
+    public List<Long> getCouponIssueableCustomerIds(int standardCount)
     {
         QueryResults<Tuple> queryResults = queryFactory.select(stamp.customerId, stamp.count().as("count"))
                                                         .from(stamp)
-                                                        .where(
-                                                                stamp.customerId.in(customerIds)
-                                                                        .and(stamp.coupon.isNull())
-                                                        )
+                                                        .where(stamp.coupon.isNull())
                                                         .groupBy(stamp.customerId)
                                                         .fetchResults();
 
