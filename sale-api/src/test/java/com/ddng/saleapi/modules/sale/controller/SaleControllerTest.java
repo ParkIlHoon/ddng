@@ -73,7 +73,7 @@ class SaleControllerTest
         Item item = itemFactory.createItem("상품1", ItemType.SNACK, "12345678", 1500, 100, false);
         Item item2 = itemFactory.createItem("상품2", ItemType.FEED, "98765432", 500, 100, false);
 
-        couponFactory.createCoupon("테스트 쿠폰", CouponType.DISCOUNT_ALL, item.getType(), LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
+        couponFactory.createCoupon("테스트 쿠폰", CouponType.DISCOUNT_ALL, item, LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
     }
 
     @AfterEach

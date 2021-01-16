@@ -3,6 +3,7 @@ package com.ddng.saleapi.modules.coupon.util;
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.domain.CouponType;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
+import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.domain.ItemType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,18 +25,18 @@ public class CouponFactory
      * 쿠폰을 생성한다
      * @param name
      * @param type
-     * @param itemType
+     * @param item
      * @param createDate
      * @param expireDate
      * @param useDate
      * @return
      */
-    public Coupon createCoupon (String name, CouponType type, ItemType itemType, LocalDateTime createDate, LocalDateTime expireDate, LocalDateTime useDate)
+    public Coupon createCoupon (String name, CouponType type, Item item, LocalDateTime createDate, LocalDateTime expireDate, LocalDateTime useDate)
     {
         Coupon coupon = new Coupon();
         coupon.setName(name);
         coupon.setType(type);
-        coupon.setItemType(itemType);
+        coupon.setItem(item);
         coupon.setCreateDate(createDate);
         coupon.setExpireDate(expireDate);
         coupon.setUseDate(useDate);

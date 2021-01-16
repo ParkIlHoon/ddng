@@ -1,6 +1,7 @@
 package com.ddng.saleapi.modules.sale.service;
 
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
+import com.ddng.saleapi.modules.coupon.event.NewCouponEvent;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
 import com.ddng.saleapi.modules.coupon.service.CouponService;
 import com.ddng.saleapi.modules.item.domain.Item;
@@ -10,7 +11,7 @@ import com.ddng.saleapi.modules.sale.domain.SaleItem;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
-import com.ddng.saleapi.modules.sale.event.EventDispatcher;
+import com.ddng.saleapi.infra.event.EventDispatcher;
 import com.ddng.saleapi.modules.sale.event.SellingEvent;
 import com.ddng.saleapi.modules.sale.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,7 @@ public class SaleService
         List<SaleItemDto> saleItemDtos = dto.getSaleItems();
         List<Long> itemIds = saleItemDtos.stream()
                                             .map(saleItemDto -> saleItemDto.getItemId())
+                                            .distinct()
                                             .collect(Collectors.toList());
         List<Item> items = itemRepository.findByIdIn(itemIds);
 
@@ -79,13 +81,15 @@ public class SaleService
             save.addSaleItem(saleItem);
         }
 
-        //TODO 쿠폰 처리
-        //couponService.stamp(save);
+        // 스탬프 적립
+        NewCouponEvent newCouponEvent = couponService.stamp(save);
 
+        // 플러시
         entityManager.flush();
 
         // 이벤트 발행
         eventDispatcher.send(new SellingEvent(sale.getId()));
+        eventDispatcher.send(newCouponEvent);
 
         return save;
     }
@@ -99,6 +103,12 @@ public class SaleService
      */
     private List<SaleItem> createSaleItems (List<SaleItemDto> dtos, List<Item> items, List<Coupon> coupons)
     {
+        /**
+         * 1. 판매 상품 DTO를 순회하면서 상품 객체 추출
+         * 2. 상품 존재 시 SaleItem 객체 생성
+         * 3. 상품 재고 차감
+         * 4. 적용 쿠폰이 존재하는 경우 쿠폰 적용
+         */
         List<SaleItem> returnList = new ArrayList<>();
         for (SaleItemDto dto : dtos)
         {

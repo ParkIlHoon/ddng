@@ -65,4 +65,22 @@ public class SaleItem
         this.totalPrice = this.salePrice * (this.count - 1) + coupon.getType().calculate(this.salePrice);
         coupon.setUseDate(LocalDateTime.now());
     }
+
+    /**
+     * 스탬프 적립 가능 여부를 반환한다.
+     * @return 스탬프 적립 가능 여부
+     */
+    public boolean isEnableToStamp()
+    {
+        return this.coupon == null && this.item.isStamp();
+    }
+
+    /**
+     * 스탬프 적립 개수를 반환한다.
+     * @return 적립할 스탬프 개수
+     */
+    public int getStampCount()
+    {
+        return this.count;
+    }
 }

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface StampRepository extends JpaRepository<Stamp, Long>
+public interface StampRepository extends JpaRepository<Stamp, Long>, StampCustomRepository
 {
     Optional<Stamp> findByCustomerId(Long customerId);
     Optional<Stamp> findByCustomerIdAndItemType(Long customerId, ItemType itemType);

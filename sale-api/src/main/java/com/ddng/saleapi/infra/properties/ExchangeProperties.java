@@ -23,4 +23,12 @@ public class ExchangeProperties
      * 결제 exchange route key
      */
     private String sellingRouteKey;
+    /**
+     * 쿠폰 발급 exchange 명
+     */
+    private String newCoupon;
+    /**
+     * 쿠폰 발급 exchange route key
+     */
+    private String newCouponRouteKey;
 }
