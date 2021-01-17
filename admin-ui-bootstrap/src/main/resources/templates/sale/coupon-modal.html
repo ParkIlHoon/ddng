@@ -19,7 +19,10 @@
                                 <strong>고객</strong>
                             </label>
                             <div class="col-md-9 col-form-label">
-                                <span class="h6">고객 이름 위치</span>
+                                <div class="c-avatar">
+                                    <img class="c-avatar-img" th:src="${customer.getProfileImg()}">
+                                </div>
+                                <span class="h6" th:text="${customer.getName()} + ' (' + ${customer.getTypeName()} + ')'">고객 이름 위치</span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -40,9 +43,9 @@
                                 <div th:each="couponType : ${couponTypes}">
                                     <input type="radio" class="custom-radio"
                                            th:name="'couponType' + ${customer.getId()}"
-                                           th:id="'radio-' + ${customer.getId()}"
+                                           th:id="'radio-' + ${customer.getId()} + '-' + ${couponType.name()}"
                                            th:value="${couponType.name()}">
-                                    <label th:for="'radio-' + ${customer.getId()}"
+                                    <label th:for="'radio-' + ${customer.getId()} + '-' + ${couponType.name()}"
                                            th:text="${couponType.getName()}">무료(100% 할인)</label>
                                 </div>
                             </div>

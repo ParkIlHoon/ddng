@@ -10,12 +10,11 @@
         <main class="c-main">
             <div class="container-fluid">
                 <div class="fade-in">
-                    <div th:if="${not #strings.isEmpty(message)}">
-                        <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
-                    </div>
-
                     <div class="row">
                         <div class="col-lg-8 col-md-7 col-sm-12">
+                            <div th:if="${not #strings.isEmpty(message)}">
+                                <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
+                            </div>
                             <div class="card">
                                 <div class="card-header">결제 창</div>
                                 <div class="card-body">
@@ -72,6 +71,10 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                    <form th:action="@{/sale}" th:method="post" id="sale-form">
+                                                        <input type="hidden" name="saleType" id="sale-form-saleType">
+                                                        <input type="hidden" name="paymentType" id="sale-form-paymentType">
+                                                    </form>
                                                     <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
                                                         <button class="btn btn-primary" type="button" id="pay-cash-button">현금 결제</button>
                                                         <button class="btn btn-secondary" type="button" id="pay-card-button">카드 결제</button>
@@ -145,7 +148,7 @@
 <div th:replace="sale/beauty-modal.html::beauty-modal"></div>
 <div th:replace="sale/hotel-modal.html::hotel-modal(${hotelItems})"></div>
 <div th:replace="sale/kindergarten-modal.html::kindergarten-modal(${kindergartenItems})"></div>
-<div th:if="${couponIssuableCustomers != null}">
+<div th:if="${couponIssuableCustomers != null} AND ${not #arrays.isEmpty(couponIssuableCustomers)}">
     <div th:replace="sale/coupon-modal.html::coupon-modal(${couponIssuableCustomers}, ${couponTypes})"></div>
 </div>
 

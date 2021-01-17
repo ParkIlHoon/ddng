@@ -72,7 +72,7 @@ public class SaleItem
      */
     public boolean isEnableToStamp()
     {
-        return this.coupon == null && this.item.isStamp();
+        return this.coupon == null && this.item.isStamp() && this.customerId != null;
     }
 
     /**

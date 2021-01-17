@@ -24,7 +24,7 @@ public class StampRepositoryImpl implements StampCustomRepository
     {
         QueryResults<Tuple> queryResults = queryFactory.select(stamp.customerId, stamp.count().as("count"))
                                                         .from(stamp)
-                                                        .where(stamp.coupon.isNull())
+                                                        .where(stamp.coupon.isNull().and(stamp.customerId.isNotNull()))
                                                         .groupBy(stamp.customerId)
                                                         .fetchResults();
 

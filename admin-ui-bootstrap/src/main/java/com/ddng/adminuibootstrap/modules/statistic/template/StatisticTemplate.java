@@ -27,7 +27,7 @@ public class StatisticTemplate extends AbstractTemplate
      */
     public List<CalculateDto.ByItemType> getCalculateByItemType (String baseDate)
     {
-        String apiPath = SALE_API_PATH + "/itemType";
+        String apiPath = SALE_API_PATH + "/calculate/itemType";
         URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("baseDate", baseDate)
@@ -46,7 +46,7 @@ public class StatisticTemplate extends AbstractTemplate
      */
     public List<CalculateDto.ByPayment> getCalculateByPayment (String baseDate)
     {
-        String apiPath = SALE_API_PATH + "/payment";
+        String apiPath = SALE_API_PATH + "/calculate/payment";
         URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("baseDate", baseDate)

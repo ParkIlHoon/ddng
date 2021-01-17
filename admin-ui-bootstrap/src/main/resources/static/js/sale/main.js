@@ -193,16 +193,20 @@ function refreshTotalPrice ()
  */
 function saleCart (payment)
 {
-    $.ajax({
-        url: "/sale",
-        type: "POST",
-        data: {"saleType" : "PAYED", "paymentType" : payment}
-    }).always(function (jqXHR) {
-        // 카트 비움
-        $("#item-list").replaceWith(jqXHR.responseText);
-        // 총 금액 세팅
-        refreshTotalPrice();
-    });
+    $("#sale-form-saleType").val("PAYED");
+    $("#sale-form-paymentType").val(payment);
+    $("#sale-form").submit();
+    //
+    // $.ajax({
+    //     url: "/sale",
+    //     type: "POST",
+    //     data: {"saleType" : "PAYED", "paymentType" : payment}
+    // }).always(function (jqXHR) {
+    //     // 카트 비움
+    //     $("#item-list").replaceWith(jqXHR.responseText);
+    //     // 총 금액 세팅
+    //     refreshTotalPrice();
+    // });
 }
 
 /**
