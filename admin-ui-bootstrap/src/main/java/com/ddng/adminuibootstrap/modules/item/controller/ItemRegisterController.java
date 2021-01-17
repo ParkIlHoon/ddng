@@ -71,6 +71,6 @@ public class ItemRegisterController
         itemTemplate.createItem(registerForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 상품이 정상적으로 생성되었습니다.");
-        return "redirect:/item/register";
+        return "redirect:/item-management/item-register/register-form";
     }
 }

@@ -172,9 +172,9 @@ public class SaleTemplate extends AbstractTemplate
      * 쿠폰 발금이 가능한 사용자 아이디 목록을 조회한다.
      * @return
      */
-    public List<Long> getCouponIssueableCustomers()
+    public List<Long> getCouponIssuableCustomers()
     {
-        String apiPath = SALE_API_PATH + "/coupons/addable";
+        String apiPath = COUPON_API_PATH + "/issuable";
         URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .build()

@@ -203,11 +203,12 @@ public class SaleController
             // 카트 초기화
             cart.reset();
             // 쿠폰 적립 가능한 사용자 목록 조회
-            List<Long> customerIds = saleTemplate.getCouponIssueableCustomers();
+            List<Long> customerIds = saleTemplate.getCouponIssuableCustomers();
             if (customerIds.size() > 0)
             {
                 List<CustomerDto> customers = customerTemplate.getCustomers(customerIds);
-                attributes.addFlashAttribute("couponIssueableCustomers", customers);
+                attributes.addFlashAttribute("couponIssuableCustomers", customers);
+                attributes.addFlashAttribute("couponTypes", CouponType.values());
             }
             attributes.addFlashAttribute("alertType", "success");
             attributes.addFlashAttribute("message", "결제가 정상적으로 완료되었습니다.");

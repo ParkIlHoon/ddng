@@ -77,9 +77,9 @@ public class CouponService
      * <h2>쿠폰 발급 가능한 사용자 아이디 조회</h2>
      * @return
      */
-    public List<Long> getCouponIssueableCustomerIds()
+    public List<Long> getCouponIssuableCustomerIds()
     {
-        return stampRepository.getCouponIssueableCustomerIds(11);
+        return stampRepository.getCouponIssuableCustomerIds(11);
     }
 
 

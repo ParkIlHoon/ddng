@@ -71,10 +71,14 @@ public class CouponController
         return ResponseEntity.ok(content);
     }
 
-    @GetMapping("/addable")
-    public ResponseEntity getCouponIssueableCustomers()
+    /**
+     * 쿠폰 발급이 가능한 사용자 목록을 조회한다.
+     * @return
+     */
+    @GetMapping("/issuable")
+    public ResponseEntity getCouponIssuableCustomers()
     {
-        List<Long> customerIds = couponService.getCouponIssueableCustomerIds();
+        List<Long> customerIds = couponService.getCouponIssuableCustomerIds();
         return ResponseEntity.ok(customerIds);
     }
 }

@@ -12,5 +12,5 @@ public interface StampCustomRepository
      * @param standardCount 쿠폰 발급 기준 개수
      * @return
      */
-    List<Long> getCouponIssueableCustomerIds(int standardCount);
+    List<Long> getCouponIssuableCustomerIds(int standardCount);
 }

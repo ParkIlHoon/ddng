@@ -119,7 +119,7 @@ public class ItemController
         itemTemplate.updateItem(id, editForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", editForm.getName() + " 상품 정보가 정상적으로 변경되었습니다.");
-        return "redirect:/item/search";
+        return "redirect:/item-management/search-item/search-form";
     }
 
 

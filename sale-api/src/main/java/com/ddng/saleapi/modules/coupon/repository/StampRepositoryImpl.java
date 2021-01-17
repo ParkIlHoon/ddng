@@ -20,7 +20,7 @@ public class StampRepositoryImpl implements StampCustomRepository
     }
 
     @Override
-    public List<Long> getCouponIssueableCustomerIds(int standardCount)
+    public List<Long> getCouponIssuableCustomerIds(int standardCount)
     {
         QueryResults<Tuple> queryResults = queryFactory.select(stamp.customerId, stamp.count().as("count"))
                                                         .from(stamp)

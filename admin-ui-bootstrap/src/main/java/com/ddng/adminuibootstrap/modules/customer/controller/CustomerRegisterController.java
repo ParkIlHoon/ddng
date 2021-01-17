@@ -91,6 +91,6 @@ public class CustomerRegisterController
         customerTemplate.createCustomer(registerForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");
-        return "redirect:/customer/register";
+        return "redirect:/customer-management/customer-register/register-form";
     }
 }
