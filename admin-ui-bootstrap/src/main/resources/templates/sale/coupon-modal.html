@@ -10,19 +10,22 @@
                 <h4 class="modal-title">아래 고객들에게 쿠폰을 발급할 수 있습니다</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="coupon-modal-form">
-                    <div th:each="customer : ${couponIssuableCustomers}">
-                        <hr th:if="${couponIssuableCustomers.indexOf(customer) >= 1}">
+            <form class="form-horizontal" id="coupon-modal-form"
+                  th:object="${couponIssuableCustomers}"
+                  th:action="@{/sale/coupons}" th:method="post">
+                <div class="modal-body">
+                    <div th:each="form, stat : ${couponIssuableCustomers.newCouponForms}">
+                        <hr th:if="${stat.index > 0}">
+                        <input type="hidden" th:name="|newCouponForms[${stat.index}].customerId|" th:value="${form.getCustomerId()}">
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">
                                 <strong>고객</strong>
                             </label>
                             <div class="col-md-9 col-form-label">
                                 <div class="c-avatar">
-                                    <img class="c-avatar-img" th:src="${customer.getProfileImg()}">
+                                    <img class="c-avatar-img" th:src="${form.getCustomerProfileImg()}">
                                 </div>
-                                <span class="h6" th:text="${customer.getName()} + ' (' + ${customer.getTypeName()} + ')'">고객 이름 위치</span>
+                                <span class="h6" th:text="${form.getCustomerName()} + ' (' + ${form.getCustomerTypeName()} + ')'">고객 이름 위치</span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -42,21 +45,21 @@
                             <div class="col-md-9 col-form-label">
                                 <div th:each="couponType : ${couponTypes}">
                                     <input type="radio" class="custom-radio"
-                                           th:name="'couponType' + ${customer.getId()}"
-                                           th:id="'radio-' + ${customer.getId()} + '-' + ${couponType.name()}"
+                                           th:name="|newCouponForms[${stat.index}].couponType|"
+                                           th:id="'radio-' + ${form.getCustomerId()} + '-' + ${couponType.name()}"
                                            th:value="${couponType.name()}">
-                                    <label th:for="'radio-' + ${customer.getId()} + '-' + ${couponType.name()}"
+                                    <label th:for="'radio-' + ${form.getCustomerId()} + '-' + ${couponType.name()}"
                                            th:text="${couponType.getName()}">무료(100% 할인)</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button" id="add-coupon-button">쿠폰 발급</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
+                    <button class="btn btn-primary" type="submit" id="add-coupon-button">쿠폰 발급</button>
+                </div>
+            </form>
         </div>
     </div>
     <script th:replace="fragments.html::script"></script>

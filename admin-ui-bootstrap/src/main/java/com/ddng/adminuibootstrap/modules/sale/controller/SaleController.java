@@ -5,6 +5,8 @@ import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
+import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
+import com.ddng.adminuibootstrap.modules.sale.form.NewCouponFormWrapper;
 import com.ddng.adminuibootstrap.modules.sale.form.ScheduleToSaleForm;
 import com.ddng.adminuibootstrap.modules.sale.form.AddCartForm;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
@@ -207,7 +209,8 @@ public class SaleController
             if (customerIds.size() > 0)
             {
                 List<CustomerDto> customers = customerTemplate.getCustomers(customerIds);
-                attributes.addFlashAttribute("couponIssuableCustomers", customers);
+                List<NewCouponForm> collect = customers.stream().map(NewCouponForm::new).collect(Collectors.toList());
+                attributes.addFlashAttribute("couponIssuableCustomers", new NewCouponFormWrapper(collect));
                 attributes.addFlashAttribute("couponTypes", CouponType.values());
             }
             attributes.addFlashAttribute("alertType", "success");
