@@ -33,7 +33,9 @@
                                 <strong>발급할 쿠폰 상품</strong>
                             </label>
                             <div class="col-md-9 col-form-label">
-                                <select class="form-control js-example-templating" id="coupon-item-select">
+                                <select class="form-control js-example-templating"
+                                        th:id="'coupon-item-select-' + ${stat.index}"
+                                        th:name="|newCouponForms[${stat.index}].itemId|">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -46,9 +48,9 @@
                                 <div th:each="couponType : ${couponTypes}">
                                     <input type="radio" class="custom-radio"
                                            th:name="|newCouponForms[${stat.index}].couponType|"
-                                           th:id="'radio-' + ${form.getCustomerId()} + '-' + ${couponType.name()}"
+                                           th:id="'radio-' + ${stat.index} + '-' + ${couponType.name()}"
                                            th:value="${couponType.name()}">
-                                    <label th:for="'radio-' + ${form.getCustomerId()} + '-' + ${couponType.name()}"
+                                    <label th:for="'radio-' + ${stat.index} + '-' + ${couponType.name()}"
                                            th:text="${couponType.getName()}">무료(100% 할인)</label>
                                 </div>
                             </div>
@@ -62,9 +64,49 @@
             </form>
         </div>
     </div>
+    <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
     <script th:replace="fragments.html::script"></script>
+    <script src="/node_modules/select2/dist/js/select2.full.js"></script>
     <script th:inline="javascript" type="application/javascript">
         $(function(){
+
+            /*<![CDATA[*/
+            const size = /*[[${couponIssuableCustomers.newCouponForms.size()}]]*/
+                /*]]>*/
+
+            for(var idx = 0; idx < size; idx++)
+            {
+                var selectId = '#coupon-item-select-' + idx;
+                $(selectId).select2({
+                    language: "ko",
+                    minimumInputLength : 1,
+                    placeholder: "쿠폰 대상 상품을 선택해주세요.(필수)",
+                    allowClear: true,
+                    width : "100%",
+                    ajax: {
+                        url: "/sale/items",
+                        method: "GET",
+                        data : function (params) {return { keyword: params.term , page : params.page || 0, size : 10};},
+                        processResults: function (data, params) {
+                            params.page = data.number || 0;
+                            var returnArr = [];
+                            data.content.forEach(item => returnArr.push({
+                                "id" : item.id,
+                                "text" : item.name + "(" + item.typeName + " / " + item.price + " 원 / " + item.barcode + ")",
+                                "name" : item.name,
+                                "price" : item.price
+                            }));
+                            return {
+                                results: returnArr,
+                                pagination: {
+                                    more: (params.page * 10) < data.totalElements
+                                }
+                            };
+                        }
+                    }
+                });
+            }
+
             $('#coupon-modal').modal({
                 show: true
             });

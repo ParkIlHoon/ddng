@@ -296,4 +296,16 @@ public class SaleController
         RestPageImpl<ItemDto> beautyItems = saleTemplate.getBeautyItems(keyword, page, size);
         return ResponseEntity.ok(beautyItems);
     }
+
+    @PostMapping("/coupons")
+    public ResponseEntity issueNewCoupons(@ModelAttribute NewCouponFormWrapper couponFormWrapper)
+    {
+        List<NewCouponForm> newCouponForms = couponFormWrapper.getNewCouponForms();
+        for (NewCouponForm form : newCouponForms)
+        {
+            System.out.println(form.toString());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }
