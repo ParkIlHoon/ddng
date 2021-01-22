@@ -2,6 +2,7 @@ package com.ddng.adminuibootstrap.modules.sale.template;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.NewCouponDto;
 import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
@@ -9,6 +10,7 @@ import com.ddng.adminuibootstrap.modules.common.dto.sale.CouponDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.PaymentType;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleType;
+import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -184,5 +186,34 @@ public class SaleTemplate extends AbstractTemplate
         ParameterizedTypeReference<List<Long>> typeReference = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<Long>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
+    }
+
+    /**
+     * 신규 쿠폰을 발급한다.
+     * @param newCouponForms
+     * @return
+     */
+    public HttpStatus issueNewCoupons(List<NewCouponForm> newCouponForms)
+    {
+        String apiPath = COUPON_API_PATH;
+        URI targetUrl= getSaleApiUriBuilder()
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        ResponseEntity<String> responseEntity = null;
+        HttpStatus statusCode = null;
+        for (NewCouponForm form : newCouponForms)
+        {
+            responseEntity = restTemplate.postForEntity(targetUrl, new NewCouponDto(form), String.class);
+            statusCode = responseEntity.getStatusCode();
+            if(!statusCode.is2xxSuccessful())
+            {
+                return statusCode;
+            }
+        }
+
+        return statusCode;
     }
 }

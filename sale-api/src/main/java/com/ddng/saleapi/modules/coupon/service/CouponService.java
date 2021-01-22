@@ -7,6 +7,7 @@ import com.ddng.saleapi.modules.coupon.dto.CouponDto;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
 import com.ddng.saleapi.modules.coupon.repository.StampRepository;
 import com.ddng.saleapi.modules.item.domain.Item;
+import com.ddng.saleapi.modules.item.service.ItemService;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleItem;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class CouponService
 {
     private final CouponRepository couponRepository;
     private final StampRepository stampRepository;
+    private final ItemService itemService;
 
     /**
      * <h2>쿠폰 목록 조회</h2>
@@ -82,24 +84,24 @@ public class CouponService
         return stampRepository.getCouponIssuableCustomerIds(11);
     }
 
-
     /**
-     * <h2>쿠폰 생성</h2>
-     * 스탬프 적립 시 쿠폰 발급 가능한 개수에 도달했을 경우, 본 메서드로 쿠폰을 생성해 발급한다.
-     * @param customerId
-     * @param item
-     * @param type
+     * <h2>신규 쿠폰 생성</h2>
+     * @param dto
+     * @return
      */
-    private void createCoupon(Long customerId, Item item, CouponType type)
+    public Coupon issueNewCoupon(CouponDto.Post dto)
     {
-        Coupon newCoupon = new Coupon();
-        newCoupon.setType(type);
-        newCoupon.setItem(item);
-        newCoupon.setCustomerId(customerId);
-        newCoupon.setCreateDate(LocalDateTime.now());
-        newCoupon.setExpireDate(LocalDateTime.now().plusYears(1));
-        newCoupon.setName(item.getName() + " " + type.getName() + " 쿠폰");
+        // 고객 조회
 
-        couponRepository.save(newCoupon);
+        // 상품 조회
+        Optional<Item> optionalItem = itemService.findById(dto.getItemId());
+        if(optionalItem.isEmpty())
+        {
+            //TODO 상품 미존재 시 Exception throws 시키자
+        }
+
+        // 저장 처리
+
+        return null;
     }
 }

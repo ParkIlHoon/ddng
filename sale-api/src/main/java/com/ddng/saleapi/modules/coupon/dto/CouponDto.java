@@ -62,4 +62,13 @@ public class CouponDto
             this.itemTypeName = this.itemType.getName();
         }
     }
+
+    @Getter @Setter @Builder
+    @NoArgsConstructor @AllArgsConstructor
+    public static class Post
+    {
+        private Long customerId;
+        private Long itemId;
+        private CouponType type;
+    }
 }

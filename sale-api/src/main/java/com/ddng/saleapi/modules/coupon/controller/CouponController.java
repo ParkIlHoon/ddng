@@ -3,17 +3,23 @@ package com.ddng.saleapi.modules.coupon.controller;
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.dto.CouponDto;
 import com.ddng.saleapi.modules.coupon.service.CouponService;
+import com.ddng.saleapi.modules.sale.controller.SaleController;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
  * <h1>쿠폰 관련 요청 처리 컨트롤러 클래스</h1>
@@ -80,5 +86,27 @@ public class CouponController
     {
         List<Long> customerIds = couponService.getCouponIssuableCustomerIds();
         return ResponseEntity.ok(customerIds);
+    }
+
+    /**
+     * 신규 쿠폰을 발급한다.
+     * @param dto
+     * @param errors
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity issueNewCoupon(@RequestBody @Valid CouponDto.Post dto,
+                                         Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // 신규 쿠폰 생성
+        Coupon coupon = couponService.issueNewCoupon(dto);
+
+        WebMvcLinkBuilder builder = linkTo(CouponController.class).slash(coupon.getId());
+        return ResponseEntity.created(builder.toUri()).build();
     }
 }

@@ -297,15 +297,33 @@ public class SaleController
         return ResponseEntity.ok(beautyItems);
     }
 
+    /**
+     * 쿠폰 발급 요청
+     * @param couponFormWrapper
+     * @return
+     */
     @PostMapping("/coupons")
-    public ResponseEntity issueNewCoupons(@ModelAttribute NewCouponFormWrapper couponFormWrapper)
+    public ResponseEntity issueNewCoupons(@ModelAttribute @Valid NewCouponFormWrapper couponFormWrapper,
+                                          Errors errors)
     {
-        List<NewCouponForm> newCouponForms = couponFormWrapper.getNewCouponForms();
-        for (NewCouponForm form : newCouponForms)
+        if(errors.hasErrors())
         {
-            System.out.println(form.toString());
+            return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.notFound().build();
+        List<NewCouponForm> newCouponForms = couponFormWrapper.getNewCouponForms();
+        if(newCouponForms.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        HttpStatus status = saleTemplate.issueNewCoupons(newCouponForms);
+
+        if(status.is2xxSuccessful())
+        {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 }
