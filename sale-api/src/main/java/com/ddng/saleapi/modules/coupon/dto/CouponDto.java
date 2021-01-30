@@ -2,7 +2,7 @@ package com.ddng.saleapi.modules.coupon.dto;
 
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.domain.CouponType;
-import com.ddng.saleapi.modules.item.domain.ItemType;
+import com.ddng.saleapi.modules.item.domain.Item;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
@@ -30,8 +30,7 @@ public class CouponDto
         private LocalDateTime useDate;
         private CouponType type;
         private String typeName;
-        private ItemType itemType;
-        private String itemTypeName;
+        private Long itemId;
 
         public Response(Coupon coupon)
         {
@@ -43,12 +42,13 @@ public class CouponDto
             this.useDate = coupon.getUseDate();
             this.type = coupon.getType();
             this.typeName = coupon.getType().getName();
+            this.itemId = coupon.getItem().getId();
         }
 
         @QueryProjection
         public Response(Long id, Long customerId, String name,
                         LocalDateTime createDate, LocalDateTime expireDate, LocalDateTime useDate,
-                        CouponType type, ItemType itemType)
+                        CouponType type, Item item)
         {
             this.id = id;
             this.customerId = customerId;
@@ -58,8 +58,7 @@ public class CouponDto
             this.useDate = useDate;
             this.type = type;
             this.typeName = this.type.getName();
-            this.itemType = itemType;
-            this.itemTypeName = this.itemType.getName();
+            this.itemId = item.getId();
         }
     }
 

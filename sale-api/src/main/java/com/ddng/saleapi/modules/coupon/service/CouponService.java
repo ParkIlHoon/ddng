@@ -1,7 +1,8 @@
 package com.ddng.saleapi.modules.coupon.service;
 
+import com.ddng.saleapi.modules.common.dto.CustomerDto;
+import com.ddng.saleapi.modules.common.template.CustomerTemplate;
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
-import com.ddng.saleapi.modules.coupon.domain.CouponType;
 import com.ddng.saleapi.modules.coupon.domain.Stamp;
 import com.ddng.saleapi.modules.coupon.dto.CouponDto;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
@@ -32,6 +33,7 @@ public class CouponService
     private final CouponRepository couponRepository;
     private final StampRepository stampRepository;
     private final ItemService itemService;
+    private final CustomerTemplate customerTemplate;
 
     /**
      * <h2>쿠폰 목록 조회</h2>
@@ -86,22 +88,38 @@ public class CouponService
 
     /**
      * <h2>신규 쿠폰 생성</h2>
-     * @param dto
+     * @param dto 신규 생성할 쿠폰 정보
      * @return
      */
     public Coupon issueNewCoupon(CouponDto.Post dto)
     {
         // 고객 조회
+        Optional<CustomerDto> customerDto = customerTemplate.getCustomer(dto.getCustomerId());
+        if(customerDto.isEmpty())
+        {
+            //TODO 고객 미존재
+            throw new IllegalArgumentException("존재하지 않는 고객입니다.");
+        }
 
         // 상품 조회
         Optional<Item> optionalItem = itemService.findById(dto.getItemId());
         if(optionalItem.isEmpty())
         {
             //TODO 상품 미존재 시 Exception throws 시키자
+            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
         }
 
         // 저장 처리
+        Coupon coupon = Coupon.builder()
+                                .customerId(customerDto.get().getId())
+                                .item(optionalItem.get())
+                                .type(dto.getType())
+                                .name(optionalItem.get().getName() + " " + dto.getType().getName() + " 쿠폰")
+                                .createDate(LocalDateTime.now())
+                                .expireDate(LocalDateTime.now().plusYears(1))
+                                .build();
 
-        return null;
+        Coupon save = couponRepository.save(coupon);
+        return save;
     }
 }

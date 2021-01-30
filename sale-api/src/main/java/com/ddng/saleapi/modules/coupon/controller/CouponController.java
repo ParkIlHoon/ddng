@@ -3,7 +3,6 @@ package com.ddng.saleapi.modules.coupon.controller;
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
 import com.ddng.saleapi.modules.coupon.dto.CouponDto;
 import com.ddng.saleapi.modules.coupon.service.CouponService;
-import com.ddng.saleapi.modules.sale.controller.SaleController;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

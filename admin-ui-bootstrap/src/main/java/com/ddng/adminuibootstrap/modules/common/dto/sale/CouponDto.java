@@ -19,6 +19,5 @@ public class CouponDto
     private LocalDateTime useDate;
     private String type;
     private String typeName;
-    private String itemType;
-    private String itemTypeName;
+    private Long itemId;
 }

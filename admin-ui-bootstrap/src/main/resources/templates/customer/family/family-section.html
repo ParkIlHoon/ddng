@@ -62,7 +62,7 @@
                                             <div class="text-muted small text-uppercase font-weight-bold"
                                                 th:text="${#temporals.format(coupon.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
                                             <div class="text-value-xl py-3"
-                                                th:text="${coupon.getName() + '(' + coupon.getItemTypeName() + '/' + coupon.getTypeName() + ')'}"></div>
+                                                th:text="${coupon.getName()}"></div>
                                             <div>
                                                 <small class=\"text-muted\" th:text="'유효기간 : ' + ${#temporals.format(coupon.getExpireDate(), 'yyyy-MM-dd HH:mm')}">유효기간</small>
                                             </div>
@@ -73,7 +73,7 @@
                                             <div class="text-muted small text-uppercase font-weight-bold"
                                                  th:text="${#temporals.format(coupon.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></div>
                                             <div class="text-value-xl py-3"
-                                                 th:text="${coupon.getName() + '(' + coupon.getItemTypeName() + '/' + coupon.getTypeName() + ')'}"></div>
+                                                 th:text="${coupon.getName()}"></div>
                                             <div>
                                                 <small class=\"text-muted\" th:text="'사용 완료(' + ${#temporals.format(coupon.getUseDate(), 'yyyy-MM-dd HH:mm')} + ')'">사용일자</small>
                                             </div>
