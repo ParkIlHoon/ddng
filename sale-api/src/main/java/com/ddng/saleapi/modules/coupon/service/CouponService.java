@@ -35,6 +35,8 @@ public class CouponService
     private final ItemService itemService;
     private final CustomerTemplate customerTemplate;
 
+    private static final int COUNT_OF_ISSUE_COUPON = 11;
+
     /**
      * <h2>쿠폰 목록 조회</h2>
      * @param dto
@@ -83,7 +85,7 @@ public class CouponService
      */
     public List<Long> getCouponIssuableCustomerIds()
     {
-        return stampRepository.getCouponIssuableCustomerIds(11);
+        return stampRepository.getCouponIssuableCustomerIds(COUNT_OF_ISSUE_COUPON);
     }
 
     /**
@@ -120,6 +122,12 @@ public class CouponService
                                 .build();
 
         Coupon save = couponRepository.save(coupon);
+
+        // Stamp 사용 처리
+        List<Stamp> stampsForIssueCoupon = stampRepository.getStampsForIssueCoupon(dto.getCustomerId(), COUNT_OF_ISSUE_COUPON);
+        stampsForIssueCoupon.stream().forEach(stamp -> stamp.setCoupon(coupon));
+        stampRepository.saveAll(stampsForIssueCoupon);
+
         return save;
     }
 }

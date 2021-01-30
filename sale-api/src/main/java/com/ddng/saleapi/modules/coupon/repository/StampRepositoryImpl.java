@@ -1,5 +1,6 @@
 package com.ddng.saleapi.modules.coupon.repository;
 
+import com.ddng.saleapi.modules.coupon.domain.Stamp;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -34,5 +35,15 @@ public class StampRepositoryImpl implements StampCustomRepository
                                         .collect(Collectors.toList());
 
         return collect;
+    }
+
+    @Override
+    public List<Stamp> getStampsForIssueCoupon(Long customerId, int countOfIssueCoupon)
+    {
+       return queryFactory.selectFrom(stamp)
+                    .where(stamp.coupon.isNull().and(stamp.customerId.eq(customerId)))
+                    .limit(countOfIssueCoupon)
+                    .orderBy(stamp.stampDate.asc())
+                    .fetch();
     }
 }

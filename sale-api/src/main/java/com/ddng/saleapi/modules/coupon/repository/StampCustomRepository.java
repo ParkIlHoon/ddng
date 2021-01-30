@@ -1,5 +1,6 @@
 package com.ddng.saleapi.modules.coupon.repository;
 
+import com.ddng.saleapi.modules.coupon.domain.Stamp;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface StampCustomRepository
      * @return
      */
     List<Long> getCouponIssuableCustomerIds(int standardCount);
+
+    List<Stamp> getStampsForIssueCoupon(Long customerId, int countOfIssueCoupon);
 }
