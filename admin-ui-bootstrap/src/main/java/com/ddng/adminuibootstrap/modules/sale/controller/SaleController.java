@@ -303,27 +303,34 @@ public class SaleController
      * @return
      */
     @PostMapping("/coupons")
-    public ResponseEntity issueNewCoupons(@ModelAttribute @Valid NewCouponFormWrapper couponFormWrapper,
-                                          Errors errors)
+    public String issueNewCoupons(@ModelAttribute @Valid NewCouponFormWrapper couponFormWrapper,
+                                  Errors errors,
+                                  RedirectAttributes attributes)
     {
         if(errors.hasErrors())
         {
-            return ResponseEntity.badRequest().build();
+            attributes.addFlashAttribute("alertType", "danger");
+            attributes.addFlashAttribute("message", errors.getFieldError().getDefaultMessage());
+            return "redirect:/sale";
         }
 
         List<NewCouponForm> newCouponForms = couponFormWrapper.getNewCouponForms();
         if(newCouponForms.isEmpty())
         {
-            return ResponseEntity.badRequest().build();
+            attributes.addFlashAttribute("alertType", "danger");
+            attributes.addFlashAttribute("message", "생성할 쿠폰 정보가 없습니다.");
+            return "redirect:/sale";
         }
 
         HttpStatus status = saleTemplate.issueNewCoupons(newCouponForms);
 
         if(status.is2xxSuccessful())
         {
-            return ResponseEntity.ok().build();
+            attributes.addFlashAttribute("alertType", "success");
+            attributes.addFlashAttribute("message", "쿠폰이 정상적으로 발급되었습니다.");
+            return "redirect:/sale";
         }
 
-        return ResponseEntity.badRequest().build();
+        return "redirect:/sale";
     }
 }
