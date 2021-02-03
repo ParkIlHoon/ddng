@@ -157,6 +157,15 @@ function initComponents()
             }
         ]
     });
+    historyGrid.on("click", function(e){
+        if (e.rowKey == undefined || e.rowKey == null) {
+            return;
+        }
+        var clickData = beautyGrid.getData()[e.rowKey];
+        //TODO 선택한 결제 정보 결제 리스트에 출력
+        //TODO select2 비활성화
+        //TODO
+    });
 
     /*
      미용 모달
@@ -196,17 +205,6 @@ function saleCart (payment)
     $("#sale-form-saleType").val("PAYED");
     $("#sale-form-paymentType").val(payment);
     $("#sale-form").submit();
-    //
-    // $.ajax({
-    //     url: "/sale",
-    //     type: "POST",
-    //     data: {"saleType" : "PAYED", "paymentType" : payment}
-    // }).always(function (jqXHR) {
-    //     // 카트 비움
-    //     $("#item-list").replaceWith(jqXHR.responseText);
-    //     // 총 금액 세팅
-    //     refreshTotalPrice();
-    // });
 }
 
 /**

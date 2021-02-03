@@ -2,6 +2,7 @@ package com.ddng.adminuibootstrap.modules.sale.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -77,6 +80,9 @@ public class SaleController
             }).collect(Collectors.toList());
             model.addAttribute("schedules", collect);
         }
+
+        // 이전 결제 목록 조회
+        List<SaleDto> saleDtos = saleTemplate.searchSales(LocalDate.now().atStartOfDay(), LocalDateTime.now());
 
         model.addAttribute("hotelItems", hotelItems);
         model.addAttribute("kindergartenItems", kindergartenItems);

@@ -3,24 +3,22 @@ package com.ddng.adminuibootstrap.modules.sale.template;
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.NewCouponDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
-import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
-import com.ddng.adminuibootstrap.modules.common.dto.sale.CouponDto;
-import com.ddng.adminuibootstrap.modules.common.dto.sale.PaymentType;
-import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto;
-import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleType;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -65,9 +63,9 @@ public class SaleTemplate extends AbstractTemplate
                 .build()
                 .encode()
                 .toUri();
-        SaleDto saleDto = new SaleDto(cart, saleType, paymentType);
+        NewSaleDto newSaleDto = new NewSaleDto(cart, saleType, paymentType);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, saleDto, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(targetUrl, newSaleDto, String.class);
         return responseEntity.getStatusCode();
     }
 
@@ -215,5 +213,43 @@ public class SaleTemplate extends AbstractTemplate
         }
 
         return statusCode;
+    }
+
+    /**
+     * 판매 기록을 조회한다.
+     * @param salePeriodStart 검색할 기록의 판매 시작 일자
+     * @param salePeriodEnd 검색할 기록의 판매 종료 일자
+     * @return
+     */
+    public List<SaleDto> searchSales(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd)
+    {
+        String apiPath = SALE_API_PATH;
+        URI targetUrl= getSaleApiUriBuilder()
+                .path(apiPath)
+                .build()
+                .encode()
+                .toUri();
+
+        SearchSaleDto dto = SearchSaleDto.builder().onlyToday(false).salePeriodStart(salePeriodStart).salePeriodEnd(salePeriodEnd).build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            String s = mapper.writeValueAsString(dto);
+            HttpEntity<String> entity = new HttpEntity<String>(s, headers);
+
+            ParameterizedTypeReference<List<SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
+            ResponseEntity<List<SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, entity, typeReference);
+
+            return exchange.getBody();
+        }
+        catch (JsonProcessingException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

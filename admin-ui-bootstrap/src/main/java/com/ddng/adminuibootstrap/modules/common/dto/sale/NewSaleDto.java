@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor @AllArgsConstructor
-public class SaleDto
+public class NewSaleDto
 {
     private Long familyId;
     private SaleType type;
@@ -20,7 +20,7 @@ public class SaleDto
 
     private List<SaleItemDto> saleItems = new ArrayList<>();
 
-    public SaleDto (Cart cart, SaleType saleType, PaymentType paymentType)
+    public NewSaleDto(Cart cart, SaleType saleType, PaymentType paymentType)
     {
         this.type = saleType;
         this.payment = paymentType;
