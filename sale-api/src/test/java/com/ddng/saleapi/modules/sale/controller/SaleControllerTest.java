@@ -217,7 +217,7 @@ class SaleControllerTest
 
 
         SaleDto.Get dto = new SaleDto.Get();
-        dto.setOnlyToday(true);
+//        dto.setOnlyToday(true);
 
         // when
         ResultActions actions = mockMvc.perform(

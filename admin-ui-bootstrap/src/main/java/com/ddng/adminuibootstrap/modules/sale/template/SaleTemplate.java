@@ -9,8 +9,8 @@ import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -221,35 +221,21 @@ public class SaleTemplate extends AbstractTemplate
      * @param salePeriodEnd 검색할 기록의 판매 종료 일자
      * @return
      */
-    public List<SaleDto> searchSales(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd)
-    {
+    public List<SaleDto> searchSales(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd) throws JSONException {
         String apiPath = SALE_API_PATH;
         URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
+                .queryParam("salePeriodStart", salePeriodStart.toString())
+                .queryParam("salePeriodEnd", salePeriodEnd.toString())
+                .queryParam("page", 0)
+                .queryParam("size", 50)
                 .build()
                 .encode()
                 .toUri();
 
-        SearchSaleDto dto = SearchSaleDto.builder().onlyToday(false).salePeriodStart(salePeriodStart).salePeriodEnd(salePeriodEnd).build();
+        ParameterizedTypeReference<RestPageImpl<SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<RestPageImpl<SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        ObjectMapper mapper = new ObjectMapper();
-        try
-        {
-            String s = mapper.writeValueAsString(dto);
-            HttpEntity<String> entity = new HttpEntity<String>(s, headers);
-
-            ParameterizedTypeReference<List<SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
-            ResponseEntity<List<SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, entity, typeReference);
-
-            return exchange.getBody();
-        }
-        catch (JsonProcessingException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        return exchange.getBody().getContent();
     }
 }

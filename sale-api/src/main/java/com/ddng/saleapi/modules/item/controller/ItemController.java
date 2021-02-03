@@ -5,7 +5,6 @@ import com.ddng.saleapi.modules.item.domain.ItemType;
 import com.ddng.saleapi.modules.item.dto.ItemDto;
 import com.ddng.saleapi.modules.item.dto.ItemTypeDto;
 import com.ddng.saleapi.modules.item.service.ItemService;
-import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.service.SaleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -200,31 +198,6 @@ public class ItemController
 
         itemService.deleteItem(optionalItem.get());
         return ResponseEntity.ok().build();
-    }
-
-    /**
-     * 상품의 최근 판매 기록을 조회한다.
-     * @param id
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/{id}/sale-history")
-    @ApiOperation(value = "상품 판매 기록 조회", notes = "특정 상품의 판매 기록을 조회합니다.")
-    public ResponseEntity getSaleHistory (@PathVariable("id") Long id,
-                                          @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
-    {
-        Optional<Item> optionalItem = itemService.findById(id);
-        if (optionalItem.isEmpty())
-        {
-            return ResponseEntity.badRequest().build();
-        }
-
-        SaleDto.Get dto = new SaleDto.Get();
-        dto.setOnlyToday(false);
-        dto.setItem(optionalItem.get());
-
-        Page<SaleDto.Response> responses = saleService.searchByDto(dto, pageable);
-        return ResponseEntity.ok(responses);
     }
 
     /**

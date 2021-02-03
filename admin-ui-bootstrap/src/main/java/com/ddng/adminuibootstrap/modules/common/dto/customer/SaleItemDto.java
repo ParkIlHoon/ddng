@@ -1,8 +1,10 @@
 package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data @NoArgsConstructor @AllArgsConstructor
 public class SaleItemDto
 {
     private Long itemId;

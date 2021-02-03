@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,23 +62,15 @@ public class SaleController
 
     /**
      * 판매 내역을 검색한다.
-     * @param dto 검색 정보
-     * @param errors
      * @param pageable
      * @return
      */
     @GetMapping
     @ApiOperation(value = "판매 목록 검색", notes = "검색 정보에 해당하는 판매 목록을 검색합니다.")
-    public ResponseEntity searchSale (@RequestBody @Valid SaleDto.Get dto,
-                                      Errors errors,
+    public ResponseEntity searchSale (String salePeriodStart, String salePeriodEnd,
                                       @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
-        if (errors.hasErrors())
-        {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Page<SaleDto.Response> sales = saleService.searchByDto(dto, pageable);
+        Page<SaleDto.Response> sales = saleService.searchSale(LocalDateTime.parse(salePeriodStart), LocalDateTime.parse(salePeriodEnd), pageable);
         return ResponseEntity.ok(sales);
     }
 

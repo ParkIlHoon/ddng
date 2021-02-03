@@ -144,18 +144,9 @@ public class SaleService
         return saleRepository.findById(id);
     }
 
-    public Page<SaleDto.Response> searchByDto(SaleDto.Get dto, Pageable pageable)
+    public Page<SaleDto.Response> searchSale(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd, Pageable pageable)
     {
-        Page<Sale> salePage = null;
-        if (dto.isOnlyToday() && dto.getItem() == null)
-        {
-            salePage = saleRepository.findBySaleDateAfterAndSaleDateBefore(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1), pageable);
-        }
-
-        if (!dto.isOnlyToday() && dto.getItem() != null)
-        {
-            salePage = saleRepository.findSaleByItem(dto.getItem(), pageable);
-        }
+        Page<Sale> salePage = saleRepository.findBySaleDateAfterAndSaleDateBefore(salePeriodStart, salePeriodEnd, pageable);
 
         List<SaleDto.Response> collect = salePage.getContent().stream()
                                                     .map(sale -> new SaleDto.Response(sale))

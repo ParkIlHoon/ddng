@@ -17,8 +17,8 @@ public class SaleDto
     @NoArgsConstructor @AllArgsConstructor
     public static class Get
     {
-        private boolean onlyToday;    // 오늘꺼만 조회할지 여부
-        private Item item;
+//        private boolean onlyToday;    // 오늘꺼만 조회할지 여부
+//        private Item item;
         private LocalDateTime salePeriodStart;
         private LocalDateTime salePeriodEnd;
     }
