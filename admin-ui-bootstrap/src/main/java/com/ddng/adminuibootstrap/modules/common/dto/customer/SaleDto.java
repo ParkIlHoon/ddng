@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ public class SaleDto
     private LocalDateTime saleDate;
     private String paymentType;
     private String paymentTypeName;
-    private List<SaleItemDto> saleItemList;
+    private List<SaleItemDto> saleItemList = new ArrayList<>();
 
     public int getTotal()
     {

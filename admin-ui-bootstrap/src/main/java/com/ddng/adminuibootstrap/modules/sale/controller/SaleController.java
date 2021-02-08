@@ -82,10 +82,12 @@ public class SaleController
         }
 
         // 이전 결제 목록 조회
-        List<SaleDto> saleDtos = saleTemplate.searchSales(LocalDate.now().atStartOfDay(), LocalDateTime.now());
+        List<SaleDto> saleHistories = saleTemplate.searchSales(LocalDate.now().atStartOfDay(), LocalDateTime.now());
 
         model.addAttribute("hotelItems", hotelItems);
         model.addAttribute("kindergartenItems", kindergartenItems);
+        model.addAttribute("saleHistories", saleHistories);
+
         return "sale/main";
     }
 

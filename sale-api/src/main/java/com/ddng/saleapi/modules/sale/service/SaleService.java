@@ -144,14 +144,14 @@ public class SaleService
         return saleRepository.findById(id);
     }
 
-    public Page<SaleDto.Response> searchSale(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd, Pageable pageable)
+    public Page<SaleDto.ResponseWithSaleItem> searchSale(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd, Pageable pageable)
     {
         Page<Sale> salePage = saleRepository.findBySaleDateAfterAndSaleDateBefore(salePeriodStart, salePeriodEnd, pageable);
 
-        List<SaleDto.Response> collect = salePage.getContent().stream()
-                                                    .map(sale -> new SaleDto.Response(sale))
+        List<SaleDto.ResponseWithSaleItem> collect = salePage.getContent().stream()
+                                                    .map(sale -> new SaleDto.ResponseWithSaleItem(sale))
                                                     .collect(Collectors.toList());
-        PageImpl<SaleDto.Response> responses = new PageImpl<SaleDto.Response>(collect, pageable, salePage.getTotalElements());
+        PageImpl<SaleDto.ResponseWithSaleItem> responses = new PageImpl<SaleDto.ResponseWithSaleItem>(collect, pageable, salePage.getTotalElements());
         return responses;
     }
 

@@ -70,7 +70,7 @@ public class SaleController
     public ResponseEntity searchSale (String salePeriodStart, String salePeriodEnd,
                                       @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
-        Page<SaleDto.Response> sales = saleService.searchSale(LocalDateTime.parse(salePeriodStart), LocalDateTime.parse(salePeriodEnd), pageable);
+        Page<SaleDto.ResponseWithSaleItem> sales = saleService.searchSale(LocalDateTime.parse(salePeriodStart), LocalDateTime.parse(salePeriodEnd), pageable);
         return ResponseEntity.ok(sales);
     }
 
