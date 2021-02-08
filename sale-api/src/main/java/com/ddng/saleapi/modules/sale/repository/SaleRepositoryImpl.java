@@ -94,8 +94,8 @@ public class SaleRepositoryImpl implements SaleCustomRepository
                                                                     saleItem.count.sum(),
                                                                     saleItem.totalPrice.sum()
                                                             ))
-                                                        .from(sale)
-                                                        .leftJoin(sale.saleItemList, saleItem)
+                                                        .from(saleItem)
+                                                        .leftJoin(saleItem.sale, sale)
                                                         .where(
                                                                 sale.type.eq(SaleType.PAYED)
                                                                 .and(sale.saleDate.goe(date.atTime(LocalTime.MIN))
@@ -112,17 +112,14 @@ public class SaleRepositoryImpl implements SaleCustomRepository
         JPAQuery<CalculateDto.ByPayment> jpaQuery =
                 queryFactory.select(new QCalculateDto_ByPayment(
                                         sale.payment,
-                                        sale.count().intValue(),
-                                        ExpressionUtils.as(
-                                            JPAExpressions
-                                                .select(saleItem.totalPrice.sum())
-                                                .from(saleItem)
-                                                .where(saleItem.sale.eq(sale).and(saleItem.sale.payment.eq(sale.payment))),"amount"))
+                                        sale.countDistinct().intValue(),
+                                        ExpressionUtils.as(saleItem.totalPrice.sum() ,"amount"))
                                     )
-                            .from(sale)
+                            .from(saleItem)
+                            .leftJoin(saleItem.sale, sale)
                             .where(
                                     sale.type.eq(SaleType.PAYED)
-                                        .and(sale.saleDate.goe(date.atStartOfDay())
+                                        .and(sale.saleDate.goe(date.atTime(LocalTime.MIN))
                                                 .and(sale.saleDate.loe(date.atTime(LocalTime.MAX))))
                                   )
                             .groupBy(sale.payment);
