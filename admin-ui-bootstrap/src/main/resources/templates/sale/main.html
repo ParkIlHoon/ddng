@@ -80,7 +80,6 @@
                                                         <button class="btn btn-secondary" type="button" id="pay-card-button">카드 결제</button>
                                                         <button class="btn btn-light" type="button" id="reset-button">초기화</button>
                                                         <button class="btn btn-dark" type="button" id="cancel-button">결제 취소</button>
-                                                        <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#coupon-modal">테스트</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -195,6 +194,7 @@
 
         /*[# th:each="row : ${saleHistories}"]*/
         saleHistoryGridData.push({
+            id : /*[[${row.getId()}]]*/,
             familyId : /*[[${row.getFamilyId()}]]*/,
             type : /*[[${row.getType()}]]*/,
             typeName : /*[[${row.getTypeName()}]]*/,

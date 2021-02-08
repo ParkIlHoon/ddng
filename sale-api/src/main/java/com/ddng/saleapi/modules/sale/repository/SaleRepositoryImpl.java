@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import javax.persistence.EntityManager;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -116,12 +117,12 @@ public class SaleRepositoryImpl implements SaleCustomRepository
                                             JPAExpressions
                                                 .select(saleItem.totalPrice.sum())
                                                 .from(saleItem)
-                                                .where(saleItem.sale.payment.eq(sale.payment)),"amount"))
+                                                .where(saleItem.sale.eq(sale).and(saleItem.sale.payment.eq(sale.payment))),"amount"))
                                     )
                             .from(sale)
                             .where(
                                     sale.type.eq(SaleType.PAYED)
-                                        .and(sale.saleDate.goe(date.atTime(LocalTime.MIN))
+                                        .and(sale.saleDate.goe(date.atStartOfDay())
                                                 .and(sale.saleDate.loe(date.atTime(LocalTime.MAX))))
                                   )
                             .groupBy(sale.payment);

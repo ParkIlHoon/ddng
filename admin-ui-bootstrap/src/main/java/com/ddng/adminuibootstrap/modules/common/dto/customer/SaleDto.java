@@ -12,6 +12,7 @@ import java.util.List;
 @Data @NoArgsConstructor @AllArgsConstructor
 public class SaleDto
 {
+    private Long id;
     private Long familyId;
     private String type;
     private String typeName;
