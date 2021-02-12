@@ -42,7 +42,8 @@
     </script>
 </head>
 
-<div th:fragment="leftMenu" class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+<div th:fragment="leftMenu(isCollapsed)" class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar"
+    th:classappend="${isCollapsed == true ? 'c-sidebar-minimized' : ''}">
     <div class="c-sidebar-brand d-lg-down-none">
         <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo" color="#ffffff" fill="currentColor">
             <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-paw"></use>

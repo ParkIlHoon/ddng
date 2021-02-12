@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html :: head"></head>
 <body class="c-app">
-<div th:replace="fragments.html::leftMenu"></div>
+<div th:replace="fragments.html::leftMenu(false)"></div>
 <div class="c-wrapper c-fixed-components">
     <header th:replace="fragments.html::header ('예약 관리', '스케쥴 관리')"></header>
     <div class="c-body">

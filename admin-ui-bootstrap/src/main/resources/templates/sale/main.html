@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragments.html :: head"></head>
+<head th:replace="fragments.html :: head">
+</head>
 <body class="c-app">
-<div th:replace="fragments.html::leftMenu"></div>
+<div th:replace="fragments.html::leftMenu(true)"></div>
 <div class="c-wrapper c-fixed-components">
     <header th:replace="fragments.html::header ('결제 화면', '결제 화면')"></header>
     <div class="c-body">
@@ -79,7 +80,6 @@
                                                         <button class="btn btn-primary" type="button" id="pay-cash-button">현금 결제</button>
                                                         <button class="btn btn-secondary" type="button" id="pay-card-button">카드 결제</button>
                                                         <button class="btn btn-light" type="button" id="reset-button">초기화</button>
-                                                        <button class="btn btn-dark" type="button" id="cancel-button">결제 취소</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -150,6 +150,7 @@
 <div th:if="${couponIssuableCustomers != null} AND ${not #arrays.isEmpty(couponIssuableCustomers)}">
     <div th:replace="sale/coupon-modal.html::coupon-modal(${couponIssuableCustomers}, ${couponTypes})"></div>
 </div>
+<div th:replace="sale/history-modal.html::history-modal"></div>
 
 <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css"/>
 <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
@@ -254,6 +255,7 @@
                 scrollX: false,
                 scrollY: false,
                 selectionUnit : "row",
+                width : "auto",
                 columns: [
                     {
                         header: '구분',
@@ -355,7 +357,7 @@
                 var clickData = beautyGrid.getData()[e.rowKey];
                 //TODO 선택한 결제 정보 결제 리스트에 출력
                 //TODO select2 비활성화
-                //TODO
+                openHistoryModal();
             });
 
             /*
