@@ -83,9 +83,3 @@ $("#reset-button").on("click", function(e){
         refreshTotalPrice();
     });
 });
-/**
- * 결제취소 버튼 클릭 핸들러
- */
-$("#cancel-button").on("click", function(e){
-    //TODO 결제 취소
-});

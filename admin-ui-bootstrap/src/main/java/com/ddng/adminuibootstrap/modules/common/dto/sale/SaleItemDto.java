@@ -18,4 +18,8 @@ public class SaleItemDto
     private Long couponId;
     private Long customerId;
     private Long scheduleId;
+    private String itemName;
+    private int salePrice;
+    private int totalPrice;
+    private String couponName;
 }

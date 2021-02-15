@@ -354,10 +354,8 @@
                 if (e.rowKey == undefined || e.rowKey == null) {
                     return;
                 }
-                var clickData = beautyGrid.getData()[e.rowKey];
-                //TODO 선택한 결제 정보 결제 리스트에 출력
-                //TODO select2 비활성화
-                openHistoryModal();
+                var clickData = historyGrid.getData()[e.rowKey];
+                openHistoryModal(clickData);
             });
 
             /*
@@ -374,6 +372,45 @@
              유치원 모달
              */
             initKindergartenModal();
+
+            /*
+             판매이력 모달
+             */
+            $("#history-modal").on("shown.bs.modal", function (e) {
+                historyModalGrid = new tui.Grid({
+                    el: document.getElementById('history-modal-grid'),
+                    data : historyModalGridData,
+                    scrollX: true,
+                    scrollY: true,
+                    selectionUnit : "row",
+                    bodyHeight: 100,
+                    columns: [
+                        {
+                            header: '상품명',
+                            name: 'itemName',
+                            minWidth : 120,
+                            resizable : true
+                        },
+                        {
+                            header: '개수',
+                            name: 'count',
+                            width : 40
+                        },
+                        {
+                            header: '단가',
+                            name: 'salePrice',
+                            width : 60,
+                            resizable : true
+                        },
+                        {
+                            header: '합계',
+                            name: 'totalPrice',
+                            width : 60,
+                            resizable : true
+                        }
+                    ]
+                });
+            });
         }
         /*]]>*/
     });

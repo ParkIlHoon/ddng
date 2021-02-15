@@ -341,4 +341,27 @@ public class SaleController
 
         return "redirect:/sale";
     }
+
+    /**
+     * 판매 기록 조회 요청
+     * @param id
+     * @return
+     */
+    @GetMapping("/history/{id}")
+    public ResponseEntity getSaleHistory(@PathVariable("id") Long id)
+    {
+        if(id == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleTemplate.getSaleHistoryById(id);
+
+        if (dto == null)
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(dto);
+    }
 }

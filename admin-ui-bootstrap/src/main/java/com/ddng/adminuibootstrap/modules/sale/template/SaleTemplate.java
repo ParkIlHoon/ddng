@@ -10,7 +10,6 @@ import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -237,5 +236,18 @@ public class SaleTemplate extends AbstractTemplate
         ResponseEntity<RestPageImpl<SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
 
         return exchange.getBody().getContent();
+    }
+
+    /**
+     * 판매 내역을 조회한다.
+     * @param id 조회할 판매 내역 아이디
+     * @return
+     */
+    public com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto getSaleHistoryById(Long id)
+    {
+        String apiPath = SALE_API_PATH + "/" + id;
+        URI targetUrl = getSaleApiUriBuilder().path(apiPath).build().encode().toUri();
+
+        return restTemplate.getForObject(targetUrl, com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto.class);
     }
 }
