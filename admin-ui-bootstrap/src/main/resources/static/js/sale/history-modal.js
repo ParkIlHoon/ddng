@@ -16,6 +16,8 @@ function openHistoryModal (clickData)
         url: "/sale/history/" + clickData.id,
         type: "GET",
     }).done(function(data){
+        $("#history-sale-id-input").val(data.id);
+        $("#history-modal-form").action = "/sale/refund" + data.id;
         $("#history-sale-date").text(moment(data.saleDate).format("YYYY-MM-DD HH:mm"))
         $("#history-total-price").text(clickData.total);
         $("#history-payment-type").text(data.paymentTypeName);
@@ -29,4 +31,13 @@ function openHistoryModal (clickData)
             show: true
         });
     });
+}
+
+function historyModalRefundButtonClick()
+{
+    var result = confirm("해당 판매 이력을 환불하시겠어요?");
+    if(result)
+    {
+        $("#history-modal-form").submit();
+    }
 }

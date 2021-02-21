@@ -250,4 +250,18 @@ public class SaleTemplate extends AbstractTemplate
 
         return restTemplate.getForObject(targetUrl, com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto.class);
     }
+
+    /**
+     * 특정 판매 이력을 환불한다.
+     * @param id 환불할 판매 내역 아이디
+     * @return
+     */
+    public HttpStatus refundSale(Long id)
+    {
+        String apiPath = SALE_API_PATH + "/" + id;
+        URI targetUrl = getSaleApiUriBuilder().path(apiPath).build().encode().toUri();
+
+        ResponseEntity<ResponseEntity> exchange = restTemplate.exchange(targetUrl, HttpMethod.DELETE, null, ResponseEntity.class);
+        return exchange.getStatusCode();
+    }
 }

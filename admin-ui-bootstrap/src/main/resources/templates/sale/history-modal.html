@@ -11,7 +11,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="history-modal-form">
+                <form class="form-horizontal" id="history-modal-form" method="post">
                     <input type="hidden" id="history-sale-id-input">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">
@@ -64,7 +64,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-danger" type="button" id="refund-button">환불</button>
+                <button class="btn btn-danger" type="button" id="refund-button" onclick="historyModalRefundButtonClick()">환불</button>
             </div>
         </div>
     </div>

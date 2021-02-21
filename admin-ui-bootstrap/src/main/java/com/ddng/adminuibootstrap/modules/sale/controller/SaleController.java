@@ -364,4 +364,39 @@ public class SaleController
 
         return ResponseEntity.ok(dto);
     }
+
+    /**
+     * 환불 요청
+     * @param id 환불할 판매 아이디
+     * @return
+     */
+    @PostMapping("/refund/{id}")
+    public String refundSale (@PathVariable("id") Long id,
+                              RedirectAttributes attributes)
+    {
+        if(id == null)
+        {
+            attributes.addFlashAttribute("alertType", "danger");
+            attributes.addFlashAttribute("message", "정상적이지 않은 요청입니다.");
+            return "redirect:/sale";
+        }
+
+        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleTemplate.getSaleHistoryById(id);
+        if(dto == null)
+        {
+            attributes.addFlashAttribute("alertType", "danger");
+            attributes.addFlashAttribute("message", "존재하지 않는 판매 이력입니다.");
+            return "redirect:/sale";
+        }
+
+        HttpStatus status = saleTemplate.refundSale(id);
+        if(status.is2xxSuccessful())
+        {
+            attributes.addFlashAttribute("alertType", "success");
+            attributes.addFlashAttribute("message", "정상적으로 환불되었습니다.");
+            return "redirect:/sale";
+        }
+
+        return "redirect:/sale";
+    }
 }
