@@ -1,12 +1,15 @@
 package com.ddng.saleapi.modules.sale.service;
 
 import com.ddng.saleapi.modules.coupon.domain.Coupon;
+import com.ddng.saleapi.modules.coupon.domain.Stamp;
 import com.ddng.saleapi.modules.coupon.repository.CouponRepository;
+import com.ddng.saleapi.modules.coupon.repository.StampRepository;
 import com.ddng.saleapi.modules.coupon.service.CouponService;
 import com.ddng.saleapi.modules.item.domain.Item;
 import com.ddng.saleapi.modules.item.repository.ItemRepository;
 import com.ddng.saleapi.modules.sale.domain.Sale;
 import com.ddng.saleapi.modules.sale.domain.SaleItem;
+import com.ddng.saleapi.modules.sale.domain.SaleType;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
@@ -41,6 +44,7 @@ public class SaleService
     private final SaleRepository saleRepository;
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
+    private final StampRepository stampRepository;
     private final CouponService couponService;
     private final EventDispatcher eventDispatcher;
     private final EntityManager entityManager;
@@ -190,5 +194,41 @@ public class SaleService
         List<SaleItem> saleItems = saleRepository.findSaleByItemId(itemId);
         List<SaleItemDto.Get> collect = saleItems.stream().map(si -> new SaleItemDto.Get(si)).collect(Collectors.toList());
         return collect;
+    }
+
+    public boolean refundSale(Long id)
+    {
+        /**
+         * 1. Sale 타입 변경
+         * 2. 상품 재고 원복
+         * 3. 스탬프 제거
+         */
+        if(id == null)
+        {
+            return false;
+        }
+
+        Optional<Sale> optionalSale = saleRepository.findById(id);
+
+        if(optionalSale.isEmpty())
+        {
+            return false;
+        }
+
+        // Sale 타입 변경(제거 x)
+        Sale sale = optionalSale.get();
+        sale.setType(SaleType.CANCEL);
+
+        // 상품 재고 원복
+        for (SaleItem si : sale.getSaleItemList())
+        {
+            si.getItem().setItemQuantity(si.getItem().getItemQuantity() + si.getCount());
+        }
+
+        // 스탬프 원복
+        List<Stamp> stamps = stampRepository.findAllBySale(sale);
+        stampRepository.deleteAll(stamps);
+
+        return true;
     }
 }

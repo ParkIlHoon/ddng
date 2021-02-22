@@ -188,4 +188,20 @@ public class SaleController
         List<CalculateDto.ByPayment> calculate = saleService.getCalculateByPayment(LocalDate.parse(baseDate));
         return ResponseEntity.ok(calculate);
     }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "환불", notes="특정 판매 이력을 환불합니다.")
+    public ResponseEntity deleteSale (@PathVariable("id") Long id)
+    {
+        boolean refundResult = saleService.refundSale(id);
+
+        if(refundResult)
+        {
+            return ResponseEntity.ok().build();
+        }
+        else
+        {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
