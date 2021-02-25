@@ -201,7 +201,8 @@ public class SaleService
         /**
          * 1. Sale 타입 변경
          * 2. 상품 재고 원복
-         * 3. 스탬프 제거
+         * 3. 쿠폰 제거
+         * 4. 스탬프 제거
          */
         if(id == null)
         {
@@ -225,8 +226,16 @@ public class SaleService
             si.getItem().setItemQuantity(si.getItem().getItemQuantity() + si.getCount());
         }
 
-        // 스탬프 원복
         List<Stamp> stamps = stampRepository.findAllBySale(sale);
+        // 쿠폰 만료처리
+        List<Coupon> coupons = stamps.stream().map(s -> s.getCoupon()).collect(Collectors.toList());
+        for (Coupon coupon : coupons)
+        {
+            coupon.setExpireDate(LocalDateTime.now());
+        }
+        couponRepository.saveAll(coupons);
+
+        // 스탬프 원복
         stampRepository.deleteAll(stamps);
 
         return true;
