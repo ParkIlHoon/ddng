@@ -220,12 +220,13 @@ public class SaleTemplate extends AbstractTemplate
      * @param salePeriodEnd 검색할 기록의 판매 종료 일자
      * @return
      */
-    public List<SaleDto> searchSales(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd) throws JSONException {
+    public List<SaleDto> searchSales(LocalDateTime salePeriodStart, LocalDateTime salePeriodEnd, SaleType saleType) throws JSONException {
         String apiPath = SALE_API_PATH;
         URI targetUrl= getSaleApiUriBuilder()
                 .path(apiPath)
                 .queryParam("salePeriodStart", salePeriodStart.toString())
                 .queryParam("salePeriodEnd", salePeriodEnd.toString())
+                .queryParam("saleType", saleType)
                 .queryParam("page", 0)
                 .queryParam("size", 50)
                 .build()

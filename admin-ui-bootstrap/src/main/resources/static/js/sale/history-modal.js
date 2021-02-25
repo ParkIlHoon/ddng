@@ -17,7 +17,7 @@ function openHistoryModal (clickData)
         type: "GET",
     }).done(function(data){
         $("#history-sale-id-input").val(data.id);
-        $("#history-modal-form").action = "/sale/refund" + data.id;
+        $("#history-modal-form").attr("action", "/sale/refund/" + data.id);
         $("#history-sale-date").text(moment(data.saleDate).format("YYYY-MM-DD HH:mm"))
         $("#history-total-price").text(clickData.total);
         $("#history-payment-type").text(data.paymentTypeName);

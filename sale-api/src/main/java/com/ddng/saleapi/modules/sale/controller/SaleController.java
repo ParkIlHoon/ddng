@@ -1,6 +1,7 @@
 package com.ddng.saleapi.modules.sale.controller;
 
 import com.ddng.saleapi.modules.sale.domain.Sale;
+import com.ddng.saleapi.modules.sale.domain.SaleType;
 import com.ddng.saleapi.modules.sale.dto.CalculateDto;
 import com.ddng.saleapi.modules.sale.dto.SaleDto;
 import com.ddng.saleapi.modules.sale.dto.SaleItemDto;
@@ -67,10 +68,10 @@ public class SaleController
      */
     @GetMapping
     @ApiOperation(value = "판매 목록 검색", notes = "검색 정보에 해당하는 판매 목록을 검색합니다.")
-    public ResponseEntity searchSale (String salePeriodStart, String salePeriodEnd,
+    public ResponseEntity searchSale (String salePeriodStart, String salePeriodEnd, SaleType saleType,
                                       @PageableDefault(size = 10, sort = "saleDate", direction = Sort.Direction.DESC) Pageable pageable)
     {
-        Page<SaleDto.ResponseWithSaleItem> sales = saleService.searchSale(LocalDateTime.parse(salePeriodStart), LocalDateTime.parse(salePeriodEnd), pageable);
+        Page<SaleDto.ResponseWithSaleItem> sales = saleService.searchSale(LocalDateTime.parse(salePeriodStart), LocalDateTime.parse(salePeriodEnd), saleType, pageable);
         return ResponseEntity.ok(sales);
     }
 
