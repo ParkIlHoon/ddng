@@ -69,6 +69,26 @@ public class ScheduleTemplate extends AbstractTemplate
     }
 
     /**
+     * 특정 일자에에 해당하는 스케쥴 목록을 조회한다.
+     * @param baseDate 조회 일자
+     * @return
+     */
+    public List<ScheduleDto> getCertainDaySchedule(String baseDate)
+    {
+        URI targetUrl= getScheduleApiUriBuilder()
+                .path(SCHEDULE_API_PATH + "/day")
+                .queryParam("baseDate", baseDate)
+                .build()
+                .encode()
+                .toUri();
+
+        ParameterizedTypeReference<List<ScheduleDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<ScheduleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+
+        return exchange.getBody();
+    }
+
+    /**
      * 스케쥴 타입 목록을 조회한다.
      * @return
      */

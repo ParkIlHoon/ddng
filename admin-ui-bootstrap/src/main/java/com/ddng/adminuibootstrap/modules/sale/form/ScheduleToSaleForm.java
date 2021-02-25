@@ -38,7 +38,7 @@ public class ScheduleToSaleForm
     {
         this.id = scheduleDto.getId();
         this.name = scheduleDto.getName();
-        this.scheduleType = scheduleDto.getScheduleType();
+        this.scheduleType = scheduleDto.getScheduleType().name();
         this.startDate = scheduleDto.getStartDate();
         this.endDate = scheduleDto.getEndDate();
         this.allDay = scheduleDto.isAllDay();

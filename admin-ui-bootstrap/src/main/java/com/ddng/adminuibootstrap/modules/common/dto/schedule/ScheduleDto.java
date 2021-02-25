@@ -16,7 +16,7 @@ public class ScheduleDto
 {
     private Long id;
     private String name;
-    private String scheduleType;
+    private ScheduleType scheduleType;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

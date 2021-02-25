@@ -2,7 +2,6 @@ $(function(){
     // 오늘 날짜 세팅
     var today = moment().format('YYYY-MM-DD');
     $("#date-div").text(today);
-
     // 스케쥴 목록 조회
     getSchedules(today);
 });
@@ -12,60 +11,36 @@ function getSchedules (searchDate) {
     $("#schedule-table-body").empty();
 
     $.ajax({
-        url: SERVER_URL + "/schedule-api/schedules/day",
+        url: "/today-schedules",
         type: "GET",
         data: {"baseDate": searchDate}
     }).done((data, textStatus, jqXHR) => {
 
-        var showTarget = [];
-        data.forEach(d => (d.scheduleType == "HOTEL" || d.scheduleType == "KINDERGARTEN")? showTarget.push(d) : null);
-
-        if (showTarget.length > 0)
+        for (var idx = 0; idx < data.length; idx++)
         {
-            var customerIds = [];
-            showTarget.forEach(d => customerIds.push(d.customerId));
-            var keyword = customerIds.join(",");
+            var appendString = "<tr>\n" +
+                "<td>" + data[idx].scheduleTypeName + "</td>\n" +
+                "<td>" + data[idx].customerName + "</td>\n" +
+                "<td>" + data[idx].customerTypeName + "</td>\n" +
+                "<td>" + data[idx].customerTelNo + "</td>\n" +
+                "<td>\n" +
+                "tags\n" +
+                "</td>\n" +
+                "</tr>";
 
-            $.ajax({
-                url: SERVER_URL + "/customer-api/customer/in",
-                type: "GET",
-                data : {"keyword" : keyword},
-                async: false,
-                success : function (customers){
-                    for (var idx = 0; idx < showTarget.length; idx++)
-                    {
-                        var appendString = "<tr>\n" +
-                            "<td>scheduleTypeName</td>\n" +
-                            "<td>customerName</td>\n" +
-                            "<td>customerTypeName</td>\n" +
-                            "<td>customerTelNo</td>\n" +
-                            "<td>\n" +
-                            "tags\n" +
-                            "</td>\n" +
-                            "</tr>";
+            var totalTagString = "";
 
-                        var schedule = showTarget[idx];
-                        appendString = appendString.replaceAll("scheduleTypeName", schedule.scheduleTypeName);
-
-                        var customer = customers.find(el => el.id == schedule.customerId);
-
-                        appendString = appendString.replaceAll("customerName", customer.name);
-                        appendString = appendString.replaceAll("customerTypeName", customer.typeName);
-                        appendString = appendString.replaceAll("customerTelNo", customer.telNo);
-
-                        var totalTagString = "";
-                        for (var tagidx = 0; tagidx < schedule.tags.length; tagidx++) {
-                            var tagString = "<span class=\"badge badge-secondary\">title</span>\n";
-                            tagString = tagString.replaceAll("title", schedule.tags[tagidx].title);
-                            totalTagString += tagString;
-                        }
-
-                        appendString = appendString.replaceAll("tags", totalTagString);
-
-                        $("#schedule-table-body").append(appendString);
-                    }
+            if (data[idx].scheduleTags != null)
+            {
+                for (var tagidx = 0; tagidx < data[idx].scheduleTags.length; tagidx++) {
+                    var tagString = "<span class=\"badge badge-secondary\">title</span>\n";
+                    tagString = tagString.replaceAll("title", data[idx].scheduleTags[tagidx]);
+                    totalTagString += tagString;
                 }
-            });
+            }
+            appendString = appendString.replaceAll("tags", totalTagString);
+
+            $("#schedule-table-body").append(appendString);
         }
     });
 }
