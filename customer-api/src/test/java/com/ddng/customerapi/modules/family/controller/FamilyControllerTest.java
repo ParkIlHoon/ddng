@@ -89,7 +89,7 @@ class FamilyControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                get("/family")
+                                                get("/families")
                                                     .param("keyword", keyword)
                                                     .param("page", "0")
                                                 )
@@ -116,7 +116,7 @@ class FamilyControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                get("/family")
+                                                get("/families")
                                                     .param("keyword", keyword)
                                                     .param("page", "0")
                                                 )
@@ -143,7 +143,7 @@ class FamilyControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                get("/family")
+                                                get("/families")
                                                     .param("keyword", keyword)
                                                     .param("page", "0")
                                                 )
@@ -171,7 +171,7 @@ class FamilyControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                get("/family")
+                                                get("/families")
                                                     .param("keyword", keyword)
                                                     .param("page", "0")
                                                 )
@@ -199,7 +199,7 @@ class FamilyControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                get("/family")
+                get("/families")
                         .param("keyword", keyword)
                         .param("page", "0")
         )
@@ -229,7 +229,7 @@ class FamilyControllerTest
 
         // when
         mockMvc.perform(
-                        post("/family")
+                        post("/families")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(dto))
                         )
@@ -259,7 +259,7 @@ class FamilyControllerTest
 
         // when
         mockMvc.perform(
-                        post("/family/{id}/member", family.getId())
+                        post("/families/{id}/member", family.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(dto))
                         )
@@ -283,7 +283,7 @@ class FamilyControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/family/{id}/member", family.getId())
+                        delete("/families/{id}/member", family.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(dto))
                         )
@@ -305,7 +305,7 @@ class FamilyControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/family/{id}", family.getId())
+                        delete("/families/{id}", family.getId())
                         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -327,7 +327,7 @@ class FamilyControllerTest
 
         // when
         mockMvc.perform(
-                        put("/family/{id}", family.getId())
+                        put("/families/{id}", family.getId())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(dto))
                         )
