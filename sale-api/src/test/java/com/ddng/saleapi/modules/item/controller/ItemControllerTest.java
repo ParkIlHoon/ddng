@@ -123,7 +123,7 @@ class ItemControllerTest
     private List<HashMap> searchByKeyword(String keyword) throws Exception
     {
         ResultActions actions = mockMvc.perform(
-                                                get("/item")
+                                                get("/items")
                                                 .param("keyword", keyword)
                                                 .param("page", "0")
                                                 )
@@ -147,7 +147,7 @@ class ItemControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                get("/item/{id}", item.getId())
+                                                get("/items/{id}", item.getId())
                                                 )
                                         .andDo(print())
                                         .andExpect(status().isOk());
@@ -171,7 +171,7 @@ class ItemControllerTest
 
         // when
         mockMvc.perform(
-                       get("/item/{id}", id)
+                       get("/items/{id}", id)
                         )
                 .andDo(print())
                 .andExpect(status().isNotFound());
@@ -192,7 +192,7 @@ class ItemControllerTest
 
         // when
         mockMvc.perform(
-                        post("/item")
+                        post("/items")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto))
                         )
@@ -219,7 +219,7 @@ class ItemControllerTest
 
         // when
         mockMvc.perform(
-                        post("/item")
+                        post("/items")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto))
                         )
@@ -243,7 +243,7 @@ class ItemControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                put("/item/{id}", item.getId())
+                                                put("/items/{id}", item.getId())
                                                     .contentType(MediaType.APPLICATION_JSON)
                                                     .content(objectMapper.writeValueAsString(map))
                                                 )
@@ -273,7 +273,7 @@ class ItemControllerTest
 
         // when
         ResultActions actions = mockMvc.perform(
-                                                put("/item/{id}", item.getId())
+                                                put("/items/{id}", item.getId())
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(objectMapper.writeValueAsString(map))
                                                 )
@@ -290,7 +290,7 @@ class ItemControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/item/{id}", item.getId())
+                        delete("/items/{id}", item.getId())
                         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -309,7 +309,7 @@ class ItemControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/item/{id}", id)
+                        delete("/items/{id}", id)
                         )
                 .andDo(print())
                 .andExpect(status().isBadRequest());

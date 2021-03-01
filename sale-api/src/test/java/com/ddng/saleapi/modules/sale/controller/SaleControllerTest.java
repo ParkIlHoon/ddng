@@ -63,224 +63,224 @@ class SaleControllerTest
     @Autowired ItemFactory itemFactory;
     @Autowired CouponFactory couponFactory;
 
-    @BeforeEach
-    public void initializeData ()
-    {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
-                        .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
-                        .build();
-
-        Item item = itemFactory.createItem("상품1", ItemType.SNACK, "12345678", 1500, 100, false);
-        Item item2 = itemFactory.createItem("상품2", ItemType.FEED, "98765432", 500, 100, false);
-
-        couponFactory.createCoupon("테스트 쿠폰", CouponType.DISCOUNT_ALL, item, LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
-    }
-
-    @AfterEach
-    public void resetData()
-    {
-        saleRepository.deleteAll();
-        itemRepository.deleteAll();
-    }
-
-    @Test
-    @DisplayName("판매 - 기본")
-    void createSale() throws Exception
-    {
-        // given
-        List<Item> allItem = itemRepository.findAll();
-
-        SaleItemDto saleItemDto1 = SaleItemDto.builder()
-                                                    .itemId(allItem.get(0).getId())
-                                                    .count(2)
-                                                .build();
-        SaleItemDto saleItemDto2 = SaleItemDto.builder()
-                                                    .itemId(allItem.get(1).getId())
-                                                    .count(2)
-                                                .build();
-
-        SaleDto.Post saleDto = SaleDto.Post.builder()
-                                                .familyId(1L)
-                                                .payment(PaymentType.CARD)
-                                                .saleItems(List.of(saleItemDto1, saleItemDto2))
-                                                .type(SaleType.PAYED)
-                                            .build();
-
-        // when
-        mockMvc.perform(
-                        post("/sale")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(saleDto))
-                        )
-                .andDo(print())
-                .andExpect(status().isCreated());
-
-        // then
-        List<Sale> all = saleRepository.findAll();
-        Sale sale = all.get(0);
-        assertThat(all.size()).isEqualTo(1);
-        assertThat(sale.getSaleItemList().size()).isEqualTo(2);
-
-        List<Item> afterAllItems = itemRepository.findAll();
-        assertThat(afterAllItems.get(0).getItemQuantity()).isLessThan(100);
-        assertThat(afterAllItems.get(0).getItemQuantity()).isEqualTo(98);
-        assertThat(afterAllItems.get(1).getItemQuantity()).isLessThan(100);
-        assertThat(afterAllItems.get(1).getItemQuantity()).isEqualTo(98);
-
-        System.out.println("payment is " + sale.getPayment());
-        System.out.println("sale item is " + sale.getSaleItemList().get(0).getItem().getName());
-        System.out.println("sale item price is " + sale.getSaleItemList().get(0).getSalePrice());
-        System.out.println("sale item count is " + sale.getSaleItemList().get(0).getCount());
-    }
-
-    @Test
-    @DisplayName("판매 - 쿠폰 적용")
-    void createSale_with_coupon() throws Exception
-    {
-        // given
-        List<Item> allItem = itemRepository.findAll();
-        List<Coupon> allCoupons = couponRepository.findAll();
-
-        // 1500 * 2
-        SaleItemDto saleItemDto1 = SaleItemDto.builder()
-                .itemId(allItem.get(0).getId())
-                .count(2)
-                .customerId(allCoupons.get(0).getCustomerId())
-                .couponId(allCoupons.get(0).getId())
-                .build();
-
-        // 500 * 2
-        SaleItemDto saleItemDto2 = SaleItemDto.builder()
-                .itemId(allItem.get(1).getId())
-                .count(2)
-                .build();
-
-        SaleDto.Post saleDto = SaleDto.Post.builder()
-                .familyId(1L)
-                .payment(PaymentType.CARD)
-                .saleItems(List.of(saleItemDto1, saleItemDto2))
-                .type(SaleType.PAYED)
-                .build();
-
-        // when
-        mockMvc.perform(
-                post("/sale")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(saleDto))
-        )
-                .andDo(print())
-                .andExpect(status().isCreated());
-
-        // then
-        List<Sale> all = saleRepository.findAll();
-        Sale sale = all.get(0);
-        assertThat(all.size()).isEqualTo(1);
-        assertThat(sale.getSaleItemList().size()).isEqualTo(2);
-        assertThat(sale.getSaleItemList().get(0).getTotalPrice()).isEqualTo(1500);
-
-        Optional<Coupon> optionalCoupon = couponRepository.findById(allCoupons.get(0).getId());
-        assertThat(optionalCoupon.get().getUseDate()).isNotNull();
-
-        List<Item> afterAllItems = itemRepository.findAll();
-        assertThat(afterAllItems.get(0).getItemQuantity()).isLessThan(100);
-        assertThat(afterAllItems.get(0).getItemQuantity()).isEqualTo(98);
-        assertThat(afterAllItems.get(1).getItemQuantity()).isLessThan(100);
-        assertThat(afterAllItems.get(1).getItemQuantity()).isEqualTo(98);
-    }
-
-    @Test
-    @DisplayName("판매 검색 - 오늘 판매")
-    void searchSale_today() throws Exception
-    {
-        // given
-        List<Item> allItem = itemRepository.findAll();
-
-        SaleItemDto saleItemDto1 = SaleItemDto.builder()
-                .itemId(allItem.get(0).getId())
-                .count(2)
-                .build();
-
-        // 500 * 2
-        SaleItemDto saleItemDto2 = SaleItemDto.builder()
-                .itemId(allItem.get(1).getId())
-                .count(2)
-                .build();
-
-        SaleDto.Post saleDto = SaleDto.Post.builder()
-                .familyId(1L)
-                .payment(PaymentType.CARD)
-                .saleItems(List.of(saleItemDto1, saleItemDto2))
-                .type(SaleType.PAYED)
-                .build();
-
-        saleService.createSale(saleDto);
-
-
-        SaleDto.Get dto = new SaleDto.Get();
-//        dto.setOnlyToday(true);
-
-        // when
-        ResultActions actions = mockMvc.perform(
-                                                get("/sale")
-                                                    .contentType(MediaType.APPLICATION_JSON)
-                                                    .content(objectMapper.writeValueAsString(dto))
-                                                )
-                                        .andDo(print())
-                                        .andExpect(status().isOk());
-
-        MockHttpServletResponse response = actions.andReturn().getResponse();
-        String contentAsString = response.getContentAsString();
-        JacksonJsonParser parser = new JacksonJsonParser();
-
-        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
-        List<Object> content = (List<Object>) stringObjectMap.get("content");
-
-        // then
-        assertThat(content.size()).isEqualTo(1);
-    }
-
-    @Test
-    void calculate() throws Exception
-    {
-        // given
-        // given
-        List<Item> allItem = itemRepository.findAll();
-
-        SaleItemDto saleItemDto1 = SaleItemDto.builder()
-                .itemId(allItem.get(0).getId())
-                .count(2)
-                .build();
-
-        // 500 * 2
-        SaleItemDto saleItemDto2 = SaleItemDto.builder()
-                .itemId(allItem.get(1).getId())
-                .count(2)
-                .build();
-
-        SaleDto.Post saleDto = SaleDto.Post.builder()
-                .familyId(1L)
-                .payment(PaymentType.CARD)
-                .saleItems(List.of(saleItemDto1, saleItemDto2))
-                .type(SaleType.PAYED)
-                .build();
-
-        saleService.createSale(saleDto);
-
-        // when
-        ResultActions actions = mockMvc.perform(get("/sale/calculate"))
-                .andDo(print())
-                .andExpect(status().isOk());
-
-        MockHttpServletResponse response = actions.andReturn().getResponse();
-        String contentAsString = response.getContentAsString();
-        JacksonJsonParser parser = new JacksonJsonParser();
-
-        List<Object> objects = parser.parseList(contentAsString);
-
-        // then
-        for (Object obj : objects)
-        {
-            System.out.println(obj.toString());
-        }
-    }
+//    @BeforeEach
+//    public void initializeData ()
+//    {
+//        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+//                        .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+//                        .build();
+//
+//        Item item = itemFactory.createItem("상품1", ItemType.SNACK, "12345678", 1500, 100, false);
+//        Item item2 = itemFactory.createItem("상품2", ItemType.FEED, "98765432", 500, 100, false);
+//
+//        couponFactory.createCoupon("테스트 쿠폰", CouponType.DISCOUNT_ALL, item, LocalDateTime.now(), LocalDateTime.now().plusDays(1), null);
+//    }
+//
+//    @AfterEach
+//    public void resetData()
+//    {
+//        saleRepository.deleteAll();
+//        itemRepository.deleteAll();
+//    }
+//
+//    @Test
+//    @DisplayName("판매 - 기본")
+//    void createSale() throws Exception
+//    {
+//        // given
+//        List<Item> allItem = itemRepository.findAll();
+//
+//        SaleItemDto saleItemDto1 = SaleItemDto.builder()
+//                                                    .itemId(allItem.get(0).getId())
+//                                                    .count(2)
+//                                                .build();
+//        SaleItemDto saleItemDto2 = SaleItemDto.builder()
+//                                                    .itemId(allItem.get(1).getId())
+//                                                    .count(2)
+//                                                .build();
+//
+//        SaleDto.Post saleDto = SaleDto.Post.builder()
+//                                                .familyId(1L)
+//                                                .payment(PaymentType.CARD)
+//                                                .saleItems(List.of(saleItemDto1, saleItemDto2))
+//                                                .type(SaleType.PAYED)
+//                                            .build();
+//
+//        // when
+//        mockMvc.perform(
+//                        post("/sale")
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .content(objectMapper.writeValueAsString(saleDto))
+//                        )
+//                .andDo(print())
+//                .andExpect(status().isCreated());
+//
+//        // then
+//        List<Sale> all = saleRepository.findAll();
+//        Sale sale = all.get(0);
+//        assertThat(all.size()).isEqualTo(1);
+//        assertThat(sale.getSaleItemList().size()).isEqualTo(2);
+//
+//        List<Item> afterAllItems = itemRepository.findAll();
+//        assertThat(afterAllItems.get(0).getItemQuantity()).isLessThan(100);
+//        assertThat(afterAllItems.get(0).getItemQuantity()).isEqualTo(98);
+//        assertThat(afterAllItems.get(1).getItemQuantity()).isLessThan(100);
+//        assertThat(afterAllItems.get(1).getItemQuantity()).isEqualTo(98);
+//
+//        System.out.println("payment is " + sale.getPayment());
+//        System.out.println("sale item is " + sale.getSaleItemList().get(0).getItem().getName());
+//        System.out.println("sale item price is " + sale.getSaleItemList().get(0).getSalePrice());
+//        System.out.println("sale item count is " + sale.getSaleItemList().get(0).getCount());
+//    }
+//
+//    @Test
+//    @DisplayName("판매 - 쿠폰 적용")
+//    void createSale_with_coupon() throws Exception
+//    {
+//        // given
+//        List<Item> allItem = itemRepository.findAll();
+//        List<Coupon> allCoupons = couponRepository.findAll();
+//
+//        // 1500 * 2
+//        SaleItemDto saleItemDto1 = SaleItemDto.builder()
+//                .itemId(allItem.get(0).getId())
+//                .count(2)
+//                .customerId(allCoupons.get(0).getCustomerId())
+//                .couponId(allCoupons.get(0).getId())
+//                .build();
+//
+//        // 500 * 2
+//        SaleItemDto saleItemDto2 = SaleItemDto.builder()
+//                .itemId(allItem.get(1).getId())
+//                .count(2)
+//                .build();
+//
+//        SaleDto.Post saleDto = SaleDto.Post.builder()
+//                .familyId(1L)
+//                .payment(PaymentType.CARD)
+//                .saleItems(List.of(saleItemDto1, saleItemDto2))
+//                .type(SaleType.PAYED)
+//                .build();
+//
+//        // when
+//        mockMvc.perform(
+//                post("/sale")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(saleDto))
+//        )
+//                .andDo(print())
+//                .andExpect(status().isCreated());
+//
+//        // then
+//        List<Sale> all = saleRepository.findAll();
+//        Sale sale = all.get(0);
+//        assertThat(all.size()).isEqualTo(1);
+//        assertThat(sale.getSaleItemList().size()).isEqualTo(2);
+//        assertThat(sale.getSaleItemList().get(0).getTotalPrice()).isEqualTo(1500);
+//
+//        Optional<Coupon> optionalCoupon = couponRepository.findById(allCoupons.get(0).getId());
+//        assertThat(optionalCoupon.get().getUseDate()).isNotNull();
+//
+//        List<Item> afterAllItems = itemRepository.findAll();
+//        assertThat(afterAllItems.get(0).getItemQuantity()).isLessThan(100);
+//        assertThat(afterAllItems.get(0).getItemQuantity()).isEqualTo(98);
+//        assertThat(afterAllItems.get(1).getItemQuantity()).isLessThan(100);
+//        assertThat(afterAllItems.get(1).getItemQuantity()).isEqualTo(98);
+//    }
+//
+//    @Test
+//    @DisplayName("판매 검색 - 오늘 판매")
+//    void searchSale_today() throws Exception
+//    {
+//        // given
+//        List<Item> allItem = itemRepository.findAll();
+//
+//        SaleItemDto saleItemDto1 = SaleItemDto.builder()
+//                .itemId(allItem.get(0).getId())
+//                .count(2)
+//                .build();
+//
+//        // 500 * 2
+//        SaleItemDto saleItemDto2 = SaleItemDto.builder()
+//                .itemId(allItem.get(1).getId())
+//                .count(2)
+//                .build();
+//
+//        SaleDto.Post saleDto = SaleDto.Post.builder()
+//                .familyId(1L)
+//                .payment(PaymentType.CARD)
+//                .saleItems(List.of(saleItemDto1, saleItemDto2))
+//                .type(SaleType.PAYED)
+//                .build();
+//
+//        saleService.createSale(saleDto);
+//
+//
+//        SaleDto.Get dto = new SaleDto.Get();
+////        dto.setOnlyToday(true);
+//
+//        // when
+//        ResultActions actions = mockMvc.perform(
+//                                                get("/sale")
+//                                                    .contentType(MediaType.APPLICATION_JSON)
+//                                                    .content(objectMapper.writeValueAsString(dto))
+//                                                )
+//                                        .andDo(print())
+//                                        .andExpect(status().isOk());
+//
+//        MockHttpServletResponse response = actions.andReturn().getResponse();
+//        String contentAsString = response.getContentAsString();
+//        JacksonJsonParser parser = new JacksonJsonParser();
+//
+//        Map<String, Object> stringObjectMap = parser.parseMap(contentAsString);
+//        List<Object> content = (List<Object>) stringObjectMap.get("content");
+//
+//        // then
+//        assertThat(content.size()).isEqualTo(1);
+//    }
+//
+//    @Test
+//    void calculate() throws Exception
+//    {
+//        // given
+//        // given
+//        List<Item> allItem = itemRepository.findAll();
+//
+//        SaleItemDto saleItemDto1 = SaleItemDto.builder()
+//                .itemId(allItem.get(0).getId())
+//                .count(2)
+//                .build();
+//
+//        // 500 * 2
+//        SaleItemDto saleItemDto2 = SaleItemDto.builder()
+//                .itemId(allItem.get(1).getId())
+//                .count(2)
+//                .build();
+//
+//        SaleDto.Post saleDto = SaleDto.Post.builder()
+//                .familyId(1L)
+//                .payment(PaymentType.CARD)
+//                .saleItems(List.of(saleItemDto1, saleItemDto2))
+//                .type(SaleType.PAYED)
+//                .build();
+//
+//        saleService.createSale(saleDto);
+//
+//        // when
+//        ResultActions actions = mockMvc.perform(get("/sale/calculate"))
+//                .andDo(print())
+//                .andExpect(status().isOk());
+//
+//        MockHttpServletResponse response = actions.andReturn().getResponse();
+//        String contentAsString = response.getContentAsString();
+//        JacksonJsonParser parser = new JacksonJsonParser();
+//
+//        List<Object> objects = parser.parseList(contentAsString);
+//
+//        // then
+//        for (Object obj : objects)
+//        {
+//            System.out.println(obj.toString());
+//        }
+//    }
 }

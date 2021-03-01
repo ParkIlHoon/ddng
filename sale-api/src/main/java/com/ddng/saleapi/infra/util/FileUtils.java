@@ -12,7 +12,7 @@ import java.io.IOException;
 @Component
 public class FileUtils
 {
-    private static final String BASE_PATH = "/Users/1hoon/workspace/file_ddng";
+    private static final String BASE_PATH = "/home/hoon/ddng";
 
     public String saveBase64AsFile (String uploadPath, String base64String)
     {
