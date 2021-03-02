@@ -41,10 +41,10 @@
 <div th:fragment="leftMenu(isCollapsed)" class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar"
     th:classappend="${isCollapsed == true ? 'c-sidebar-minimized' : ''}">
     <div class="c-sidebar-brand d-lg-down-none">
-        <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo" color="#ffffff" fill="currentColor">
+        <svg class="c-sidebar-brand-full" width="118" height="40" alt="CoreUI Logo" color="#ffffff" fill="currentColor">
             <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-paw"></use>
         </svg>
-        <svg class="c-sidebar-brand-minimized" width="46" height="46" alt="CoreUI Logo" color="#ffffff" fill="currentColor">
+        <svg class="c-sidebar-brand-minimized" width="40" height="40" alt="CoreUI Logo" color="#ffffff" fill="currentColor">
             <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-paw"></use>
         </svg>
     </div>
@@ -204,7 +204,9 @@
         <li class="c-header-nav-item dropdown">
             <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <div class="c-avatar">
-                <img class="c-avatar-img" src="/assets/img/avatars/6.jpg">
+                <svg class="c-avatar-img" width="40" height="40" alt="" color="#3c4b64" fill="currentColor">
+                    <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-face"></use>
+                </svg>
             </div>
         </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
