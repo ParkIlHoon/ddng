@@ -83,3 +83,20 @@ $("#reset-button").on("click", function(e){
         refreshTotalPrice();
     });
 });
+
+/**
+ * 카트에 담은 상품을 제거한다.
+ * @param itemId 제거할 상품의 아이디
+ */
+function removeItemFromCartbutton_click (itemId)
+{
+    $.ajax({
+        url: "/sale/cart/" + itemId,
+        type: "DELETE",
+        contentType : "application/json; charset=utf-8",
+    }).always(function (jqXHR) {
+        $("#item-list").replaceWith(jqXHR.responseText);
+        // 총 금액 세팅
+        refreshTotalPrice();
+    });
+}

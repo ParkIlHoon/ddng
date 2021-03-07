@@ -225,4 +225,14 @@ public class Cart
 
         return stream.collect(Collectors.toList());
     }
+
+    /**
+     * 카트에서 특정 상품을 제거한다.
+     * @param itemId 제거할 상품의 아이디
+     */
+    public void removeCartItem (Long itemId)
+    {
+        List<CartItem> removedCartItems = this.items.stream().filter(si -> !si.getItemId().equals(itemId)).collect(Collectors.toList());
+        this.items = removedCartItems;
+    }
 }

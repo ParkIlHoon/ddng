@@ -36,6 +36,7 @@
                                                         <th>단가</th>
                                                         <th>개수</th>
                                                         <th>합계</th>
+                                                        <th></th>
                                                     </tr>
                                                     </thead>
                                                     <tbody id="item-list">
@@ -45,6 +46,9 @@
                                                         <td th:text="${#numbers.formatInteger(cartItem.getSalePrice(), 3, 'COMMA')}"></td>
                                                         <td th:text="${cartItem.getCount()}"></td>
                                                         <td th:text="${#numbers.formatInteger(cartItem.getCount() * cartItem.getSalePrice(), 3, 'COMMA')}"></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-pill btn-danger" type="button" th:onclick="removeItemFromCartbutton_click(${cartItem.getItemId()})">빼기</button>
+                                                        </td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -90,6 +94,22 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="card">
+                                        <div class="card-header">최근 결제 내역</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div id="history-grid"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
                                         <div class="card-header">호텔 및 유치원</div>
                                         <div class="card-body">
                                             <div class="row">
@@ -112,22 +132,6 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <div id="beauty-grid"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header">최근 결제 내역</div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <div id="history-grid"></div>
                                                     </div>
                                                 </div>
                                             </div>

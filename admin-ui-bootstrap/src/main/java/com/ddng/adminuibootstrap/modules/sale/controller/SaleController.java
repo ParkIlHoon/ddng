@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * <h1>판매 메뉴 컨트롤러</h1>
+ */
 @Controller
 @RequestMapping("/sale")
 @SessionAttributes({"cart"})
@@ -168,26 +171,39 @@ public class SaleController
     /**
      * 카트 초기화 요청
      * @param cart
-     * @param model
      * @return
      */
     @DeleteMapping("/cart")
-    public String resetCart (@ModelAttribute Cart cart,
-                             Model model)
+    public String resetCart (@ModelAttribute Cart cart)
     {
         cart.reset();
         return "sale/main :: #item-list";
     }
 
     /**
+     * 카트의 특정 상품 제거 요청
+     * @param cart 카트
+     * @param itemId 제거할 상품의 아이디
+     * @return
+     */
+    @DeleteMapping("/cart/{itemId}")
+    public String removeItemFromCart (@ModelAttribute Cart cart,
+                                      @PathVariable("itemId") Long itemId)
+    {
+        if (itemId != null)
+        {
+            cart.removeCartItem(itemId);
+        }
+        return "sale/main :: #item-list";
+    }
+
+    /**
      * 카트 총 금액 요청
      * @param cart
-     * @param model
      * @return
      */
     @GetMapping("/cart/totalPrice")
-    public String refreshTotalPrice (@ModelAttribute Cart cart,
-                                     Model model)
+    public String refreshTotalPrice (@ModelAttribute Cart cart)
     {
         return "sale/main :: #total-price";
     }
@@ -195,14 +211,12 @@ public class SaleController
     /**
      * 카트에 담긴 상품을 결제한다.
      * @param cart
-     * @param model
      * @return
      */
     @PostMapping
     public String saleCart (SaleType saleType,
                             PaymentType paymentType,
                             @ModelAttribute Cart cart,
-                            Model model,
                             RedirectAttributes attributes)
     {
         // 판매 처리
