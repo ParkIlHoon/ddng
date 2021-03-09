@@ -1,6 +1,7 @@
 let hotelGrid;
 let beautyGrid;
 let historyGrid;
+let barcode = "";
 
 /**
  * 카트 총 금액 새로고침 함수
@@ -78,7 +79,7 @@ $("#reset-button").on("click", function(e){
         type: "DELETE",
         contentType : "application/json; charset=utf-8",
     }).always(function (jqXHR) {
-        $("#item-list").replaceWith(jqXHR.responseText);
+        $("#item-list").replaceWith(jqXHR);
         // 총 금액 세팅
         refreshTotalPrice();
     });
@@ -95,8 +96,60 @@ function removeItemFromCartbutton_click (itemId)
         type: "DELETE",
         contentType : "application/json; charset=utf-8",
     }).always(function (jqXHR) {
-        $("#item-list").replaceWith(jqXHR.responseText);
+        $("#item-list").replaceWith(jqXHR);
         // 총 금액 세팅
         refreshTotalPrice();
     });
+}
+
+
+function window_keydown (e)
+{
+    var key = e.key;
+
+    if(0 <= key  && key <= 9)
+    {
+        barcode += key;
+    }
+    else
+    {
+        if(key == "Enter" && barcode != "")
+        {
+            $.ajax({
+                url: "/sale/items",
+                method: "GET",
+                data : {
+                    keyword : barcode, page : 0, size : 10
+                }
+            }).then(function (data) {
+
+                barcode = "";
+
+                var returnArr = [];
+                data.content.forEach(item => returnArr.push({
+                    "id" : item.id,
+                    "text" : item.name + "(" + item.typeName + " / " + item.price + " 원 / " + item.barcode + ")",
+                    "name" : item.name,
+                    "price" : item.price
+                }));
+
+                for (var idx = 0; idx < returnArr.length; idx++)
+                {
+                    var option = new Option(returnArr[idx].text, returnArr[idx].id, true, true);
+                    $("#item-select").append(option).trigger('change');
+                }
+
+                $("#item-select").trigger({
+                    type: 'select2:select',
+                    params: {
+                        data: returnArr[returnArr.length - 1]
+                    }
+                });
+            });
+        }
+        else
+        {
+            barcode = "";
+        }
+    }
 }

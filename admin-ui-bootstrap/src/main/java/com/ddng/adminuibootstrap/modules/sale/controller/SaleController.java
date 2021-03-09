@@ -224,6 +224,8 @@ public class SaleController
 
         if(status.is2xxSuccessful())
         {
+            String cartItemNames = cart.getItems().stream().map(i -> i.getItemName()).collect(Collectors.joining(", "));
+            int totalPrice = cart.getTotalPrice();
             // 카트 초기화
             cart.reset();
             // 쿠폰 적립 가능한 사용자 목록 조회
@@ -236,7 +238,7 @@ public class SaleController
                 attributes.addFlashAttribute("couponTypes", CouponType.values());
             }
             attributes.addFlashAttribute("alertType", "success");
-            attributes.addFlashAttribute("message", "결제가 정상적으로 완료되었습니다.");
+            attributes.addFlashAttribute("message", "결제가 정상적으로 완료되었습니다. (총 금액 : " + totalPrice + "원 / 결제수단 : " + paymentType.getName() + " / " + cartItemNames + ")");
         }
         else
         {
