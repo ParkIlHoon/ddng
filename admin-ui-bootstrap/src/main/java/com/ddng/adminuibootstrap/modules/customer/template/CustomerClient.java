@@ -1,8 +1,11 @@
 package com.ddng.adminuibootstrap.modules.customer.template;
 
+import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTypeDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -14,7 +17,13 @@ import java.util.List;
 @FeignClient(name = "ddng-customer-api")
 public interface CustomerClient
 {
-
+    /**
+     * 고객 종류를 조회하는 API를 호출한다.
+     * @return 고객 종류 리스트
+     */
     @GetMapping("/customers/types")
     List<CustomerTypeDto> getCustomerTypes();
+
+    @GetMapping("/families")
+    FeignPageImpl<FamilyDto> searchFamilies(@RequestParam("keyword") String keyword);
 }

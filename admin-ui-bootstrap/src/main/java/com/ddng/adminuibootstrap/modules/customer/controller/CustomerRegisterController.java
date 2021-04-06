@@ -59,7 +59,8 @@ public class CustomerRegisterController
     {
         if (StringUtils.hasText(keyword))
         {
-            List<FamilyDto> searchFamilies = customerTemplate.searchFamilies(keyword);
+            List<FamilyDto> searchFamilies = customerClient.searchFamilies(keyword).getContent();
+//            List<FamilyDto> searchFamilies = customerTemplate.searchFamilies(keyword);
             return ResponseEntity.ok(searchFamilies);
         }
         return ResponseEntity.noContent().build();

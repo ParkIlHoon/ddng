@@ -6,6 +6,7 @@ import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.CouponDto;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
+import com.ddng.adminuibootstrap.modules.customer.template.CustomerClient;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
