@@ -3,6 +3,7 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
+import com.ddng.adminuibootstrap.modules.customer.template.CustomerClient;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import java.util.List;
 public class CustomerRegisterController
 {
     private final CustomerTemplate customerTemplate;
+    private final CustomerClient customerClient;
 
     /**
      * 고객 등록 메뉴 폼 요청
@@ -39,7 +41,8 @@ public class CustomerRegisterController
     public String registerForm (Model model)
     {
         // 고객 종류 조회
-        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
+        List<CustomerTypeDto> customerTypes = customerClient.getCustomerTypes();
+//        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
 
         model.addAttribute("customerTypes", customerTypes);
         model.addAttribute("registerForm", new RegisterForm());

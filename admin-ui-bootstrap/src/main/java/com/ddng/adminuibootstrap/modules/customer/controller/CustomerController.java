@@ -4,6 +4,7 @@ import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
+import com.ddng.adminuibootstrap.modules.customer.template.CustomerClient;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class CustomerController
 {
     private final CustomerTemplate customerTemplate;
     private final SaleTemplate saleTemplate;
+    private final CustomerClient customerClient;
 
     /**
      * 고객 조회 메뉴 폼 요청
@@ -80,7 +82,8 @@ public class CustomerController
         }
 
         CustomerDto customer = customerTemplate.getCustomer(id);
-        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
+//        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
+        List<CustomerTypeDto> customerTypes = customerClient.getCustomerTypes();
         List<CustomerTagDto> customerTags = customerTemplate.getCustomerTags();
 
         // 결제 이력 조회
