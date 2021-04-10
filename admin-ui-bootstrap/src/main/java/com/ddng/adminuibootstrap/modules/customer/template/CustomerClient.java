@@ -1,11 +1,15 @@
 package com.ddng.adminuibootstrap.modules.customer.template;
 
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
+import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
+import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
+import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +28,107 @@ public interface CustomerClient
     @GetMapping("/customers/types")
     List<CustomerTypeDto> getCustomerTypes();
 
+    /**
+     * 가족 목록을 조회하는 API를 호출한다.
+     * @param keyword 조회할 키워드
+     * @return 가족 목록 리스트
+     */
     @GetMapping("/families")
     FeignPageImpl<FamilyDto> searchFamilies(@RequestParam("keyword") String keyword);
+
+    /**
+     * 가족 목록을 페이징 처리해 조회하는 API를 호출한다.
+     * @param keyword 조회할 키워드
+     * @param page 조회할 페이지
+     * @param size 조회할 건수
+     * @return 가족 목록 리스트
+     */
+    @GetMapping("/families")
+    FeignPageImpl<FamilyDto> searchFamiliesWithPage(@RequestParam("keyword") String keyword,
+                                                    @RequestParam("page") int page,
+                                                    @RequestParam("size") int size);
+
+    /**
+     * 가족을 조회하는 API를 호출한다.
+     * @param familyId 조회할 가족의 아이디
+     * @return 아이디에 해당하는 가족
+     */
+    @GetMapping("/families/{familyId}")
+    FamilyDto getFamily(@PathVariable("familyId") Long familyId);
+
+    /**
+     * 고객을 생성하는 API를 호출한다.
+     * @param registerForm 생성할 고객 정보
+     */
+    @PostMapping("/customers")
+    void createCustomer(RegisterForm registerForm);
+
+    /**
+     * 가족 설정을 수정하는 API를 호출한다.
+     * @param familyId 설정을 수정할 가족 아이디
+     * @param familySettingForm 수정할 설정 내용
+     */
+    @PutMapping("/families/{familyId}")
+    void updateFamilySetting(@PathVariable("familyId") Long familyId, FamilySettingForm familySettingForm);
+
+    /**
+     * 고객 목록을 페이징 처리해 조회하는 API를 호출한다.
+     * @param keyword 조회할 키워드
+     * @param page 조회할 페이지
+     * @param size 조회할 건수
+     * @return 고객 목록 리스트
+     */
+    @GetMapping("/customers")
+    FeignPageImpl<CustomerDto> searchCustomersWithPage(@RequestParam("keyword") String keyword,
+                                                       @RequestParam("page") int page,
+                                                       @RequestParam("size") int size);
+
+    /**
+     * 아이디 목록에 해당하는 고객 목록을 조회하는 API를 호출한다.
+     * @param customerIds 조회할 고객 아이디 리스
+     * @return 아이디에 해당하는 고객 목록
+     */
+    @GetMapping("/customers/in")
+    List<CustomerDto> getCustomers(@RequestParam("customerIds") List<Long> customerIds);
+
+    /**
+     * 고객을 조회하는 API를 호출한다.
+     * @param customerId 조회할 고객의 아이디
+     * @return 아이디에 해당하는 고객
+     */
+    @GetMapping("/customers/{customerId}")
+    CustomerDto getCustomer(@PathVariable("customerId") Long customerId);
+
+    /**
+     * 고객 정보를 수정하는 API를 호출한다.
+     * @param customerId 수정할 고객의 아이디
+     * @param editForm 수정할 정보
+     */
+    @PutMapping("/customers/{customerId}")
+    void updateCustomer(@PathVariable("customerId") Long customerId, EditForm editForm);
+
+    /**
+     * 전체 고객 태그 목록을 조회하는 API를 호출한다.
+     * @return 고객 태그 목록
+     */
+    @GetMapping("/tags")
+    List<CustomerTagDto> getCustomerTags();
+
+    /**
+     * 고객에 태그를 추가하는 API를 호출한다.
+     * @param customerId 태그를 추가할 고객의 아이디
+     * @param title 추가할 태그 타이틀
+     */
+    @PostMapping("/customers/{customerId}/tags")
+    void addCustomerTag(@PathVariable("customerId") Long customerId,
+                        @RequestParam("title") String title);
+
+    /**
+     * 고객에 태그를 제거하는 API를 호출한다.
+     * @param customerId 태그를 제거할 고객의 아이디
+     * @param title 제거할 태그 타이틀
+     */
+    @DeleteMapping("/customers/{customerId}/tags")
+    void removeCustomerTag(@PathVariable("customerId") Long customerId,
+                           @RequestParam("title") String title);
 }
