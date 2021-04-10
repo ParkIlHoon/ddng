@@ -1,10 +1,9 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
-import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
-import com.ddng.adminuibootstrap.modules.customer.template.CustomerClient;
+import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;

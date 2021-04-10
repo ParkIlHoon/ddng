@@ -3,7 +3,7 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
-import com.ddng.adminuibootstrap.modules.customer.template.CustomerClient;
+import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
