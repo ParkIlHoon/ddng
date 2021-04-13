@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -183,13 +184,13 @@ public class CustomerController
     /**
      * 특정 고객에 태그를 추가한다.
      * @param customerId 태그를 추가할 고객의 아이디
-     * @param dto 추가할 태그 정보
+     * @param title 추가할 태그 타이틀
      * @return
      */
-    @PostMapping("/{id}/tag")
+    @PostMapping("/{id}/tags")
     @ApiOperation(value = "고객 태그 추가", notes = "아이디에 해당하는 고객에 태그를 추가합니다.")
     public ResponseEntity postCustomerTag (@ApiParam(value = "고객의 아이디", required = true) @PathVariable("id") Long customerId,
-                                           @ApiParam(value = "추가할 태그 정보", required = true) @RequestBody TagDto dto)
+                                           @ApiParam(value = "추가할 태그 타이틀", required = true) @RequestBody String title)
     {
         Optional<Customer> optionalCustomer = customerService.findById(customerId);
         if(optionalCustomer.isEmpty())
@@ -197,11 +198,11 @@ public class CustomerController
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<Tag> optionalTag = tagRepository.findByTitle(dto.getTitle());
+        Optional<Tag> optionalTag = tagRepository.findByTitle(title);
         Tag tag;
         if(optionalTag.isEmpty())
         {
-            tag = tagRepository.save(Tag.builder().title(dto.getTitle()).build());
+            tag = tagRepository.save(Tag.builder().title(title).build());
         }
         else
         {
@@ -215,13 +216,13 @@ public class CustomerController
     /**
      * 특정 고객의 태그를 제거한다.
      * @param customerId 태그를 제거할 고객의 아이디
-     * @param dto 제거할 태그 정보
+     * @param title 제거할 태그 타이틀
      * @return
      */
-    @DeleteMapping("{id}/tag")
+    @DeleteMapping("/{id}/tags")
     @ApiOperation(value = "고객 태그 제거", notes = "아이디에 해당하는 고객의 특정 태그를 제거합니다.")
     public ResponseEntity deleteCustomerTag (@ApiParam(value = "고객의 아이디", required = true) @PathVariable("id") Long customerId,
-                                             @ApiParam(value = "제거할 태그 정보", required = true) @RequestBody TagDto dto)
+                                             @ApiParam(value = "제거할 태그 타이틀", required = true) @RequestBody String title)
 
     {
         Optional<Customer> optionalCustomer = customerService.findById(customerId);
@@ -230,7 +231,7 @@ public class CustomerController
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<Tag> optionalTag = tagRepository.findByTitle(dto.getTitle());
+        Optional<Tag> optionalTag = tagRepository.findByTitle(title);
         if(optionalTag.isEmpty())
         {
             return ResponseEntity.badRequest().build();

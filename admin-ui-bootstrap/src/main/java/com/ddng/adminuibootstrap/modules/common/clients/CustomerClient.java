@@ -63,8 +63,8 @@ public interface CustomerClient
      * 고객을 생성하는 API를 호출한다.
      * @param registerForm 생성할 고객 정보
      */
-    @PostMapping(CUSTOMER_API)
-    void createCustomer(RegisterForm registerForm);
+    @PostMapping(value = CUSTOMER_API)
+    void createCustomer(@RequestBody RegisterForm registerForm);
 
     /**
      * 가족 설정을 수정하는 API를 호출한다.
@@ -123,8 +123,7 @@ public interface CustomerClient
      * @param title 추가할 태그 타이틀
      */
     @PostMapping(CUSTOMER_API + "/{customerId}/tags")
-    void addCustomerTag(@PathVariable("customerId") Long customerId,
-                        @RequestParam("title") String title);
+    void addCustomerTag(@PathVariable("customerId") Long customerId, @RequestBody String title);
 
     /**
      * 고객에 태그를 제거하는 API를 호출한다.
@@ -132,6 +131,5 @@ public interface CustomerClient
      * @param title 제거할 태그 타이틀
      */
     @DeleteMapping(CUSTOMER_API + "/{customerId}/tags")
-    void removeCustomerTag(@PathVariable("customerId") Long customerId,
-                           @RequestParam("title") String title);
+    void removeCustomerTag(@PathVariable("customerId") Long customerId, @RequestBody String title);
 }

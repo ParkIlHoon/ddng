@@ -42,7 +42,6 @@ public class CustomerRegisterController
     {
         // 고객 종류 조회
         List<CustomerTypeDto> customerTypes = customerClient.getCustomerTypes();
-//        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
 
         model.addAttribute("customerTypes", customerTypes);
         model.addAttribute("registerForm", new RegisterForm());
@@ -60,7 +59,6 @@ public class CustomerRegisterController
         if (StringUtils.hasText(keyword))
         {
             List<FamilyDto> searchFamilies = customerClient.searchFamilies(keyword).getContent();
-//            List<FamilyDto> searchFamilies = customerTemplate.searchFamilies(keyword);
             return ResponseEntity.ok(searchFamilies);
         }
         return ResponseEntity.noContent().build();
@@ -92,7 +90,8 @@ public class CustomerRegisterController
             model.addAttribute("message", message);
             return "customer/register/main";
         }
-        customerTemplate.createCustomer(registerForm);
+//        customerTemplate.createCustomer(registerForm);
+        customerClient.createCustomer(registerForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");
         return "redirect:/customer-management/customer-register/register-form";

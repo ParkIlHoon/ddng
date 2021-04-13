@@ -39,11 +39,11 @@ public class FeignClientConfig
         };
     }
 
-    @Bean
-    public Encoder feignEncoder()
-    {
-        return new PageableQueryEncoder(new SpringEncoder(messageConverters));
-    }
+//    @Bean
+//    public Encoder feignEncoder()
+//    {
+//        return new PageableQueryEncoder(new SpringEncoder(messageConverters));
+//    }
 
     @Bean
     public Module customModule()

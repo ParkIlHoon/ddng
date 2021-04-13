@@ -1,6 +1,6 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
-import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
@@ -56,7 +56,7 @@ public class CustomerController
 
         if (StringUtils.hasText(keyword))
         {
-            RestPageImpl<CustomerDto> customersWithPage = customerTemplate.searchCustomersWithPage(keyword, page, size);
+            FeignPageImpl<CustomerDto> customersWithPage = customerClient.searchCustomersWithPage(keyword, page, size);
             totalElements = customersWithPage.getTotalElements();
             searchCustomers = customersWithPage.getContent();
         }
@@ -80,10 +80,9 @@ public class CustomerController
             return "customer/search/main :: #customer-card";
         }
 
-        CustomerDto customer = customerTemplate.getCustomer(id);
-//        List<CustomerTypeDto> customerTypes = customerTemplate.getCustomerTypes();
+        CustomerDto customer = customerClient.getCustomer(id);
         List<CustomerTypeDto> customerTypes = customerClient.getCustomerTypes();
-        List<CustomerTagDto> customerTags = customerTemplate.getCustomerTags();
+        List<CustomerTagDto> customerTags = customerClient.getCustomerTags();
 
         // 결제 이력 조회
         List<SaleItemDto> customerSaleItems = saleTemplate.getSaleHistoryByCustomerId(id);
@@ -99,16 +98,12 @@ public class CustomerController
      * 고객 태그 추가 요청
      * @param id 고객 아이디
      * @param dto 추가 태그 dto
-     * @param model
      * @return
-     * @throws JSONException
      */
     @PostMapping("/customers/{id}/tags/add")
-    public ResponseEntity customerTagAddAction (@PathVariable("id") Long id,
-                                                @RequestBody CustomerTagDto dto,
-                                                Model model) throws JSONException
+    public ResponseEntity customerTagAddAction (@PathVariable("id") Long id, @RequestBody CustomerTagDto dto)
     {
-        customerTemplate.addCustomerTag(id, dto);
+        customerClient.addCustomerTag(id, dto.getTitle());
         return ResponseEntity.ok().build();
     }
 
@@ -116,16 +111,12 @@ public class CustomerController
      * 고객 태그 제거 요청
      * @param id 고객 아이디
      * @param dto 제거 태그 dto
-     * @param model
      * @return
-     * @throws JSONException
      */
     @PostMapping("/customers/{id}/tags/remove")
-    public ResponseEntity customerTagRemoveAction (@PathVariable("id") Long id,
-                                                @RequestBody CustomerTagDto dto,
-                                                Model model) throws JSONException
+    public ResponseEntity customerTagRemoveAction (@PathVariable("id") Long id, @RequestBody CustomerTagDto dto)
     {
-        customerTemplate.removeCustomerTag(id, dto);
+        customerClient.removeCustomerTag(id, dto.getTitle());
         return ResponseEntity.ok().build();
     }
 
@@ -147,7 +138,7 @@ public class CustomerController
         {
             return "customer/search/main::#customer-card";
         }
-        customerTemplate.updateCustomer(id, editForm);
+        customerClient.updateCustomer(id, editForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", editForm.getName() + " 고객 정보가 정상적으로 변경되었습니다.");
         return "redirect:/customer-management/search-customer/search-form";

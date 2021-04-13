@@ -85,5 +85,6 @@ public class EditForm
         this.telNo = dto.getTelNo();
         this.joinDate = dto.getJoinDate();
         this.tags = dto.getTags();
+        this.bigo = dto.getBigo();
     }
 }
