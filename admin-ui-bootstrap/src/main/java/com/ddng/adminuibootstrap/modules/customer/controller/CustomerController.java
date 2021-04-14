@@ -4,10 +4,8 @@ import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
-import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
-import org.codehaus.jettison.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController
 {
-    private final CustomerTemplate customerTemplate;
     private final SaleTemplate saleTemplate;
     private final CustomerClient customerClient;
 

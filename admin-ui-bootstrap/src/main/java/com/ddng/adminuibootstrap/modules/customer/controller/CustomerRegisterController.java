@@ -4,7 +4,6 @@ import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
-import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerRegisterController
 {
-    private final CustomerTemplate customerTemplate;
     private final CustomerClient customerClient;
 
     /**
@@ -90,7 +88,6 @@ public class CustomerRegisterController
             model.addAttribute("message", message);
             return "customer/register/main";
         }
-//        customerTemplate.createCustomer(registerForm);
         customerClient.createCustomer(registerForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");

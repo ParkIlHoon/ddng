@@ -1,5 +1,7 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
+import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
+import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
@@ -28,8 +30,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FamilyController
 {
-    private final CustomerTemplate customerTemplate;
     private final SaleTemplate saleTemplate;
+    private final CustomerClient customerClient;
 
     /**
      * 가족 관리 메뉴 폼 요청
@@ -58,9 +60,9 @@ public class FamilyController
 
         if (StringUtils.hasText(keyword))
         {
-            RestPageImpl<FamilyDto> familyRestPage = customerTemplate.searchFamiliesWithPage(keyword, page, size);
-            totalElements = familyRestPage.getTotalElements();
-            searchFamilies = familyRestPage.getContent();
+            FeignPageImpl<FamilyDto> familiesWithPage = customerClient.searchFamiliesWithPage(keyword, page, size);
+            totalElements = familiesWithPage.getTotalElements();
+            searchFamilies = familiesWithPage.getContent();
         }
 
         model.addAttribute("families", searchFamilies);
@@ -81,7 +83,7 @@ public class FamilyController
             return "customer/family/main :: #family-section";
         }
 
-        FamilyDto family = customerTemplate.getFamily(id);
+        FamilyDto family = customerClient.getFamily(id);
 
         if (family != null)
         {
@@ -117,9 +119,9 @@ public class FamilyController
             return "customer/family/main";
         }
 
-        customerTemplate.updateFamilySetting(familySettingForm);
+        customerClient.updateFamilySetting(id, familySettingForm);
 
-        FamilyDto family = customerTemplate.getFamily(id);
+        FamilyDto family = customerClient.getFamily(id);
 
         if (family != null)
         {
