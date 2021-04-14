@@ -1,7 +1,11 @@
 package com.ddng.adminuibootstrap.modules.sale.controller;
 
-import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
+import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
+import com.ddng.adminuibootstrap.modules.common.clients.ScheduleClient;
+import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.NewCouponDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
@@ -43,10 +47,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SaleController
 {
-    private final ScheduleTemplate scheduleTemplate;
-    private final ItemTemplate itemTemplate;
-    private final SaleTemplate saleTemplate;
-    private final CustomerTemplate customerTemplate;
+    private final ScheduleClient scheduleClient;
+    private final SaleClient saleClient;
+    private final CustomerClient customerClient;
 
     @ModelAttribute("cart")
     public Cart cart ()
@@ -64,11 +67,11 @@ public class SaleController
     public String main (Model model, @ModelAttribute Cart cart) throws JSONException
     {
         // 호텔, 유치원 상품 조회
-        List<ItemDto> hotelItems = itemTemplate.getHotelItems();
-        List<ItemDto> kindergartenItems = itemTemplate.getKindergartenItems();
+        List<ItemDto> hotelItems = saleClient.getHotelItems();
+        List<ItemDto> kindergartenItems = saleClient.getKindergartenItems();
 
         // 오늘 결제 대상 조회
-        List<ScheduleDto> schedules = scheduleTemplate.getNotPayedSchedules();
+        List<ScheduleDto> schedules = scheduleClient.getCertainDaySchedule(LocalDate.now().toString(), false);
 
         if(schedules.size() > 0)
         {
@@ -76,7 +79,7 @@ public class SaleController
             List<Long> customerIds = new ArrayList<>();
             schedules.forEach(c -> customerIds.add(c.getCustomerId()));
             List<Long> uniqueIds = new ArrayList<Long>(new HashSet<>(customerIds));
-            List<CustomerDto> customers = customerTemplate.getCustomers(uniqueIds);
+            List<CustomerDto> customers = customerClient.getCustomers(uniqueIds);
             List<ScheduleToSaleForm> collect = schedules.stream().map(s -> {
                 Optional<CustomerDto> first = customers.stream().filter(c -> c.getId().equals(s.getCustomerId())).findFirst();
                 return new ScheduleToSaleForm(s, first.get());
@@ -85,7 +88,8 @@ public class SaleController
         }
 
         // 이전 결제 목록 조회
-        List<SaleDto> saleHistories = saleTemplate.searchSales(LocalDate.now().atStartOfDay(), LocalDateTime.now(), SaleType.PAYED);
+        FeignPageImpl<SaleDto> saleDtoFeignPage = saleClient.searchSale(LocalDate.now().atStartOfDay().toString(), LocalDateTime.now().toString(), SaleType.PAYED, 0, 50);
+        List<SaleDto> saleHistories = saleDtoFeignPage.getContent();
 
         model.addAttribute("hotelItems", hotelItems);
         model.addAttribute("kindergartenItems", kindergartenItems);
@@ -117,14 +121,14 @@ public class SaleController
         ScheduleDto schedule = null;
         if (dto.getScheduleId() != null)
         {
-            schedule = scheduleTemplate.getSchedule(dto.getScheduleId());
+            schedule = scheduleClient.getSchedule(dto.getScheduleId());
         }
 
         // 선택한 상품목록 조회
         List<ItemDto> items = new ArrayList<>();
         for (Long itemId : dto.getItemIds())
         {
-            ItemDto item = itemTemplate.getItem(itemId);
+            ItemDto item = saleClient.getItem(itemId);
             if (item != null)
             {
                 items.add(item);
@@ -135,7 +139,7 @@ public class SaleController
         CouponDto coupon = null;
         if (dto.getCouponId() != null)
         {
-            coupon = saleTemplate.getCoupon(dto.getCouponId());
+            coupon = saleClient.getCoupon(dto.getCouponId());
         }
 
         // 카트 추가
@@ -220,7 +224,8 @@ public class SaleController
                             RedirectAttributes attributes)
     {
         // 판매 처리
-        HttpStatus status = saleTemplate.saleCart(cart, saleType, paymentType);
+        ResponseEntity responseEntity = saleClient.saleCart(new NewSaleDto(cart, saleType, paymentType));
+        HttpStatus status = responseEntity.getStatusCode();
 
         if(status.is2xxSuccessful())
         {
@@ -229,10 +234,10 @@ public class SaleController
             // 카트 초기화
             cart.reset();
             // 쿠폰 적립 가능한 사용자 목록 조회
-            List<Long> customerIds = saleTemplate.getCouponIssuableCustomers();
+            List<Long> customerIds = saleClient.getCouponIssuableCustomers();
             if (customerIds.size() > 0)
             {
-                List<CustomerDto> customers = customerTemplate.getCustomers(customerIds);
+                List<CustomerDto> customers = customerClient.getCustomers(customerIds);
                 List<NewCouponForm> collect = customers.stream().map(NewCouponForm::new).collect(Collectors.toList());
                 attributes.addFlashAttribute("couponIssuableCustomers", new NewCouponFormWrapper(collect));
                 attributes.addFlashAttribute("couponTypes", CouponType.values());
@@ -261,8 +266,8 @@ public class SaleController
     {
         if (StringUtils.hasText(keyword))
         {
-            RestPageImpl<ItemDto> restPage = itemTemplate.searchItemsWithPage(keyword, page, size);
-            return ResponseEntity.ok(restPage);
+            FeignPageImpl<ItemDto> itemsWithPage = saleClient.searchItemsWithPage(keyword, page, size);
+            return ResponseEntity.ok(itemsWithPage);
         }
 
         return ResponseEntity.badRequest().build();
@@ -281,7 +286,7 @@ public class SaleController
             return ResponseEntity.badRequest().build();
         }
 
-        CustomerDto customer = customerTemplate.getCustomer(id);
+        CustomerDto customer = customerClient.getCustomer(id);
         return ResponseEntity.ok(customer);
     }
 
@@ -298,7 +303,7 @@ public class SaleController
             return ResponseEntity.badRequest().build();
         }
 
-        ScheduleDto schedule = scheduleTemplate.getSchedule(id);
+        ScheduleDto schedule = scheduleClient.getSchedule(id);
         return ResponseEntity.ok(schedule);
     }
 
@@ -317,8 +322,8 @@ public class SaleController
             return ResponseEntity.badRequest().build();
         }
 
-        RestPageImpl<ItemDto> beautyItems = saleTemplate.getBeautyItems(keyword, page, size);
-        return ResponseEntity.ok(beautyItems);
+        FeignPageImpl<ItemDto> beautyItemsWithPage = saleClient.getBeautyItemsWithPage(keyword, page, size);
+        return ResponseEntity.ok(beautyItemsWithPage);
     }
 
     /**
@@ -346,7 +351,11 @@ public class SaleController
             return "redirect:/sale";
         }
 
-        HttpStatus status = saleTemplate.issueNewCoupons(newCouponForms);
+        HttpStatus status = HttpStatus.OK;
+        for (NewCouponForm form : newCouponForms)
+        {
+            status = saleClient.issueNewCoupons(new NewCouponDto(form)).getStatusCode();
+        }
 
         if(status.is2xxSuccessful())
         {
@@ -371,7 +380,7 @@ public class SaleController
             return ResponseEntity.badRequest().build();
         }
 
-        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleTemplate.getSaleHistoryById(id);
+        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleClient.getSale(id);
 
         if (dto == null)
         {
@@ -397,7 +406,7 @@ public class SaleController
             return "redirect:/sale";
         }
 
-        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleTemplate.getSaleHistoryById(id);
+        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleClient.getSale(id);
         if(dto == null)
         {
             attributes.addFlashAttribute("alertType", "danger");
@@ -405,8 +414,8 @@ public class SaleController
             return "redirect:/sale";
         }
 
-        HttpStatus status = saleTemplate.refundSale(id);
-        if(status.is2xxSuccessful())
+        ResponseEntity<String> responseEntity = saleClient.refundSale(id);
+        if(responseEntity.getStatusCode().is2xxSuccessful())
         {
             attributes.addFlashAttribute("alertType", "success");
             attributes.addFlashAttribute("message", "정상적으로 환불되었습니다.");

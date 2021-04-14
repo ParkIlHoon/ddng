@@ -46,7 +46,7 @@ public interface ScheduleClient
      */
     @GetMapping(SCHEDULE_API + "/day")
     List<ScheduleDto> getCertainDaySchedule(@RequestParam("baseDate") String baseDate,
-                                            boolean payed);
+                                            @RequestParam("payed") boolean payed);
 
     /**
      * 특정 일자의 스케쥴 목록을 조회하는 API를 호출한다.

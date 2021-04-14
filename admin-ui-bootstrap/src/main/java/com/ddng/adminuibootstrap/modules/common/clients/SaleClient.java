@@ -8,6 +8,7 @@ import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
 import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -129,7 +130,7 @@ public interface SaleClient
      * @return 상태코드
      */
     @PostMapping(COUPON_API)
-    String issueNewCoupons(NewCouponDto newCouponDto);
+    ResponseEntity<String> issueNewCoupons(NewCouponDto newCouponDto);
 
     /**
      * 새로운 판매를 생성하는 API를 호출한다.
@@ -137,7 +138,7 @@ public interface SaleClient
      * @return 상태 코드
      */
     @PostMapping(SALE_API)
-    String saleCart(NewSaleDto newSaleDto);
+    ResponseEntity<String> saleCart(NewSaleDto newSaleDto);
 
     /**
      * 가족의 구매 이력을 조회하는 API를 호출한다.
@@ -193,5 +194,5 @@ public interface SaleClient
      * @return 상태코드
      */
     @DeleteMapping(SALE_API + "/{saleId}")
-    String refundSale(@PathVariable("saleId") Long saleId);
+    ResponseEntity<String> refundSale(@PathVariable("saleId") Long saleId);
 }
