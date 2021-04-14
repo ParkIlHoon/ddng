@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.item.controller;
 
+import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BarcodeController
 {
-    private final ItemTemplate itemTemplate;
+    private final SaleClient saleClient;
 
     /**
      * 바코드 생성 메뉴 폼 요청
@@ -27,7 +28,7 @@ public class BarcodeController
     @GetMapping("/barcode-generator/barcode-form")
     public String barcodeForm (Model model)
     {
-        List<String> barcodes = itemTemplate.getBarcodes(12);
+        List<String> barcodes = saleClient.getBarcodes(12);
         model.addAttribute("barcodes", barcodes);
         return "item/barcode/main";
     }

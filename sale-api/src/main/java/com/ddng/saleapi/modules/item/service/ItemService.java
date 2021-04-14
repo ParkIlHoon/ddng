@@ -119,7 +119,7 @@ public class ItemService
         List<String> returnList = new ArrayList<>();
 
         Item item = itemRepository.findTopByBarcodeStartsWithOrderByBarcodeDesc("0000");
-        Long aLong = Long.valueOf(item.getBarcode());
+        Long aLong = Long.valueOf((item != null)? item.getBarcode() : "0");
 
         for (int idx = 0; idx < count; idx++)
         {
