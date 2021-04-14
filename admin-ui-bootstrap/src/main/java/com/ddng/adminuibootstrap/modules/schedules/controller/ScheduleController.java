@@ -1,13 +1,13 @@
 package com.ddng.adminuibootstrap.modules.schedules.controller;
 
-import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
+import com.ddng.adminuibootstrap.modules.common.clients.ScheduleClient;
+import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
-import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
 import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
 import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTypeDto;
 import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
-import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,8 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleController
 {
-    private final ScheduleTemplate scheduleTemplate;
-    private final CustomerTemplate customerTemplate;
+    private final ScheduleClient scheduleClient;
+    private final CustomerClient customerClient;
 
     /**
      * 스케쥴 관리 메뉴 폼 요청
@@ -38,8 +38,8 @@ public class ScheduleController
     @GetMapping("/main")
     public String mainForm (Model model)
     {
-        List<ScheduleTypeDto> scheduleTypes = scheduleTemplate.getScheduleTypes();
-        List<ScheduleTagDto> scheduleTags = scheduleTemplate.getScheduleTags();
+        List<ScheduleTypeDto> scheduleTypes = scheduleClient.getScheduleTypes();
+        List<ScheduleTagDto> scheduleTags = scheduleClient.getScheduleTags();
 
         model.addAttribute("scheduleTypes", scheduleTypes);
         model.addAttribute("scheduleTags", scheduleTags);
@@ -61,7 +61,7 @@ public class ScheduleController
             return ResponseEntity.badRequest().build();
         }
 
-        List<ScheduleDto> schedules = scheduleTemplate.getSchedule(startDate, endDate);
+        List<ScheduleDto> schedules = scheduleClient.getSchedules(startDate, endDate);
         return ResponseEntity.ok(schedules);
     }
 
@@ -75,7 +75,7 @@ public class ScheduleController
     {
         if (StringUtils.hasText(keyword))
         {
-            RestPageImpl<CustomerDto> customersWithPage = customerTemplate.searchCustomersWithPage(keyword, page, size);
+            FeignPageImpl<CustomerDto> customersWithPage = customerClient.searchCustomersWithPage(keyword, page, size);
             return ResponseEntity.ok(customersWithPage);
         }
         return ResponseEntity.noContent().build();
@@ -94,7 +94,7 @@ public class ScheduleController
             return ResponseEntity.badRequest().build();
         }
 
-        CustomerDto customer = customerTemplate.getCustomer(id);
+        CustomerDto customer = customerClient.getCustomer(id);
         return ResponseEntity.ok(customer);
     }
 
@@ -113,7 +113,7 @@ public class ScheduleController
             return ResponseEntity.badRequest().build();
         }
 
-        scheduleTemplate.createSchedule(scheduleForm);
+        scheduleClient.createSchedule(scheduleForm);
         return ResponseEntity.ok().build();
     }
 
@@ -134,7 +134,7 @@ public class ScheduleController
             return ResponseEntity.badRequest().build();
         }
 
-        scheduleTemplate.updateSchedule(id, scheduleForm);
+        scheduleClient.updateSchedule(id, scheduleForm);
         return ResponseEntity.ok().build();
     }
 
@@ -146,7 +146,7 @@ public class ScheduleController
     @PostMapping("/remove/{id}")
     public ResponseEntity removeScheduleAction (@PathVariable("id") Long id)
     {
-        scheduleTemplate.deleteSchedule(id);
+        scheduleClient.deleteSchedule(id);
         return ResponseEntity.ok().build();
     }
 
