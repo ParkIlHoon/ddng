@@ -49,6 +49,14 @@ public interface ScheduleClient
                                             boolean payed);
 
     /**
+     * 특정 일자의 스케쥴 목록을 조회하는 API를 호출한다.
+     * @param baseDate 조회 일자
+     * @return 조회 일자에 해당하는 스케쥴 목록
+     */
+    @GetMapping(SCHEDULE_API + "/day")
+    List<ScheduleDto> getCertainDaySchedule(@RequestParam("baseDate") String baseDate);
+
+    /**
      * 전체 스케쥴 타입 목록을 조회하는 API를 호출한다.
      * @return 전체 스케쥴 타입 목록
      */
