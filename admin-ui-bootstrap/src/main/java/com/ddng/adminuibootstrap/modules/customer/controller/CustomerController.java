@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
+import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
@@ -26,8 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController
 {
-    private final SaleTemplate saleTemplate;
     private final CustomerClient customerClient;
+    private final SaleClient saleClient;
 
     /**
      * 고객 조회 메뉴 폼 요청
@@ -82,7 +83,7 @@ public class CustomerController
         List<CustomerTagDto> customerTags = customerClient.getCustomerTags();
 
         // 결제 이력 조회
-        List<SaleItemDto> customerSaleItems = saleTemplate.getSaleHistoryByCustomerId(id);
+        List<SaleItemDto> customerSaleItems = saleClient.getSaleHistoryByCustomerId(id);
 
         model.addAttribute("customerForm", new EditForm(customer));
         model.addAttribute("customerTypes", customerTypes);

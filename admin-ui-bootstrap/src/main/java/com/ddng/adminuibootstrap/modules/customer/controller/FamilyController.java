@@ -1,6 +1,7 @@
 package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
+import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
@@ -30,8 +31,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FamilyController
 {
-    private final SaleTemplate saleTemplate;
     private final CustomerClient customerClient;
+    private final SaleClient saleClient;
 
     /**
      * 가족 관리 메뉴 폼 요청
@@ -90,11 +91,11 @@ public class FamilyController
             List<Long> customerIds = family.getCustomers().stream().map(c -> c.getId()).collect(Collectors.toList());
 
             // 가족 구성원들의 쿠폰 목록 조회
-            List<CouponDto> coupons = saleTemplate.getCoupons(customerIds).getContent();
+            List<CouponDto> coupons = saleClient.getCoupons(customerIds).getContent();
             model.addAttribute("familyCoupons", coupons);
 
             // 결제 이력 조회
-            List<SaleDto> saleHistory = saleTemplate.getSaleHistoryByFamilyId(family.getId());
+            List<SaleDto> saleHistory = saleClient.getSaleHistoryByFamilyId(family.getId());
             model.addAttribute("familySaleHistory", saleHistory);
         }
 
@@ -127,7 +128,7 @@ public class FamilyController
         {
             List<CustomerDto> customers = family.getCustomers();
             List<Long> collect = customers.stream().map(c -> c.getId()).collect(Collectors.toList());
-            List<CouponDto> coupons = saleTemplate.getCoupons(collect).getContent();
+            List<CouponDto> coupons = saleClient.getCoupons(collect).getContent();
             model.addAttribute("familyCoupons", coupons);
         }
 
