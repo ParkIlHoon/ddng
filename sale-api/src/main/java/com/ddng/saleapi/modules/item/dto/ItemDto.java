@@ -22,6 +22,7 @@ public class ItemDto
         private ItemType type;
         private String barcode;
         private int price;
+        private String unit;
         private int itemQuantity;
         private boolean stamp;
         private String itemImg;
@@ -35,6 +36,7 @@ public class ItemDto
             this.type = item.getType();
             this.barcode = item.getBarcode();
             this.price = item.getPrice();
+            this.unit = item.getUnit();
             this.itemQuantity = item.getItemQuantity();
             this.stamp = item.isStamp();
             this.itemImg = item.getItemImg();
@@ -57,6 +59,7 @@ public class ItemDto
         private ItemType type;
         private String barcode;
         private int price;
+        private String unit;
         private int itemQuantity;
         private boolean stamp;
         private String itemImg;
@@ -76,6 +79,7 @@ public class ItemDto
         private ItemType type;
         private String barcode;
         private int price;
+        private String unit;
         private int itemQuantity;
         private boolean stamp;
         private String itemImg;

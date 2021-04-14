@@ -1,12 +1,11 @@
 package com.ddng.adminuibootstrap.modules.item.controller;
 
-import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
+import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
+import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
-import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
-import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController
 {
-    private final ItemTemplate itemTemplate;
-    private final SaleTemplate saleTemplate;
+    private final SaleClient saleClient;
 
     /**
      * 상품 조회 메뉴 폼 요청
@@ -57,9 +55,9 @@ public class ItemController
 
         if (StringUtils.hasText(keyword))
         {
-            RestPageImpl<ItemDto> restPage = itemTemplate.searchItemsWithPage(keyword, page, size);
-            items = restPage.getContent();
-            totalElements = restPage.getTotalElements();
+            FeignPageImpl<ItemDto> itemsWithPage = saleClient.searchItemsWithPage(keyword, page, size);
+            items = itemsWithPage.getContent();
+            totalElements = itemsWithPage.getTotalElements();
         }
 
         model.addAttribute("items", items);
@@ -81,14 +79,14 @@ public class ItemController
             return "item/search/main :: #item-card";
         }
 
-        ItemDto item = itemTemplate.getItem(id);
-        List<ItemTypeDto> types = itemTemplate.getTypes();
+        ItemDto item = saleClient.getItem(id);
+        List<ItemTypeDto> types = saleClient.getItemTypes();
 
         if (item != null)
         {
             //TODO 최다 구매 가족
             //TODO 결제 이력
-            List<SaleItemDto> saleHistoryByItemId = saleTemplate.getSaleHistoryByItemId(item.getId());
+            List<SaleItemDto> saleHistoryByItemId = saleClient.getSaleHistoryByItemId(item.getId());
             model.addAttribute("saleHistory", saleHistoryByItemId);
         }
 
@@ -116,11 +114,9 @@ public class ItemController
             return "item/search/main::#item-card";
         }
 
-        itemTemplate.updateItem(id, editForm);
+        saleClient.updateItem(id, editForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", editForm.getName() + " 상품 정보가 정상적으로 변경되었습니다.");
         return "redirect:/item-management/search-item/search-form";
     }
-
-
 }

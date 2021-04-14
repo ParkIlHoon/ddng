@@ -1,8 +1,8 @@
 package com.ddng.adminuibootstrap.modules.item.controller;
 
+import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.ItemTypeDto;
 import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
-import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemRegisterController
 {
-    private final ItemTemplate itemTemplate;
+    private final SaleClient saleClient;
 
     /**
      * 상품 등록 메뉴 폼 요청
@@ -35,7 +35,7 @@ public class ItemRegisterController
     @GetMapping("/register-form")
     public String registerForm (Model model)
     {
-        List<ItemTypeDto> types = itemTemplate.getTypes();
+        List<ItemTypeDto> types = saleClient.getItemTypes();
         model.addAttribute("types", types);
         model.addAttribute("registerForm", new RegisterForm());
         return "item/register/main";
@@ -68,7 +68,7 @@ public class ItemRegisterController
             return "customer/register/main";
         }
 
-        itemTemplate.createItem(registerForm);
+        saleClient.createItem(registerForm);
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 상품이 정상적으로 생성되었습니다.");
         return "redirect:/item-management/item-register/register-form";

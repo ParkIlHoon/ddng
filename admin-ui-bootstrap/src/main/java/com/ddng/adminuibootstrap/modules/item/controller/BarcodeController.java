@@ -1,7 +1,6 @@
 package com.ddng.adminuibootstrap.modules.item.controller;
 
 import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
-import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
