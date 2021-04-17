@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div class="modal fade" th:fragment="view-canvas-modal" id="view-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">캔버스</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal needs-validation" id="modal-canvas-form">
+                    <div class="form-group row" style="max-height: 700px;">
+                        <img class="col-md-12" src="https://images.mypetlife.co.kr/content/uploads/2019/09/09153001/dog-panting-1024x683.jpg">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="favorite-input">
+                            <strong>상단 고정 여부</strong>
+                        </label>
+                        <div class="col-md-10">
+                            <label class="c-switch c-switch-pill c-switch-primary col-form-label">
+                                <input id="favorite-input" class="c-switch-input form-control" type="checkbox"><span class="c-switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="title-input">
+                            <strong>제목</strong>
+                        </label>
+                        <div class="col-md-10">
+                            <input class="form-control" id="title-input" type="text" name="title" placeholder="제목을 입력하세요"
+                                   required lang="ko" minlength="1" maxlength="200">
+                            <div class="invalid-feedback">제목을 입력하세요 (1~200자)</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="tags-input">
+                            <strong>태그</strong>
+                        </label>
+                        <div class="col-md-10">
+                            <div id="whitelist" hidden></div>
+                            <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
+                <button class="btn btn-primary" type="button">저장</button>
+                <button class="btn btn-danger" type="button">삭제</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

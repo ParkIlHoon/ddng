@@ -45,7 +45,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
+                                        <tr onclick="canvas_row_click();">
                                             <td>1</td>
                                             <td>치우</td>
                                             <td>
@@ -68,6 +68,7 @@
 </div>
 
 <div th:replace="canvas/new-canvas-modal.html::new-canvas-modal"></div>
+<div th:replace="canvas/view-canvas-modal.html::view-canvas-modal"></div>
 <script th:replace="fragments.html::script"></script>
 <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -86,6 +87,13 @@
             });
         });
     });
+
+
+    function canvas_row_click() {
+        $("#view-canvas-modal").modal({
+            show: true
+        });
+    }
 </script>
 </body>
 </html>
