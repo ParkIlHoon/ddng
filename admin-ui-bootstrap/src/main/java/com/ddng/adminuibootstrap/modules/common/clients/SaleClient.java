@@ -1,9 +1,9 @@
 package com.ddng.adminuibootstrap.modules.common.clients;
 
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.NewCouponDto;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.NewCouponDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.item.form.EditForm;
 import com.ddng.adminuibootstrap.modules.item.form.RegisterForm;
@@ -186,7 +186,7 @@ public interface SaleClient
      * @return 판매 내역
      */
     @GetMapping(SALE_API + "/{saleId}")
-    com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto getSale(@PathVariable("saleId") Long saleId);
+    SaleDto getSale(@PathVariable("saleId") Long saleId);
 
     /**
      * 판매 내역을 환불하는 API를 호출한다.

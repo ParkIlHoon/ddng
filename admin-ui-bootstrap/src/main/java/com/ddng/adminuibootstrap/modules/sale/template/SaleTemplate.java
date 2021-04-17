@@ -2,11 +2,9 @@ package com.ddng.adminuibootstrap.modules.sale.template;
 
 import com.ddng.adminuibootstrap.modules.common.dto.RestPageImpl;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.NewCouponDto;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.NewCouponDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
 import com.ddng.adminuibootstrap.modules.common.template.AbstractTemplate;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import org.codehaus.jettison.json.JSONException;
@@ -115,7 +113,7 @@ public class SaleTemplate extends AbstractTemplate
      * @param familyId 가족 아이디
      * @return
      */
-    public List<com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto> getSaleHistoryByFamilyId(Long familyId)
+    public List<SaleDto> getSaleHistoryByFamilyId(Long familyId)
     {
         String apiPath = SALE_API_PATH + "/history/family/" + familyId;
         URI targetUrl= getSaleApiUriBuilder()
@@ -124,8 +122,8 @@ public class SaleTemplate extends AbstractTemplate
                 .encode()
                 .toUri();
 
-        ParameterizedTypeReference<List<com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
-        ResponseEntity<List<com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
+        ParameterizedTypeReference<List<SaleDto>> typeReference = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<SaleDto>> exchange = restTemplate.exchange(targetUrl, HttpMethod.GET, null, typeReference);
         return exchange.getBody();
     }
 

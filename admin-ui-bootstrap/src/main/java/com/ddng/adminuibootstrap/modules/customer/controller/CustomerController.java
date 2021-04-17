@@ -3,6 +3,7 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleItemDto;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
 import lombok.RequiredArgsConstructor;

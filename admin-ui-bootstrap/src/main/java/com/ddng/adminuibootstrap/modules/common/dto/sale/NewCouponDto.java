@@ -1,4 +1,4 @@
-package com.ddng.adminuibootstrap.modules.common.dto.customer;
+package com.ddng.adminuibootstrap.modules.common.dto.sale;
 
 import com.ddng.adminuibootstrap.modules.common.dto.sale.CouponType;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;

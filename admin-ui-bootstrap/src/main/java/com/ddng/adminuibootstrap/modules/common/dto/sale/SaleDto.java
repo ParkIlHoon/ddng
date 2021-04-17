@@ -19,4 +19,14 @@ public class SaleDto
     private PaymentType paymentType;
     private String paymentTypeName;
     private List<SaleItemDto> saleItemList = new ArrayList<>();
+
+    public int getTotal()
+    {
+        int result = 0;
+        for(SaleItemDto item : this.saleItemList)
+        {
+            result += item.getTotalPrice();
+        }
+        return result;
+    }
 }

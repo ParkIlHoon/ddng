@@ -5,19 +5,14 @@ import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.common.clients.ScheduleClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerDto;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.NewCouponDto;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.SaleDto;
+import com.ddng.adminuibootstrap.modules.common.dto.sale.NewCouponDto;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.*;
-import com.ddng.adminuibootstrap.modules.customer.template.CustomerTemplate;
-import com.ddng.adminuibootstrap.modules.item.template.ItemTemplate;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponForm;
 import com.ddng.adminuibootstrap.modules.sale.form.NewCouponFormWrapper;
 import com.ddng.adminuibootstrap.modules.sale.form.ScheduleToSaleForm;
 import com.ddng.adminuibootstrap.modules.sale.form.AddCartForm;
-import com.ddng.adminuibootstrap.modules.sale.template.SaleTemplate;
 import com.ddng.adminuibootstrap.modules.sale.vo.Cart;
 import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleDto;
-import com.ddng.adminuibootstrap.modules.schedules.template.ScheduleTemplate;
 import lombok.RequiredArgsConstructor;
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.http.HttpStatus;
@@ -380,7 +375,7 @@ public class SaleController
             return ResponseEntity.badRequest().build();
         }
 
-        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleClient.getSale(id);
+        SaleDto dto = saleClient.getSale(id);
 
         if (dto == null)
         {
@@ -406,7 +401,7 @@ public class SaleController
             return "redirect:/sale";
         }
 
-        com.ddng.adminuibootstrap.modules.common.dto.sale.SaleDto dto = saleClient.getSale(id);
+        SaleDto dto = saleClient.getSale(id);
         if(dto == null)
         {
             attributes.addFlashAttribute("alertType", "danger");
