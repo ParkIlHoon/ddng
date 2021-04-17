@@ -1,4 +1,4 @@
-package com.ddng.utils;
+package com.ddng.utilsapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
