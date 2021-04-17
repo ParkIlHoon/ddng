@@ -13,10 +13,19 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card">
-                                <div class="card-header">캔버스 등록</div>
+                                <div class="card-header">캔버스 관리
+                                    <button class="col-xs-1 btn btn-primary btn-sm float-right" type="button" id="new-canvas-button">신규등록</button>
+                                </div>
                                 <div class="card-body">
-                                    <form class="form-horizontal" id="new-canvas-form">
-                                    </form>
+                                    <div class="form-group">
+                                        <label class="col-md-3 col-form-label" for="tags">조회할 태그를 선택해주세요</label>
+                                        <div class="col-md-12">
+                                            <select class="form-control js-example-basic-multiple select2" name="tags" multiple="multiple" id="tags">
+                                                <option value="AL">Alabama</option>
+                                                <option value="WY">Wyoming</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -26,6 +35,27 @@
                             <div class="card">
                                 <div class="card-header">캔버스 목록</div>
                                 <div class="card-body">
+                                    <table class="table table-responsive-sm table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>번호</th>
+                                            <th>제목</th>
+                                            <th>태그</th>
+                                            <th>등록일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>치우</td>
+                                            <td>
+                                                <span class="badge badge-secondary">귀여움</span>
+                                                <span class="badge badge-secondary">보고싶어</span>
+                                            </td>
+                                            <td>2021-04-05</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -36,6 +66,26 @@
         <footer th:replace="fragments.html::footer"></footer>
     </div>
 </div>
+
+<div th:replace="canvas/new-canvas-modal.html::new-canvas-modal"></div>
 <script th:replace="fragments.html::script"></script>
+<link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/node_modules/select2/dist/js/select2.full.js"></script>
+<script type="application/javascript">
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2({
+            language: "ko",
+            width : "100%"
+        });
+
+        $("#new-canvas-button").on("click", function(){
+            $("#new-canvas-modal").modal({
+                show: true
+            });
+        });
+    });
+</script>
 </body>
 </html>
