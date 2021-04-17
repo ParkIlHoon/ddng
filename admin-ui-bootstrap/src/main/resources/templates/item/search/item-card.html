@@ -29,13 +29,13 @@
                 </div>
                 <div class="col-md-8">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">상품 번호</label>
+                        <label class="col-md-3 col-form-label text-right">상품 번호</label>
                         <div class="col-md-9">
                             <p id="itemId-p" class="form-control-static" th:text="${itemForm.getId()}"></p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="name-input">상품명</label>
+                        <label class="col-md-3 col-form-label text-right" for="name-input">상품명</label>
                         <div class="col-md-9">
                             <input class="form-control" id="name-input" type="text" name="name" placeholder="상품 명을 입력하세요(필수)"
                                 th:field="*{name}" minlength="1" maxlength="200" required>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="barcode-input">바코드</label>
+                        <label class="col-md-3 col-form-label text-right" for="barcode-input">바코드</label>
                         <div class="col-md-9">
                             <input class="form-control" id="barcode-input" type="number" name="barcode" placeholder="바코드를 입력하세요"
                                 th:field="*{barcode}" required>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="type-select">종류</label>
+                <label class="col-md-3 col-form-label text-right" for="type-select">종류</label>
                 <div class="col-md-9">
                     <select class="form-control js-example-placeholder-single select2" id="type-select" name="type"
                         th:field="*{type}" required>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="price-input">판매가</label>
+                <label class="col-md-3 col-form-label text-right" for="price-input">판매가</label>
                 <div class="col-md-9 input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">₩</span>
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="unit-input">단위</label>
+                <label class="col-md-3 col-form-label text-right" for="unit-input">단위</label>
                 <div class="col-md-9">
                     <input class="form-control" id="unit-input" type="text" name="unit" placeholder="단위를 입력하세요"
                         th:field="*{unit}">
@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="itemQuantity-input">재고</label>
+                <label class="col-md-3 col-form-label text-right" for="itemQuantity-input">재고</label>
                 <div class="col-md-9">
                     <input class="form-control" id="itemQuantity-input" type="number" name="itemQuantity" pattern="[0-9]" placeholder="재고 수량을 입력하세요"
                         th:field="*{itemQuantity}">
@@ -96,14 +96,14 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="stamp-input">쿠폰 적립 여부</label>
+                <label class="col-md-3 col-form-label text-right" for="stamp-input">쿠폰 적립 여부</label>
                 <div class="col-md-9">
                     <input class="form-control" id="stamp-input" type="checkbox" name="stamp"
                         th:field="*{stamp}">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="top-buyer-list">최다 구매 가족</label>
+                <label class="col-md-3 col-form-label text-right" for="top-buyer-list">최다 구매 가족</label>
                 <div class="col-md-9">
                     <div id="top-buyer-list" class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
@@ -132,7 +132,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-form-label">최근 구매 이력</label>
+                <label class="col-md-3 col-form-label text-right">최근 구매 이력</label>
                 <div class="col-md-9">
                     <table class="table table-responsive-sm table-striped table-hover">
                         <thead>

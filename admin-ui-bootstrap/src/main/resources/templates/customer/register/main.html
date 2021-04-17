@@ -38,7 +38,9 @@
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group row">
-                                            <label class="col-md-2 col-form-label" for="name-input">고객명</label>
+                                            <label class="col-md-2 col-form-label text-right" for="name-input">
+                                                <strong>고객명</strong>
+                                            </label>
                                             <div class="col-md-10">
                                                 <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)" lang="ko"
                                                     th:field="*{name}" minlength="1" maxlength="100" required>
@@ -47,7 +49,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-2 col-form-label" for="type-select">종류</label>
+                                            <label class="col-md-2 col-form-label text-right" for="type-select">
+                                                <strong>종류</strong>
+                                            </label>
                                             <div class="col-md-10">
                                                 <select class="form-control js-example-placeholder-single select2" id="type-select" name="type"
                                                     th:field="*{type}" required>
@@ -58,7 +62,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-2 col-form-label" for="family-select">가족</label>
+                                            <label class="col-md-2 col-form-label text-right" for="family-select">
+                                                <strong>가족</strong>
+                                            </label>
                                             <div class="col-md-10">
                                                 <select class="form-control js-data-example-ajax" id="family-select" name="familyId"
                                                     th:field="*{familyId}">
@@ -68,7 +74,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-2 col-form-label" for="telNo-input">전화번호</label>
+                                            <label class="col-md-2 col-form-label text-right" for="telNo-input">
+                                                <strong>전화번호</strong>
+                                            </label>
                                             <div class="col-md-10">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -86,7 +94,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-2 col-form-label" for="bigo-input">비고</label>
+                                            <label class="col-md-2 col-form-label text-right" for="bigo-input">
+                                                <strong>비고</strong>
+                                            </label>
                                             <div class="col-md-10">
                                                 <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요" lang="ko"
                                                     th:field="*{bigo}">

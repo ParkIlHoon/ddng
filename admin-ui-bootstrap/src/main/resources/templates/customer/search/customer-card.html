@@ -29,14 +29,18 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">고객 번호</label>
+                            <label class="col-md-3 col-form-label text-right">
+                                <strong>고객 번호</strong>
+                            </label>
                             <div class="col-md-9">
                                 <p id="customer-id" class="form-control-static"></p>
                                 <input type="hidden" th:field="*{id}">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name-input">고객 명</label>
+                            <label class="col-md-3 col-form-label text-right" for="name-input">
+                                <strong>고객 명</strong>
+                            </label>
                             <div class="col-md-9">
                                 <input class="form-control" id="name-input" type="text" name="name" placeholder="고객명을 입력하세요(필수)" lang="ko"
                                        th:field="*{name}" minlength="1" maxlength="100" required>
@@ -45,7 +49,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">가족</label>
+                            <label class="col-md-3 col-form-label text-right">
+                                <strong>가족</strong>
+                            </label>
                             <div class="col-md-9">
                                 <p id="family-p" class="form-control-static" style="white-space: pre-line"
                                     th:text="${customerForm.getFamilyString()}"></p>
@@ -54,7 +60,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="type-select">종류</label>
+                    <label class="col-md-3 col-form-label text-right" for="type-select">
+                        <strong>종류</strong>
+                    </label>
                     <div class="col-md-9">
                         <select class="form-control js-example-placeholder-single select2" id="type-select" name="type"
                             th:field="*{type}" required>
@@ -65,7 +73,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="telNo-input">전화번호</label>
+                    <label class="col-md-3 col-form-label text-right" for="telNo-input">
+                        <strong>전화번호</strong>
+                    </label>
                     <div class="col-md-9 input-group">
                         <span class="input-group-prepend">
                             <span class="input-group-text">
@@ -81,27 +91,35 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="date-input">가입일</label>
+                    <label class="col-md-3 col-form-label text-right" for="date-input">
+                        <strong>가입일</strong>
+                    </label>
                     <div class="col-md-9">
                         <input class="form-control" id="date-input" type="date" name="date-input" th:value="${#temporals.format(customerForm.getJoinDate(), 'yyyy-MM-dd')}" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="tags-input">태그</label>
+                    <label class="col-md-3 col-form-label text-right" for="tags-input">
+                        <strong>태그</strong>
+                    </label>
                     <div class="col-md-9">
                         <div id="whitelist" hidden></div>
                         <input id="tags-input" type="text" aria-describedby="tagHelp"/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label" for="bigo-input">비고</label>
+                    <label class="col-md-3 col-form-label text-right" for="bigo-input">
+                        <strong>비고</strong>
+                    </label>
                     <div class="col-md-9">
                         <textarea class="form-control" id="bigo-input" name="bigo" rows="9" placeholder="비고 내용을 입력하세요" lang="ko"
                              th:field="*{bigo}"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label">구매 이력</label>
+                    <label class="col-md-3 col-form-label text-right">
+                        <strong>구매 이력</strong>
+                    </label>
                     <div class="col-md-9">
                         <table class="table table-responsive-sm table-striped table-hover">
                             <thead>

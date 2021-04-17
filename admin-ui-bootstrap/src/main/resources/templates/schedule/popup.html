@@ -16,7 +16,9 @@
                     <input type="hidden" id="schedule-id-input" name="id"
                         th:field="*{id}">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="name-input">스케쥴 이름</label>
+                        <label class="col-md-3 col-form-label text-right" for="name-input">
+                            <strong>스케쥴 이름</strong>
+                        </label>
                         <div class="col-md-9">
                             <input class="form-control" id="name-input" type="text" name="name" placeholder="스케쥴 이름을 입력하세요"
                                 required lang="ko" minlength="1" maxlength="200" th:field="*{name}">
@@ -24,7 +26,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="scheduleType-select">스케쥴 종류</label>
+                        <label class="col-md-3 col-form-label text-right" for="scheduleType-select">
+                            <strong>스케쥴 종류</strong>
+                        </label>
                         <div class="col-md-9">
                             <select class="form-control js-example-templating select2" id="scheduleType-select" name="scheduleType" required
                                     th:field="*{type}">
@@ -34,14 +38,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">하루종일</label>
+                        <label class="col-md-3 col-form-label text-right">
+                            <strong>하루종일</strong>
+                        </label>
                         <div class="col-md-9 col-form-label">
                             <input class="form-control" id="isAllDay-check" type="checkbox" value="true" name="isAllDay" checked="false"
                                    th:field="*{allDay}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="stt-date-input">일정 시작일시</label>
+                        <label class="col-md-3 col-form-label text-right" for="stt-date-input">
+                            <strong>일정 시작일시</strong>
+                        </label>
                         <div class="col-md-9">
                             <input class="form-control" id="stt-date-input" type="datetime-local" name="startDate" placeholder="시작일" required
                                    th:field="*{startDate}">
@@ -49,7 +57,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="end-date-input">일정 종료일시</label>
+                        <label class="col-md-3 col-form-label text-right" for="end-date-input">
+                            <strong>일정 종료일시</strong>
+                        </label>
                         <div class="col-md-9">
                             <input class="form-control" id="end-date-input" type="datetime-local" name="endDate" placeholder="종료일" required
                                    th:field="*{endDate}">
@@ -57,7 +67,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="customer-select">고객</label>
+                        <label class="col-md-3 col-form-label text-right" for="customer-select">
+                            <strong>고객</strong>
+                        </label>
                         <div class="col-md-9">
                             <select class="form-control js-example-templating select2" id="customer-select" name="customerId" required
                                 th:field="*{customerId}">
@@ -67,14 +79,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="tags-input">태그</label>
+                        <label class="col-md-3 col-form-label text-right" for="tags-input">
+                            <strong>태그</strong>
+                        </label>
                         <div class="col-md-9">
                             <div id="whitelist" hidden></div>
                             <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp" th:field="*{tags}"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="bigo-input">비고</label>
+                        <label class="col-md-3 col-form-label text-right" for="bigo-input">
+                            <strong>비고</strong>
+                        </label>
                         <div class="col-md-9">
                             <textarea class="form-control" id="bigo-input" name="bigo" rows="5" placeholder="비고"
                                 th:field="*{bigo}">
