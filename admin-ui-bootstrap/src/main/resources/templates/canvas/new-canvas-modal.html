@@ -7,15 +7,53 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">신규 캔버스 등록</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <p>One fine body…</p>
+                <form class="form-horizontal needs-validation" id="modal-canvas-form">
+                    <div class="form-group">
+                        <input id="profileImage" type="hidden" name="profileImg">
+                        <div id="new-profile-image col-md-12"></div>
+                        <div class="custom-file col-md-12">
+                            <input type="file" class="custom-file-input col-md-12" id="profile-image-file">
+                            <label class="custom-file-label" for="profile-image-file">프로필 이미지 선택</label>
+                        </div>
+                        <div id="new-profile-image-control row">
+                            <button type="button" class="btn btn-outline-primary col-md-2" id="cut-button">자르기</button>
+                            <button type="button" class="btn btn-outline-success col-md-2" id="confirm-button">확인</button>
+                            <button type="button" class="btn btn-outline-warning col-md-2" id="reset-button">취소</button>
+                        </div>
+                        <div id="cropped-new-profile-image col-md-12"></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="favorite-input">상단 고정 여부</label>
+                        <div class="col-md-10">
+                            <label class="c-switch c-switch-pill c-switch-primary col-form-label">
+                                <input id="favorite-input" class="c-switch-input form-control" type="checkbox"><span class="c-switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="title-input">제목</label>
+                        <div class="col-md-10">
+                            <input class="form-control" id="title-input" type="text" name="title" placeholder="제목을 입력하세요"
+                                   required lang="ko" minlength="1" maxlength="200">
+                            <div class="invalid-feedback">제목을 입력하세요 (1~200자)</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="tags-input">태그</label>
+                        <div class="col-md-10">
+                            <div id="whitelist" hidden></div>
+                            <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="button">Save changes</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                <button class="btn btn-primary" type="button">등록</button>
             </div>
         </div>
     </div>
