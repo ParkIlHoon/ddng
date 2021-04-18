@@ -93,7 +93,8 @@ public class CanvasController
         else
         {
             Canvas canvas = canvasById.get();
-            CanvasDto.Response response = new CanvasDto.Response(canvas);
+            Canvas updated = canvasService.updateCanvas(canvas, dto);
+            CanvasDto.Response response = new CanvasDto.Response(updated);
             return ResponseEntity.ok(response);
         }
     }
