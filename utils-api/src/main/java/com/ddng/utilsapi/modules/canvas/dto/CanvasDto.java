@@ -1,9 +1,11 @@
 package com.ddng.utilsapi.modules.canvas.dto;
 
 
+import com.ddng.utilsapi.modules.canvas.domain.Canvas;
 import com.ddng.utilsapi.modules.canvas.domain.CanvasTag;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,18 +26,48 @@ public class CanvasDto
     {
         private Long id;
         private String title;
+        private String filePath;
         private boolean isTopFixed;
         private LocalDateTime createDate;
         private Set<CanvasTagDto> tags = new HashSet<>();
 
         @QueryProjection
-        public Response(Long id, String title, boolean isTopFixed, LocalDateTime createDate, Set<CanvasTag> tags)
+        public Response(Long id, String title, String filePath, boolean isTopFixed, LocalDateTime createDate, Set<CanvasTag> tags)
         {
             this.id = id;
             this.title = title;
+            this.filePath = filePath;
             this.isTopFixed = isTopFixed;
             this.createDate = createDate;
-            this.tags = tags.stream().map(t -> new CanvasTagDto(t)).collect(Collectors.toSet());
+            this.tags = tags.stream().map(CanvasTagDto::new).collect(Collectors.toSet());
         }
+
+        public Response(Canvas canvas) {
+            this.id = canvas.getId();
+            this.title = canvas.getTitle();
+            this.filePath = canvas.getFilePath();
+            this.isTopFixed = canvas.isTopFixed();
+            this.createDate = canvas.getCreateDate();
+            this.tags = canvas.getTags().stream().map(CanvasTagDto::new).collect(Collectors.toSet());
+        }
+    }
+
+    @Data
+    @NoArgsConstructor @AllArgsConstructor
+    public static class Create
+    {
+        private String title;
+        private String filePath;
+        private boolean isTopFixed;
+        private Set<CanvasTagDto> tags = new HashSet<>();
+    }
+
+    @Data
+    @NoArgsConstructor @AllArgsConstructor
+    public static class Update
+    {
+        private String title;
+        private String filePath;
+        private boolean isTopFixed;
     }
 }

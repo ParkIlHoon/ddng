@@ -1,5 +1,6 @@
 package com.ddng.utilsapi.modules.canvas.domain;
 
+import com.ddng.utilsapi.modules.canvas.dto.CanvasDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,11 +28,14 @@ public class Canvas
     @Column(name = "TITLE")
     private String title;
 
+    @Column(name = "FILE_PATH")
+    private String filePath;
+
     @Column(name = "IS_TOP_FIXED")
     private boolean isTopFixed;
 
     @Column(name = "CREATE_DATE")
-    private LocalDateTime createDate;
+    private LocalDateTime createDate = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<CanvasTag> tags = new HashSet<>();
