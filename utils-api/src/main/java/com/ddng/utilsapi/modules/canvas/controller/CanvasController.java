@@ -18,6 +18,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class CanvasController
 
     @GetMapping
     @ApiOperation(value = "캔버스 목록 조회", notes = "태그에 해당하는 캔버스 목록을 조회합니다.")
-    public ResponseEntity getCanvasWithPage(@ApiParam(value = "검색 태그", required = false) String[] tags,
+    public ResponseEntity getCanvasWithPage(@ApiParam(value = "검색 태그", required = false) @RequestParam("tags") List<String> tags,
                                             @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable)
     {
         Page<CanvasDto.Response> canvas = canvasService.findCanvas(tags, pageable);

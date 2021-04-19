@@ -1,5 +1,6 @@
 package com.ddng.utilsapi.modules.canvas.repository;
 
+import com.ddng.utilsapi.modules.canvas.domain.Canvas;
 import com.ddng.utilsapi.modules.canvas.dto.CanvasDto;
 import com.ddng.utilsapi.modules.canvas.dto.QCanvasDto_Response;
 import com.querydsl.core.QueryResults;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static com.ddng.utilsapi.modules.canvas.domain.QCanvas.canvas;
 import static com.ddng.utilsapi.modules.canvas.domain.QCanvasTag.canvasTag;
@@ -23,10 +26,10 @@ public class CanvasRepositoryImpl implements CanvasCustomRepository
 
 
     @Override
-    public Page<CanvasDto.Response> findCanvas(String[] tags, Pageable pageable)
+    public Page<Canvas> findCanvas(List<String> tags, Pageable pageable)
     {
-        QueryResults<CanvasDto.Response> queryResults =
-                queryFactory.select(new QCanvasDto_Response(canvas.id, canvas.title, canvas.isTopFixed, canvas.createDate, canvas.tags))
+        QueryResults<Canvas> queryResults =
+                queryFactory.select(canvas)
                         .from(canvas)
                         .join(canvas.tags, canvasTag)
                         .where(canvasTag.title.in(tags))

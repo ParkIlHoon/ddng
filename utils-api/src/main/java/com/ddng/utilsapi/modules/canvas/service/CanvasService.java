@@ -8,6 +8,7 @@ import com.ddng.utilsapi.modules.canvas.repository.CanvasRepository;
 import com.ddng.utilsapi.modules.canvas.repository.CanvasTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +26,11 @@ public class CanvasService
     private final CanvasRepository canvasRepository;
     private final CanvasTagRepository canvasTagRepository;
 
-    public Page<CanvasDto.Response> findCanvas(String[] tags, Pageable pageable) {
-        return canvasRepository.findCanvas(tags, pageable);
+    public Page<CanvasDto.Response> findCanvas(List<String> tags, Pageable pageable) {
+        Page<Canvas> canvas = canvasRepository.findCanvas(tags, pageable);
+        List<CanvasDto.Response> responseList = canvas.getContent().stream().map(CanvasDto.Response::new).collect(Collectors.toList());
+
+        return new PageImpl<>(responseList, pageable, canvas.getTotalElements());
     }
 
     public Optional<Canvas> findCanvasById(Long id) {

@@ -22,7 +22,7 @@ public interface UtilsClient
      * @return 태그에 해당하는 캔버스 목록
      */
     @GetMapping(CANVAS_API)
-    FeignPageImpl<CanvasDto> getCanvasWithPage(@RequestParam("tags") String[] tags,
+    FeignPageImpl<CanvasDto.Response> getCanvasWithPage(@RequestParam("tags") List<String> tags,
                                                @RequestParam("page") int page,
                                                @RequestParam("size") int size);
 

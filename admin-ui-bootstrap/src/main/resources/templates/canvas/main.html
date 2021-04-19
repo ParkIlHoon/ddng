@@ -21,8 +21,7 @@
                                         <label class="col-md-3 col-form-label" for="search-tags">조회할 태그를 선택해주세요</label>
                                         <div class="col-md-12">
                                             <select class="form-control js-example-basic-multiple select2" multiple="multiple" id="search-tags">
-                                                <option value="AL">Alabama</option>
-                                                <option value="WY">Wyoming</option>
+                                                <option th:each="tag : ${canvasTags}" th:value="${tag.getTitle()}" th:text="${tag.getTitle()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -44,16 +43,7 @@
                                             <th>등록일</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr onclick="canvas_row_click();">
-                                            <td>1</td>
-                                            <td>치우</td>
-                                            <td>
-                                                <span class="badge badge-secondary">귀여움</span>
-                                                <span class="badge badge-secondary">보고싶어</span>
-                                            </td>
-                                            <td>2021-04-05</td>
-                                        </tr>
+                                        <tbody id="canvas-table-body">
                                         </tbody>
                                     </table>
                                 </div>
@@ -80,6 +70,39 @@
             language: "ko",
             width : "100%"
         });
+        $("#search-tags").on('select2:select', function (e) {
+            $("#canvas-table-body").empty();
+            var tags = $("#search-tags").val();
+
+            $.ajax({
+               url : "/canvas-management/canvas",
+               type : "get",
+               data : { "tags" : tags.join(","), "page" : 0, "size" : 10},
+               success : function(data) {
+                   var canvasList = data.content;
+                   for (var idx = 0; idx < canvasList.length; idx++)
+                   {
+                       var canvas = canvasList[idx];
+                       var tagList = canvas.tags;
+                       var appendText = "<tr onclick=\"canvas_row_click();\">\n" +
+                           "                 <td>" + canvas.id + "</td>\n" +
+                           "                 <td>" + canvas.title + "</td>\n" +
+                           "                 <td>\n";
+                       for (var idx2 = 0; idx2 < tagList.length; idx2++)
+                       {
+                           appendText += "       <span class=\"badge badge-secondary\">" + tagList[idx2].title + "</span>\n";
+                       }
+                           appendText += "   </td>\n" +
+                           "                 <td>" + canvas.createDate + "</td>\n" +
+                           "             </tr>";
+
+                       $("#canvas-table-body").append(appendText);
+                   }
+               }
+            });
+
+        });
+
 
         $("#new-canvas-button").on("click", function(){
             $("#new-canvas-modal").modal({
@@ -87,7 +110,6 @@
             });
         });
     });
-
 
     function canvas_row_click() {
         $("#view-canvas-modal").modal({
