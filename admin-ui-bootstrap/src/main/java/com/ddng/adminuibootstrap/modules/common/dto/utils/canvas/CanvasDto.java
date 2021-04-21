@@ -33,7 +33,7 @@ public class CanvasDto
         private String title;
         private String filePath;
         private boolean isTopFixed;
-        private Set<CanvasTagDto> tags = new HashSet<>();
+        private Set<String> tags = new HashSet<>();
     }
 
     @Data

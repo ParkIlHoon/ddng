@@ -3,66 +3,89 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div class="modal fade" th:fragment="new-canvas-modal" id="new-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" th:fragment="new-canvas-modal(${registerForm})" id="new-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">신규 캔버스 등록</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal needs-validation" id="modal-canvas-form">
-                    <div class="form-group">
-                        <input id="profileImage" type="hidden" name="profileImg">
-                        <div id="new-profile-image col-md-12"></div>
-                        <div class="custom-file col-md-12">
-                            <input type="file" class="custom-file-input col-md-12" id="profile-image-file">
-                            <label class="custom-file-label" for="profile-image-file">프로필 이미지 선택</label>
+            <form class="form-horizontal needs-validation" id="canvas-modal-form" method="post" enctype="multipart/form-data" onsubmit="return beforeSubmit()"
+                  th:action="@{/canvas-management/canvas}" th:object="${registerForm}" novalidate>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label text-right" for="new-canvas-modal-canvas-image-file" data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="캔버스에 업로드할 사진을 선택합니다.<br>사진 파일만 선택할 수 있습니다.">
+                            <strong>캔버스 이미지</strong>
+                        </label>
+                        <div class="col-md-10">
+                            <input type="file" id="new-canvas-modal-canvas-image-file" name="canvasImage" accept="image/*" required
+                                th:field="*{canvasImage}">
+                            <div class="invalid-feedback">캔버스 이미지를 선택해주세요</div>
+                            <small class="text-danger" th:if="${#fields.hasErrors('canvasImage')}" th:errors="*{canvasImage}">canvasImage Error</small>
                         </div>
-                        <div id="new-profile-image-control row">
-                            <button type="button" class="btn btn-outline-primary col-md-2" id="cut-button">자르기</button>
-                            <button type="button" class="btn btn-outline-success col-md-2" id="confirm-button">확인</button>
-                            <button type="button" class="btn btn-outline-warning col-md-2" id="reset-button">취소</button>
-                        </div>
-                        <div id="cropped-new-profile-image col-md-12"></div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label text-right" for="favorite-input">
+                        <label class="col-md-2 col-form-label text-right" for="new-canvas-modal-favorite-input" data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객들이 홈페이지의 캔버스 메뉴에서 조회 시 상단에 우선적으로 위치하도록 합니다.">
                             <strong>상단 고정 여부</strong>
                         </label>
                         <div class="col-md-10">
-                            <label class="c-switch c-switch-pill c-switch-primary col-form-label">
-                                <input id="favorite-input" class="c-switch-input form-control" type="checkbox"><span class="c-switch-slider"></span>
+                            <label class="c-switch c-switch-label c-switch-pill c-switch-primary">
+                                <input id="new-canvas-modal-favorite-input" class="c-switch-input" type="checkbox">
+                                <span class="c-switch-slider" data-checked="고정" data-unchecked="해제"></span>
                             </label>
+                            <div class="invalid-feedback">상단 고정 여부를 선택해주세요</div>
+                            <small class="text-danger" th:if="${#fields.hasErrors('topFixed')}" th:errors="*{topFixed}">topFixed Error</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label text-right" for="title-input">
+                        <label class="col-md-2 col-form-label text-right" for="new-canvas-modal-title-input" data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="캔버스의 제목을 입력합니다.<br>이곳에서 입력한 제목은 홈페이지에도 적용됩니다.">
                             <strong>제목</strong>
                         </label>
                         <div class="col-md-10">
-                            <input class="form-control" id="title-input" type="text" name="title" placeholder="제목을 입력하세요"
-                                   required lang="ko" minlength="1" maxlength="200">
-                            <div class="invalid-feedback">제목을 입력하세요 (1~200자)</div>
+                            <input class="form-control" id="new-canvas-modal-title-input" type="text" name="title" placeholder="제목을 입력하세요"
+                                   required lang="ko" minlength="1" maxlength="100"
+                                    th:field="*{title}">
+                            <div class="invalid-feedback">제목을 입력하세요 (1~100자)</div>
+                            <small class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label text-right" for="tags-input">
+                        <label class="col-md-2 col-form-label text-right" for="new-canvas-modal-tags-input" data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="캔버스 조회 시 사용할 태그를 지정합니다.<br>이곳에서 지정한 태그는 홈페이지에도 적용됩니다.">
                             <strong>태그</strong>
                         </label>
                         <div class="col-md-10">
-                            <div id="whitelist" hidden></div>
-                            <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
+                            <div id="new-canvas-modal-whitelist" hidden></div>
+                            <input id="new-canvas-modal-tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                <button class="btn btn-primary" type="button">등록</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button class="btn btn-primary" type="submit">등록</button>
+                </div>
+            </form>
         </div>
     </div>
+    <script type="application/javascript">
+        function beforeSubmit () {
+            var tags = JSON.parse(document.getElementById("new-canvas-modal-tags-input").value);
+            var valueString = "";
+            if (tags != null && tags.length > 0)
+            {
+                for(var idx = 0; idx < tags.length; idx++)
+                {
+                    if(idx > 0)
+                    {
+                        valueString += ",";
+                    }
+                    valueString += tags[idx].value;
+                }
+            }
+            document.getElementById("new-canvas-modal-tags-input").value = valueString;
+            con
+            return true;
+        }
+    </script>
 </div>
 
 </html>

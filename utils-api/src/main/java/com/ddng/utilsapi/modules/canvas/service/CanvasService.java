@@ -55,12 +55,12 @@ public class CanvasService
         Canvas savedCanvas = canvasRepository.save(newCanvas);
 
         // 태그 존재 여부 확인
-        Set<CanvasTagDto> dtoTags = dto.getTags();
+        Set<String> dtoTags = dto.getTags();
         if (!dtoTags.isEmpty())
         {
-            for (CanvasTagDto tagDto : dtoTags)
+            for (String title : dtoTags)
             {
-                Optional<CanvasTag> firstByTitle = canvasTagRepository.findFirstByTitle(tagDto.getTitle());
+                Optional<CanvasTag> firstByTitle = canvasTagRepository.findFirstByTitle(title);
                 if (firstByTitle.isPresent())
                 {
                     savedCanvas.getTags().add(firstByTitle.get());
@@ -68,7 +68,7 @@ public class CanvasService
                 else
                 {
                     CanvasTag newTag = new CanvasTag();
-                    newTag.setTitle(tagDto.getTitle());
+                    newTag.setTitle(title);
                     CanvasTag savedTag = canvasTagRepository.save(newTag);
                     savedCanvas.getTags().add(savedTag);
                 }

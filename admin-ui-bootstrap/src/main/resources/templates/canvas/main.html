@@ -10,6 +10,10 @@
         <main class="c-main">
             <div class="container-fluid">
                 <div class="fade-in">
+                    <div th:if="${not #strings.isEmpty(message)}">
+                        <div th:replace="fragments.html::alert(${alertType}, ${message})"></div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card">
@@ -57,14 +61,18 @@
     </div>
 </div>
 
-<div th:replace="canvas/new-canvas-modal.html::new-canvas-modal"></div>
+<div th:replace="canvas/new-canvas-modal.html::new-canvas-modal(${registerForm})"></div>
 <div th:replace="canvas/view-canvas-modal.html::view-canvas-modal"></div>
 <script th:replace="fragments.html::script"></script>
 <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/node_modules/select2/dist/js/select2.full.js"></script>
+<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+<script src="/js/tooltips.js"></script>
 <script type="application/javascript">
+    var g_tagify;
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2({
             language: "ko",
@@ -109,6 +117,20 @@
                 show: true
             });
         });
+
+        var tagInput = document.querySelector("#new-canvas-modal-tags-input");
+        g_tagify = new Tagify(tagInput, {
+            pattern: /^.{0,20}$/,
+            whitelist : [],
+            dropdown : {
+                position: "input",
+                enabled: 1, // suggest tags after a single character input
+                fuzzySearch: false
+            }, // map tags
+            backspace : false
+        });
+        g_tagify.DOM.input.classList.add('form-control');
+        g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
     });
 
     function canvas_row_click() {

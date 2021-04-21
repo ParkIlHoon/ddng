@@ -16,4 +16,8 @@ public class CanvasTagDto
         this.id = id;
         this.title = title;
     }
+
+    public CanvasTagDto(String title) {
+        this.title = title;
+    }
 }
