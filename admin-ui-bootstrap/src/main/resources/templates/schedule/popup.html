@@ -16,7 +16,8 @@
                     <input type="hidden" id="schedule-id-input" name="id"
                         th:field="*{id}">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="name-input">
+                        <label class="col-md-3 col-form-label text-right" for="name-input"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴 이름을 입력합니다">
                             <strong>스케쥴 이름</strong>
                         </label>
                         <div class="col-md-9">
@@ -26,7 +27,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="scheduleType-select">
+                        <label class="col-md-3 col-form-label text-right" for="scheduleType-select"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴 종류를 선택합니다">
                             <strong>스케쥴 종류</strong>
                         </label>
                         <div class="col-md-9">
@@ -38,7 +40,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right">
+                        <label class="col-md-3 col-form-label text-right"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="체크 시 일정의 시작,종료 일시가 자동으로 세팅됩니다">
                             <strong>하루종일</strong>
                         </label>
                         <div class="col-md-9 col-form-label">
@@ -47,7 +50,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="stt-date-input">
+                        <label class="col-md-3 col-form-label text-right" for="stt-date-input"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴의 시작일시를 입력합니다">
                             <strong>일정 시작일시</strong>
                         </label>
                         <div class="col-md-9">
@@ -57,7 +61,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="end-date-input">
+                        <label class="col-md-3 col-form-label text-right" for="end-date-input"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴의 종료일시를 입력합니다">
                             <strong>일정 종료일시</strong>
                         </label>
                         <div class="col-md-9">
@@ -67,7 +72,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="customer-select">
+                        <label class="col-md-3 col-form-label text-right" for="customer-select"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴의 고객을 선택합니다<br>고객 선택 시 이 스케쥴 정보로 결제할 수 있습니다">
                             <strong>고객</strong>
                         </label>
                         <div class="col-md-9">
@@ -79,7 +85,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="tags-input">
+                        <label class="col-md-3 col-form-label text-right" for="tags-input"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴의 태그를 입력합니다">
                             <strong>태그</strong>
                         </label>
                         <div class="col-md-9">
@@ -88,7 +95,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-right" for="bigo-input">
+                        <label class="col-md-3 col-form-label text-right" for="bigo-input"
+                               data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="스케쥴의 비고 내용을을 입력합니다">
                             <strong>비고</strong>
                         </label>
                         <div class="col-md-9">
@@ -100,13 +108,18 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
-                <button class="btn btn-primary" type="button" id="save-schedule-button">등록</button>
-                <button class="btn btn-primary" type="button" id="update-schedule-button">수정</button>
-                <button class="btn btn-danger" type="button" id="delete-schedule-button">삭제</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                        data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="팝업을 닫습니다">닫기</button>
+                <button class="btn btn-primary" type="button" id="save-schedule-button"
+                        data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="입력한 내용으로 새로운 스케쥴을 등록합니다">등록</button>
+                <button class="btn btn-primary" type="button" id="update-schedule-button"
+                        data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="스케쥴의 변경된 내용을 저장합니다">수정</button>
+                <button class="btn btn-danger" type="button" id="delete-schedule-button"
+                        data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="스케쥴을 삭제합니다">삭제</button>
             </div>
         </div>
     </div>
+    <script src="/js/tooltips.js"></script>
 </div>
 
 </html>

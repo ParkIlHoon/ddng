@@ -29,8 +29,8 @@
                             <strong>상단 고정 여부</strong>
                         </label>
                         <div class="col-md-10">
-                            <label class="c-switch c-switch-label c-switch-pill c-switch-primary">
-                                <input id="new-canvas-modal-favorite-input" class="c-switch-input" type="checkbox">
+                            <label class="c-switch-lg c-switch-label c-switch-pill c-switch-primary">
+                                <input id="new-canvas-modal-favorite-input" class="c-switch-input" type="checkbox" th:field="*{topFixed}">
                                 <span class="c-switch-slider" data-checked="고정" data-unchecked="해제"></span>
                             </label>
                             <div class="invalid-feedback">상단 고정 여부를 선택해주세요</div>
@@ -82,7 +82,6 @@
                 }
             }
             document.getElementById("new-canvas-modal-tags-input").value = valueString;
-            con
             return true;
         }
     </script>

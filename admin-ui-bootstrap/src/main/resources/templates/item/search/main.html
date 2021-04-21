@@ -17,13 +17,14 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-5 col-lg-4">
                                 <div class="card">
-                                    <div class="card-header">상품 목록</div>
+                                    <div class="card-header"
+                                         data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="검색어에 해당하는 상품을 조회합니다">상품 목록</div>
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label class="col-form-label" for="searchKeyword">검색어를 입력하세요.(이름,종류,바코드)</label>
+                                            <label class="col-form-label" for="searchKeyword"></label>
                                             <div class="controls">
                                                 <div class="input-group">
-                                                    <input class="form-control" id="searchKeyword" size="16" type="text">
+                                                    <input class="form-control" id="searchKeyword" size="16" type="text" placeholder="검색어를 입력하세요(이름/종류/바코드)">
                                                     <input class="form-control" id="searchKeywordSaved" size="16" type="hidden">
                                                     <span class="input-group-append">
                                                         <button id="searchButton" class="btn btn-secondary" type="button">검색</button>
@@ -68,6 +69,7 @@
     <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
     <link rel="stylesheet" href="/node_modules/tui-pagination/dist/tui-pagination.css">
     <script th:replace="fragments.html::script"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/node_modules/tui-grid/dist/tui-grid.js"></script>
     <script src="/node_modules/tui-pagination/dist/tui-pagination.js"></script>
     <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>

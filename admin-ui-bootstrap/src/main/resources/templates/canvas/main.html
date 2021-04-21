@@ -64,13 +64,12 @@
 <div th:replace="canvas/new-canvas-modal.html::new-canvas-modal(${registerForm})"></div>
 <div th:replace="canvas/view-canvas-modal.html::view-canvas-modal"></div>
 <script th:replace="fragments.html::script"></script>
+<script th:replace="fragments.html::form-validation"></script>
 <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
-<script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/node_modules/select2/dist/js/select2.full.js"></script>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-<script src="/js/tooltips.js"></script>
 <script type="application/javascript">
     var g_tagify;
     $(document).ready(function() {

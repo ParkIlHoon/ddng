@@ -8261,212 +8261,212 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right, html:not([dir="
   .c-switch[class*="-3d"].c-switch-sm .c-switch-input:checked ~ .c-switch-slider::before {
     transform: translateX(10px); }
 
-.c-switch-primary .c-switch-input:checked + .c-switch-slider {
+.c-switch-primary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #321fdb;
   border-color: #2819ae; }
-  .c-switch-primary .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-primary .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #2819ae; }
 
-.c-switch-3d-primary .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-primary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #321fdb; }
 
-.c-switch-outline-primary .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-primary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #321fdb; }
-  .c-switch-outline-primary .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-primary .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #321fdb; }
-  .c-switch-outline-primary .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-primary .c-switch-input:checked ~ .c-switch-slider::after {
     color: #321fdb; }
 
-.c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-primary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #321fdb; }
-  .c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-primary .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #321fdb;
     border-color: #321fdb; }
-  .c-switch-opposite-primary .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-primary .c-switch-input:checked ~ .c-switch-slider::after {
     color: #321fdb; }
 
-.c-switch-secondary .c-switch-input:checked + .c-switch-slider {
+.c-switch-secondary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #ced2d8;
   border-color: #b2b8c1; }
-  .c-switch-secondary .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-secondary .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #b2b8c1; }
 
-.c-switch-3d-secondary .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-secondary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #ced2d8; }
 
-.c-switch-outline-secondary .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-secondary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #ced2d8; }
-  .c-switch-outline-secondary .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-secondary .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #ced2d8; }
-  .c-switch-outline-secondary .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-secondary .c-switch-input:checked ~ .c-switch-slider::after {
     color: #ced2d8; }
 
-.c-switch-opposite-secondary .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-secondary .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #ced2d8; }
-  .c-switch-opposite-secondary .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-secondary .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #ced2d8;
     border-color: #ced2d8; }
-  .c-switch-opposite-secondary .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-secondary .c-switch-input:checked ~ .c-switch-slider::after {
     color: #ced2d8; }
 
-.c-switch-success .c-switch-input:checked + .c-switch-slider {
+.c-switch-success .c-switch-input:checked ~ .c-switch-slider {
   background-color: #2eb85c;
   border-color: #248f48; }
-  .c-switch-success .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-success .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #248f48; }
 
-.c-switch-3d-success .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-success .c-switch-input:checked ~ .c-switch-slider {
   background-color: #2eb85c; }
 
-.c-switch-outline-success .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-success .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #2eb85c; }
-  .c-switch-outline-success .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-success .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #2eb85c; }
-  .c-switch-outline-success .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-success .c-switch-input:checked ~ .c-switch-slider::after {
     color: #2eb85c; }
 
-.c-switch-opposite-success .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-success .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #2eb85c; }
-  .c-switch-opposite-success .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-success .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #2eb85c;
     border-color: #2eb85c; }
-  .c-switch-opposite-success .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-success .c-switch-input:checked ~ .c-switch-slider::after {
     color: #2eb85c; }
 
-.c-switch-info .c-switch-input:checked + .c-switch-slider {
+.c-switch-info .c-switch-input:checked ~ .c-switch-slider {
   background-color: #39f;
   border-color: #0080ff; }
-  .c-switch-info .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-info .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #0080ff; }
 
-.c-switch-3d-info .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-info .c-switch-input:checked ~ .c-switch-slider {
   background-color: #39f; }
 
-.c-switch-outline-info .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-info .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #39f; }
-  .c-switch-outline-info .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-info .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #39f; }
-  .c-switch-outline-info .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-info .c-switch-input:checked ~ .c-switch-slider::after {
     color: #39f; }
 
-.c-switch-opposite-info .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-info .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #39f; }
-  .c-switch-opposite-info .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-info .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #39f;
     border-color: #39f; }
-  .c-switch-opposite-info .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-info .c-switch-input:checked ~ .c-switch-slider::after {
     color: #39f; }
 
-.c-switch-warning .c-switch-input:checked + .c-switch-slider {
+.c-switch-warning .c-switch-input:checked ~ .c-switch-slider {
   background-color: #f9b115;
   border-color: #d69405; }
-  .c-switch-warning .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-warning .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #d69405; }
 
-.c-switch-3d-warning .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-warning .c-switch-input:checked ~ .c-switch-slider {
   background-color: #f9b115; }
 
-.c-switch-outline-warning .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-warning .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #f9b115; }
-  .c-switch-outline-warning .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-warning .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #f9b115; }
-  .c-switch-outline-warning .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-warning .c-switch-input:checked ~ .c-switch-slider::after {
     color: #f9b115; }
 
-.c-switch-opposite-warning .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-warning .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #f9b115; }
-  .c-switch-opposite-warning .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-warning .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #f9b115;
     border-color: #f9b115; }
-  .c-switch-opposite-warning .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-warning .c-switch-input:checked ~ .c-switch-slider::after {
     color: #f9b115; }
 
-.c-switch-danger .c-switch-input:checked + .c-switch-slider {
+.c-switch-danger .c-switch-input:checked ~ .c-switch-slider {
   background-color: #e55353;
   border-color: #de2727; }
-  .c-switch-danger .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-danger .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #de2727; }
 
-.c-switch-3d-danger .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-danger .c-switch-input:checked ~ .c-switch-slider {
   background-color: #e55353; }
 
-.c-switch-outline-danger .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-danger .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #e55353; }
-  .c-switch-outline-danger .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-danger .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #e55353; }
-  .c-switch-outline-danger .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-danger .c-switch-input:checked ~ .c-switch-slider::after {
     color: #e55353; }
 
-.c-switch-opposite-danger .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-danger .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #e55353; }
-  .c-switch-opposite-danger .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-danger .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #e55353;
     border-color: #e55353; }
-  .c-switch-opposite-danger .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-danger .c-switch-input:checked ~ .c-switch-slider::after {
     color: #e55353; }
 
-.c-switch-light .c-switch-input:checked + .c-switch-slider {
+.c-switch-light .c-switch-input:checked ~ .c-switch-slider {
   background-color: #ebedef;
   border-color: #cfd4d8; }
-  .c-switch-light .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-light .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #cfd4d8; }
 
-.c-switch-3d-light .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-light .c-switch-input:checked ~ .c-switch-slider {
   background-color: #ebedef; }
 
-.c-switch-outline-light .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-light .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #ebedef; }
-  .c-switch-outline-light .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-light .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #ebedef; }
-  .c-switch-outline-light .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-light .c-switch-input:checked ~ .c-switch-slider::after {
     color: #ebedef; }
 
-.c-switch-opposite-light .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-light .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #ebedef; }
-  .c-switch-opposite-light .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-light .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #ebedef;
     border-color: #ebedef; }
-  .c-switch-opposite-light .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-light .c-switch-input:checked ~ .c-switch-slider::after {
     color: #ebedef; }
 
-.c-switch-dark .c-switch-input:checked + .c-switch-slider {
+.c-switch-dark .c-switch-input:checked ~ .c-switch-slider {
   background-color: #636f83;
   border-color: #4d5666; }
-  .c-switch-dark .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-dark .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #4d5666; }
 
-.c-switch-3d-dark .c-switch-input:checked + .c-switch-slider {
+.c-switch-3d-dark .c-switch-input:checked ~ .c-switch-slider {
   background-color: #636f83; }
 
-.c-switch-outline-dark .c-switch-input:checked + .c-switch-slider {
+.c-switch-outline-dark .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #636f83; }
-  .c-switch-outline-dark .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-outline-dark .c-switch-input:checked ~ .c-switch-slider::before {
     border-color: #636f83; }
-  .c-switch-outline-dark .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-outline-dark .c-switch-input:checked ~ .c-switch-slider::after {
     color: #636f83; }
 
-.c-switch-opposite-dark .c-switch-input:checked + .c-switch-slider {
+.c-switch-opposite-dark .c-switch-input:checked ~ .c-switch-slider {
   background-color: #fff;
   border-color: #636f83; }
-  .c-switch-opposite-dark .c-switch-input:checked + .c-switch-slider::before {
+  .c-switch-opposite-dark .c-switch-input:checked ~ .c-switch-slider::before {
     background-color: #636f83;
     border-color: #636f83; }
-  .c-switch-opposite-dark .c-switch-input:checked + .c-switch-slider::after {
+  .c-switch-opposite-dark .c-switch-input:checked ~ .c-switch-slider::after {
     color: #636f83; }
 
 .c-switch-pill .c-switch-slider {
@@ -8954,7 +8954,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right, html:not([dir="
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.5;
   text-align: left;
   text-align: start;
@@ -8966,7 +8966,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right, html:not([dir="
   word-spacing: normal;
   white-space: normal;
   line-break: auto;
-  font-size: 0.76562rem;
+  font-size: 0.85rem;
   word-wrap: break-word;
   opacity: 0; }
   .tooltip.show {
@@ -9027,7 +9027,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right, html:not([dir="
     border-left-color: #000015; }
 
 .tooltip-inner {
-  max-width: 200px;
+  max-width: 500px;
   padding: 0.25rem 0.5rem;
   color: #fff;
   text-align: center;

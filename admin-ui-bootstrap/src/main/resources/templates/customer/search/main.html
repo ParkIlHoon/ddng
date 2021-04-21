@@ -17,13 +17,13 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-5 col-lg-4">
                                 <div class="card">
-                                    <div class="card-header">고객 목록</div>
+                                    <div class="card-header"
+                                         data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="검색어에 해당하는 고객 목록을 조회합니다">고객 목록</div>
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label class="col-form-label" for="keyword-input">검색어를 입력하세요.(이름,종류,전화번호,태그)</label>
                                             <div class="controls">
                                                 <div class="input-group">
-                                                    <input class="form-control" id="keyword-input" size="16" type="text">
+                                                    <input class="form-control" id="keyword-input" size="16" type="text" placeholder="검색어를 입력하세요(이름/종류/전화번호/태그)">
                                                     <input class="form-control" id="keyword-input-hidden" size="16" type="hidden">
                                                     <span class="input-group-append">
                                                         <button id="search-button" class="btn btn-secondary" type="button">검색</button>

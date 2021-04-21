@@ -3,8 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="customer-card(${customerForm}, ${customerSaleItems})" class="card">
-    <div class="card-header">상세 정보</div>
-    <div class="card-body">고객 목록에서 선택한 고객의 상세 정보가 표시됩니다.</div>
+    <div class="card-header"
+         data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="고객 목록에서 선택한 고객의 상세 정보가 표시됩니다">상세 정보</div>
     <form id="edit-customer-form" class="form-horizontal needs-validation" action="#" method="post"
           th:action="@{/customer-management/search-customer/customers/} + ${customerForm.getId()}" th:object="${customerForm}" novalidate>
         <div class="card-body">
@@ -15,7 +15,7 @@
                             <input id="profileImage" type="hidden" name="profileImg">
                         </div>
                         <div id="new-profile-image" class="mt-3"></div>
-                        <div class="custom-file">
+                        <div class="custom-file" data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="고객의 프로필 이미지를 선택합니다">
                             <input type="file" class="custom-file-input" id="profile-image-file"
                                    th:field="*{profileImg}">
                             <label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>
@@ -29,7 +29,8 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label text-right">
+                            <label class="col-md-3 col-form-label text-right"
+                                   data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 고유 번호가 표시됩니다">
                                 <strong>고객 번호</strong>
                             </label>
                             <div class="col-md-9">
@@ -38,7 +39,8 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label text-right" for="name-input">
+                            <label class="col-md-3 col-form-label text-right" for="name-input"
+                                   data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 이름이 표시됩니다">
                                 <strong>고객 명</strong>
                             </label>
                             <div class="col-md-9">
@@ -49,7 +51,8 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label text-right">
+                            <label class="col-md-3 col-form-label text-right"
+                                   data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 가족 구성원이 표시됩니다">
                                 <strong>가족</strong>
                             </label>
                             <div class="col-md-9">
@@ -60,20 +63,22 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right" for="type-select">
-                        <strong>종류</strong>
+                    <label class="col-md-3 col-form-label text-right" for="type-select"
+                           data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 품종이 표시됩니다">
+                        <strong>품종</strong>
                     </label>
                     <div class="col-md-9">
                         <select class="form-control js-example-placeholder-single select2" id="type-select" name="type"
                             th:field="*{type}" required>
                             <option value=""></option>
                         </select>
-                        <div class="invalid-feedback">고객 종류를 선택하세요</div>
+                        <div class="invalid-feedback">고객 품종을 선택하세요</div>
                         <small class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right" for="telNo-input">
+                    <label class="col-md-3 col-form-label text-right" for="telNo-input"
+                           data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 전화 번호가 표시됩니다">
                         <strong>전화번호</strong>
                     </label>
                     <div class="col-md-9 input-group">
@@ -91,7 +96,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right" for="date-input">
+                    <label class="col-md-3 col-form-label text-right" for="date-input"
+                           data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 가입일이 표시됩니다">
                         <strong>가입일</strong>
                     </label>
                     <div class="col-md-9">
@@ -99,7 +105,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right" for="tags-input">
+                    <label class="col-md-3 col-form-label text-right" for="tags-input"
+                           data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 태그들이 표시됩니다">
                         <strong>태그</strong>
                     </label>
                     <div class="col-md-9">
@@ -108,7 +115,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right" for="bigo-input">
+                    <label class="col-md-3 col-form-label text-right" for="bigo-input"
+                           data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 비고 내용이 표시됩니다">
                         <strong>비고</strong>
                     </label>
                     <div class="col-md-9">
@@ -117,7 +125,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right">
+                    <label class="col-md-3 col-form-label text-right"
+                           data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 구매 이력 목록이 표시됩니다">
                         <strong>구매 이력</strong>
                     </label>
                     <div class="col-md-9">
@@ -144,13 +153,14 @@
 
         </div>
         <div class="card-footer">
-            <button class="btn btn-block btn-primary" type="submit">저장</button>
+            <button class="btn btn-block btn-primary" type="submit"
+                    data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="변경된 고객 정보를 저장합니다">저장</button>
         </div>
     </form>
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <link rel="stylesheet" href="/node_modules/cropperjs/dist/cropper.min.css">
     <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script th:replace="fragments.html::script"></script>
     <script src="/node_modules/select2/dist/js/select2.full.js"></script>
     <script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
     <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
