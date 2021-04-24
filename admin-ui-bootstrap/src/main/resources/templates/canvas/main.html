@@ -62,7 +62,11 @@
 </div>
 
 <div th:replace="canvas/new-canvas-modal.html::new-canvas-modal(${registerForm})"></div>
-<div th:replace="canvas/view-canvas-modal.html::view-canvas-modal"></div>
+<div id="test">
+<div th:if="${canvasEditForm != null}">
+    <div th:replace="canvas/view-canvas-modal.html::view-canvas-modal(${canvasEditForm})"></div>
+</div>
+</div>
 <script th:replace="fragments.html::script"></script>
 <script th:replace="fragments.html::form-validation"></script>
 <link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">
@@ -91,7 +95,7 @@
                    {
                        var canvas = canvasList[idx];
                        var tagList = canvas.tags;
-                       var appendText = "<tr onclick=\"canvas_row_click();\">\n" +
+                       var appendText = "<tr onclick=\"canvas_row_click(" + canvas.id + ");\">\n" +
                            "                 <td>" + canvas.id + "</td>\n" +
                            "                 <td>" + canvas.title + "</td>\n" +
                            "                 <td>\n";
@@ -132,9 +136,26 @@
         g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
     });
 
-    function canvas_row_click() {
-        $("#view-canvas-modal").modal({
-            show: true
+    function canvas_row_click(id) {
+        $.ajax({
+            url : "/canvas-management/canvas/" + id,
+            type : "GET"
+        }).done((data, textStatus, jqXHR) => {
+            var responseText = jqXHR.responseText;
+            if(document.getElementById("test") == null)
+            {
+                $("#view-canvas-modal").replaceWith(responseText);
+            }
+            else
+            {
+                $("#test").replaceWith(responseText);
+            }
+
+            $("#view-canvas-modal").modal({
+                show: true
+            });
+
+            initViewCanvasModal();
         });
     }
 </script>

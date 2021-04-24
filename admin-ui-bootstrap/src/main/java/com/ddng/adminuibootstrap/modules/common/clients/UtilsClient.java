@@ -27,6 +27,14 @@ public interface UtilsClient
                                                @RequestParam("size") int size);
 
     /**
+     * 캔버스를 조회하는 API를 호출한다.
+     * @param canvasId 조회할 캔버스 아이디
+     * @return 아이디에 해당하는 캔버스
+     */
+    @GetMapping(CANVAS_API + "/{canvasId}")
+    CanvasDto.Response getCanvas(@PathVariable("canvasId") Long canvasId);
+
+    /**
      * 캔버스 태그 목록을 조회하는 API를 호출한다.
      * @param onlyUsed 사용중인 태그만 조회할지 여부
      * @return 캔버스 태그 목록

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div class="modal fade" th:fragment="view-canvas-modal" id="view-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" th:fragment="view-canvas-modal(${canvasEditForm})" id="view-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,37 +11,45 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal needs-validation" id="modal-canvas-form">
+                <form class="form-horizontal needs-validation" id="modal-canvas-form" onsubmit="return beforeSubmit()"
+                      th:object="${canvasEditForm}" novalidate th:action="@{/canvas-management/canvas/} + ${canvasEditForm.getId()}" method="post">
+                    <input type="hidden" th:field="*{id}">
                     <div class="form-group row" style="max-height: 700px;">
-                        <img class="col-md-12" src="https://images.mypetlife.co.kr/content/uploads/2019/09/09153001/dog-panting-1024x683.jpg">
+                        <img class="col-md-12" th:src="${canvasEditForm.getFilePath()}" style="max-height: 500px; object-fit: contain">
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label text-right" for="favorite-input">
+                        <label class="col-md-2 col-form-label text-right" for="view-canvas-modal-favorite-input">
                             <strong>상단 고정 여부</strong>
                         </label>
                         <div class="col-md-10">
-                            <label class="c-switch c-switch-pill c-switch-primary col-form-label">
-                                <input id="favorite-input" class="c-switch-input form-control" type="checkbox"><span class="c-switch-slider"></span>
+                            <label class="c-switch-lg c-switch-label c-switch-pill c-switch-primary">
+                                <input id="view-canvas-modal-favorite-input" class="c-switch-input" type="checkbox" th:field="*{topFixed}">
+                                <span class="c-switch-slider" data-checked="고정" data-unchecked="해제"></span>
                             </label>
+                            <div class="invalid-feedback">상단 고정 여부를 선택해주세요</div>
+                            <small class="text-danger" th:if="${#fields.hasErrors('topFixed')}" th:errors="*{topFixed}">topFixed Error</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label text-right" for="title-input">
+                        <label class="col-md-2 col-form-label text-right" for="view-canvas-modal-title-input">
                             <strong>제목</strong>
                         </label>
                         <div class="col-md-10">
-                            <input class="form-control" id="title-input" type="text" name="title" placeholder="제목을 입력하세요"
-                                   required lang="ko" minlength="1" maxlength="200">
-                            <div class="invalid-feedback">제목을 입력하세요 (1~200자)</div>
+                            <input class="form-control" id="view-canvas-modal-title-input" type="text" name="title" placeholder="제목을 입력하세요"
+                                   required lang="ko" minlength="1" maxlength="100"
+                                   th:field="*{title}">
+                            <div class="invalid-feedback">제목을 입력하세요 (1~100자)</div>
+                            <small class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label text-right" for="tags-input">
+                        <label class="col-md-2 col-form-label text-right" for="view-canvas-modal-tags-input">
                             <strong>태그</strong>
                         </label>
                         <div class="col-md-10">
-                            <div id="whitelist" hidden></div>
-                            <input id="tags-input" type="text" name="tags" aria-describedby="tagHelp"/>
+                            <div id="view-canvas-modal-whitelist" hidden></div>
+                            <input id="view-canvas-modal-tags-input" type="text" name="tags" aria-describedby="tagHelp"
+                                th:value="${#strings.listJoin(canvasEditForm.getTags(), ',')}"/>
                         </div>
                     </div>
                 </form>
@@ -53,6 +61,42 @@
             </div>
         </div>
     </div>
+    <script type="application/javascript">
+        function beforeSubmit () {
+            var tags = JSON.parse(document.getElementById("view-canvas-modal-tags-input").value);
+            var valueString = "";
+            if (tags != null && tags.length > 0)
+            {
+                for(var idx = 0; idx < tags.length; idx++)
+                {
+                    if(idx > 0)
+                    {
+                        valueString += ",";
+                    }
+                    valueString += tags[idx].value;
+                }
+            }
+            document.getElementById("view-canvas-modal-tags-input").value = valueString;
+            return true;
+        }
+
+        function initViewCanvasModal ()
+        {
+            var tagInput = document.querySelector("#view-canvas-modal-tags-input");
+            g_tagify = new Tagify(tagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist : [[${canvasEditForm.getTags()}]],
+                dropdown : {
+                    position: "input",
+                    enabled: 1, // suggest tags after a single character input
+                    fuzzySearch: false
+                }, // map tags
+                backspace : false
+            });
+            g_tagify.DOM.input.classList.add('form-control');
+            g_tagify.DOM.scope.parentNode.insertBefore(g_tagify.DOM.input, g_tagify.DOM.scope);
+        }
+    </script>
 </div>
 
 </html>
