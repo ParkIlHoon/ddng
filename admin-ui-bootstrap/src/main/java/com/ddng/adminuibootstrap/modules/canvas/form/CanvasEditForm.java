@@ -1,7 +1,9 @@
 package com.ddng.adminuibootstrap.modules.canvas.form;
 
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor @AllArgsConstructor
 public class CanvasEditForm
 {
     private Long id;

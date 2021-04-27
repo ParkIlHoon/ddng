@@ -5,6 +5,7 @@ import com.ddng.adminuibootstrap.modules.canvas.form.CanvasEditForm;
 import com.ddng.adminuibootstrap.modules.canvas.form.CanvasRegisterForm;
 import com.ddng.adminuibootstrap.modules.common.clients.UtilsClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
+import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasTagDto;
 import lombok.RequiredArgsConstructor;
@@ -90,6 +91,7 @@ public class CanvasController
         {
             redirectAttributes.addFlashAttribute("alertType", "danger");
             redirectAttributes.addFlashAttribute("message", "잘못된 요청입니다.");
+            return "redirect:/canvas-management";
         }
 
         //TODO 파일 저장
@@ -161,6 +163,72 @@ public class CanvasController
         }
     }
 
+    /**
+     * 캔버스 정보를 수정한다
+     * @param canvasId
+     * @param form
+     * @param errors
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping("/canvas/{canvasId}")
+    public String updateCanvas(@PathVariable("canvasId") Long canvasId,
+                               @Valid @ModelAttribute CanvasEditForm form,
+                               Errors errors,
+                               RedirectAttributes redirectAttributes)
+    {
+        if (errors.hasErrors())
+        {
+            redirectAttributes.addFlashAttribute("alertType", "danger");
+            redirectAttributes.addFlashAttribute("message", "잘못된 요청입니다.");
+            return "redirect:/canvas-management";
+        }
+
+        CanvasDto.Response canvas = utilsClient.getCanvas(canvasId);
+
+        CanvasDto.Update updateDto = new CanvasDto.Update();
+        updateDto.setTitle(form.getTitle());
+        updateDto.setTopFixed(form.isTopFixed());
+        updateDto.setFilePath(form.getFilePath());
+
+        utilsClient.updateCanvas(canvasId, updateDto);
+
+        redirectAttributes.addFlashAttribute("alertType", "success");
+        redirectAttributes.addFlashAttribute("message", "정상적으로 수정되었습니다.");
+        return "redirect:/canvas-management";
+    }
+
+    /**
+     * 캔버스 태그를 추가한다.
+     * @param canvasId
+     * @param title
+     * @return
+     */
+    @PostMapping("/canvas/{canvasId}/tags/add")
+    public ResponseEntity customerTagAddAction (@PathVariable("canvasId") Long canvasId, String title)
+    {
+        utilsClient.addCanvasTag(canvasId, title);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 캔버스 태그를 제거한다.
+     * @param canvasId
+     * @param title
+     * @return
+     */
+    @PostMapping("/canvas/{canvasId}/tags/remove")
+    public ResponseEntity customerTagRemoveAction (@PathVariable("canvasId") Long canvasId, String title)
+    {
+        utilsClient.removeCanvasTag(canvasId, title);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 이미지 파일을 저장하고 경로를 반환한다.
+     * @param file
+     * @return
+     */
     private String saveCanvasImage(MultipartFile file)
     {
         String filePath = null;

@@ -110,7 +110,6 @@ public class CanvasService
     public Canvas updateCanvas(Canvas canvas, CanvasDto.Update dto)
     {
         canvas.setTitle(dto.getTitle());
-        canvas.setFilePath(dto.getFilePath());
         canvas.setTopFixed(dto.isTopFixed());
 
         return canvasRepository.save(canvas);
