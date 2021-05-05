@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div class="modal fade" th:fragment="view-canvas-modal(${canvasEditForm})" id="view-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" th:fragment="view-canvas-modal(${canvasEditForm}, ${canvasTags})" id="view-canvas-modal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,7 +11,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <form class="form-horizontal needs-validation" id="modal-canvas-form" onsubmit="return beforeSubmit()"
-                  th:object="${canvasEditForm}" novalidate th:action="@{/canvas-management/canvas/} + ${canvasEditForm.getId()}" method="post">
+                  th:object="${canvasEditForm}" novalidate th:action="@{/canvas-management/canvas/update/} + ${canvasEditForm.getId()}" method="post">
                 <div class="modal-body">
                     <input type="hidden" th:field="*{id}">
                     <div class="form-group row" style="max-height: 700px;">
@@ -61,7 +61,7 @@
                             data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="변경된 내용을 저장하지 않고 팝업을 닫습니다">닫기</button>
                     <button class="btn btn-primary" type="submit"
                             data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="변경된 내용을 저장합니다">저장</button>
-                    <button class="btn btn-danger" type="button"
+                    <button class="btn btn-danger" type="button" onclick="btn_delete_click()"
                             data-toggle="tooltip" data-placement="bottom" data-html="true" title data-original-title="현재 캔버스를 삭제합니다">삭제</button>
                 </div>
             </form>
@@ -69,6 +69,20 @@
     </div>
     <script src="/js/tooltips.js"></script>
     <script type="application/javascript">
+        var whitelist = [];
+        $(function(){
+            /*<![CDATA[*/
+
+            /*[# th:each="tag : ${canvasTags}"]*/
+
+            /*[# th:if="${tag != null}"]*/
+                addWhiteList(whitelist, /*[[ ${tag} ]]*/);
+            /*[/]*/
+
+            /*[/]*/
+
+            /*]]>*/
+        });
         function beforeSubmit () {
             var tags = JSON.parse(document.getElementById("view-canvas-modal-tags-input").value);
             var valueString = "";
@@ -89,10 +103,12 @@
 
         function initViewCanvasModal ()
         {
+
+
             var tagInput = document.querySelector("#view-canvas-modal-tags-input");
             var tagify = new Tagify(tagInput, {
                 pattern: /^.{0,20}$/,
-                whitelist : [[${canvasEditForm.getTags()}]],
+                whitelist : whitelist,
                 dropdown : {
                     position: "input",
                     enabled: 1, // suggest tags after a single character input
@@ -125,6 +141,21 @@
                 url : "/canvas-management/canvas/" + [[${canvasEditForm.getId()}]] + "/tags/" + method,
                 data : {"title" : title}
             });
+        }
+
+        function btn_delete_click ()
+        {
+            $.ajax({
+                url : "/canvas-management/canvas/remove/" + [[${canvasEditForm.getId()}]],
+                method : "post"
+            }).done((data, textStatus, jqXHR) => {
+                var responseText = jqXHR.responseText;
+                $('body').replaceWith(responseText);
+            });
+        }
+
+        function addWhiteList (whitelist, value) {
+            whitelist.push(value);
         }
     </script>
 </div>

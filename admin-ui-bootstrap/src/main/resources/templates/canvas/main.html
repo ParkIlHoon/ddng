@@ -65,7 +65,7 @@
 <div th:replace="canvas/new-canvas-modal.html::new-canvas-modal(${registerForm})"></div>
 <div id="test">
 <div th:if="${canvasEditForm != null}">
-    <div th:replace="canvas/view-canvas-modal.html::view-canvas-modal(${canvasEditForm})"></div>
+    <div th:replace="canvas/view-canvas-modal.html::view-canvas-modal(${canvasEditForm}, ${canvasTags})"></div>
 </div>
 </div>
 <script th:replace="fragments.html::script"></script>

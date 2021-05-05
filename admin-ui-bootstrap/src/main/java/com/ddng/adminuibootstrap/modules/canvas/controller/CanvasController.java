@@ -124,6 +124,9 @@ public class CanvasController
                             Model model)
     {
         CanvasDto.Response canvas = utilsClient.getCanvas(canvasId);
+        List<CanvasTagDto> canvasTags = utilsClient.getCanvasTags(false);
+
+        model.addAttribute("canvasTags", canvasTags);
         model.addAttribute("canvasEditForm", new CanvasEditForm(canvas));
         return "canvas/view-canvas-modal :: #view-canvas-modal";
     }
@@ -171,7 +174,7 @@ public class CanvasController
      * @param redirectAttributes
      * @return
      */
-    @PostMapping("/canvas/{canvasId}")
+    @PostMapping("/canvas/update/{canvasId}")
     public String updateCanvas(@PathVariable("canvasId") Long canvasId,
                                @Valid @ModelAttribute CanvasEditForm form,
                                Errors errors,
@@ -222,6 +225,22 @@ public class CanvasController
     {
         utilsClient.removeCanvasTag(canvasId, title);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 캔버스를 삭제한다.
+     * @param canvasId
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping("/canvas/remove/{canvasId}")
+    public String deleteCanvas (@PathVariable("canvasId") Long canvasId,
+                                RedirectAttributes redirectAttributes)
+    {
+        utilsClient.deleteCanvas(canvasId);
+        redirectAttributes.addFlashAttribute("alertType", "success");
+        redirectAttributes.addFlashAttribute("message", "정상적으로 삭제되었습니다.");
+        return "redirect:/canvas-management";
     }
 
     /**
