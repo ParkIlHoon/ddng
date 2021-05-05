@@ -145,13 +145,22 @@
 
         function btn_delete_click ()
         {
-            $.ajax({
-                url : "/canvas-management/canvas/remove/" + [[${canvasEditForm.getId()}]],
-                method : "post"
-            }).done((data, textStatus, jqXHR) => {
-                var responseText = jqXHR.responseText;
-                $('body').replaceWith(responseText);
-            });
+            var newForm = document.createElement('form'); // set attribute (form)
+            newForm.name = 'newForm';
+            newForm.method = 'post';
+            newForm.action = '/canvas-management/canvas/remove/' + [[${canvasEditForm.getId()}]];
+            newForm.target = '_blank';
+
+            document.body.appendChild(newForm);
+
+            newForm.submit();
+            // $.ajax({
+            //     url : "/canvas-management/canvas/remove/" + [[${canvasEditForm.getId()}]],
+            //     method : "post"
+            // }).done((data, textStatus, jqXHR) => {
+            //     var responseText = jqXHR.responseText;
+            //     $('body').replaceWith(responseText);
+            // });
         }
 
         function addWhiteList (whitelist, value) {
