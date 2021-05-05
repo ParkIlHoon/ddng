@@ -11,6 +11,30 @@
 <!-- 미용 카드 영역 -->
 <section class="ftco-section goto-here">
     <div class="container">
+        <!-- 태그 영역 -->
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 >
+                    <span th:each="tag : ${canvasTags}"
+                          th:class="${selectTags.contains(tag.getTitle())}? 'badge badge-warning' : 'badge badge-light'"
+                          th:text="${tag.getTitle()}"
+                          style="cursor: pointer; margin-left: 3px; margin-right: 3px">태그명</span>&nbsp;
+<!--                    <span class="badge badge-warning">요크셔테리어</span>-->
+<!--                    <span class="badge badge-light">귀요미</span>-->
+<!--                    <span class="badge badge-light">썸머컷</span>-->
+<!--                    <span class="badge badge-light">시츄</span>-->
+<!--                    <span class="badge badge-light">정면샷</span>-->
+<!--                    <span class="badge badge-light">푸들</span>-->
+<!--                    <span class="badge badge-light">가위컷</span>-->
+<!--                    <span class="badge badge-light">기본미용</span>-->
+<!--                    <span class="badge badge-light">유치원</span>-->
+<!--                    <span class="badge badge-light">호텔</span>-->
+<!--                    <span class="badge badge-light">태그태그</span>-->
+                </h2>
+            </div>
+        </div>
+
+        <!-- 미용 카드 -->
         <div class="row">
             <div class="col-md-4" th:each="card : ${cardList}">
                 <div th:replace="canvas/card.html :: card(${card})"></div>
@@ -62,5 +86,35 @@
 <script src="/js/google-map.js"></script>
 <script src="/js/main.js"></script>
 <!-- 스크립트 로드 영역 끝 -->
+<script type="application/javascript">
+    $(function(){
+        $(".badge-light").on("click", function(e){
+            var newForm = document.createElement('form'); // set attribute (form)
+            newForm.name = 'newForm';
+            newForm.method = 'get';
+            newForm.action = '/canvas/search';
+
+            document.body.appendChild(newForm);
+            
+            var selectBadges = $(".badge-warning");
+            for (var idx = 0; idx < selectBadges.length; idx++) {
+                var input = document.createElement('input');
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", "tags");
+                input.setAttribute("value", selectBadges[idx].textContent);
+
+                newForm.appendChild(input);
+            }
+
+            var input = document.createElement('input');
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "tags");
+            input.setAttribute("value", $(this).text());
+            newForm.appendChild(input);
+
+            newForm.submit();
+        });
+    });
+</script>
 </body>
 </html>

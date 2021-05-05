@@ -3,10 +3,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="card (card)" class="property-wrap ftco-animate">
+<div th:fragment="card (${card})" class="property-wrap ftco-animate">
     <div class="img d-flex align-items-center justify-content-center"
-         style="background-image: url('/images/beauty/work-1.jpg');" th:style="'background-image: url(' + ${card.thumbnailPath} + ');'">
-        <a href="#" th:href="'/canvas/' + ${card.id}"
+         th:style="'background-image: url(' + '/canvas/image/' + ${card.getFilePath()} + ');'">
+        <a href="#" th:href="'/canvas/' + ${card.getId()}"
            class="icon d-flex align-items-center justify-content-center btn-custom">
             <span class="ion-ios-link"></span>
         </a>
@@ -20,7 +20,15 @@
         <span class="location d-inline-block mb-3" th:text="${card.content}">무난한 푸들 기본컷. <br>₩ 30,000 ~</span>
         -->
         <span class="location d-inline-block mb-3">
-            <a class="location d-inline-block mb-3" href="#" th:href="'/canvas/' + ${card.id}">원본 사이즈로 보기</a>
+            <a class="location d-inline-block mb-3" href="#"
+               th:href="'/canvas/' + ${card.getId()}" th:text="${card.getTitle()}">제목</a>
+            <br>
+            <h5>
+                <span class="badge badge-secondary"
+                      style="margin-left: 1px; margin-right: 1px"
+                      th:each="tag : ${card.getTags()}"
+                      th:text="${tag.getTitle()}">태그</span>
+            </h5>
         </span>
     </div>
 

@@ -1,16 +1,15 @@
-package com.ddng.userui.beauty;
+package com.ddng.userui.modules.hotel;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @Controller
-public class BeautyController
+public class HotelController
 {
-    @GetMapping("/beauty")
+    @GetMapping("/hotel")
     public String main (Model model)
     {
-        return "beauty/main";
+        return "hotel/main";
     }
 }

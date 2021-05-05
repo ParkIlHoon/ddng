@@ -1,4 +1,4 @@
-package com.ddng.userui.store;
+package com.ddng.userui.modules.store;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

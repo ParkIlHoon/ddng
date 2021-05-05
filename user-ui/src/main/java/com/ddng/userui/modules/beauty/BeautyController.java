@@ -1,15 +1,16 @@
-package com.ddng.userui.kindergarden;
+package com.ddng.userui.modules.beauty;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 @Controller
-public class KinderController
+public class BeautyController
 {
-    @GetMapping("/kindergarden")
+    @GetMapping("/beauty")
     public String main (Model model)
     {
-        return "kindergarden/main";
+        return "beauty/main";
     }
 }
