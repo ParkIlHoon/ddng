@@ -88,6 +88,7 @@
 <!-- 스크립트 로드 영역 끝 -->
 <script type="application/javascript">
     $(function(){
+        // 미선택 태그 클릭시
         $(".badge-light").on("click", function(e){
             var newForm = document.createElement('form'); // set attribute (form)
             newForm.name = 'newForm';
@@ -95,7 +96,7 @@
             newForm.action = '/canvas/search';
 
             document.body.appendChild(newForm);
-            
+
             var selectBadges = $(".badge-warning");
             for (var idx = 0; idx < selectBadges.length; idx++) {
                 var input = document.createElement('input');
@@ -111,6 +112,30 @@
             input.setAttribute("name", "tags");
             input.setAttribute("value", $(this).text());
             newForm.appendChild(input);
+
+            newForm.submit();
+        });
+
+        // 선택 태그 클릭시
+        $(".badge-warning").on("click", function(e){
+            var newForm = document.createElement('form'); // set attribute (form)
+            newForm.name = 'newForm';
+            newForm.method = 'get';
+            newForm.action = '/canvas/search';
+
+            document.body.appendChild(newForm);
+
+            var selectBadges = $(".badge-warning");
+            for (var idx = 0; idx < selectBadges.length; idx++) {
+                if ($(this).text() != selectBadges[idx].textContent) {
+                    var input = document.createElement('input');
+                    input.setAttribute("type", "hidden");
+                    input.setAttribute("name", "tags");
+                    input.setAttribute("value", selectBadges[idx].textContent);
+
+                    newForm.appendChild(input);
+                }
+            }
 
             newForm.submit();
         });
