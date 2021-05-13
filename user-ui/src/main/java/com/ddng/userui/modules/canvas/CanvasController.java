@@ -15,14 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -45,7 +44,7 @@ public class CanvasController
     }
 
     @GetMapping("/canvas/search")
-    public String searchListWithTags(@RequestParam List<String> tags,
+    public String searchListWithTags(@RequestParam("tags[]") List<String> tags,
                                      @PageableDefault Pageable pageable,
                                      Model model)
     {
@@ -55,7 +54,7 @@ public class CanvasController
         model.addAttribute("canvasTags", canvasTags);
         model.addAttribute("selectTags", tags);
         model.addAttribute("cardList", canvasWithPage.getContent());
-        return "canvas/main";
+        return "canvas/main :: #canvas-card";
     }
 
     /**

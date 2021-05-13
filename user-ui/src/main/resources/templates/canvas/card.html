@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="card (${card})" class="property-wrap ftco-animate">
+<div th:fragment="card (${card})" class="property-wrap">
     <div class="img d-flex align-items-center justify-content-center"
          th:style="'background-image: url(' + '/canvas/image/' + ${card.getFilePath()} + ');'">
         <a href="#" th:href="'/canvas/' + ${card.getId()}"

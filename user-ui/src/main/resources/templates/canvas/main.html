@@ -35,8 +35,8 @@
         </div>
 
         <!-- 미용 카드 -->
-        <div class="row">
-            <div class="col-md-4" th:each="card : ${cardList}">
+        <div id="canvas-row-div" class="row">
+            <div id="canvas-card" class="col-md-4" th:each="card : ${cardList}">
                 <div th:replace="canvas/card.html :: card(${card})"></div>
             </div>
         </div>
@@ -82,64 +82,79 @@
 <script src="/js/bootstrap-datepicker.js"></script>
 <script src="/js/jquery.timepicker.min.js"></script>
 <script src="/js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="/js/google-map.js"></script>
 <script src="/js/main.js"></script>
 <!-- 스크립트 로드 영역 끝 -->
 <script type="application/javascript">
+    var flag = false;
+    var page = 0;  //페이징과 같은 방식이라고 생각하면 된다.
+
     $(function(){
-        // 미선택 태그 클릭시
-        $(".badge-light").on("click", function(e){
-            var newForm = document.createElement('form'); // set attribute (form)
-            newForm.name = 'newForm';
-            newForm.method = 'get';
-            newForm.action = '/canvas/search';
-
-            document.body.appendChild(newForm);
-
-            var selectBadges = $(".badge-warning");
-            for (var idx = 0; idx < selectBadges.length; idx++) {
-                var input = document.createElement('input');
-                input.setAttribute("type", "hidden");
-                input.setAttribute("name", "tags");
-                input.setAttribute("value", selectBadges[idx].textContent);
-
-                newForm.appendChild(input);
+        // 태그 클릭시
+        $(".badge").on("click", function(e){
+            if($(this).hasClass("badge-light")) {
+                $(this).removeClass("badge-light");
+                $(this).addClass("badge-warning");
+            } else {
+                $(this).removeClass("badge-warning");
+                $(this).addClass("badge-light");
             }
 
-            var input = document.createElement('input');
-            input.setAttribute("type", "hidden");
-            input.setAttribute("name", "tags");
-            input.setAttribute("value", $(this).text());
-            newForm.appendChild(input);
-
-            newForm.submit();
-        });
-
-        // 선택 태그 클릭시
-        $(".badge-warning").on("click", function(e){
-            var newForm = document.createElement('form'); // set attribute (form)
-            newForm.name = 'newForm';
-            newForm.method = 'get';
-            newForm.action = '/canvas/search';
-
-            document.body.appendChild(newForm);
-
-            var selectBadges = $(".badge-warning");
-            for (var idx = 0; idx < selectBadges.length; idx++) {
-                if ($(this).text() != selectBadges[idx].textContent) {
-                    var input = document.createElement('input');
-                    input.setAttribute("type", "hidden");
-                    input.setAttribute("name", "tags");
-                    input.setAttribute("value", selectBadges[idx].textContent);
-
-                    newForm.appendChild(input);
-                }
-            }
-
-            newForm.submit();
+            getListAndReplace();
         });
     });
+
+    $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
+        if($(window).scrollTop() >= $(document).height() - $(window).height() - $("footer").height()){
+            if(flag){
+                getListAndAppend();
+            }
+        }
+    });
+
+    function getListAndAppend(){
+        page++;
+        var selectBadges = $(".badge-warning");
+        var sendData = {"page" : page, "size" : 6, "tags" : []}
+
+        for(var idx = 0; idx < selectBadges.length; idx++) {
+            sendData.tags.push(selectBadges[idx].textContent);
+        }
+
+        $.ajax({
+            type : 'GET',
+            data : sendData,
+            url : '/canvas/search'
+        }).done((data, textStatus, jqXHR) => {
+            if (data != null && data != "") {
+                $("#canvas-row-div").append(data);
+            } else {
+                flag = false;
+                page--;
+            }
+        });
+    }
+
+    function getListAndReplace() {
+        flag = false;
+        var selectBadges = $(".badge-warning");
+        var sendData = {"page" : 0, "size" : 6, "tags" : []}
+
+        for(var idx = 0; idx < selectBadges.length; idx++) {
+            sendData.tags.push(selectBadges[idx].textContent);
+        }
+
+        $.ajax({
+            type : 'GET',
+            data : sendData,
+            url : '/canvas/search'
+        }).done((data, textStatus, jqXHR) => {
+            $("#canvas-row-div").empty();
+            $("#canvas-row-div").append(data);
+            page = 0;
+            flag = true;
+        });
+    }
+
 </script>
 </body>
 </html>
