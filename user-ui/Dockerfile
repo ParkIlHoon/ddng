@@ -11,4 +11,4 @@ ARG JAR_FILE=target/user-ui-0.0.1-SNAPSHOT.jar
 # demo.jar의 이름으로 JAR 파일 추가
 ADD ${JAR_FILE} user-ui.jar
 # 컨테이너 실행 시 실행될 명령어 "java -jar demo.jar"
-ENTRYPOINT ["java", "-jar", "user-ui.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "user-ui.jar"]
