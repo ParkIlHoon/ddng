@@ -5,7 +5,6 @@ import com.ddng.adminuibootstrap.modules.canvas.form.CanvasEditForm;
 import com.ddng.adminuibootstrap.modules.canvas.form.CanvasRegisterForm;
 import com.ddng.adminuibootstrap.modules.common.clients.UtilsClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
-import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasTagDto;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +26,7 @@ import javax.validation.Valid;
 import java.io.*;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * <h1>홈페이지 관리 > 캔버스 관리 메뉴 컨트롤러</h1>

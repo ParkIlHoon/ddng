@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor @AllArgsConstructor
 public class Coupon
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     @ApiModelProperty(value = "쿠폰 아이디", dataType = "Long", example = "1")
     private Long id;

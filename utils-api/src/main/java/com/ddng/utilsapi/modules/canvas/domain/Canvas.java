@@ -21,7 +21,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Canvas
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "USER_GROUP")
 public class Group
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

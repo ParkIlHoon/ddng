@@ -14,7 +14,8 @@ import java.util.List;
 @EqualsAndHashCode(of = {"id"})
 public class Family
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
