@@ -33,7 +33,7 @@ public class FileService {
     private String uploadRootPath;
 
     public static final String THUMBNAIL_FOLDER = "thumbnail";
-
+    public static final String FILE_URL_PREFIX = "files";
 
     public FileSaveResultDto saveFile(@NotEmpty String folderName, @NotNull MultipartFile file) throws IOException {
         return this.saveFile(folderName, file, 0);
@@ -46,12 +46,12 @@ public class FileService {
 
         if (!StringUtils.isEmpty(savedFilePath)) {
             FileSaveResultDto fileSaveResultDto = new FileSaveResultDto()
-                    .setFileUrl(folderName + "/" + uuid)
+                    .setFileUrl(FILE_URL_PREFIX + "/" + folderName + "/" + uuid)
                     .setFilePath(savedFilePath);
     
             if (width > 0 && isImage(file)) {
                 String savedThumbnailPath = writeThumbnail(folderName, saveFileName, file, width);
-                fileSaveResultDto.setThumbnailUrl(folderName + "/" + THUMBNAIL_FOLDER + "/" + uuid)
+                fileSaveResultDto.setThumbnailUrl(FILE_URL_PREFIX + "/" + folderName + "/" + THUMBNAIL_FOLDER + "/" + uuid)
                         .setThumbnailPath(savedThumbnailPath);
             }
             return fileSaveResultDto;

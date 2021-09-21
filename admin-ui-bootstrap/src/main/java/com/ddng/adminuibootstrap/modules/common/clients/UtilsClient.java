@@ -1,10 +1,14 @@
 package com.ddng.adminuibootstrap.modules.common.clients;
 
+import com.ddng.adminuibootstrap.modules.canvas.form.FileUploadForm;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasTagDto;
+import com.ddng.adminuibootstrap.modules.common.dto.utils.file.FileUploadRespDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.util.List;
 import java.util.Set;
@@ -13,6 +17,7 @@ import java.util.Set;
 public interface UtilsClient
 {
     String CANVAS_API = "/canvas";
+    String FILE_API = "/files";
 
     /**
      * 태그에 해당하는 캔버스 목록을 조회하는 API를 호출한다.
@@ -89,4 +94,20 @@ public interface UtilsClient
      */
     @DeleteMapping(CANVAS_API + "/{canvasId}/tags")
     void removeCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
+
+    /**
+     * 파일 업로드 API를 호출한다.
+     * @param category 카테고리
+     * @param fileUploadForm 업로드 정보
+     */
+    @PostMapping(value = FILE_API + "/{category}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    FileUploadRespDto uploadFile(@PathVariable("category") String category, @RequestBody FileUploadForm fileUploadForm);
+
+    /**
+     * 파일 삭제 API를 호출한다.
+     * @param category 카테고리
+     * @param uuid 파일 UUID
+     */
+    @DeleteMapping(FILE_API + "/{category}/{uuid}")
+    void deleteFile(@PathVariable("category") String category, @PathVariable("uuid") String uuid);
 }

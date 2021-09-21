@@ -43,50 +43,10 @@ public interface UtilsClient
     List<CanvasTagDto> getCanvasTags(@RequestParam("onlyUsed") boolean onlyUsed);
 
     /**
-     * 캔버스를 생성하는 API를 호출한다.
-     * @param dto 새로 생성할 캔버스 정보
-     */
-    @PostMapping(CANVAS_API)
-    void createCanvas(@RequestBody CanvasDto.Create dto);
-
-    /**
-     * 캔버스를 수정하는 API를 호출한다.
-     * @param id 수정할 캔버스 아이디
-     * @param dto 수정할 캔버스 정보
-     */
-    @PutMapping(CANVAS_API + "/{canvasId}")
-    void updateCanvas(@PathVariable("canvasId") Long id,
-                      @RequestBody CanvasDto.Update dto);
-
-    /**
-     * 캔버스를 삭제하는 API를 호출한다.
-     * @param id 삭제할 캔버스 아이디
-     */
-    @DeleteMapping(CANVAS_API + "/{canvasId}")
-    void deleteCanvas(@PathVariable("canvasId") Long id);
-
-
-    /**
      * 캔버스의 태그를 조회하는 API를 호출한다.
      * @param id 캔버스 아이디
      * @return 해당 캔버스의 태그 목록
      */
     @GetMapping(CANVAS_API + "/{canvasId}/tags")
     Set<CanvasTagDto> getCanvasTags(@PathVariable("canvasId") Long id);
-
-    /**
-     * 캔버스에 태그를 추가하는 API를 호출한다.
-     * @param id 캔버스 아이디
-     * @param title 추가할 태그 타이틀
-     */
-    @PostMapping(CANVAS_API + "/{canvasId}/tags")
-    void addCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
-
-    /**
-     * 캔버스의 태그를 제거하는 API를 호출한다.
-     * @param id 캔버스 아이디
-     * @param title 제거할 태그 타이틀
-     */
-    @DeleteMapping(CANVAS_API + "/{canvasId}/tags")
-    void removeCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
 }

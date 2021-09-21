@@ -31,6 +31,8 @@ public class FileController {
     private final FileService fileService;
     private final FileMetaDataService fileMetaDataService;
 
+    private static final String REQUEST_PREFIX = "files";
+
     @PostMapping("/{category}")
     @ApiOperation(value = "파일 업로드", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
@@ -77,7 +79,23 @@ public class FileController {
                                                                @PathVariable("category") String category,
                                                                @ApiParam(value = "파일 uuid")
                                                                @PathVariable("uuid") String uuid) throws IOException {
-        FileMetaData metaData = fileMetaDataService.getMetaData(category + "/" + uuid);
+        FileMetaData metaData = fileMetaDataService.getMetaData(REQUEST_PREFIX + "/" + category + "/" + uuid);
+        InputStream is = fileService.readStream(metaData.getFilePath());
+        StreamingResponseBody streamingResponseBody = os -> FileCopyUtils.copy(is, os);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(streamingResponseBody);
+    }
+
+    @GetMapping("/{category}/thumbnail/{uuid}")
+    @ApiOperation(value = "썸네일 다운로드", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.ALL_VALUE)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "다운로드 성공"),
+            @ApiResponse(code = 404, message = "파일을 찾을 수 없습니다.")
+    })
+    public ResponseEntity<StreamingResponseBody> downloadThumbnail (@ApiParam(value = "카테고리")
+                                                               @PathVariable("category") String category,
+                                                               @ApiParam(value = "파일 uuid")
+                                                               @PathVariable("uuid") String uuid) throws IOException {
+        FileMetaData metaData = fileMetaDataService.getMetaData(REQUEST_PREFIX + "/" + category + "/thumbnail/" + uuid);
         InputStream is = fileService.readStream(metaData.getFilePath());
         StreamingResponseBody streamingResponseBody = os -> FileCopyUtils.copy(is, os);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(streamingResponseBody);
@@ -94,7 +112,7 @@ public class FileController {
                                       @PathVariable("category") String category,
                                       @ApiParam(value = "파일 uuid")
                                       @PathVariable("uuid") String uuid) throws IOException {
-        FileMetaData metaData = fileMetaDataService.getMetaData(category + "/" + uuid);
+        FileMetaData metaData = fileMetaDataService.getMetaData(REQUEST_PREFIX + "/" + category + "/" + uuid);
         boolean isRemoved = fileService.removeFile(metaData.getFilePath());
         if (!isRemoved) {
             fileMetaDataService.deleteMetaData(metaData.getId());

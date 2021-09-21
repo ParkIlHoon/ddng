@@ -3,30 +3,24 @@ package com.ddng.adminuibootstrap.modules.canvas.controller;
 import com.ddng.adminuibootstrap.infra.properties.ServiceProperties;
 import com.ddng.adminuibootstrap.modules.canvas.form.CanvasEditForm;
 import com.ddng.adminuibootstrap.modules.canvas.form.CanvasRegisterForm;
+import com.ddng.adminuibootstrap.modules.canvas.form.FileUploadForm;
 import com.ddng.adminuibootstrap.modules.common.clients.UtilsClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasTagDto;
+import com.ddng.adminuibootstrap.modules.common.dto.utils.file.FileUploadRespDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.*;
 import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * <h1>홈페이지 관리 > 캔버스 관리 메뉴 컨트롤러</h1>
@@ -38,7 +32,9 @@ public class CanvasController
 {
     private final UtilsClient utilsClient;
     private final ServiceProperties serviceProperties;
-    private static final String CANVAS_FILE_PATH = "canvas";
+
+    @Value("${service.gateway.utils}")
+    public String utilsApiEndpoint;
 
     /**
      * 메인 화면 뷰 요청
@@ -91,16 +87,15 @@ public class CanvasController
             return "redirect:/canvas-management";
         }
 
-        //TODO 파일 저장
-        MultipartFile canvasImage = form.getCanvasImage();
-        String imagePath = saveCanvasImage(canvasImage);
+        FileUploadRespDto uploadRespDto = utilsClient.uploadFile("canvas", new FileUploadForm().setFile(form.getCanvasImage()).setCreateThumbnail(true).setThumbnailWidth(400));
 
         // 캔버스 저장 처리
         CanvasDto.Create canvasDto = new CanvasDto.Create();
         canvasDto.setTitle(form.getTitle());
         canvasDto.setTopFixed(form.isTopFixed());
         canvasDto.setTags(new HashSet<>(form.getTags()));
-        canvasDto.setFilePath(imagePath);
+        canvasDto.setFilePath(utilsApiEndpoint + "/" + uploadRespDto.getFileUrl());
+        canvasDto.setThumbnail(utilsApiEndpoint + "/" + uploadRespDto.getThumbnailUrl());
 
         utilsClient.createCanvas(canvasDto);
 
@@ -129,41 +124,6 @@ public class CanvasController
     }
 
     /**
-     * 캔버스 이미지 요청
-     * @param folder
-     * @param fileName
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/canvas/image/{folder}/{fileName}")
-    public ResponseEntity getCanvasImage(@PathVariable("folder") String folder,
-                                         @PathVariable("fileName") String fileName,
-                                         HttpServletRequest request) throws Exception {
-        String filePath = serviceProperties.getFile() + CANVAS_FILE_PATH + File.separator + StringUtils.cleanPath(folder + "/" + fileName);
-
-        File file = new File(filePath);
-
-        if (file.exists())
-        {
-            String contentType = "";
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
-            request.getServletContext().getMimeType(file.getAbsolutePath());
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-                    .contentLength(file.length())
-                    .contentType(MediaType.parseMediaType("application/octet-stream"))
-                    .body(resource);
-        }
-        else
-        {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    /**
      * 캔버스 정보를 수정한다
      * @param canvasId
      * @param form
@@ -184,12 +144,9 @@ public class CanvasController
             return "redirect:/canvas-management";
         }
 
-        CanvasDto.Response canvas = utilsClient.getCanvas(canvasId);
-
         CanvasDto.Update updateDto = new CanvasDto.Update();
         updateDto.setTitle(form.getTitle());
         updateDto.setTopFixed(form.isTopFixed());
-        updateDto.setFilePath(form.getFilePath());
 
         utilsClient.updateCanvas(canvasId, updateDto);
 
@@ -238,37 +195,5 @@ public class CanvasController
         redirectAttributes.addFlashAttribute("alertType", "success");
         redirectAttributes.addFlashAttribute("message", "정상적으로 삭제되었습니다.");
         return "redirect:/canvas-management";
-    }
-
-    /**
-     * 이미지 파일을 저장하고 경로를 반환한다.
-     * @param file
-     * @return
-     */
-    private String saveCanvasImage(MultipartFile file)
-    {
-        String filePath = null;
-        try
-        {
-            String name = file.getOriginalFilename();
-            String uuid = UUID.randomUUID().toString();
-            filePath = uuid + File.separator + name;
-            String dirPath = serviceProperties.getFile() + CANVAS_FILE_PATH + File.separator +  uuid;
-            String fullPath = dirPath + File.separator +  name;
-
-            File folder = new File(dirPath);
-            if (!folder.exists())
-            {
-                folder.mkdirs();
-            }
-
-            File newFile = new File(fullPath);
-            FileCopyUtils.copy(file.getBytes(), newFile);
-        }
-        catch (IOException e)
-        {
-            return null;
-        }
-        return filePath;
     }
 }

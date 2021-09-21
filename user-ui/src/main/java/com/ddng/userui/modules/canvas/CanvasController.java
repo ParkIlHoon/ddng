@@ -57,46 +57,11 @@ public class CanvasController
         return "canvas/main :: #canvas-card";
     }
 
-    /**
-     * 캔버스 이미지 요청
-     * @param folder
-     * @param fileName
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/canvas/image/{folder}/{fileName}")
-    public ResponseEntity getCanvasImage(@PathVariable("folder") String folder,
-                                         @PathVariable("fileName") String fileName,
-                                         HttpServletRequest request) throws Exception {
-        String filePath = serviceProperties.getFile() + CANVAS_FILE_PATH + File.separator + StringUtils.cleanPath(folder + "/" + fileName);
-
-        File file = new File(filePath);
-
-        if (file.exists())
-        {
-            String contentType = "";
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
-            request.getServletContext().getMimeType(file.getAbsolutePath());
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-                    .contentLength(file.length())
-                    .contentType(MediaType.parseMediaType("application/octet-stream"))
-                    .body(resource);
-        }
-        else
-        {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping("/canvas/{id}")
     public String detail (@PathVariable("id") Long id, Model model)
     {
-
-//        model.addAttribute("card", card);
+        CanvasDto.Response canvas = utilsClient.getCanvas(id);
+        model.addAttribute("canvas", canvas);
         return "canvas/card-detail";
     }
 }

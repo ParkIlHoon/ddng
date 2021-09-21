@@ -32,6 +32,9 @@ public class Canvas
     @Column(name = "FILE_PATH")
     private String filePath;
 
+    @Column(name = "THUMBNAIL")
+    private String thumbnail;
+
     @Column(name = "IS_TOP_FIXED")
     private boolean isTopFixed;
 
