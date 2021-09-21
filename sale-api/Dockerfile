@@ -7,7 +7,7 @@ VOLUME /tmp
 # 외부에 노출되는 포트 번호
 EXPOSE 18015
 # 현재 JAR 파일 변수 설정
-ARG JAR_FILE=target/sale-api-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/sale-api-1.0.0-RELEASE.jar
 # demo.jar의 이름으로 JAR 파일 추가
 ADD ${JAR_FILE} sale-api.jar
 # 컨테이너 실행 시 실행될 명령어 "java -Dspring.profiles.active=dev -jar sale-api.jar"
