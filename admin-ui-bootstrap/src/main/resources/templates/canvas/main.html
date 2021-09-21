@@ -105,7 +105,7 @@
                            appendText += "       <span class=\"badge badge-secondary\">" + tagList[idx2].title + "</span>\n";
                        }
                            appendText += "   </td>\n" +
-                           "                 <td>" + canvas.createDate + "</td>\n" +
+                           "                 <td>" + commonUtil.date.convertDateTimeFromNow(canvas.createDate) + " (" + commonUtil.date.convertDateTime(canvas.createDate) + ")" + "</td>\n" +
                            "             </tr>";
 
                        $("#canvas-table-body").append(appendText);
