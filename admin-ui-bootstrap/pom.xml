@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>admin-ui-bootstrap</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <name>admin-ui-bootstrap</name>
     <description>똥강아지 어드민 사이트 BFF</description>
 
