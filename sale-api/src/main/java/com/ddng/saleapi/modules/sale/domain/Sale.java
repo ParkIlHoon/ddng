@@ -14,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class Sale
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

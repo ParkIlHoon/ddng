@@ -1,6 +1,7 @@
 package com.ddng.saleapi.infra.util;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -12,13 +13,14 @@ import java.io.IOException;
 @Component
 public class FileUtils
 {
-    private static final String BASE_PATH = "/home/hoon/ddng";
+    @Value("${service.file:/Users/1hoon/workspace/file_ddng/}")
+    private String filePath;
 
     public String saveBase64AsFile (String uploadPath, String base64String)
     {
         String result = "";
         byte[] decode = Base64.decodeBase64(base64String);
-        String fileUploadPath = BASE_PATH + File.separator  + StringUtils.cleanPath(uploadPath);
+        String fileUploadPath = filePath + StringUtils.cleanPath(uploadPath);
         FileOutputStream fos = null;
 
         try
@@ -53,7 +55,7 @@ public class FileUtils
 
     public boolean deleteFile (String filePath)
     {
-        String path = BASE_PATH + File.separator + StringUtils.cleanPath(filePath);
+        String path = filePath + StringUtils.cleanPath(filePath);
 
         File file = new File(path);
 

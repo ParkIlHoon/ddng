@@ -21,7 +21,8 @@ import java.util.Set;
 @AllArgsConstructor @NoArgsConstructor
 public class Customer
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

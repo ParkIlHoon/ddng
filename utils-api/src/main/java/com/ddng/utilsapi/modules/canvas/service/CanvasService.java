@@ -50,6 +50,7 @@ public class CanvasService
         Canvas newCanvas = new Canvas();
         newCanvas.setTitle(dto.getTitle());
         newCanvas.setFilePath(dto.getFilePath());
+        newCanvas.setThumbnail(dto.getThumbnail());
         newCanvas.setTopFixed(dto.isTopFixed());
 
         Canvas savedCanvas = canvasRepository.save(newCanvas);

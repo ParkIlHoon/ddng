@@ -11,7 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor @NoArgsConstructor
 public class Tag
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

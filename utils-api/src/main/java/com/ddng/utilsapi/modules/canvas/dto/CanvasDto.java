@@ -27,16 +27,18 @@ public class CanvasDto
         private Long id;
         private String title;
         private String filePath;
+        private String thumbnail;
         private boolean isTopFixed;
         private LocalDateTime createDate;
         private Set<CanvasTagDto> tags = new HashSet<>();
 
         @QueryProjection
-        public Response(Long id, String title, String filePath, boolean isTopFixed, LocalDateTime createDate, Set<CanvasTag> tags)
+        public Response(Long id, String title, String filePath, String thumbnail, boolean isTopFixed, LocalDateTime createDate, Set<CanvasTag> tags)
         {
             this.id = id;
             this.title = title;
             this.filePath = filePath;
+            this.thumbnail = thumbnail;
             this.isTopFixed = isTopFixed;
             this.createDate = createDate;
             this.tags = tags.stream().map(CanvasTagDto::new).collect(Collectors.toSet());
@@ -46,6 +48,7 @@ public class CanvasDto
             this.id = canvas.getId();
             this.title = canvas.getTitle();
             this.filePath = canvas.getFilePath();
+            this.thumbnail = canvas.getThumbnail();
             this.isTopFixed = canvas.isTopFixed();
             this.createDate = canvas.getCreateDate();
             this.tags = canvas.getTags().stream().map(CanvasTagDto::new).collect(Collectors.toSet());
@@ -58,6 +61,7 @@ public class CanvasDto
     {
         private String title;
         private String filePath;
+        private String thumbnail;
         private boolean isTopFixed;
         private Set<String> tags = new HashSet<>();
     }
@@ -67,7 +71,6 @@ public class CanvasDto
     public static class Update
     {
         private String title;
-        private String filePath;
         private boolean isTopFixed;
     }
 }

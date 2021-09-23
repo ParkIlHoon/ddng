@@ -19,7 +19,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Item
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

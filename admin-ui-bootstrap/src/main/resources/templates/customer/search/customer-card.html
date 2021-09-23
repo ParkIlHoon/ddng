@@ -96,12 +96,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-right" for="date-input"
+                    <label class="col-md-3 col-form-label text-right" for="date-static"
                            data-toggle="tooltip" data-placement="right" data-html="true" title data-original-title="고객의 가입일이 표시됩니다">
                         <strong>가입일</strong>
                     </label>
                     <div class="col-md-9">
-                        <input class="form-control" id="date-input" type="date" name="date-input" th:value="${#temporals.format(customerForm.getJoinDate(), 'yyyy-MM-dd')}" readonly>
+                        <p id="date-static" class="form-control-static" th:text="${#temporals.format(customerForm.getJoinDate(), 'yyyy-MM-dd')}">가입일</p>
                     </div>
                 </div>
                 <div class="form-group row">

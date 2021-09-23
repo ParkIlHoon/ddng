@@ -34,7 +34,7 @@ public class CanvasEditForm
         this.id = canvasDto.getId();
         this.title = canvasDto.getTitle();
         this.topFixed = canvasDto.isTopFixed();
-        this.filePath = "/canvas-management/canvas/image/" + canvasDto.getFilePath();
+        this.filePath = canvasDto.getFilePath();
         this.tags = canvasDto.getTags().stream().map(t -> t.getTitle()).collect(Collectors.toList());
     }
 }

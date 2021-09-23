@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor @AllArgsConstructor
 public class SaleItem
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

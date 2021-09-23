@@ -17,7 +17,8 @@ import java.util.Set;
 @Getter @Setter
 public class Schedules
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
