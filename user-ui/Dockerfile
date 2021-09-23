@@ -7,8 +7,8 @@ VOLUME /tmp
 # 외부에 노출되는 포트 번호
 EXPOSE 18080
 # 현재 JAR 파일 변수 설정
-ARG JAR_FILE=target/user-ui-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/user-ui-1.0.0-RELEASE.jar
 # demo.jar의 이름으로 JAR 파일 추가
 ADD ${JAR_FILE} user-ui.jar
 # 컨테이너 실행 시 실행될 명령어 "java -jar demo.jar"
-ENTRYPOINT ["java", "-jar", "user-ui.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "user-ui.jar"]

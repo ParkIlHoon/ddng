@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import feign.codec.Encoder;
+import feign.form.spring.SpringFormEncoder;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * <h1>Spring Cloud Feign 설정 클래스</h1>
@@ -55,4 +58,9 @@ public class FeignClientConfig
 
     @JsonDeserialize(as = FeignPageImpl.class)
     private interface PageMixIn {}
+
+    @Bean
+    public Encoder multipartFormEncoder() {
+        return new SpringFormEncoder(new SpringEncoder(() -> new HttpMessageConverters(new RestTemplate().getMessageConverters())));
+    }
 }

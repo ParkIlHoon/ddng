@@ -23,9 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.persistence.EntityManager;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +44,7 @@ class CustomerControllerTest
     @Autowired private TagRepository tagRepository;
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
+    @Autowired private EntityManager entityManager;
 
     @BeforeEach
     void initializeData ()
@@ -69,6 +73,7 @@ class CustomerControllerTest
     @AfterEach
     void resetData ()
     {
+        tagRepository.deleteAll();
         customerRepository.deleteAll();
     }
 
@@ -274,9 +279,9 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        post("/customers/{id}/tag", save.getId())
+                        post("/customers/{id}/tags", save.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(tagDto))
+                                .content("입질 심함")
                         )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -284,7 +289,7 @@ class CustomerControllerTest
         // then
         Optional<Customer> byId = customerRepository.findById(save.getId());
         assertThat(byId.get().getTags()).isNotEmpty();
-        assertThat(byId.get().getTags().stream().filter(tag -> tag.getTitle().equals("입질 심함")).count()).isEqualTo(1);
+        assertTrue(byId.get().getTags().stream().map(Tag::getTitle).collect(Collectors.toList()).contains("입질 심함"));
     }
 
     @Test
@@ -308,12 +313,14 @@ class CustomerControllerTest
 
         // when
         mockMvc.perform(
-                        delete("/customers/{id}/tag", save.getId())
+                        delete("/customers/{id}/tags", save.getId())
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(tagDto))
+                            .content("곱슬")
                         )
                 .andDo(print())
                 .andExpect(status().isOk());
+
+        entityManager.clear();
 
         // then
         Optional<Customer> byId = customerRepository.findById(save.getId());

@@ -21,7 +21,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Canvas
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
@@ -30,6 +31,9 @@ public class Canvas
 
     @Column(name = "FILE_PATH")
     private String filePath;
+
+    @Column(name = "THUMBNAIL")
+    private String thumbnail;
 
     @Column(name = "IS_TOP_FIXED")
     private boolean isTopFixed;

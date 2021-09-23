@@ -21,6 +21,7 @@ public class CanvasDto
         private Long id;
         private String title;
         private String filePath;
+        private String thumbnail;
         private boolean isTopFixed;
         private LocalDateTime createDate;
         private Set<CanvasTagDto> tags = new HashSet<>();
@@ -32,6 +33,7 @@ public class CanvasDto
     {
         private String title;
         private String filePath;
+        private String thumbnail;
         private boolean isTopFixed;
         private Set<String> tags = new HashSet<>();
     }
@@ -41,7 +43,6 @@ public class CanvasDto
     public static class Update
     {
         private String title;
-        private String filePath;
         private boolean isTopFixed;
     }
 }

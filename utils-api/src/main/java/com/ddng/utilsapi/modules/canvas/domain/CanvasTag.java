@@ -17,7 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class CanvasTag
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

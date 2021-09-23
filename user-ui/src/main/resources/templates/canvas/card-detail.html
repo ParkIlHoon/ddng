@@ -15,14 +15,15 @@
             <div class="col-md-12">
                 <div class="property-details">
                     <div class="img rounded">
-                        <img src="" th:src="${card.thumbnailPath}" style="width: 100%;">
+                        <img src="" th:src="${canvas.getFilePath()}" style="width: 100%;">
                     </div>
-					<!--
                     <div class="text">
-                        <h2 th:text="${card.title}">캔버스 타이틀</h2>
-                        <span class="subheading" th:text="${card.content}">캔버스 내용</span>
+                        <h2 th:text="${canvas.getTitle()}">캔버스 타이틀</h2>
+                        <span class="badge badge-secondary"
+                              style="margin-left: 1px; margin-right: 1px"
+                              th:each="tag : ${canvas.getTags()}"
+                              th:text="${tag.getTitle()}">태그</span>
                     </div>
-                    -->
                 </div>
             </div>
         </div>

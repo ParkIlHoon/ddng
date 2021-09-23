@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor @AllArgsConstructor
 public class Stamp
 {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)
     @ApiModelProperty(value = "스탬프 아이디", dataType = "Long", required = true, example = "1")
     private Long id;
