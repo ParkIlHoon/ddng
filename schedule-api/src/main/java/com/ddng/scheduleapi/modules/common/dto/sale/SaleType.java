@@ -1,15 +1,12 @@
-package com.ddng.scheduleapi.template.sale.dto;
+package com.ddng.scheduleapi.modules.common.dto.sale;
 
 import lombok.Getter;
 
 /**
- * <h1>판매 타입 Enum 클래스</h1>
- *
- * @version 1.0
+ * <h1>ddng-sale-api 판매 타입 Enum 클래스</h1>
  */
 @Getter
-public enum SaleType
-{
+public enum SaleType {
     ORDER("주문"),
     PAYED("결재"),
     CANCEL("환불"),
@@ -17,8 +14,7 @@ public enum SaleType
 
     private String name;
 
-    SaleType(String name)
-    {
+    SaleType(String name) {
         this.name = name;
     }
 }
