@@ -9,8 +9,11 @@ import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.file.FileUploadRespDto;
+import com.ddng.adminuibootstrap.modules.common.utils.AlertUtils;
+import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,24 +31,25 @@ import java.util.List;
 @Controller
 @RequestMapping("/canvas-management")
 @RequiredArgsConstructor
-public class CanvasController
-{
+public class CanvasController {
+
     private final UtilsClient utilsClient;
     private final ServiceProperties serviceProperties;
 
     @Value("${service.gateway.utils}")
     public String utilsApiEndpoint;
 
+    private static final String HOME_URL = "/canvas-management";
+
     /**
      * 메인 화면 뷰 요청
+     *
      * @param model
      * @return
      */
     @RequestMapping
-    public String mainForm (Model model)
-    {
+    public String mainForm(Model model) {
         List<CanvasTagDto> canvasTags = utilsClient.getCanvasTags(false);
-
         model.addAttribute("canvasTags", canvasTags);
         model.addAttribute("registerForm", new CanvasRegisterForm());
         return "canvas/main";
@@ -53,6 +57,7 @@ public class CanvasController
 
     /**
      * 캔버스 목록 조회 요청
+     *
      * @param tags 조회할 태그 목록
      * @param page
      * @param size
@@ -60,31 +65,28 @@ public class CanvasController
      */
     @GetMapping("/canvas")
     public ResponseEntity searchCanvasList(@RequestParam("tags") List<String> tags,
-                                           @RequestParam("page") int page,
-                                           @RequestParam("size") int size)
-    {
+                                            @RequestParam("page") @Min(0) int page,
+                                            @RequestParam("size") @Min(1) int size) {
         FeignPageImpl<CanvasDto.Response> canvasWithPage = utilsClient.getCanvasWithPage(tags, page, size);
-
         return ResponseEntity.ok(canvasWithPage);
     }
 
     /**
      * 캔버스 생성 요청
+     *
      * @param form
      * @param errors
      * @param redirectAttributes
      * @return
      */
     @PostMapping("/canvas")
-    public String createCanvas(@Valid @ModelAttribute CanvasRegisterForm form,
-                               Errors errors,
-                               RedirectAttributes redirectAttributes)
-    {
-        if (errors.hasErrors())
-        {
-            redirectAttributes.addFlashAttribute("alertType", "danger");
-            redirectAttributes.addFlashAttribute("message", "잘못된 요청입니다.");
-            return "redirect:/canvas-management";
+    public String createCanvas(@Valid
+                                @ModelAttribute CanvasRegisterForm form,
+                                Errors errors,
+                                RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
+            AlertUtils.alertFail(redirectAttributes, "잘못된 요청입니다.");
+            return "redirect:" + HOME_URL;
         }
 
         FileUploadRespDto uploadRespDto = utilsClient.uploadFile("canvas", new FileUploadForm().setFile(form.getCanvasImage()).setCreateThumbnail(true).setThumbnailWidth(400));
@@ -97,24 +99,25 @@ public class CanvasController
         canvasDto.setFilePath(utilsApiEndpoint + "/" + uploadRespDto.getFileUrl());
         canvasDto.setThumbnail(utilsApiEndpoint + "/" + uploadRespDto.getThumbnailUrl());
 
-        utilsClient.createCanvas(canvasDto);
-
-        redirectAttributes.addFlashAttribute("alertType", "success");
-        redirectAttributes.addFlashAttribute("message", "캔버스가 정상적으로 등록되었습니다.");
-
-        return "redirect:/canvas-management";
+        ResponseEntity responseEntity = utilsClient.createCanvas(canvasDto);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            AlertUtils.alertSuccess(redirectAttributes, "캔버스가 정상적으로 등록되었습니다.");
+        } else {
+            AlertUtils.alertFail(redirectAttributes, "캔버스가 등록 중 오류가 발생했습니다.");
+        }
+        return "redirect:" + HOME_URL;
     }
 
     /**
      * 캔버스 뷰 요청
+     *
      * @param canvasId 조회할 캔버스
      * @param model
      * @return
      */
     @GetMapping("/canvas/{canvasId}")
     public String getCanvas(@PathVariable("canvasId") Long canvasId,
-                            Model model)
-    {
+                            Model model) {
         CanvasDto.Response canvas = utilsClient.getCanvas(canvasId);
         List<CanvasTagDto> canvasTags = utilsClient.getCanvasTags(false);
 
@@ -125,6 +128,7 @@ public class CanvasController
 
     /**
      * 캔버스 정보를 수정한다
+     *
      * @param canvasId
      * @param form
      * @param errors
@@ -133,67 +137,68 @@ public class CanvasController
      */
     @PostMapping("/canvas/update/{canvasId}")
     public String updateCanvas(@PathVariable("canvasId") Long canvasId,
-                               @Valid @ModelAttribute CanvasEditForm form,
-                               Errors errors,
-                               RedirectAttributes redirectAttributes)
-    {
-        if (errors.hasErrors())
-        {
-            redirectAttributes.addFlashAttribute("alertType", "danger");
-            redirectAttributes.addFlashAttribute("message", "잘못된 요청입니다.");
-            return "redirect:/canvas-management";
+                                @Valid
+                                @ModelAttribute CanvasEditForm form,
+                                Errors errors,
+                                RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
+            AlertUtils.alertFail(redirectAttributes, "잘못된 요청입니다.");
+            return "redirect:" + HOME_URL;
         }
 
         CanvasDto.Update updateDto = new CanvasDto.Update();
         updateDto.setTitle(form.getTitle());
         updateDto.setTopFixed(form.isTopFixed());
 
-        utilsClient.updateCanvas(canvasId, updateDto);
-
-        redirectAttributes.addFlashAttribute("alertType", "success");
-        redirectAttributes.addFlashAttribute("message", "정상적으로 수정되었습니다.");
-        return "redirect:/canvas-management";
+        ResponseEntity responseEntity = utilsClient.updateCanvas(canvasId, updateDto);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            AlertUtils.alertSuccess(redirectAttributes, "정상적으로 수정되었습니다.");
+        } else {
+            AlertUtils.alertFail(redirectAttributes, "수정 중 오류가 발생해 수정하지 못했습니다.");
+        }
+        return "redirect:" + HOME_URL;
     }
 
     /**
      * 캔버스 태그를 추가한다.
+     *
      * @param canvasId
      * @param title
      * @return
      */
     @PostMapping("/canvas/{canvasId}/tags/add")
-    public ResponseEntity customerTagAddAction (@PathVariable("canvasId") Long canvasId, String title)
-    {
-        utilsClient.addCanvasTag(canvasId, title);
-        return ResponseEntity.ok().build();
+    public ResponseEntity customerTagAddAction(@PathVariable("canvasId") Long canvasId, String title) {
+        return utilsClient.addCanvasTag(canvasId, title);
     }
 
     /**
      * 캔버스 태그를 제거한다.
+     *
      * @param canvasId
      * @param title
      * @return
      */
     @PostMapping("/canvas/{canvasId}/tags/remove")
-    public ResponseEntity customerTagRemoveAction (@PathVariable("canvasId") Long canvasId, String title)
-    {
-        utilsClient.removeCanvasTag(canvasId, title);
-        return ResponseEntity.ok().build();
+    public ResponseEntity customerTagRemoveAction(@PathVariable("canvasId") Long canvasId, String title) {
+        return utilsClient.removeCanvasTag(canvasId, title);
     }
 
     /**
      * 캔버스를 삭제한다.
+     *
      * @param canvasId
      * @param redirectAttributes
      * @return
      */
     @PostMapping("/canvas/remove/{canvasId}")
-    public String deleteCanvas (@PathVariable("canvasId") Long canvasId,
-                                RedirectAttributes redirectAttributes)
-    {
-        utilsClient.deleteCanvas(canvasId);
-        redirectAttributes.addFlashAttribute("alertType", "success");
-        redirectAttributes.addFlashAttribute("message", "정상적으로 삭제되었습니다.");
-        return "redirect:/canvas-management";
+    public String deleteCanvas(@PathVariable("canvasId") Long canvasId,
+        RedirectAttributes redirectAttributes) {
+        ResponseEntity responseEntity = utilsClient.deleteCanvas(canvasId);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            AlertUtils.alertSuccess(redirectAttributes, "정상적으로 삭제되었습니다.");
+        } else {
+            AlertUtils.alertFail(redirectAttributes, "오류가 발생해 삭제하지 못했습니다.");
+        }
+        return "redirect:" + HOME_URL;
     }
 }

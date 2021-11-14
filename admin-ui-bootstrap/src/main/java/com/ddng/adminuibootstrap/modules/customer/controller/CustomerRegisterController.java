@@ -2,9 +2,13 @@ package com.ddng.adminuibootstrap.modules.customer.controller;
 
 import com.ddng.adminuibootstrap.modules.common.dto.customer.CustomerTypeDto;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.FamilyDto;
+import com.ddng.adminuibootstrap.modules.common.enums.AlertType;
+import com.ddng.adminuibootstrap.modules.common.utils.AlertUtils;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,18 +30,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/customer-management/customer-register")
 @RequiredArgsConstructor
-public class CustomerRegisterController
-{
+public class CustomerRegisterController {
+
     private final CustomerClient customerClient;
 
     /**
      * 고객 등록 메뉴 폼 요청
-     * @param model
-     * @return
      */
     @GetMapping("/register-form")
-    public String registerForm (Model model)
-    {
+    public String registerForm(Model model) {
         // 고객 종류 조회
         List<CustomerTypeDto> customerTypes = customerClient.getCustomerTypes();
 
@@ -48,14 +49,12 @@ public class CustomerRegisterController
 
     /**
      * 가족 목록 조회
-     * @param keyword
-     * @return
+     *
+     * @param keyword 검색어
      */
     @GetMapping("/family-list")
-    public ResponseEntity familiesAction (String keyword)
-    {
-        if (StringUtils.hasText(keyword))
-        {
+    public ResponseEntity familiesAction(String keyword) {
+        if (StringUtils.hasText(keyword)) {
             List<FamilyDto> searchFamilies = customerClient.searchFamilies(keyword).getContent();
             return ResponseEntity.ok(searchFamilies);
         }
@@ -64,33 +63,27 @@ public class CustomerRegisterController
 
     /**
      * 고객 등록 액션 요청
+     *
      * @param registerForm
      * @param errors
      * @return
      * @throws Exception
      */
     @PostMapping("/customers")
-    public String registerAction (@Valid @ModelAttribute RegisterForm registerForm,
-                                  Errors errors,
-                                  Model model,
-                                  RedirectAttributes redirectAttributes) throws Exception
-    {
-        if (errors.hasErrors())
-        {
-            String message = "";
-            List<ObjectError> allErrors = errors.getAllErrors();
-            for (ObjectError error : allErrors)
-            {
-                message += error.getDefaultMessage() + "\n";
-            }
-
-            model.addAttribute("alertType", "danger");
-            model.addAttribute("message", message);
+    public String registerAction(@Valid
+                                 @ModelAttribute RegisterForm registerForm,
+                                 Errors errors,
+                                 RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
+            AlertUtils.alertFail(redirectAttributes, errors.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("\n")));
             return "customer/register/main";
         }
-        customerClient.createCustomer(registerForm);
-        redirectAttributes.addFlashAttribute("alertType", "success");
-        redirectAttributes.addFlashAttribute("message", registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");
+        ResponseEntity responseEntity = customerClient.createCustomer(registerForm);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            AlertUtils.alertSuccess(redirectAttributes, registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");
+        } else {
+            AlertUtils.alertFail(redirectAttributes, registerForm.getName() + " 고객이 정상적으로 생성되었습니다.");
+        }
         return "redirect:/customer-management/customer-register/register-form";
     }
 }

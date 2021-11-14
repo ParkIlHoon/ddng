@@ -18,7 +18,7 @@ import java.util.List;
  *
  * Spring Cloud Feign 기능을 사용해 RestTemplate 코드를 작성하지 않고 요청 기능을 구현한다.
  */
-@FeignClient(name = "ddng-sale-api")
+@FeignClient(name = "ddng-sale-api", fallback = SaleClientFallback.class)
 public interface SaleClient
 {
     String ITEM_API = "/items";
@@ -84,14 +84,14 @@ public interface SaleClient
      * @param editForm 수정할 정보
      */
     @PutMapping(ITEM_API + "/{itemId}")
-    void updateItem(@PathVariable("itemId") Long itemId, EditForm editForm);
+    ResponseEntity updateItem(@PathVariable("itemId") Long itemId, EditForm editForm);
 
     /**
      * 상품을 생성하는 API를 호출한다.
      * @param registerForm 생성할 상품의 정보
      */
     @PostMapping(ITEM_API)
-    void createItem(RegisterForm registerForm);
+    ResponseEntity createItem(RegisterForm registerForm);
 
     /**
      * 바코드를 생성하는 API를 호출한다.
@@ -175,10 +175,10 @@ public interface SaleClient
      */
     @GetMapping(SALE_API)
     FeignPageImpl<SaleDto> searchSale(@RequestParam("salePeriodStart") String salePeriodStart,
-                             @RequestParam("salePeriodEnd") String salePeriodEnd,
-                             @RequestParam("saleType")SaleType saleType,
-                             @RequestParam("page") int page,
-                             @RequestParam("size") int size);
+                                        @RequestParam("salePeriodEnd") String salePeriodEnd,
+                                        @RequestParam("saleType")SaleType saleType,
+                                        @RequestParam("page") int page,
+                                        @RequestParam("size") int size);
 
     /**
      * 판매 내역을 조회하는 API를 호출한다.

@@ -5,6 +5,7 @@ import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.schedule.ScheduleTypeDto;
 import com.ddng.adminuibootstrap.modules.schedules.form.ScheduleForm;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  *
  * Spring Cloud Feign 기능을 사용해 RestTemplate 코드를 작성하지 않고 요청 기능을 구현한다.
  */
-@FeignClient(name = "ddng-schedule-api")
+@FeignClient(name = "ddng-schedule-api", fallback = ScheduleClientFallback.class)
 public interface ScheduleClient
 {
     String SCHEDULE_API = "/schedules";
@@ -76,7 +77,7 @@ public interface ScheduleClient
      * @return 상태 코드
      */
     @PostMapping(SCHEDULE_API)
-    String createSchedule(ScheduleForm scheduleForm);
+    ResponseEntity<String> createSchedule(ScheduleForm scheduleForm);
 
     /**
      * 스케쥴을 수정하는 API를 호출한다.
@@ -84,7 +85,7 @@ public interface ScheduleClient
      * @param scheduleForm 수정할 스케쥴 내용
      */
     @PutMapping(SCHEDULE_API + "/{scheduleId}")
-    void updateSchedule(@PathVariable("scheduleId") Long scheduleId,
+    ResponseEntity updateSchedule(@PathVariable("scheduleId") Long scheduleId,
                         ScheduleForm scheduleForm);
 
     /**
@@ -92,5 +93,5 @@ public interface ScheduleClient
      * @param scheduleId 삭제할 스케쥴 아이디
      */
     @DeleteMapping(SCHEDULE_API + "/{scheduleId}")
-    void deleteSchedule(@PathVariable("scheduleId") Long scheduleId);
+    ResponseEntity deleteSchedule(@PathVariable("scheduleId") Long scheduleId);
 }

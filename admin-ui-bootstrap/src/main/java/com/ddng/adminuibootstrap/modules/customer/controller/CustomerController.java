@@ -4,8 +4,10 @@ import com.ddng.adminuibootstrap.modules.common.clients.SaleClient;
 import com.ddng.adminuibootstrap.modules.common.dto.FeignPageImpl;
 import com.ddng.adminuibootstrap.modules.common.dto.customer.*;
 import com.ddng.adminuibootstrap.modules.common.dto.sale.SaleItemDto;
+import com.ddng.adminuibootstrap.modules.common.utils.AlertUtils;
 import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.common.clients.CustomerClient;
+import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,35 +27,33 @@ import java.util.List;
 @Controller
 @RequestMapping("/customer-management/search-customer")
 @RequiredArgsConstructor
-public class CustomerController
-{
+public class CustomerController {
+
     private final CustomerClient customerClient;
     private final SaleClient saleClient;
 
     /**
      * 고객 조회 메뉴 폼 요청
-     * @param model
-     * @return
      */
     @GetMapping("/search-form")
-    public String searchForm (Model model)
-    {
+    public String searchForm() {
         return "customer/search/main";
     }
 
     /**
      * 고객 목록 조회 요청
+     *
      * @param keyword 조회 키워드
-     * @return
      */
     @GetMapping("/customer-list")
-    public String searchAction (String keyword, int page, int size, Model model)
-    {
+    public String searchAction(String keyword,
+                                @Min(0) int page,
+                                @Min(1) int size,
+                                Model model) {
         List<CustomerDto> searchCustomers = new ArrayList<>();
         long totalElements = 0;
 
-        if (StringUtils.hasText(keyword))
-        {
+        if (StringUtils.hasText(keyword)) {
             FeignPageImpl<CustomerDto> customersWithPage = customerClient.searchCustomersWithPage(keyword, page, size);
             totalElements = customersWithPage.getTotalElements();
             searchCustomers = customersWithPage.getContent();
@@ -66,19 +66,19 @@ public class CustomerController
 
     /**
      * 고객 조회 요청
-     * @param id 고객 아이디
-     * @param model
-     * @return
+     *
+     * @param id    고객 아이디
      */
     @GetMapping("/customers/{id}")
-    public String searchCustomerAction (@PathVariable("id") Long id, Model model)
-    {
-        if (id == null)
-        {
-            return "customer/search/main :: #customer-card";
+    public String searchCustomerAction(@PathVariable("id") Long id,
+                                        Model model,
+                                        RedirectAttributes redirectAttributes) {
+        CustomerDto customer = customerClient.getCustomer(id);
+        if (customer == null) {
+            AlertUtils.alertFail(redirectAttributes, "존재하지 않는 고객입니다.");
+            return "redirect:/customer-management/search-customer/search-form";
         }
 
-        CustomerDto customer = customerClient.getCustomer(id);
         List<CustomerTypeDto> customerTypes = customerClient.getCustomerTypes();
         List<CustomerTagDto> customerTags = customerClient.getCustomerTags();
 
@@ -94,51 +94,55 @@ public class CustomerController
 
     /**
      * 고객 태그 추가 요청
-     * @param id 고객 아이디
+     *
+     * @param id  고객 아이디
      * @param dto 추가 태그 dto
-     * @return
      */
     @PostMapping("/customers/{id}/tags/add")
-    public ResponseEntity customerTagAddAction (@PathVariable("id") Long id, @RequestBody CustomerTagDto dto)
-    {
-        customerClient.addCustomerTag(id, dto.getTitle());
-        return ResponseEntity.ok().build();
+    public ResponseEntity customerTagAddAction(@PathVariable("id") Long id,
+                                                @Valid
+                                                @RequestBody CustomerTagDto dto,
+                                                Errors errors) {
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return customerClient.addCustomerTag(id, dto.getTitle());
     }
 
     /**
      * 고객 태그 제거 요청
-     * @param id 고객 아이디
+     *
+     * @param id  고객 아이디
      * @param dto 제거 태그 dto
-     * @return
      */
     @PostMapping("/customers/{id}/tags/remove")
-    public ResponseEntity customerTagRemoveAction (@PathVariable("id") Long id, @RequestBody CustomerTagDto dto)
-    {
-        customerClient.removeCustomerTag(id, dto.getTitle());
-        return ResponseEntity.ok().build();
+    public ResponseEntity customerTagRemoveAction(@PathVariable("id") Long id,
+                                                    @Valid
+                                                    @RequestBody CustomerTagDto dto,
+                                                    Errors errors) {
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return customerClient.removeCustomerTag(id, dto.getTitle());
     }
 
     /**
      * 고객 정보 수정 요청
-     * @param id 고객 아이디
-     * @param editForm 수정 내용
-     * @param errors
-     * @param redirectAttributes
-     * @return
+     *
+     * @param id                 고객 아이디
+     * @param editForm           수정 내용
      */
     @PostMapping("/customers/{id}")
-    public String editCustomerAction (@PathVariable("id") Long id,
-                                      @Valid @ModelAttribute EditForm editForm,
-                                      Errors errors,
-                                      RedirectAttributes redirectAttributes)
-    {
-        if (errors.hasErrors())
-        {
+    public String editCustomerAction(@PathVariable("id") Long id,
+                                        @Valid
+                                        @ModelAttribute EditForm editForm,
+                                        Errors errors,
+                                        RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
             return "customer/search/main::#customer-card";
         }
-        customerClient.updateCustomer(id, editForm);
-        redirectAttributes.addFlashAttribute("alertType", "success");
-        redirectAttributes.addFlashAttribute("message", editForm.getName() + " 고객 정보가 정상적으로 변경되었습니다.");
+        CustomerDto updatedCustomer = customerClient.updateCustomer(id, editForm);
+        AlertUtils.alertSuccess(redirectAttributes, updatedCustomer.getName() + " 고객 정보가 정상적으로 변경되었습니다.");
         return "redirect:/customer-management/search-customer/search-form";
     }
 }
