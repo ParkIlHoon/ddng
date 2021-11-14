@@ -9,6 +9,7 @@ import com.ddng.adminuibootstrap.modules.customer.form.EditForm;
 import com.ddng.adminuibootstrap.modules.customer.form.FamilySettingForm;
 import com.ddng.adminuibootstrap.modules.customer.form.RegisterForm;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * Spring Cloud Feign 기능을 사용해 RestTemplate 코드를 작성하지 않고 요청 기능을 구현한다.
  */
-@FeignClient(name = "ddng-customer-api")
+@FeignClient(name = "ddng-customer-api", fallback = CustomerClientFallback.class)
 public interface CustomerClient
 {
     String CUSTOMER_API = "/customers";
@@ -64,7 +65,7 @@ public interface CustomerClient
      * @param registerForm 생성할 고객 정보
      */
     @PostMapping(value = CUSTOMER_API)
-    void createCustomer(@RequestBody RegisterForm registerForm);
+    ResponseEntity createCustomer(@RequestBody RegisterForm registerForm);
 
     /**
      * 가족 설정을 수정하는 API를 호출한다.
@@ -72,7 +73,7 @@ public interface CustomerClient
      * @param familySettingForm 수정할 설정 내용
      */
     @PutMapping(FAMILY_API + "/{familyId}")
-    void updateFamilySetting(@PathVariable("familyId") Long familyId, FamilySettingForm familySettingForm);
+    ResponseEntity updateFamilySetting(@PathVariable("familyId") Long familyId, FamilySettingForm familySettingForm);
 
     /**
      * 고객 목록을 페이징 처리해 조회하는 API를 호출한다.
@@ -108,7 +109,7 @@ public interface CustomerClient
      * @param editForm 수정할 정보
      */
     @PutMapping(CUSTOMER_API + "/{customerId}")
-    void updateCustomer(@PathVariable("customerId") Long customerId, EditForm editForm);
+    CustomerDto updateCustomer(@PathVariable("customerId") Long customerId, EditForm editForm);
 
     /**
      * 전체 고객 태그 목록을 조회하는 API를 호출한다.
@@ -123,7 +124,7 @@ public interface CustomerClient
      * @param title 추가할 태그 타이틀
      */
     @PostMapping(CUSTOMER_API + "/{customerId}/tags")
-    void addCustomerTag(@PathVariable("customerId") Long customerId, @RequestBody String title);
+    ResponseEntity addCustomerTag(@PathVariable("customerId") Long customerId, @RequestBody String title);
 
     /**
      * 고객에 태그를 제거하는 API를 호출한다.
@@ -131,5 +132,5 @@ public interface CustomerClient
      * @param title 제거할 태그 타이틀
      */
     @DeleteMapping(CUSTOMER_API + "/{customerId}/tags")
-    void removeCustomerTag(@PathVariable("customerId") Long customerId, @RequestBody String title);
+    ResponseEntity removeCustomerTag(@PathVariable("customerId") Long customerId, @RequestBody String title);
 }

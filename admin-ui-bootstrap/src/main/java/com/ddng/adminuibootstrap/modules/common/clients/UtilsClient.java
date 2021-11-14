@@ -7,13 +7,14 @@ import com.ddng.adminuibootstrap.modules.common.dto.utils.canvas.CanvasTagDto;
 import com.ddng.adminuibootstrap.modules.common.dto.utils.file.FileUploadRespDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.util.List;
 import java.util.Set;
 
-@FeignClient(name = "ddng-utils-api")
+@FeignClient(name = "ddng-utils-api", fallback = UtilsClientFallback.class)
 public interface UtilsClient
 {
     String CANVAS_API = "/canvas";
@@ -52,7 +53,7 @@ public interface UtilsClient
      * @param dto 새로 생성할 캔버스 정보
      */
     @PostMapping(CANVAS_API)
-    void createCanvas(@RequestBody CanvasDto.Create dto);
+    ResponseEntity createCanvas(@RequestBody CanvasDto.Create dto);
 
     /**
      * 캔버스를 수정하는 API를 호출한다.
@@ -60,7 +61,7 @@ public interface UtilsClient
      * @param dto 수정할 캔버스 정보
      */
     @PutMapping(CANVAS_API + "/{canvasId}")
-    void updateCanvas(@PathVariable("canvasId") Long id,
+    ResponseEntity updateCanvas(@PathVariable("canvasId") Long id,
                       @RequestBody CanvasDto.Update dto);
 
     /**
@@ -68,7 +69,7 @@ public interface UtilsClient
      * @param id 삭제할 캔버스 아이디
      */
     @DeleteMapping(CANVAS_API + "/{canvasId}")
-    void deleteCanvas(@PathVariable("canvasId") Long id);
+    ResponseEntity deleteCanvas(@PathVariable("canvasId") Long id);
 
 
     /**
@@ -85,7 +86,7 @@ public interface UtilsClient
      * @param title 추가할 태그 타이틀
      */
     @PostMapping(CANVAS_API + "/{canvasId}/tags")
-    void addCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
+    ResponseEntity addCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
 
     /**
      * 캔버스의 태그를 제거하는 API를 호출한다.
@@ -93,7 +94,7 @@ public interface UtilsClient
      * @param title 제거할 태그 타이틀
      */
     @DeleteMapping(CANVAS_API + "/{canvasId}/tags")
-    void removeCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
+    ResponseEntity removeCanvasTag(@PathVariable("canvasId") Long id, @RequestBody String title);
 
     /**
      * 파일 업로드 API를 호출한다.
@@ -109,5 +110,5 @@ public interface UtilsClient
      * @param uuid 파일 UUID
      */
     @DeleteMapping(FILE_API + "/{category}/{uuid}")
-    void deleteFile(@PathVariable("category") String category, @PathVariable("uuid") String uuid);
+    ResponseEntity deleteFile(@PathVariable("category") String category, @PathVariable("uuid") String uuid);
 }

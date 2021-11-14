@@ -1,7 +1,7 @@
 package com.ddng.adminuibootstrap.modules.statistic.controller;
 
+import com.ddng.adminuibootstrap.modules.common.clients.StatisticClient;
 import com.ddng.adminuibootstrap.modules.common.dto.statistic.CalculateDto;
-import com.ddng.adminuibootstrap.modules.statistic.template.StatisticTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,28 +18,26 @@ import java.util.List;
 @Controller
 @RequestMapping("/statistic")
 @RequiredArgsConstructor
-public class StatisticController
-{
-    private final StatisticTemplate statisticTemplate;
+public class StatisticController {
+
+    private final StatisticClient statisticClient;
 
     /**
      * 정산 메뉴 폼 요청
+     *
      * @param baseDate 정산 기준일자
-     * @param model
-     * @return
      */
     @GetMapping("/calculate")
-    public String calculateForm(String baseDate, Model model)
-    {
-        String baseDateParam = StringUtils.isEmpty(baseDate)? LocalDate.now().toString() : baseDate;
+    public String calculateForm(String baseDate, Model model) {
+        String baseDateParam = StringUtils.isEmpty(baseDate) ? LocalDate.now().toString() : baseDate;
 
-        List<CalculateDto.ByItemType> byItemType = statisticTemplate.getCalculateByItemType(baseDateParam);
-        List<CalculateDto.ByPayment> byPayment = statisticTemplate.getCalculateByPayment(baseDateParam);
+        List<CalculateDto.ByItemType> byItemType = statisticClient.getCalculateByItemType(baseDateParam);
+        List<CalculateDto.ByPayment> byPayment = statisticClient.getCalculateByPayment(baseDateParam);
 
-        int byItemTypeSumAmount = byItemType.stream().mapToInt(CalculateDto.ByItemType::getAmount).sum();
-        int byItemTypeSumCount = byItemType.stream().mapToInt(CalculateDto.ByItemType::getCount).sum();
-        int byPaymentSumAmount = byPayment.stream().mapToInt(CalculateDto.ByPayment::getAmount).sum();
-        int byPaymentSumCount = byPayment.stream().mapToInt(CalculateDto.ByPayment::getCount).sum();
+        long byItemTypeSumAmount = byItemType.stream().mapToLong(CalculateDto.ByItemType::getAmount).sum();
+        long byItemTypeSumCount = byItemType.stream().mapToLong(CalculateDto.ByItemType::getCount).sum();
+        long byPaymentSumAmount = byPayment.stream().mapToLong(CalculateDto.ByPayment::getAmount).sum();
+        long byPaymentSumCount = byPayment.stream().mapToLong(CalculateDto.ByPayment::getCount).sum();
 
         model.addAttribute("baseDate", baseDateParam);
         model.addAttribute("byItemType", byItemType);

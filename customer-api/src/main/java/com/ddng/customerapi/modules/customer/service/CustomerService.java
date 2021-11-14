@@ -43,7 +43,7 @@ public class CustomerService
         Page<Customer> customers = customerRepository.searchByKeyword(keyword, pageable);
 
         List<CustomerDto.Response> collect = customers.getContent().stream()
-                                                                    .map(customer -> new CustomerDto.Response(customer))
+                                                                    .map(CustomerDto.Response::new)
                                                                     .collect(Collectors.toList());
         return new PageImpl<>(collect, pageable, customers.getTotalElements());
     }
@@ -76,8 +76,7 @@ public class CustomerService
             findById.setProfileImg(uploadPath);
         }
 
-        Customer save = customerRepository.save(findById);
-        return save;
+        return customerRepository.save(findById);
     }
 
     /**
@@ -96,8 +95,7 @@ public class CustomerService
             map.setProfileImg(uploadPath);
         }
 
-        Customer save = customerRepository.save(map);
-        return save;
+        return customerRepository.save(map);
     }
 
     /**
@@ -121,9 +119,9 @@ public class CustomerService
      * @param customer 태그를 추가할 고객
      * @param tag 추가할 태그
      */
-    public void addTag(Customer customer, Tag tag)
+    public boolean addTag(Customer customer, Tag tag)
     {
-        customer.getTags().add(tag);
+        return customer.getTags().add(tag);
     }
 
     /**
@@ -131,17 +129,16 @@ public class CustomerService
      * @param customer 태그를 제거할 고객
      * @param tag 제거할 태그
      */
-    public void removeTag(Customer customer, Tag tag)
+    public boolean removeTag(Customer customer, Tag tag)
     {
-        customer.getTags().remove(tag);
+        return customer.getTags().remove(tag);
     }
 
     public List<CustomerDto.Response> findByIds(List<Long> ids)
     {
         List<Customer> customers = customerRepository.findByIdIn(ids);
-        List<CustomerDto.Response> collect = customers.stream()
-                                                        .map(customer -> new CustomerDto.Response(customer))
-                                                        .collect(Collectors.toList());
-        return collect;
+        return customers.stream()
+            .map(CustomerDto.Response::new)
+            .collect(Collectors.toList());
     }
 }

@@ -299,31 +299,31 @@
 
 <!-- 알림 -->
 <div th:fragment="alert(type, message)">
-    <div th:if="${type == 'success'}">
+    <div th:if="${type == T(com.ddng.adminuibootstrap.modules.common.enums.AlertType).SUCCESS}">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <p th:text="${message}"></p>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
     </div>
-    <div th:if="${type == 'info'}">
+    <div th:if="${type == T(com.ddng.adminuibootstrap.modules.common.enums.AlertType).INFO}">
         <div class="alert alert-info alert-dismissible fade show" role="alert">
             <p th:text="${message}"></p>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
     </div>
-    <div th:if="${type == 'warning'}">
+    <div th:if="${type == T(com.ddng.adminuibootstrap.modules.common.enums.AlertType).WARNING}">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <p th:text="${message}"></p>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
     </div>
-    <div th:if="${type == 'danger'}">
+    <div th:if="${type == T(com.ddng.adminuibootstrap.modules.common.enums.AlertType).DANGER}">
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <p th:text="${message}"></p>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
     </div>
-    <div th:if="${type == 'primary'}">
+    <div th:if="${type == T(com.ddng.adminuibootstrap.modules.common.enums.AlertType).PRIMARY}">
         <div class="alert alert-primary alert-dismissible fade show" role="alert">
             <p th:text="${message}"></p>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>

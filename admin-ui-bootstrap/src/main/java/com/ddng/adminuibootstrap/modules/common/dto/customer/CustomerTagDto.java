@@ -1,5 +1,6 @@
 package com.ddng.adminuibootstrap.modules.common.dto.customer;
 
+import javax.validation.constraints.NotBlank;
 import lombok.*;
 
 /**
@@ -10,5 +11,6 @@ import lombok.*;
 public class CustomerTagDto
 {
     private Long id;
+    @NotBlank
     private String title;
 }
