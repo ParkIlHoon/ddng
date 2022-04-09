@@ -88,7 +88,7 @@
     "jquery": "^3.5.1",
     "jquery-cropper": "^1.0.1",
     "jsbarcode": "^3.11.3",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "perfect-scrollbar": "1.5.0",
     "select2": "^4.0.13",
     "tui-calendar": "^1.12.14",
